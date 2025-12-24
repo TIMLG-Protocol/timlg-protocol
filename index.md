@@ -2,7 +2,8 @@
 
 TIMLG is a verifiable time-log protocol for reproducible coordination.
 
-## Docs
-- Status: `docs/status/status.md`
-- Roadmap: `docs/roadmap/roadmap_solana_svm.md`
-- Specs: `docs/specs/`
+## Start here
+- **Status:** /docs/status/status.md
+- **Roadmap:** /docs/roadmap/roadmap.md
+- **Specs:** /docs/specs/
+- **Repository:** This site is the public documentation hub.
