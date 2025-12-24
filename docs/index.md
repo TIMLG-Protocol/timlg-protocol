@@ -8,3 +8,4 @@ TIMLG is a verifiable time-log protocol for reproducible coordination.
 
 ## Support
 Donations are optional: see **Support** in the top menu.
+
