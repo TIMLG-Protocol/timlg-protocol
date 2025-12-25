@@ -1,0 +1,7 @@
+Add these to mkdocs.yml:
+
+extra_css:
+  - stylesheets/support.css
+
+extra_javascript:
+  - javascripts/donation.js

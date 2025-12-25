@@ -1,93 +1,106 @@
-# Tokenomics (TIMLG) — MVP-aligned
+# Tokenomics (TIMLG)
 
-This page describes the **current MVP mechanics** implemented in the on-chain program.
-It is *not* the final economic design; it is the minimal working incentive loop.
+This page documents **protocol economics** as implemented (or explicitly planned) for the TIMLG MVP: what is staked, how rounds settle, and how funds are routed.
 
-## Token flow (MVP)
+It also includes a **token distribution** section, but marks it as **TBD** until the project formally defines supply, allocations, and vesting.
 
-```mermaid
-flowchart TB
-  C[commit_ticket] --> SV[Round SOL Vault]
-  C --> TV[Round Token Vault (funded)]
-  R[reveal_ticket] --> D[determine win/lose]
-  D -->|winner| CL[claim_reward]
-  CL -->|transfer stake_amount| U[User Token Account]
-  CL -->|mint stake_amount| U
-  D -->|loser| B[burn stake_amount from vault]
-  NR[no-reveal tickets] -->|during settle_round_tokens| TT[Treasury Token Account]
-  SV -->|after grace: sweep_unclaimed| TS[Treasury SOL Account]
-```
+!!! note "Scope"
+    This page is about **protocol rules and incentives**, not an investment pitch.
 
 ---
 
-## Token surfaces in the MVP
+## What exists today (MVP-aligned)
 
-- A single SPL mint (named `CHRONO` in code today) is used for:
-  - winner payouts, and
-  - accounting of penalties (burn + treasury transfer)
+### Economic unit
+- Each ticket escrows a fixed stake of the **protocol token**.
+- In the current MVP design, the stake is intended to be **exactly 1 token per ticket** (configurable on-chain).
 
-> Branding/ticker can change later without changing the core protocol rules.
-
----
-
-## Configurable parameters (on-chain config)
-
-- `stake_amount` — per-ticket amount used for token accounting and payouts
-- `claim_grace_slots` — claim window extension before sweeping SOL
+### Why this exists
+The economics are designed to:
+1. **Enforce commit–reveal integrity** (discourage “commit then disappear”).
+2. Keep settlement **deterministic** and auditable from on-chain state.
+3. Support a **treasury** model for long-term sustainability (infra + future reviews).
 
 ---
 
-## Funding model (MVP)
+## Outcomes and routing (MVP)
 
-Each round has a **token vault** funded by an admin/governance action.
+After the pulse is finalized and the reveal window closes, each ticket is classified:
 
-- Winners are paid out of this vault (`stake_amount` each).
-- Losers/no-reveal are processed during settlement.
+| Outcome | Condition | Economic effect (MVP) |
+|---|---|---|
+| **WIN** | valid reveal and matches assigned target bit | eligible to **claim** after settlement |
+| **LOSE** | valid reveal but does not match | stake is **routed to SPL treasury** during token settlement |
+| **NO-REVEAL** | no valid reveal by deadline (or invalid reveal) | stake is **slashed** (MVP: burn) |
 
----
-
-## Payouts and supply effects (MVP)
-
-### Winners
-
-On claim, a winner receives:
-
-1. **Transfer** of `stake_amount` from the round token vault to the user
-2. **Mint** of `stake_amount` new tokens to the user (reward)
-
-Total received:
-
-- `2 × stake_amount` tokens
-
-### Losers
-
-During token settlement:
-
-- `stake_amount` per losing revealed ticket is **burned** from the round token vault.
-
-### No-reveal tickets
-
-During token settlement:
-
-- `stake_amount` per unrevealed ticket is transferred to the **treasury token account**.
+!!! warning "No promises"
+    Rewards are protocol-defined accounting outcomes. They are not guarantees of profit, yield, or investment returns.
 
 ---
 
-## Why this MVP structure exists
+## Claim gating and settlement
 
-- Proves end-to-end accounting: commit → reveal → finalize → settle → claim.
-- Incentivizes revealing and discourages withholding.
-- Keeps governance levers explicit: funding, settlement, and sweeping.
+TIMLG separates “classification” from “distribution”:
+
+1. **Commit:** stake escrowed into a round vault
+2. **Reveal:** proof of commitment (guess + salt)
+3. **Finalize:** round is locked
+4. **Settle:** token accounting is computed and written
+5. **Claim:** only after settlement; claims are **idempotent**
+6. **Sweep:** only after a grace window; routes leftovers to treasury policy
+
+This separation makes the protocol easier to audit and harder to exploit with timing tricks.
 
 ---
 
-## What stays in the whitepaper (recommended)
+## Anti-griefing design
 
-The website should remain concise and MVP-aligned.
+The primary griefing pattern in commit–reveal systems is:
 
-The whitepaper is the place for:
+- users commit, then refuse to reveal (to influence outcomes or stall settlement)
 
-- long-term emission schedules
-- vesting, governance design, and decentralization stages
-- cross-round treasury policy (buyback/burn, grants, validators, etc.)
-- audit roadmap and threat model
+TIMLG addresses this by:
+- enforcing **slot-bounded windows**
+- slashing **NO-REVEAL** tickets (MVP: burn)
+- routing **LOSE** stake to treasury (discourages spam participation)
+
+---
+
+## Fees (optional, future-safe)
+
+The MVP keeps fees minimal. Later versions may introduce:
+
+- small protocol fees (e.g., to fund monitoring and security work)
+- fee splits (SPL treasury vs SOL treasury)
+- anti-spam economics for permissionless participation
+
+Any change must be:
+- versioned (docs + whitepaper release)
+- implemented as an on-chain config change
+- validated by deterministic scripts on devnet
+
+---
+
+## Token distribution (TBD)
+
+The project name/ticker has been updated to **TIMLG**.  
+A full “launch tokenomics” plan is **not finalized yet**, including:
+
+- total supply / emission schedule
+- allocations (team, treasury, community, liquidity, advisors, etc.)
+- vesting and unlock schedules
+- exchange/liquidity strategy
+- governance distribution (multisig / DAO transition)
+
+Until defined, the public docs will only describe **protocol economics** (how the game settles and routes value), not a market distribution plan.
+
+!!! tip "Good public practice"
+    When distribution is defined, publish it in a **versioned whitepaper release** (e.g., v0.2) and mirror a summarized version here.
+
+---
+
+## What is intentionally not published here
+
+- private treasury operations / signer custody procedures
+- relayer/oracle operational runbooks
+- any detail that enables unauthorized authority changes or fund movement
