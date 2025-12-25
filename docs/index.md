@@ -1,13 +1,9 @@
 # TIMLG Protocol
 
-TIMLG is a **commit–reveal protocol** for verifiable coordination using **slot‑bounded rounds** and a publicly verifiable **randomness pulse**.
+TIMLG is a **commit–reveal protocol** for verifiable coordination using **slot-bounded rounds** and a publicly verifiable **randomness pulse**.
 
-[Read the Whitepaper](whitepaper/){
-  .md-button .md-button--primary
-}
+[Read the Whitepaper](whitepaper/){ .md-button .md-button--primary }
 [Protocol (MVP Specs)](protocol/overview/){ .md-button }
-[Roadmap](roadmap/){ .md-button }
-[Status](status/){ .md-button }
 
 ---
 
@@ -16,7 +12,7 @@ TIMLG is a **commit–reveal protocol** for verifiable coordination using **slot
 TIMLG lets participants:
 
 1) **Commit** a private guess during a round’s commit window  
-2) An **oracle publishes** a 512‑bit pulse (tied to a public source) after commits close  
+2) An **oracle publishes** a 512-bit pulse (tied to a public source) after commits close  
 3) **Reveal** the guess + salt so the program can verify the commitment  
 4) The program **settles** outcomes deterministically and enables **claims** (winners)
 
@@ -61,7 +57,7 @@ sequenceDiagram
 
 -   **Protocol**
 
-    MVP‑aligned specs: log format, timing windows, settlement rules, token flow, treasury.
+    MVP-aligned specs: log format, timing windows, settlement rules, token flow, treasury.
 
     [Read Protocol](protocol/overview/)
 
