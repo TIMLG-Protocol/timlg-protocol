@@ -62,14 +62,14 @@ TIMLG (MVP) has several control surfaces that require strict custody:
 ## Authority model (conceptual diagram)
 
 ```mermaid
-flowchart TB
-  UA[Upgrade Authority] -->|upgrade program| P[On-chain Program]
-  CA[Config Authority] -->|set params / pause / oracle pubkey| P
-  OK[Oracle Signing Key] -->|set_pulse_signed (Ed25519)| P
-  P -->|sweep_unclaimed| TS[Treasury SOL Account]
-  P -->|no-reveal penalties| TT[Treasury Token Account]
-  P --> RV[Round Vaults]
-  P --> TV[Round Token Vault]
+flowchart TD
+  UA["Upgrade authority"] -->|upgrade| P["Onchain program"]
+  CA["Config authority"] -->|update config| P
+  OK["Oracle signing key"] -->|signed pulse| P
+  P -->|sweep| TS["Treasury SOL"]
+  P -->|penalties| TT["Treasury token"]
+  P --> RV["Round vaults"]
+  P --> TV["Round token vault"]
 ```
 
 ---
