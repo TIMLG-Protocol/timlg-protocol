@@ -18,82 +18,107 @@ It is intentionally written to be accurate without exposing sensitive operationa
 
 ## Milestones
 
-<div class="grid cards" markdown>
+Below, each stage is **collapsible**: click the title (or the “+”) to expand details.
 
--   **Stage 0 — Docs & public hub**  
-    **Output:** Website + navigation  
-    **Status:** 🟡 In progress  
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 0 — Docs & public hub</strong> <span class="roadmap-stage-meta">Website + navigation</span></summary>
 
-    **Definition of Done**
-    - Core pages populated
-    - Diagrams render (no Mermaid errors)
-    - No broken links / nav entries
+**Output:** Website + navigation
 
--   **Stage 1 — Core on-chain MVP (localnet)**  
-    **Output:** Anchor program + tests  
-    **Status:** ✅ Done  
+**Definition of Done**
+- Core pages populated
+- Diagrams render (no Mermaid errors)
+- No broken links / nav entries
 
-    **Definition of Done**
-    - Tests pass consistently on localnet
-    - Full round lifecycle works end-to-end
+</details>
 
--   **Stage 2 — Gasless / signed paths**  
-    **Output:** Relayer-friendly flows  
-    **Status:** ✅ Done  
+<details class="roadmap-stage" markdown="1">
+<summary>✅ <strong>Stage 1 — Core on-chain MVP (localnet)</strong> <span class="roadmap-stage-meta">Anchor program + tests</span></summary>
 
-    **Definition of Done**
-    - Batch/signed commit & reveal paths validated in tests
+**Output:** Anchor program + tests
 
--   **Stage 3 — Oracle signed pulse (on-chain)**  
-    **Output:** `set_pulse_signed`  
-    **Status:** ✅ Done  
+**Definition of Done**
+- Tests pass consistently on localnet
+- Full round lifecycle works end-to-end
 
-    **Definition of Done**
-    - Ed25519 verification on-chain
-    - Pulse is one-shot and replay-safe
+</details>
 
--   **Stage 4 — Lifecycle & treasuries**  
-    **Output:** finalize / settle / claim / sweep  
-    **Status:** ✅ Done  
+<details class="roadmap-stage" markdown="1">
+<summary>✅ <strong>Stage 2 — Gasless / signed paths</strong> <span class="roadmap-stage-meta">Relayer-friendly flows</span></summary>
 
-    **Definition of Done**
-    - Token settlement gates claims
-    - Sweep works after grace period
+**Output:** Relayer-friendly flows
 
--   **Stage 5 — Devnet parity + reproducible demo**  
-    **Output:** Devnet deploy + scripted demo  
-    **Status:** 🧱 Blocked  
+**Definition of Done**
+- Batch/signed commit & reveal paths validated in tests
 
-    **Definition of Done**
-    - Program deployed on devnet
-    - One script reproduces the full round lifecycle
-    - Docs match observed devnet behavior
+</details>
 
--   **Stage 6 — Optimization (optional)**  
-    **Output:** Size / compute tightening  
-    **Status:** ⚠️ Optional  
+<details class="roadmap-stage" markdown="1">
+<summary>✅ <strong>Stage 3 — Oracle signed pulse (on-chain)</strong> <span class="roadmap-stage-meta"><code>set_pulse_signed</code></span></summary>
 
-    **Definition of Done**
-    - Not required for devnet demo
-    - Improves resilience and cost
+**Output:** `set_pulse_signed`
 
--   **Stage 7 — Real oracle ops (devnet)**  
-    **Output:** Beacon → signer → tx  
-    **Status:** 🧱 Blocked  
+**Definition of Done**
+- Ed25519 verification on-chain
+- Pulse is one-shot and replay-safe
 
-    **Definition of Done**
-    - Deterministic pulse ingestion runs reliably on devnet
-    - Replay-safe publishing and indexing
+</details>
 
--   **Stage 8 — Observability / DX**  
-    **Output:** Minimal monitoring + runbook  
-    **Status:** ❌ Pending  
+<details class="roadmap-stage" markdown="1">
+<summary>✅ <strong>Stage 4 — Lifecycle & treasuries</strong> <span class="roadmap-stage-meta">finalize / settle / claim / sweep</span></summary>
 
-    **Definition of Done**
-    - Error taxonomy + recovery guidance
-    - Minimal telemetry hooks for ops
+**Output:** finalize / settle / claim / sweep
 
-</div>
+**Definition of Done**
+- Token settlement gates claims
+- Sweep works after grace period
+
+</details>
+
+<details class="roadmap-stage" markdown="1">
+<summary>🧱 <strong>Stage 5 — Devnet parity + reproducible demo</strong> <span class="roadmap-stage-meta">Devnet deploy + scripted demo</span></summary>
+
+**Output:** Devnet deploy + scripted demo
+
+**Definition of Done**
+- Program deployed on devnet
+- One script reproduces the full round lifecycle
+- Docs match observed devnet behavior
+
+</details>
+
+<details class="roadmap-stage" markdown="1">
+<summary>⚠️ <strong>Stage 6 — Optimization (optional)</strong> <span class="roadmap-stage-meta">Size / compute tightening</span></summary>
+
+**Output:** Size / compute tightening
+
+**Definition of Done**
+- Not required for devnet demo
+- Improves resilience and cost
+
+</details>
+
+<details class="roadmap-stage" markdown="1">
+<summary>🧱 <strong>Stage 7 — Real oracle ops (devnet)</strong> <span class="roadmap-stage-meta">Beacon → signer → tx</span></summary>
+
+**Output:** Beacon → signer → tx
+
+**Definition of Done**
+- Deterministic pulse ingestion runs reliably on devnet
+- Replay-safe publishing and indexing
+
+</details>
+
+<details class="roadmap-stage" markdown="1">
+<summary>❌ <strong>Stage 8 — Observability / DX</strong> <span class="roadmap-stage-meta">Minimal monitoring + runbook</span></summary>
+
+**Output:** Minimal monitoring + runbook
+
+**Definition of Done**
+- Error taxonomy + recovery guidance
+- Minimal telemetry hooks for ops
+
+</details>
 
 ---
 
@@ -104,39 +129,6 @@ Devnet parity is not just “it deploys”. It means:
 - deterministic scripts can create a round, commit, set a signed pulse, reveal, finalize, settle, claim, and sweep
 - all constraints behave the same as localnet (PDAs, token accounts, slot windows)
 - the public docs match the observed behavior
-
----
-
-## Near-term plan (next 2–3 sessions)
-
-1. **Finish documentation alignment**
-   - “Protocol” pages reflect the MVP objects and naming (Round/Ticket, slots, pulse, settlement gates)
-   - Add/verify diagrams (architecture, lifecycle, state machine, token flow)
-
-2. **Prepare the devnet demo pack**
-   - One command to deploy
-   - One script to run the full round lifecycle
-   - One script to publish the oracle pulse (signed)
-
-3. **Unblock devnet**
-   - Secure enough SOL for test loops
-   - Stabilize configuration and accounts used by the demo
-
----
-
-## Public releases strategy
-
-- **Docs site:** updated continuously (living documentation)
-- **Whitepaper PDF:** versioned releases (v0.1, v0.2, …)
-- **Code repo:** published once devnet release is stable, with tags matching the whitepaper
-
----
-
-## Risks & constraints (public)
-
-- Limited devnet funding can slow iteration and reproducible demos
-- Oracle ops must remain deterministic and replay-safe
-- Treasury and authorities must be hardened (multisig / separation of duties) before mainnet readiness
 
 ---
 

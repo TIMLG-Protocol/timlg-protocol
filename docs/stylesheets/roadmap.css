@@ -1,0 +1,43 @@
+/* Roadmap accordion (collapsible stages) */
+.md-typeset details.roadmap-stage {
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin: 0.8rem 0;
+  background: var(--md-default-bg-color);
+}
+
+.md-typeset details.roadmap-stage > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+}
+
+.md-typeset details.roadmap-stage > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Make the built-in marker act like a “+ / −” */
+.md-typeset details.roadmap-stage > summary::after {
+  content: "+";
+  margin-left: auto;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.md-typeset details.roadmap-stage[open] > summary::after {
+  content: "−";
+}
+
+.md-typeset .roadmap-stage-meta {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Tighter lists inside */
+.md-typeset details.roadmap-stage ul {
+  margin: 0.3rem 0 0.3rem 1.2rem;
+}
