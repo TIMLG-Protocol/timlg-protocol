@@ -42,7 +42,11 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.inlinehilite
   - pymdownx.highlight
   - pymdownx.tabbed:
@@ -59,6 +63,9 @@ nav:
       - Changelog: whitepaper/changelog.md
   - Protocol:
       - Overview: protocol/overview.md
+      - Log Format: protocol/log_format.md
+      - Timing Windows: protocol/timing_windows.md
+      - Settlement Rules: protocol/settlement_rules.md
       - Tokenomics: protocol/tokenomics.md
       - Treasury & BitIndex: protocol/treasury_bitindex.md
   - Roadmap: roadmap/index.md
