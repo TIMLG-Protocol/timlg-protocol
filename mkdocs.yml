@@ -2,7 +2,7 @@ site_name: TIMLG Protocol
 site_description: Verifiable commit–reveal coordination using a public randomness pulse.
 site_url: https://timlg-protocol.github.io/timlg-protocol/
 
-# Header icon points to the org (not the docs repo).
+# Header icon should point to the org (not necessarily this docs repo).
 repo_url: https://github.com/TIMLG-Protocol
 repo_name: TIMLG Protocol (GitHub)
 
@@ -28,8 +28,6 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Light mode
-  logo: assets/logo.svg
-  favicon: assets/favicon.svg
 
 plugins:
   - search
@@ -52,15 +50,6 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
-extra_css:
-  - stylesheets/extra.css
-  - stylesheets/roadmap.css
-  - stylesheets/status.css
-  - stylesheets/support.css
-
-extra_javascript:
-  - javascripts/donation.js
-  
 nav:
   - Home: index.md
   - Whitepaper:
