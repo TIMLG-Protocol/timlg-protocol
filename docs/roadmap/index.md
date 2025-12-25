@@ -3,7 +3,21 @@
 This page is a **public, high-level execution plan** for TIMLG.  
 It is intentionally written to be accurate without exposing sensitive operational details.
 
+**Last updated:** 2025-12-25
+
 ---
+
+## Current state (snapshot)
+
+- **Localnet MVP:** ✅ working end-to-end (commit → oracle pulse → reveal → finalize → settle → claim → sweep)
+- **Devnet parity:** 🧱 blocked (funding / faucet constraints and deployment parity work)
+- **Public docs:** 🟡 in progress (aligning wording and diagrams with the MVP implementation)
+- **Code visibility:** the implementation repo stays **private** until we have a stable devnet release
+
+---
+
+## Milestones
+
 
 ## Milestones
 
@@ -136,12 +150,49 @@ It is intentionally written to be accurate without exposing sensitive operationa
     </tr>
   </tbody>
 </table>
+---
+
+## What “Devnet parity” means here
+
+Devnet parity is not just “it deploys”. It means:
+
+- deterministic scripts can create a round, commit, set a signed pulse, reveal, finalize, settle, claim, and sweep
+- all constraints behave the same as localnet (PDAs, token accounts, slot windows)
+- the public docs match the observed behavior
 
 ---
 
-## Notes
+## Near-term plan (next 2–3 sessions)
 
-- “Devnet parity” means the scripted flow works end-to-end on devnet (not just “it deploys”).
-- The implementation repository stays private until a stable devnet release is ready.
+1. **Finish documentation alignment**
+   - “Protocol” pages reflect the MVP objects and naming (Round/Ticket, slots, pulse, settlement gates)
+   - Add/verify diagrams (architecture, lifecycle, state machine, token flow)
+
+2. **Prepare the devnet demo pack**
+   - One command to deploy
+   - One script to run the full round lifecycle
+   - One script to publish the oracle pulse (signed)
+
+3. **Unblock devnet**
+   - Secure enough SOL for test loops
+   - Stabilize configuration and accounts used by the demo
+
+---
+
+## Public releases strategy
+
+- **Docs site:** updated continuously (living documentation)
+- **Whitepaper PDF:** versioned releases (v0.1, v0.2, …)
+- **Code repo:** published once devnet release is stable, with tags matching the whitepaper
+
+---
+
+## Risks & constraints (public)
+
+- Limited devnet funding can slow iteration and reproducible demos
+- Oracle ops must remain deterministic and replay-safe
+- Treasury and authorities must be hardened (multisig / separation of duties) before mainnet readiness
+
+---
 
 If you want the “live checklist” view, see the **Status** page.
