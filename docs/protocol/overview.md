@@ -27,16 +27,16 @@ TIMLG is a protocol for **verifiable time-logs** that supports **reproducible co
 
 - **Participants** produce time-logs (claims).
 - **Relayer (optional)** batches transactions to reduce friction and fees.
-- **Oracle (off-chain, optional)** provides deterministic public inputs when required (e.g., beacon values).
+- **Oracle inputs (optional)** provide deterministic public values when required (e.g., beacon values).
 - **On-chain program** verifies commitments, validates reveals, and settles state.
 - **Treasury** funds incentives and long-term sustainability.
 
 ```mermaid
 flowchart TB
-  P[Participant] -->|Commit| S[(On-chain Program)]
+  P[Participant] -->|Commit| S[On-chain Program]
   P -->|Reveal| S
-  R[Relayer (optional)] -->|Batch submits| S
-  O[Oracle inputs (optional)] -->|Deterministic values| S
+  R[Relayer - optional] -->|Batch submit| S
+  O[Oracle inputs - optional] -->|Deterministic values| S
   S --> T[Treasury / Incentives]
   S --> I[Indexes / Metrics]
 ```
@@ -45,7 +45,7 @@ flowchart TB
 
 ## Core primitives (high level)
 
-- **Epoch**: a time window used for coordination (e.g., “day”, “round”, or any configured duration).
+- **Epoch**: a time window used for coordination (e.g., day, round, or any configured duration).
 - **Commitment**: a hash that commits to a future reveal without disclosing it immediately.
 - **Reveal payload**: evidence + metadata (structured, canonical format).
 - **Outcome**: settlement result (e.g., valid/invalid + reward/penalty + metrics updates).
@@ -61,13 +61,13 @@ flowchart TB
 ```mermaid
 sequenceDiagram
   participant P as Participant
-  participant R as Relayer (optional)
+  participant R as Relayer optional
   participant S as On-chain Program
 
-  P->>S: Commit(commitment_hash, epoch_id, metadata...)
+  P->>S: Commit(commitment_hash, epoch_id, meta)
   P->>S: Reveal(payload, nonce, epoch_id)
 
-  R->>S: (optional) Batch submit commits/reveals
+  R->>S: Batch submit (optional)
   S-->>P: Outcome (accepted/rejected + settlement)
 ```
 
@@ -76,7 +76,7 @@ sequenceDiagram
 ## What this page intentionally does *not* include
 
 - Private keys, signers, or privileged operational details
-- “Production” oracle infrastructure (endpoints, automation)
+- Production oracle infrastructure (endpoints, automation)
 - Anything that could enable unauthorized control or fund movement
 
 !!! warning "Security principle"
