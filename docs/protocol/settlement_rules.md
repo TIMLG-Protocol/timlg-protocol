@@ -3,6 +3,22 @@
 This page specifies how outcomes are determined and how funds/tokens move **conceptually**.
 It matches the MVP on-chain behavior at a high level.
 
+## Round state machine (MVP)
+
+```mermaid
+stateDiagram-v2
+  [*] --> Created
+  Created --> Committing
+  Committing --> PulseSet
+  PulseSet --> Revealing
+  Revealing --> Finalized
+  Finalized --> TokenSettled
+  TokenSettled --> Swept
+  Swept --> [*]
+```
+
+---
+
 ## Outcome determination
 
 Given:
@@ -29,11 +45,8 @@ Then:
 
 TIMLG separates settlement into **two layers**:
 
-1. **Truth settlement** (deterministic):
-   - establish `win/lose` per ticket from the pulse bit.
-
-2. **Economic settlement** (MVP):
-   - applies rules for rewards and penalties using SOL vaults and a round token vault.
+1. **Truth settlement** (deterministic): establish `win/lose` per ticket from the pulse bit.
+2. **Economic settlement** (MVP): apply rules for rewards and penalties using vaults.
 
 ### Phase 0 — Commit stake
 
@@ -51,14 +64,13 @@ A round becomes finalizable only if:
 
 ### Phase 2 — Token settlement gate (required before claim)
 
-An admin/governance action runs token settlement once the round is finalized.
-This step prepares the token vault for claims and applies penalties.
+Token settlement runs once the round is finalized.
 
-**Conceptual rules in MVP:**
+Conceptual rules in MVP:
 
-- **Losers**: their per-ticket allocation is **burned** from the round token vault.
-- **No-reveal**: their per-ticket allocation is transferred to the **treasury token account**.
-- A round is marked `token_settled = true` once complete.
+- **Losers**: per-ticket allocation is **burned** from the round token vault.
+- **No-reveal**: per-ticket allocation is transferred to the **treasury token account**.
+- Round is marked `token_settled = true` once complete.
 
 ### Phase 3 — Claiming (winners only)
 
@@ -72,16 +84,16 @@ A user can claim only if:
 When claiming (MVP):
 
 - transfers `stake_amount` tokens from the round token vault to the user
-- mints an additional `stake_amount` tokens as the reward (see Tokenomics)
+- mints an additional `stake_amount` tokens to the user
 
 ### Phase 4 — Sweeping unclaimed SOL
 
-After a configurable grace period, any remaining SOL in the round vault can be swept to a treasury SOL account.
+After a grace period, remaining SOL in the round vault can be swept to a treasury SOL account.
 
 ---
 
 ## Safety properties
 
 - **No early claim**: winners cannot claim before `token_settled`.
-- **No claim after sweep**: sweep permanently closes the claim window.
-- **Idempotent settlement**: penalty application uses per-ticket guards to prevent double settlement.
+- **No double settlement**: settlement uses guards to prevent duplicates.
+- **No double claim**: each ticket can be claimed at most once.
