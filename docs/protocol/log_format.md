@@ -1,51 +1,80 @@
 # Log Format (Spec)
 
-This page defines the **canonical structure** of a TIMLG time-log.
+This page defines the **canonical formats** that make commits/reveals verifiable and replayable.
 
-!!! note
-    We keep this spec **implementation-friendly** (fields, constraints, canonicalization) while avoiding sensitive operational details.
+> Note: The MVP on-chain implementation follows these rules. Public docs avoid operational details (keys, infra).
 
-## Goals
+## Definitions
 
-- A log format that is easy to serialize, hash, and verify
-- Forward-compatible versioning
-- Clear separation of **evidence** vs **metadata**
+- `round_id`: `u64`
+- `user`: Solana public key (`32 bytes`)
+- `nonce`: `u64` chosen by the user to prevent correlation / replay across rounds
+- `guess`: `u8` ∈ {0,1}
+- `salt`: `32 bytes` secret chosen by the user
+- `pulse`: `64 bytes` (512 bits)
 
-## Suggested structure (high level)
+---
 
-- `version`: schema version (e.g., `v0.1`)
-- `epoch_id`: coordination window identifier
-- `author`: participant identifier (pubkey / address)
-- `timestamp_range`: start/end (or bounded proof of time)
-- `claim_type`: category (experiment, benchmark, task, etc.)
-- `inputs`: structured inputs (hashes or references)
-- `outputs`: structured outputs (hashes or references)
-- `evidence`: hashes/URIs or bundled proofs (avoid publishing private raw data here)
-- `tags`: optional labels for discovery
+## Commitment hash (canonical)
 
-## Canonicalization
+A ticket’s commitment is:
 
-Define a canonical encoding before hashing:
-- stable key ordering
-- stable numeric and timestamp formats
-- strict UTF-8
-- explicit schema versioning
-
-## Commitments (concept)
-
-A commitment binds a future reveal:
-
-- commitment = `H(domain_sep || epoch_id || author || payload_hash || nonce)`
+- `commitment = SHA256( "commit" || round_id_le || user || nonce_le || guess || salt )`
 
 Where:
-- `payload_hash` is the hash of the canonicalized reveal payload
-- `nonce` is secret until reveal (prevents guessing)
 
-!!! tip
-    We can refine hashing primitives (SHA-256 / Keccak / etc.) later. What matters now is **determinism** and **domain separation**.
+- `"commit"` is the ASCII string `commit` (5 bytes)
+- `round_id_le` is `round_id` as **little-endian** 8 bytes
+- `nonce_le` is `nonce` as **little-endian** 8 bytes
+- `guess` is a single byte: `0x00` or `0x01`
+- `salt` is 32 raw bytes
 
-## Open questions
+This is the **only** valid commitment format.
 
-- Which fields must be on-chain vs referenced (hash + URI)?
-- How do we represent time bounds in a verifiable way?
-- What is the minimal evidence set for the MVP?
+---
+
+## BitIndex derivation (canonical)
+
+Each ticket derives a fixed bit position inside the 512-bit pulse:
+
+- `bit_index = (u16_le(first2bytes(SHA256("bitindex" || round_id_le || user || nonce_le)))) mod 512`
+
+This ensures:
+
+- Each ticket reads exactly one bit from the pulse.
+- The bit position is unpredictable before the commit, but reproducible later.
+
+### Pulse bit extraction
+
+Given `pulse[0..63]` and `bit_index`:
+
+- `byte_i = bit_index // 8`
+- `bit_i  = bit_index % 8`
+- `bit    = (pulse[byte_i] >> bit_i) & 1`
+
+---
+
+## Oracle pulse message (signed)
+
+The oracle signs a canonical message for the pulse:
+
+- `msg = "chronology:pulse_v1" || program_id || round_id_le || pulse_index_target_le || pulse`
+
+Where:
+
+- `"chronology:pulse_v1"` is ASCII
+- `program_id` is 32 bytes
+- `pulse_index_target_le` is `u64` little-endian (8 bytes)
+- `pulse` is the 64-byte payload
+
+The on-chain program validates an Ed25519 signature over this message (the signature itself is supplied via an Ed25519 instruction immediately before the program instruction).
+
+---
+
+## Versioning notes
+
+- Any change to:
+  - commitment preimage fields/order,
+  - bit index derivation,
+  - or oracle message prefix
+  **must** bump a protocol version and remain backward compatible via explicit handling.
