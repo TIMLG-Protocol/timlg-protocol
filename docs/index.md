@@ -1,40 +1,50 @@
 # TIMLG Protocol
 
-**TIMLG** is a verifiable **time-log protocol** for **reproducible coordination**.
+TIMLG is a **commit–reveal protocol** for verifiable coordination using **slot‑bounded rounds** and a publicly verifiable **randomness pulse**.
 
-[Read the Whitepaper](whitepaper/){ .md-button .md-button--primary }
-[Protocol Specs](protocol/overview/){ .md-button }
+[Read the Whitepaper](whitepaper/){
+  .md-button .md-button--primary
+}
+[Protocol (MVP Specs)](protocol/overview/){ .md-button }
 [Roadmap](roadmap/){ .md-button }
 [Status](status/){ .md-button }
 
 ---
 
-## What TIMLG does
+## What TIMLG does (in one minute)
 
-TIMLG provides a structured way to **commit**, **reveal**, and **settle** time-logged work so results can be compared, verified, and incentivized.
+TIMLG lets participants:
 
-- **Commit–reveal** reduces copying and supports delayed disclosure.
-- **Audit-friendly settlement** turns logs into deterministic outcomes.
-- **Treasury rules** support long-term sustainability.
+1) **Commit** a private guess during a round’s commit window  
+2) An **oracle publishes** a 512‑bit pulse (tied to a public source) after commits close  
+3) **Reveal** the guess + salt so the program can verify the commitment  
+4) The program **settles** outcomes deterministically and enables **claims** (winners)
 
-!!! note "Docs-first public hub"
-    This repository is the **public documentation site**.  
-    Implementation details (keys, privileged configs, production oracle/relayer operations) are intentionally not published here.
+This site is the **public documentation hub**. It describes *what the protocol does* and how it behaves at the MVP level, without exposing operational secrets.
+
+!!! note "Public docs vs private operations"
+    We intentionally do **not** publish private keys, signer infrastructure, privileged configs, or production oracle/relayer runbooks.
 
 ---
 
-## How it works (high level)
-
-1. **Commit** — submit a commitment hash for your log/claim  
-2. **Reveal** — reveal evidence + metadata  
-3. **Verify & settle** — apply deterministic rules and update protocol state
+## How it works (as implemented in the MVP)
 
 ```mermaid
-flowchart LR
-  A[Participant] -->|Commit| B[(On-chain Program)]
-  A -->|Reveal| B
-  C[Relayer (optional)] -->|Batch txs| B
-  B --> D[Treasury / Incentives]
+sequenceDiagram
+  participant A as Admin/Governance
+  participant U as Participant
+  participant O as Oracle
+  participant P as Program
+
+  A->>P: create_round (commit_deadline_slot, reveal_deadline_slot, pulse_index_target)
+  U->>P: commit_ticket (commitment, nonce)
+  Note over P: commits close
+  O->>P: set_pulse_signed (public pulse, oracle signature)
+  U->>P: reveal_ticket (guess, salt)
+  A->>P: finalize_round
+  A->>P: settle_round_tokens
+  U->>P: claim_reward (winners)
+  A->>P: sweep_unclaimed (after grace)
 ```
 
 ---
@@ -45,25 +55,25 @@ flowchart LR
 
 -   **Whitepaper**
 
-    System model, assumptions, and rationale.
+    Canonical narrative: motivation, system model, and design rationale.
 
     [Open Whitepaper](whitepaper/)
 
--   **Protocol Specs**
+-   **Protocol**
 
-    Mechanics, tokenomics, treasury rules, and settlement model.
+    MVP‑aligned specs: log format, timing windows, settlement rules, token flow, treasury.
 
-    [Read Specs](protocol/overview/)
+    [Read Protocol](protocol/overview/)
 
 -   **Roadmap**
 
-    What gets built next, and what “done” means for each milestone.
+    Milestones and “definition of done” for each stage (MVP → devnet → hardening).
 
     [View Roadmap](roadmap/)
 
 -   **Status**
 
-    A public snapshot of progress, blockers, and next actions.
+    Current progress and the next concrete tasks.
 
     [View Status](status/)
 
@@ -73,5 +83,4 @@ flowchart LR
 
 ## Support (optional)
 
-Donations are optional and are used to fund infrastructure, development, and (future) security reviews.  
-See **Support** in the top menu.
+If you want to support development, see **Support** in the top menu.

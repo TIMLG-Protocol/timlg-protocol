@@ -1,8 +1,8 @@
 site_name: TIMLG Protocol
-site_description: Verifiable time-log coordination for reproducible research.
+site_description: Verifiable commit–reveal coordination using a public randomness pulse.
 site_url: https://timlg-protocol.github.io/timlg-protocol/
 
-# Header GitHub icon: point to the org (more meaningful than the docs repo)
+# Header icon (optional): point to the org (not the docs repo).
 repo_url: https://github.com/TIMLG-Protocol
 repo_name: TIMLG Protocol (GitHub)
 
