@@ -1,0 +1,8 @@
+/* Status page small readability helpers */
+.md-typeset .status-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 0.5rem;
+  font-size: 0.8em;
+  border: 1px solid var(--md-default-fg-color--lighter);
+}
