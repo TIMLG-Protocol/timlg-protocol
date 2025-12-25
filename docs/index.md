@@ -1,6 +1,6 @@
 # TIMLG Protocol
 
-TIMLG is a verifiable **time-log protocol** for **reproducible coordination**.
+**TIMLG** is a verifiable **time-log protocol** for **reproducible coordination**.
 
 [Read the Whitepaper](whitepaper/){ .md-button .md-button--primary }
 [Protocol Specs](protocol/overview/){ .md-button }
@@ -9,40 +9,61 @@ TIMLG is a verifiable **time-log protocol** for **reproducible coordination**.
 
 ---
 
-## What TIMLG aims to solve
+## What TIMLG does
 
-Reliable coordination is hard when:
-- evidence is off-chain and easy to fake,
-- incentives are misaligned,
-- results are hard to reproduce and compare.
+TIMLG provides a structured way to **commit**, **reveal**, and **settle** time-logged work so results can be compared, verified, and incentivized.
 
-TIMLG focuses on **verifiable logging**, **structured incentives**, and **audit-friendly settlement**.
+- **Commit–reveal** reduces copying and supports delayed disclosure.
+- **Audit-friendly settlement** turns logs into deterministic outcomes.
+- **Treasury rules** support long-term sustainability.
+
+!!! note "Docs-first public hub"
+    This repository is the **public documentation site**.  
+    Implementation details (keys, privileged configs, production oracle/relayer operations) are intentionally not published here.
 
 ---
 
+## How it works (high level)
+
+1. **Commit** — submit a commitment hash for your log/claim  
+2. **Reveal** — reveal evidence + metadata  
+3. **Verify & settle** — apply deterministic rules and update protocol state
+
+```mermaid
+flowchart LR
+  A[Participant] -->|Commit| B[(On-chain Program)]
+  A -->|Reveal| B
+  C[Relayer (optional)] -->|Batch txs| B
+  B --> D[Treasury / Incentives]
+```
+
+---
+
+## Where to start
+
 <div class="grid cards" markdown>
 
--   :material-file-document-outline: **Whitepaper**
-    
-    The canonical narrative + assumptions + system model.
+-   **Whitepaper**
+
+    System model, assumptions, and rationale.
 
     [Open Whitepaper](whitepaper/)
 
--   :material-chip: **Protocol Specs**
-    
+-   **Protocol Specs**
+
     Mechanics, tokenomics, treasury rules, and settlement model.
 
-    [Go to Specs](protocol/overview/)
+    [Read Specs](protocol/overview/)
 
--   :material-map-marker-path: **Roadmap**
-    
+-   **Roadmap**
+
     What gets built next, and what “done” means for each milestone.
 
     [View Roadmap](roadmap/)
 
--   :material-chart-timeline-variant: **Status**
-    
-    A live snapshot of what’s working, what’s next, and what’s blocked.
+-   **Status**
+
+    A public snapshot of progress, blockers, and next actions.
 
     [View Status](status/)
 

@@ -1,28 +1,36 @@
 # Protocol Overview
 
-TIMLG is a protocol for **verifiable time-logs** that can be used to coordinate and settle reproducible work.
+TIMLG is a protocol for **verifiable time-logs** that supports reproducible coordination and deterministic settlement.
 
-## High-level components
+## Core ideas
+- **Commit–reveal:** reduces copying and enables delayed disclosure
+- **Deterministic settlement:** protocol rules decide outcomes without “hand-waving”
+- **Auditability:** logs and outcomes can be inspected and compared
 
-- **Participants:** produce time-logs (claims) and later reveal evidence.
-- **Commit–reveal flow:** reduces copying and enables delayed disclosure.
-- **Relayer (optional):** batches submissions for better UX.
-- **Settlement rules:** determine rewards/penalties and final outcomes.
-- **Treasury model:** funds incentives and long-term sustainability.
+## Roles (conceptual)
+- **Participants:** create time-logs (claims)
+- **Relayer (optional):** batches transactions to improve UX
+- **Oracle (off-chain):** provides deterministic public inputs (when required)
+- **Program:** verifies rules and settles state
+- **Treasury:** funds incentives and sustainability
 
-## Minimal flow (conceptual)
+## Minimal flow
+```mermaid
+sequenceDiagram
+  participant P as Participant
+  participant R as Relayer (optional)
+  participant S as On-chain Program
+  P->>S: Commit(commitment_hash)
+  P->>S: Reveal(payload + nonce)
+  R->>S: (optional) Batch submit
+  S-->>P: Outcome (reward/penalty)
+```
 
-1. **Commit:** a participant commits to a hash of their log / claim.
-2. **Reveal:** the participant reveals the preimage (evidence + metadata).
-3. **Verify:** rules validate structure and timing.
-4. **Settle:** protocol distributes rewards and updates global state.
+!!! warning "Public vs private"
+    This repo is public documentation.  
+    Do not publish private keys, signer infrastructure, endpoints, or privileged automation scripts.
 
-!!! warning "Public docs vs private implementation"
-    This repository is docs-first. Production infrastructure details, signers, and privileged configs are **not** published here.
-
-## Next steps for this page
-
-- Add the precise data model (log format)
-- Define roles and permissions
-- Specify timing windows and edge cases
-- Add a diagram of commit–reveal + settlement
+## Next steps for this spec
+- Define the **log format** (fields + canonical hashing)
+- Define **timing windows** and edge cases
+- Define **settlement rules** and invariants

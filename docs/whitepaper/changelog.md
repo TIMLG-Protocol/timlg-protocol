@@ -1,9 +1,9 @@
 # Whitepaper Changelog
 
 ## v0.1
-- Initial public documentation structure.
-- High-level protocol overview and documentation site online.
+- Documentation site online
+- Initial public structure and placeholders
 
-## Planned
-- v0.2: refined system model, threat model, and oracle/settlement details.
-- v0.3: tokenomics finalization and treasury/BitIndex specification alignment.
+## Next
+- v0.2: detailed system model, data format, timing windows
+- v0.3: oracle/settlement flow + threat model summary

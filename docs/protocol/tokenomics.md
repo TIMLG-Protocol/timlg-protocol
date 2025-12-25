@@ -1,20 +1,17 @@
 # Tokenomics (TIMLG)
 
-This page describes TIMLG token economics at the specification level.
+This page defines TIMLG token economics at the specification level.
 
-## Goals
+## Objectives
+- Incentivize high-signal, verifiable logging
+- Discourage spam and low-quality participation
+- Sustain development via treasury rules
 
-- Incentivize high-quality, verifiable logging
-- Discourage spam and low-signal participation
-- Sustain long-term development via treasury rules
-
-## Sections (to be finalized)
-
-- Supply model (mint/burn/issuance)
-- Fees (where they apply, how they are computed)
-- Reward distribution (who gets paid, when, and for what)
-- Penalties / slashing conditions (if applicable)
-- Anti-sybil considerations
+## Components (draft)
+- **Fees:** when they apply and where they go
+- **Rewards:** who gets paid, for what, and when
+- **Penalties:** non-reveal, invalid reveal, spam patterns (if applicable)
+- **Supply policy:** mint/burn/issuance constraints
 
 !!! note
-    Tokenomics can be published incrementally: start with principles + constraints, then formalize formulas later.
+    We can publish this incrementally: principles → constraints → formulas → implementation.
