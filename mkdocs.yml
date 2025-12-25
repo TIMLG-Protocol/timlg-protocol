@@ -65,5 +65,9 @@ nav:
       - Treasury & BitIndex: protocol/treasury_bitindex.md
   - Roadmap: roadmap/index.md
   - Status: status/index.md
-  - Security & Control: security/index.md
+  - Security & Control:
+      - Overview: security/index.md
+      - Authority Surfaces: security/authorities.md
+      - Threat Model: security/threat_model.md
+      - Responsible Disclosure: security/disclosure.md
   - Support: support/index.md
