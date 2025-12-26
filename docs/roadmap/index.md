@@ -3,143 +3,124 @@
 This page is a **public, high-level execution plan** for TIMLG.  
 It is intentionally written to be accurate without exposing sensitive operational details.
 
-For the “live” view of what is happening right now (focus, blockers, next actions), see **Status**.
-
 **Last updated:** 2025-12-25
 
 ---
 
 ## Milestones
 
-<table class="roadmap-milestones">
-  <colgroup>
-    <col style="width:6%">
-    <col style="width:20%">
-    <col style="width:20%">
-    <col style="width:10%">
-    <col style="width:44%">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>Stage</th>
-      <th>Goal</th>
-      <th>Output</th>
-      <th>Status</th>
-      <th>Definition of Done</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>0</strong></td>
-      <td>Docs &amp; public hub</td>
-      <td>Website + navigation</td>
-      <td>🟡 In progress</td>
-      <td>
-        <ul>
-          <li>Core pages populated</li>
-          <li>Diagrams render (no Mermaid errors)</li>
-          <li>No broken links / nav entries</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>1</strong></td>
-      <td>Core on-chain MVP (localnet)</td>
-      <td>Anchor program + tests</td>
-      <td>✅ Done</td>
-      <td>
-        <ul>
-          <li>Tests pass consistently on localnet</li>
-          <li>Full round lifecycle works end-to-end</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>2</strong></td>
-      <td>Gasless / signed paths</td>
-      <td>Relayer-friendly flows</td>
-      <td>✅ Done</td>
-      <td>
-        <ul>
-          <li>Batch/signed commit &amp; reveal paths validated in tests</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>3</strong></td>
-      <td>Oracle signed pulse (on-chain)</td>
-      <td><code>set_pulse_signed</code></td>
-      <td>✅ Done</td>
-      <td>
-        <ul>
-          <li>Ed25519 verification on-chain</li>
-          <li>Pulse is one-shot and replay-safe</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>4</strong></td>
-      <td>Lifecycle &amp; treasuries</td>
-      <td>finalize/settle/claim/sweep</td>
-      <td>✅ Done</td>
-      <td>
-        <ul>
-          <li>Token settlement gates claims</li>
-          <li>Sweep works after grace period</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>5</strong></td>
-      <td>Devnet parity + reproducible demo</td>
-      <td>Devnet deploy + scripted demo</td>
-      <td>🧱 Blocked</td>
-      <td>
-        <ul>
-          <li>Program deployed on devnet</li>
-          <li>One script reproduces the full round lifecycle</li>
-          <li>Docs match observed devnet behavior</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>6</strong></td>
-      <td>Optimization (optional)</td>
-      <td>Size / compute tightening</td>
-      <td>⚠️ Optional</td>
-      <td>
-        <ul>
-          <li>Not required for devnet demo</li>
-          <li>Improves resilience and cost</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>7</strong></td>
-      <td>Real oracle ops (devnet)</td>
-      <td>Beacon → signer → tx</td>
-      <td>🧱 Blocked</td>
-      <td>
-        <ul>
-          <li>Deterministic pulse ingestion runs reliably on devnet</li>
-          <li>Replay-safe publishing and indexing</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>8</strong></td>
-      <td>Observability / DX</td>
-      <td>Minimal monitoring + runbook</td>
-      <td>❌ Pending</td>
-      <td>
-        <ul>
-          <li>Error taxonomy + recovery guidance</li>
-          <li>Minimal telemetry hooks for ops</li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<details open>
+<summary><strong>🟡 Stage 0 — Docs &amp; public hub</strong></summary>
+
+**Goal:** professional public hub (docs + whitepaper)  
+**Output:** website + navigation
+
+**Definition of Done**
+- Core pages populated (Whitepaper / Protocol / Roadmap / Security / Support)
+- Diagrams render (no Mermaid errors)
+- No broken links / nav entries
+- Public wording stays “spec-level” (no ops secrets)
+
+</details>
+
+<details open>
+<summary><strong>✅ Stage 1 — Core on-chain MVP (localnet)</strong></summary>
+
+**Goal:** end-to-end commit → reveal → finalize → settle → claim → sweep on localnet  
+**Output:** Anchor program + tests
+
+**Definition of Done**
+- Tests pass consistently on localnet
+- Full round lifecycle works end-to-end
+- Deterministic settlement from public state
+
+</details>
+
+<details open>
+<summary><strong>✅ Stage 2 — Gasless / signed paths</strong></summary>
+
+**Goal:** relayer-friendly flows  
+**Output:** signed/batched paths validated
+
+**Definition of Done**
+- Batch/signed commit &amp; reveal paths validated in tests
+- Replay-safe payload patterns
+
+</details>
+
+<details open>
+<summary><strong>✅ Stage 3 — Oracle signed pulse (on-chain)</strong></summary>
+
+**Goal:** verify pulse authenticity on-chain  
+**Output:** <code>set_pulse_signed</code>
+
+**Definition of Done**
+- Ed25519 verification on-chain
+- Pulse is one-shot and replay-safe
+
+</details>
+
+<details open>
+<summary><strong>✅ Stage 4 — Lifecycle &amp; treasuries</strong></summary>
+
+**Goal:** finalize/settle/claim/sweep complete  
+**Output:** deterministic lifecycle gates + treasury routing
+
+**Definition of Done**
+- Token settlement gates claims
+- Sweep works after grace period
+- Authority boundaries are explicit (MVP)
+
+</details>
+
+<details>
+<summary><strong>🟡 Stage 5 — Devnet parity + reproducible demo</strong></summary>
+
+**Goal:** reproducible devnet behavior matching localnet constraints  
+**Output:** devnet deploy + scripted demo pack
+
+**Definition of Done**
+- Program deployed on devnet
+- One script reproduces the full round lifecycle end-to-end
+- Docs match observed devnet behavior
+
+</details>
+
+<details>
+<summary><strong>⚠️ Stage 6 — Optimization (optional)</strong></summary>
+
+**Goal:** size/compute tightening  
+**Output:** resilience + cost improvements
+
+**Definition of Done**
+- Not required for the devnet demo
+- Improves robustness and reduces compute/size risk
+
+</details>
+
+<details>
+<summary><strong>🟡 Stage 7 — Real oracle ops (devnet)</strong></summary>
+
+**Goal:** run a deterministic beacon → signer → tx pipeline on devnet  
+**Output:** reliable pulse publishing + indexing
+
+**Definition of Done**
+- Deterministic pulse ingestion runs reliably on devnet
+- Replay-safe publishing and indexing
+
+</details>
+
+<details>
+<summary><strong>🟡 Stage 8 — Observability / DX</strong></summary>
+
+**Goal:** minimal monitoring + runbook (public-safe)  
+**Output:** error taxonomy + recovery guidance
+
+**Definition of Done**
+- Error taxonomy + recovery guidance
+- Minimal telemetry hooks (public-safe) for ops
+
+</details>
 
 ---
 
@@ -161,8 +142,7 @@ Devnet parity is not just “it deploys”. It means:
 
 ---
 
-## Risks & constraints (public)
+## Constraints (public)
 
-- Limited devnet funding can slow iteration and reproducible demos
 - Oracle ops must remain deterministic and replay-safe
-- Treasury and authorities must be hardened (multisig / separation of duties) before mainnet readiness
+- Authorities and treasuries must be hardened (multisig / separation of duties) before mainnet readiness
