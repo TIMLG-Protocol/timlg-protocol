@@ -1,7 +1,6 @@
 # Roadmap
 
 This page is a **public, high-level execution plan** for TIMLG.  
-It is written to be accurate while avoiding sensitive operational details.
 
 **Last updated:** 2025-12-25
 
