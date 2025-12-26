@@ -6,14 +6,6 @@ This page is a **public, high-level execution plan** for TIMLG.
 
 ---
 
-## Current state (snapshot)
-
-- **Localnet MVP:** ✅ working end-to-end (commit → oracle pulse → reveal → finalize → claim → sweep)
-- **Devnet demo:** 🟡 pending (deploy parity + reproducible scripts)
-- **Code visibility:** the implementation repo stays **private** until a stable devnet release
-
----
-
 ## Milestones (execution only)
 
 Each stage is **collapsible**: click the title (or the “+”) to expand details.
