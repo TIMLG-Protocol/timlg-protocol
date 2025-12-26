@@ -15,6 +15,7 @@ theme:
     - navigation.top
     - navigation.instant
     - navigation.tracking
+    - navigation.footer
     - toc.follow
     - search.suggest
     - search.highlight
@@ -28,6 +29,8 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Light mode
+  logo: assets/logo.png
+  favicon: assets/favicon.svg
 
 plugins:
   - search
@@ -49,6 +52,15 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.tabbed:
       alternate_style: true
+
+extra_css:
+  - stylesheets/roadmap.css
+  - stylesheets/status.css
+  - stylesheets/support.css
+
+extra_javascript:
+  - javascripts/donation.js
+  - javascripts/footer-nav.js
 
 nav:
   - Home: index.md
