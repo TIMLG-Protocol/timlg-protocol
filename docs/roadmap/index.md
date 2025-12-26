@@ -10,33 +10,14 @@ It is written to be accurate while avoiding sensitive operational details.
 ## Current state (snapshot)
 
 - **Localnet MVP:** ✅ working end-to-end (commit → oracle pulse → reveal → finalize → claim → sweep)
-- **Public docs:** 🟡 in progress (aligning wording + diagrams with the MVP implementation)
 - **Devnet demo:** 🟡 pending (deploy parity + reproducible scripts)
 - **Code visibility:** the implementation repo stays **private** until a stable devnet release
 
 ---
 
-## Milestones
+## Milestones (execution only)
 
 Each stage is **collapsible**: click the title (or the “+”) to expand details.
-
-<details class="roadmap-stage" markdown="1" open>
-<summary>🟡 <strong>Stage 0 — Docs &amp; public hub</strong></summary>
-
-TIMLG needs a clean, professional public hub that explains the protocol **without leaking operational details**.
-
-**Scope**
-- Documentation site (MkDocs Material) with stable navigation
-- Whitepaper (web + PDF) + versioning hygiene
-- Protocol specs aligned with the MVP (naming, lifecycle, diagrams)
-
-**Definition of Done**
-- Core pages populated (Home / Whitepaper / Protocol / Roadmap / Security / Support)
-- Diagrams render reliably (no Mermaid build errors)
-- No broken links / nav entries, consistent terminology (“TIMLG” everywhere)
-- Public wording stays “spec-level” (no keys, runbooks, privileged configs)
-
-</details>
 
 <details class="roadmap-stage" markdown="1" open>
 <summary>✅ <strong>Stage 1 — Core on-chain MVP (localnet)</strong></summary>
@@ -44,7 +25,7 @@ TIMLG needs a clean, professional public hub that explains the protocol **withou
 The on-chain MVP proves the **round lifecycle** and the **commit–reveal mechanics** under slot-bounded timing.
 
 **What exists in the MVP**
-- A global config (admin parameters, oracle pubkey, safety flags)
+- Global config (admin parameters, oracle pubkey, safety flags)
 - Round state + vaults (SOL vault + token vault)
 - Ticket state (commit, reveal, claim flags)
 
@@ -97,7 +78,7 @@ This stage anchors the protocol to a **public randomness pulse** while keeping t
 <details class="roadmap-stage" markdown="1" open>
 <summary>✅ <strong>Stage 4 — Lifecycle &amp; treasuries</strong></summary>
 
-The MVP establishes the lifecycle gates that keep rounds honest, and the treasury routing that supports sustainability.
+The MVP establishes lifecycle gates that keep rounds honest, and treasury routing that supports sustainability.
 
 **What exists**
 - Finalization gates (close the round after reveal window)
@@ -114,58 +95,58 @@ The MVP establishes the lifecycle gates that keep rounds honest, and the treasur
 <details class="roadmap-stage" markdown="1">
 <summary>🟡 <strong>Stage 5 — Devnet parity + reproducible demo</strong></summary>
 
-The goal is to make TIMLG **behave the same way on devnet** as it does on localnet, with a demo that anyone can reproduce.
+Make TIMLG behave the same way on **devnet** as it does on localnet, with a demo that anyone can reproduce.
 
-**What “parity” means (practical)**
-- Same accounts/PDAs and timing semantics as localnet
-- Same instruction surface (IDL) as the MVP
-- A scripted end-to-end run: create → commit → pulse → reveal → finalize → claim → sweep
+**Scope**
+- Deploy the full MVP program (complete IDL) to devnet
+- Produce a scripted end-to-end run: create → commit → pulse → reveal → finalize → claim → sweep
+- Ensure public docs match observed devnet behavior
 
 **Definition of Done**
-- Program deployed on devnet with the full MVP IDL (not a minimal placeholder)
+- Program deployed on devnet with the full MVP instruction surface
 - Demo scripts reproduce a full round lifecycle reliably
-- Public docs match observed devnet behavior (screenshots/links optional)
+- Docs match observed devnet behavior
 
 </details>
 
 <details class="roadmap-stage" markdown="1">
 <summary>🟡 <strong>Stage 6 — Optimization</strong></summary>
 
-This stage focuses on **tightening compute and binary size** without changing semantics.
+Tighten compute and binary size **without changing semantics**.
 
 **Why it matters**
 - Lower deployment friction
-- More headroom for future features and safeguards
+- More headroom for future safeguards and features
 
 **Definition of Done**
 - Tests remain green after optimizations
-- Binary size / compute budgets are improved (target thresholds defined during execution)
+- Binary size / compute budgets improve (targets defined during execution)
 
 </details>
 
 <details class="roadmap-stage" markdown="1">
 <summary>🟡 <strong>Stage 7 — Real oracle ops (devnet)</strong></summary>
 
-The MVP already defines the on-chain pulse verification. This stage makes the off-chain pipeline run reliably against devnet.
+The MVP already verifies pulses on-chain. This stage makes the off-chain pipeline run reliably against devnet.
 
-**What exists already (conceptually / in prototypes)**
-- Beacon fetch + polling (e.g., NIST-style)
+**Scope (public-safe)**
+- Beacon fetch + polling
 - Canonical message construction and signing
 - Submission pattern that couples Ed25519 verification with `set_pulse_signed`
 
 **Definition of Done**
 - Oracle can publish pulses deterministically on devnet rounds
-- Publishing is replay-safe and operationally stable (retries are idempotent)
+- Publishing is replay-safe and operationally stable (idempotent retries)
 
 </details>
 
 <details class="roadmap-stage" markdown="1">
 <summary>🟡 <strong>Stage 8 — Observability / DX</strong></summary>
 
-This stage makes it easy for testers and contributors to reproduce results and understand failures **without exposing sensitive ops**.
+Make it easy to reproduce results and understand failures **without exposing sensitive ops**.
 
 **Scope**
-- Minimal runbook for safe public testing
+- Minimal public-safe runbook for testing
 - Error taxonomy and recovery guidance
 - Convenience scripts for demo runs (public-safe)
 
@@ -173,5 +154,23 @@ This stage makes it easy for testers and contributors to reproduce results and u
 - Clear “how to run the demo” guide (public-safe)
 - Minimal troubleshooting guidance for common failures
 - Consistent terminology across docs, whitepaper, and scripts
+
+</details>
+
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 9 — Mainnet readiness &amp; deployment</strong></summary>
+
+This stage is about shipping TIMLG to **Solana mainnet** responsibly.
+
+**Scope (high-level)**
+- Harden authorities and treasuries (multisig, separation of duties)
+- Define and test authority rotation policies (public policy; private execution)
+- Optional external review/audit once devnet demo is stable
+- Mainnet deployment + tagged release aligned with a whitepaper version
+
+**Definition of Done**
+- Upgrade authority and treasury authorities are protected (multisig + documented roles)
+- A mainnet deployment checklist exists (program ID, config accounts, treasury addresses)
+- Mainnet release is tagged and reproducible from the release commit
 
 </details>

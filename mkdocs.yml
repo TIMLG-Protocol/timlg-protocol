@@ -28,7 +28,7 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Light mode
-  logo: assets/logo.png
+  logo: assets/logo.svg
   favicon: assets/favicon.svg
 
 plugins:
