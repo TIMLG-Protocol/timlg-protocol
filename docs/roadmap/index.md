@@ -7,51 +7,54 @@ It is intentionally written to be accurate without exposing sensitive operationa
 
 ---
 
+## Current state (snapshot)
+
+- **Localnet MVP:** ✅ working end-to-end (commit → oracle pulse → reveal → finalize → settle → claim → sweep)
+- **Public docs:** 🟡 in progress (aligning wording and diagrams with the MVP implementation)
+- **Code visibility:** the implementation repo stays **private** until we have a stable devnet release
+
+---
+
 ## Milestones
 
-<details open>
-<summary><strong>🟡 Stage 0 — Docs &amp; public hub</strong></summary>
+Below, each stage is **collapsible**: click the title (or the “+”) to expand details.
 
-**Goal:** professional public hub (docs + whitepaper)  
-**Output:** website + navigation
+<details class="roadmap-stage" markdown="1" open>
+<summary>🟡 <strong>Stage 0 — Docs &amp; public hub</strong> <span class="roadmap-stage-meta">Website + navigation</span></summary>
+
+**Output:** Website + navigation
 
 **Definition of Done**
-- Core pages populated (Whitepaper / Protocol / Roadmap / Security / Support)
+- Core pages populated
 - Diagrams render (no Mermaid errors)
 - No broken links / nav entries
-- Public wording stays “spec-level” (no ops secrets)
 
 </details>
 
-<details open>
-<summary><strong>✅ Stage 1 — Core on-chain MVP (localnet)</strong></summary>
+<details class="roadmap-stage" markdown="1" open>
+<summary>✅ <strong>Stage 1 — Core on-chain MVP (localnet)</strong> <span class="roadmap-stage-meta">Anchor program + tests</span></summary>
 
-**Goal:** end-to-end commit → reveal → finalize → settle → claim → sweep on localnet  
 **Output:** Anchor program + tests
 
 **Definition of Done**
 - Tests pass consistently on localnet
 - Full round lifecycle works end-to-end
-- Deterministic settlement from public state
 
 </details>
 
-<details open>
-<summary><strong>✅ Stage 2 — Gasless / signed paths</strong></summary>
+<details class="roadmap-stage" markdown="1" open>
+<summary>✅ <strong>Stage 2 — Gasless / signed paths</strong> <span class="roadmap-stage-meta">Relayer-friendly flows</span></summary>
 
-**Goal:** relayer-friendly flows  
-**Output:** signed/batched paths validated
+**Output:** Relayer-friendly flows
 
 **Definition of Done**
 - Batch/signed commit &amp; reveal paths validated in tests
-- Replay-safe payload patterns
 
 </details>
 
-<details open>
-<summary><strong>✅ Stage 3 — Oracle signed pulse (on-chain)</strong></summary>
+<details class="roadmap-stage" markdown="1" open>
+<summary>✅ <strong>Stage 3 — Oracle signed pulse (on-chain)</strong> <span class="roadmap-stage-meta"><code>set_pulse_signed</code></span></summary>
 
-**Goal:** verify pulse authenticity on-chain  
 **Output:** <code>set_pulse_signed</code>
 
 **Definition of Done**
@@ -60,49 +63,44 @@ It is intentionally written to be accurate without exposing sensitive operationa
 
 </details>
 
-<details open>
-<summary><strong>✅ Stage 4 — Lifecycle &amp; treasuries</strong></summary>
+<details class="roadmap-stage" markdown="1" open>
+<summary>✅ <strong>Stage 4 — Lifecycle &amp; treasuries</strong> <span class="roadmap-stage-meta">finalize / settle / claim / sweep</span></summary>
 
-**Goal:** finalize/settle/claim/sweep complete  
-**Output:** deterministic lifecycle gates + treasury routing
+**Output:** finalize / settle / claim / sweep
 
 **Definition of Done**
 - Token settlement gates claims
 - Sweep works after grace period
-- Authority boundaries are explicit (MVP)
 
 </details>
 
-<details>
-<summary><strong>🟡 Stage 5 — Devnet parity + reproducible demo</strong></summary>
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 5 — Devnet parity + reproducible demo</strong> <span class="roadmap-stage-meta">Devnet deploy + scripted demo</span></summary>
 
-**Goal:** reproducible devnet behavior matching localnet constraints  
-**Output:** devnet deploy + scripted demo pack
+**Output:** Devnet deploy + scripted demo
 
 **Definition of Done**
 - Program deployed on devnet
-- One script reproduces the full round lifecycle end-to-end
+- One script reproduces the full round lifecycle
 - Docs match observed devnet behavior
 
 </details>
 
-<details>
-<summary><strong>⚠️ Stage 6 — Optimization (optional)</strong></summary>
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 6 — Optimization</strong> <span class="roadmap-stage-meta">Size / compute tightening</span></summary>
 
-**Goal:** size/compute tightening  
-**Output:** resilience + cost improvements
+**Output:** Size / compute tightening
 
 **Definition of Done**
-- Not required for the devnet demo
-- Improves robustness and reduces compute/size risk
+- Not required for devnet demo
+- Improves resilience and cost
 
 </details>
 
-<details>
-<summary><strong>🟡 Stage 7 — Real oracle ops (devnet)</strong></summary>
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 7 — Real oracle ops (devnet)</strong> <span class="roadmap-stage-meta">Beacon → signer → tx</span></summary>
 
-**Goal:** run a deterministic beacon → signer → tx pipeline on devnet  
-**Output:** reliable pulse publishing + indexing
+**Output:** Beacon → signer → tx
 
 **Definition of Done**
 - Deterministic pulse ingestion runs reliably on devnet
@@ -110,39 +108,13 @@ It is intentionally written to be accurate without exposing sensitive operationa
 
 </details>
 
-<details>
-<summary><strong>🟡 Stage 8 — Observability / DX</strong></summary>
+<details class="roadmap-stage" markdown="1">
+<summary>🟡 <strong>Stage 8 — Observability / DX</strong> <span class="roadmap-stage-meta">Minimal monitoring + runbook</span></summary>
 
-**Goal:** minimal monitoring + runbook (public-safe)  
-**Output:** error taxonomy + recovery guidance
+**Output:** Minimal monitoring + runbook
 
 **Definition of Done**
 - Error taxonomy + recovery guidance
-- Minimal telemetry hooks (public-safe) for ops
+- Minimal telemetry hooks for ops
 
 </details>
-
----
-
-## What “Devnet parity” means here
-
-Devnet parity is not just “it deploys”. It means:
-
-- deterministic scripts can create a round, commit, set a signed pulse, reveal, finalize, settle, claim, and sweep
-- all constraints behave the same as localnet (PDAs, token accounts, slot windows)
-- the public docs match the observed behavior
-
----
-
-## Public releases strategy
-
-- **Docs site:** updated continuously (living documentation)
-- **Whitepaper PDF:** versioned releases (v0.1, v0.2, …)
-- **Code repo:** published once devnet release is stable, with tags matching the whitepaper
-
----
-
-## Constraints (public)
-
-- Oracle ops must remain deterministic and replay-safe
-- Authorities and treasuries must be hardened (multisig / separation of duties) before mainnet readiness
