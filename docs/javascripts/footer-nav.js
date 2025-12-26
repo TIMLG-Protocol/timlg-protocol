@@ -4,7 +4,7 @@
 function timlgSetFooterNavLabels() {
   try {
     const prev = document.querySelector(".md-footer__link--prev .md-footer__direction");
-    if (prev) prev.textContent = "Back";
+    if (prev) prev.textContent = "Previous";
 
     const next = document.querySelector(".md-footer__link--next .md-footer__direction");
     if (next) next.textContent = "Next";

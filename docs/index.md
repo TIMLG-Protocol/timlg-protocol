@@ -1,77 +1,61 @@
 # TIMLG Protocol
 
-TIMLG is a **commit–reveal protocol** for verifiable coordination using **slot-bounded rounds** and a publicly verifiable **randomness pulse**.
+TIMLG is a **public, auditable experiment protocol** built on a strict **commit–reveal** scheme with **slot‑bounded rounds** and a publicly verifiable **randomness pulse**.
+
+Its purpose is to measure whether any strategy can predict **future beacon‑derived bits** above chance under **anti‑leakage constraints** (“the Hawking Wall”) — and to make that measurement reproducible by anyone.
 
 [Read the Whitepaper](whitepaper/){ .md-button .md-button--primary }
 [Protocol (MVP Specs)](protocol/overview/){ .md-button }
 
 ---
 
-## Why TIMLG exists (beyond the technical)
+## What TIMLG is trying to achieve (non‑technical)
 
-Modern coordination breaks down when outcomes depend on **trust**, **private timing**, or **hidden information**.
+### 1) Audit randomness providers and publishing pipelines
+Many systems rely on “randomness” provided by an oracle, beacon, or infrastructure operator. TIMLG turns that into an **audit trail**:
 
-TIMLG’s goal is simple:
+- rounds target a **pre‑registered** public randomness source (e.g., a beacon pulse index)
+- the oracle publishes a pulse with **public evidence + a verifiable signature**
+- anyone can verify parameters, timing, and outcomes from on‑chain history
 
-- enable groups to run **fair, replay-safe, auditable** coordination rounds  
-- where participants must commit **before** a public randomness event is knowable  
-- and where outcomes can be verified by anyone from public state
+### 2) Detect anomalies in prediction performance (without jumping to conclusions)
+TIMLG is designed to surface **statistical irregularities** (e.g., unusual hit rates, bit‑position effects, streaks), then force a disciplined interpretation:
 
-In other words: TIMLG turns “we all agree this was fair” into something that can be **proven**.
+- **replicate first**
+- rule out ordinary causes (bias, leakage, manipulation) before stronger interpretations
 
----
+### 3) Preserve credibility with “non‑claims”
+TIMLG is **not an investment product** and makes **no claims** of guaranteed profit or exotic explanations. It is a measurement framework.
 
-## What TIMLG is trying to solve
-
-### The problem
-Many coordination systems fail because:
-- participants can adapt after seeing partial information
-- operators can “decide the randomness” after the fact
-- results are hard to reproduce or audit
-
-### The TIMLG approach
-TIMLG enforces:
-- **anti-leakage timing** (commit window closes before the pulse is knowable)
-- **one-shot oracle publishing** (signed pulse, verified on-chain)
-- **deterministic settlement** (same inputs → same outputs, publicly checkable)
+!!! note "What this site is"
+    This site is the **public documentation hub**. It describes protocol rules, constraints, and public evidence — without exposing operational secrets.
 
 ---
 
 ## What TIMLG does (in one minute)
 
-TIMLG lets participants:
-
 1) **Commit** a private guess during a round’s commit window  
-2) An **oracle publishes** a 512-bit pulse (tied to a public source) after commits close  
+2) After commits close, an **oracle publishes** a 512‑bit pulse tied to a public source  
 3) **Reveal** the guess + salt so the program can verify the commitment  
 4) The program **settles** outcomes deterministically and enables **claims** (winners)
 
-This site is the **public documentation hub**. It describes *what the protocol does* and how it behaves at the MVP level, without exposing operational secrets.
-
-!!! note "Public docs vs private operations"
+!!! warning "Public docs vs private operations"
     We intentionally do **not** publish private keys, signer infrastructure, privileged configs, or production oracle/relayer runbooks.
 
 ---
 
-## Who could use this (examples)
+## How results are interpreted (H0–H5 ladder)
 
-TIMLG is a primitive for any system that needs **verifiable fairness** without trusting a single coordinator:
+TIMLG follows a pre‑registered “hypothesis ladder” to avoid over‑interpreting noise:
 
-- **On-chain experiments** (fair trials where timing matters)
-- **Public draws / lotteries** with auditable rules (non-custodial designs)
-- **Decentralized coordination** where participants must commit before a known event
-- **Research protocols** that require reproducible outcomes and public auditability
+- **H0 — Chance:** results converge to 50/50 over time  
+- **H1 — Bias / artifact:** bugs, bit‑extraction conventions, serialization mismatches, edge cases  
+- **H2 — Operational leakage:** timing errors or information leaks that break the Hawking Wall  
+- **H3 — Oracle / relayer manipulation:** equivocation, censorship, selective inclusion/exclusion  
+- **H4 — Non‑trivial correlations:** reproducible effects after hardening and replication  
+- **H5 — Exotic framing:** last resort, only after exhausting ordinary explanations
 
-(Concrete deployments are intentionally left out until devnet parity is stable.)
-
----
-
-## Core principles
-
-- **Verifiable over persuasive**: the chain should prove what happened.
-- **Rules are public, operations are private**: specs are transparent; signers/runbooks stay private.
-- **Deterministic settlement**: no “manual” adjudication once the round is finalized.
-- **Replay-safety**: signatures and pulses must not be reusable across rounds.
+The practical rule is: **an anomaly is a reason to tighten constraints and replicate**, not to declare victory.
 
 ---
 
@@ -103,25 +87,25 @@ sequenceDiagram
 
 -   **Whitepaper**
 
-    Canonical narrative: motivation, system model, and design rationale.
+    Canonical narrative: motivation, non‑claims, hypothesis ladder, and design rationale.
 
     [Open Whitepaper](whitepaper/)
 
 -   **Protocol**
 
-    MVP-aligned specs: log format, timing windows, settlement rules, token flow, treasury.
+    MVP‑aligned specs: log format, timing windows, settlement rules, token flow, treasury, BitIndex.
 
     [Read Protocol](protocol/overview/)
 
 -   **Roadmap**
 
-    Milestones and “definition of done” for each stage (MVP → devnet → hardening).
+    Milestones and “definition of done” (MVP → devnet parity → hardening).
 
     [View Roadmap](roadmap/)
 
 -   **Status**
 
-    Current progress and the next concrete tasks.
+    Current progress and next concrete tasks.
 
     [View Status](status/)
 
