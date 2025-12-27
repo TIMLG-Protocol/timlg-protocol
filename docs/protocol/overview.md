@@ -17,20 +17,18 @@ This documentation is **public** and intentionally avoids operational or privile
 ## Architecture (high level)
 
 ```mermaid
-flowchart TB
-  P[Participant] -->|commit_ticket / reveal_ticket| S[On-chain Program]
-  R[Relayer (optional, not part of MVP UX)] -->|batch submit (if enabled)| S
-  O[Oracle] -->|set_pulse_signed| S
-
-  S --> V[Round Token Vault (escrowed TIMLG)]
-  S --> SV[Round SOL Vault (optional, for sweeps)]
-  S --> TT[Treasury Token Account (receives NO-REVEAL stake)]
-  S --> TS[Treasury SOL Account (receives SOL sweep)]
+graph TD
+  P[Participant] --> S[On-chain Program]
+  O[Oracle] --> S
+  S --> V[Round Token Vault]
+  S --> TT[Treasury Token Account]
+  S --> SV[Round SOL Vault]
+  S --> TS[Treasury SOL Account]
 ```
 
 !!! note "MVP vs optional components"
     In the current MVP, the **core user flow** is user-paid commit → reveal → (win) claim.
-    Relayer/batched flows exist as an optional design surface and may require additional on-chain/off-chain plumbing (see below).
+    Relayer/batched flows exist as an optional design surface and may require additional on-chain/off-chain plumbing.
 
 ---
 
@@ -68,7 +66,6 @@ A **Round** defines:
 - `commit_deadline_slot` and `reveal_deadline_slot`
 - `pulse` (set once after commits close)
 - lifecycle flags: `pulse_set`, `finalized`, `token_settled`, `swept`
-- vault references (token vault; optionally a SOL vault used for sweeps)
 
 ### Ticket
 
@@ -87,24 +84,14 @@ A **Ticket** binds a participant to a single commitment:
 
 ## Lifecycle (happy path)
 
-```mermaid
-sequenceDiagram
-  participant A as Admin/Governance
-  participant U as User
-  participant O as Oracle
-  participant P as Program
-
-  A->>P: create_round
-  U->>P: commit_ticket (<= commit_deadline_slot)
-  Note over P: commits close (no commits once pulse is set)
-  O->>P: set_pulse_signed (>= commit_deadline_slot)
-  U->>P: reveal_ticket (<= reveal_deadline_slot)
-  Note over P: reveal closes
-  A->>P: finalize_round
-  A->>P: settle_round_tokens
-  U->>P: claim_reward (winners)
-  A->>P: sweep_unclaimed (after grace, SOL-only)
-```
+1. Admin creates a round (`create_round`)
+2. User commits (`commit_ticket`) during the commit window
+3. Oracle publishes the pulse (`set_pulse_signed`) after commits close
+4. User reveals (`reveal_ticket`) during the reveal window
+5. Admin finalizes (`finalize_round`)
+6. Admin settles token accounting (`settle_round_tokens`)
+7. Winners claim (`claim_reward`)
+8. Optionally, after the grace window, admin sweeps SOL (`sweep_unclaimed`, SOL-only)
 
 ### Key invariants
 
@@ -112,29 +99,6 @@ sequenceDiagram
 - **Pulse is one-shot**: a round’s pulse can only be set once.
 - **Timing gates are enforced** by slots.
 - **Settlement gates claiming**: claim happens only after token settlement.
-- **Treasury routing is deterministic**:
-  - LOSE → burned during settlement
-  - NO-REVEAL → routed to token treasury
-  - WIN → refundable stake + minted reward (on claim)
-
----
-
-## Notes on optional / advanced flows
-
-### Relayer / batching (optional)
-Relayer-based flows (batching / sponsored fees) may be supported, but they typically require:
-
-- a clear “who pays rent?” model (ticket account creation still costs SOL rent)
-- a clear “where do staked tokens come from?” model (often escrow-based)
-- strict message-format versioning for signed payloads
-
-If/when enabled, relayer mode will be documented as a **versioned protocol surface**.
-
-### SOL vault / sweep (optional)
-`sweep_unclaimed` is **SOL-only** and assumes a SOL-holding vault exists for a given round.
-
-- In some deployments, that vault is explicitly created/funded as part of setup (e.g., a `fund_vault` step).
-- If sweep is not used, the SOL vault can be considered optional.
 
 ---
 

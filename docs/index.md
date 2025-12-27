@@ -95,20 +95,19 @@ The practical rule is: **an anomaly is a reason to tighten constraints and repli
 
 ```mermaid
 sequenceDiagram
-  participant A as Admin/Governance
-  participant U as Participant
-  participant O as Oracle
-  participant P as Program
+  participant Admin
+  participant User
+  participant Oracle
+  participant Program
 
-  A->>P: create_round (commit_deadline_slot, reveal_deadline_slot, pulse_index_target)
-  U->>P: commit_ticket (commitment, nonce) [escrows 1 TIMLG]
-  Note over P: commits close / pulse can be posted
-  O->>P: set_pulse_signed (public pulse, oracle signature)
-  U->>P: reveal_ticket (guess, salt)
-  A->>P: finalize_round
-  A->>P: settle_round_tokens (burn losers, route NO-REVEAL to SPL treasury)
-  U->>P: claim_reward (winners; refund + mint)
-  A->>P: sweep_unclaimed (SOL-only, after grace)
+  Admin->>Program: create_round
+  User->>Program: commit_ticket
+  Oracle->>Program: set_pulse_signed
+  User->>Program: reveal_ticket
+  Admin->>Program: finalize_round
+  Admin->>Program: settle_round_tokens
+  User->>Program: claim_reward
+  Admin->>Program: sweep_unclaimed
 ```
 
 ---
