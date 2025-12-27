@@ -14,7 +14,7 @@ needing any privileged operational context (keys, internal endpoints, signer inf
 ## Terminology
 
 - **Round**: a slot-bounded unit targeting a future public randomness pulse (e.g., NIST Randomness Beacon).
-- **Ticket**: a single participation in a round; it escrows **exactly 1 token** and settles deterministically.
+- **Ticket**: a single participation in a round; it escrows a fixed token stake and settles deterministically.
 - **Pulse**: a 512-bit value published by the oracle and verified on-chain (Ed25519).
 
 ---
@@ -28,11 +28,15 @@ A round is identified by its on-chain address (PDA). The round state includes (a
 | Field | Type | Meaning |
 |---|---:|---|
 | `round` | Pubkey | Round account address (canonical ID) |
-| `target_pulse_index` | u64 | Which public pulse is targeted (index in the source) |
-| `commit_deadline_slot` | u64 | Commits must land before this slot boundary |
-| `reveal_deadline_slot` | u64 | Reveals must land before this slot boundary |
-| `pulse_hash` | [32]byte | Hash of the 512-bit pulse once finalized (or empty pre-finalization) |
-| `status` | enum | Lifecycle state (Open → Finalized → Settled, etc.) |
+| `round_id` | u64 | Numeric round ID stored on-chain |
+| `pulse_index_target` | u64 | Which public pulse is targeted (index in the source) |
+| `commit_deadline_slot` | u64 | Commit boundary (see Timing Windows) |
+| `reveal_deadline_slot` | u64 | Reveal boundary (inclusive in MVP) |
+| `pulse` | [64]byte | 512-bit pulse once set (or zeroed pre-pulse) |
+| `pulse_set` | bool | Whether pulse is set (one-shot) |
+| `finalized` | bool | Whether round is finalized |
+| `token_settled` | bool | Whether token settlement has run |
+| `swept` | bool | Whether the SOL-only sweep has been executed |
 
 > Notes:
 > - The program may store additional fields (vault addresses, authority pubkeys, counters).
@@ -44,73 +48,83 @@ A round is identified by its on-chain address (PDA). The round state includes (a
 
 Tickets are created and updated by instructions like `commit_ticket` and `reveal_ticket`.
 
-A ticket is uniquely identified by `(round, participant, ticket_index)` depending on implementation.
+In the MVP implementation, a ticket PDA is derived from:
+- `["ticket", round_id_le, participant_pubkey, nonce_le]`
+
 For indexing purposes, the minimal record is:
 
 | Field | Type | Meaning |
 |---|---:|---|
-| `round` | Pubkey | Round ID |
+| `round_id` | u64 | Round ID |
 | `participant` | Pubkey | Wallet that committed (or authorized the commit) |
+| `nonce` | u64 | Ticket nonce |
 | `commitment` | [32]byte | Commitment digest submitted in the commit step |
-| `stake_amount` | u64 | Fixed stake (MVP: exactly **1 token**) |
+| `stake_amount` | u64 | Fixed stake in **base units** of the TIMLG mint |
 | `commit_slot` | u64 | Slot where commit landed |
 | `reveal_slot` | u64? | Slot where reveal landed (if any) |
+| `bit_index` | u16 | Derived bit index (0..511) |
+| `revealed` | bool | Whether reveal succeeded |
+| `win` | bool | Outcome flag (valid only after reveal) |
+| `claimed` | bool | Whether reward claim has executed |
 | `outcome` | enum? | WIN / LOSE / NO-REVEAL (available after settlement) |
+
+!!! info "Whole-token unit (no decimals)"
+    TIMLG is designed as a **whole-unit token (decimals = 0)**, so the base unit is the user-facing unit:
+    **`stake_amount = 1` means “stake 1 TIMLG.”**
 
 ---
 
-## Commitment digest
+## Commitment digest (as implemented)
 
 TIMLG uses a standard **commit–reveal** scheme:
 
 - **Commit**: submit a commitment digest during the commit window.
 - **Reveal**: later submit `(guess, salt)` so the program can recompute the digest and verify you committed earlier.
 
-### Canonical commitment message (MVP-friendly)
+### Canonical commitment hash (MVP v1)
 
-To avoid ambiguity, the commitment must be computed over a **domain-separated** message that includes the round ID.
+The commitment hash is:
 
-A safe, implementation-agnostic definition is:
-
-- `commitment = SHA256( "TIMLG:v1" || round_pubkey || participant_pubkey || guess || salt )`
+- `commitment = SHA256( "commit" || round_id_le || participant_pubkey || nonce_le || guess_byte || salt_32 )`
 
 Where:
+- `"commit"` is the ASCII prefix (domain separator)
+- `round_id_le` is `round_id` as 8 bytes little-endian
+- `participant_pubkey` is the raw 32-byte pubkey
+- `nonce_le` is `nonce` as 8 bytes little-endian
+- `guess_byte` is a single byte `0x00` or `0x01`
+- `salt_32` is 32 bytes
 
-- `"TIMLG:v1"` is an ASCII prefix (domain separator)
-- `round_pubkey` and `participant_pubkey` are 32-byte raw pubkey bytes
-- `guess` is encoded deterministically (see below)
-- `salt` is 32 bytes of entropy (random)
-
-!!! note "Why include round + participant?"
-    This prevents reusing the same reveal across different rounds or different participants (replay/cut-and-paste).
-
-### Guess encoding
-
-The whitepaper framing is “predict future bits”. For the MVP, the canonical guess is:
-
-- `guess_bit ∈ {0,1}` encoded as a single byte `0x00` or `0x01`
-
-If later versions support multi-bit guesses, the encoding must be explicitly versioned (e.g., `TIMLG:v2`).
+!!! note "Why include round + participant + nonce?"
+    This prevents reusing the same reveal across different rounds or participants, and makes each ticket unique.
 
 ---
 
-## Pulse message (oracle-signed)
+## Signed batch message envelopes (relayer-safe)
 
-The oracle publishes a 512-bit pulse (64 bytes) via `set_pulse_signed`.
+Some flows support signed batches (for gasless/relayed usage). In those cases, the program checks that an Ed25519
+verification instruction exists in the same transaction and that its message bytes match one of the following envelopes.
 
-Indexers should treat the on-chain Ed25519 verification as the canonical validity check. Public documentation should only
-state the **message envelope**, not operational key management.
+!!! note "Legacy naming (planned migration)"
+    The v1 message domain separators are currently `chronology:*_v1` in the on-chain codebase (legacy naming from earlier project iterations).
+    The public project name is **TIMLG (TimeLog)**. A future version may migrate these separators to `timlg:*_v1` as a breaking change.
 
-### Canonical pulse attestation (public envelope)
+### Signed commit message (v1)
 
-A recommended message envelope for signing is:
+- `msg = "chronology:commit_v1" || program_id || round_id_le || user_pubkey || nonce_le || commitment_32`
 
-- `msg = SHA256( "TIMLG:PULSE:v1" || round_pubkey || target_pulse_index || pulse_64_bytes )`
+### Signed reveal message (v1)
 
-The on-chain instruction verifies:
+- `msg = "chronology:reveal_v1" || program_id || round_id_le || user_pubkey || nonce_le || guess_byte || salt_32`
 
-- Ed25519 signature over `msg`
-- signer pubkey equals the configured oracle pubkey (governance-controlled)
+### Oracle pulse message (v1)
+
+- `msg = "chronology:pulse_v1" || program_id || round_id_le || target_pulse_index_le || pulse_64`
+
+Indexers can reconstruct these message bytes exactly from the transaction + on-chain state.
+
+!!! warning "No operational key disclosure"
+    Public docs define the byte-level envelope, but do not include signer custody, internal endpoints, or any operational secrets.
 
 ---
 
@@ -119,20 +133,22 @@ The on-chain instruction verifies:
 You can store a normalized log in JSONL / Parquet. Example (JSONL):
 
 ```json
-{"type":"round_created","round":"<PUBKEY>","target_pulse_index":123456,"commit_deadline_slot":999999,"reveal_deadline_slot":1000999,"slot":999000,"sig":"<TX_SIG>"}
-{"type":"ticket_committed","round":"<PUBKEY>","participant":"<PUBKEY>","commitment":"<HEX32>","stake_amount":1,"slot":999100,"sig":"<TX_SIG>"}
-{"type":"pulse_set","round":"<PUBKEY>","target_pulse_index":123456,"pulse_hash":"<HEX32>","slot":999500,"sig":"<TX_SIG>"}
-{"type":"ticket_revealed","round":"<PUBKEY>","participant":"<PUBKEY>","guess_bit":1,"slot":999700,"sig":"<TX_SIG>"}
-{"type":"round_settled","round":"<PUBKEY>","slot":1001000,"sig":"<TX_SIG>"}
+{"type":"round_created","round":"<PUBKEY>","round_id":1,"target_pulse_index":123456,"commit_deadline_slot":999999,"reveal_deadline_slot":1000999,"slot":999000,"sig":"<TX_SIG>"}
+{"type":"ticket_committed","round_id":1,"participant":"<PUBKEY>","nonce":7,"commitment":"<HEX32>","stake_amount":1,"slot":999100,"sig":"<TX_SIG>"}
+{"type":"pulse_set","round_id":1,"target_pulse_index":123456,"pulse_hash":"<HEX32>","slot":999500,"sig":"<TX_SIG>"}
+{"type":"ticket_revealed","round_id":1,"participant":"<PUBKEY>","nonce":7,"guess_bit":1,"slot":999700,"sig":"<TX_SIG>"}
+{"type":"round_finalized","round_id":1,"slot":1001200,"sig":"<TX_SIG>"}
+{"type":"round_token_settled","round_id":1,"slot":1001300,"sig":"<TX_SIG>"}
+{"type":"ticket_claimed","round_id":1,"participant":"<PUBKEY>","nonce":7,"slot":1001400,"sig":"<TX_SIG>"}
 ```
 
 !!! tip "Minimal is fine"
-    You don’t need internal PDAs, seeds, or vault authority wiring to build a useful public index.
+    You don’t need internal PDAs or private wiring details to build a useful public index. On-chain state + txs are enough.
 
 ---
 
 ## Versioning rules
 
-- **Any change** to message encoding must bump the domain separator (`TIMLG:v1` → `TIMLG:v2`).
+- Any change to message encoding must bump the domain separator (e.g., `chronology:*_v1` → `*_v2`).
 - Whitepaper versions should reference the exact encoding version in effect.
-- Public docs may describe the *current* version and keep old versions in the changelog.
+- Public docs may describe the current version and keep old versions in the changelog.

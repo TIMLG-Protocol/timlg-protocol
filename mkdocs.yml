@@ -1,6 +1,6 @@
 site_name: TIMLG Protocol
 site_description: Verifiable time-log coordination for reproducible research.
-site_url: https://www.timlg.com
+site_url: https://www.timlg.org
 
 # Header GitHub icon: point to the org (more meaningful than the docs repo)
 #repo_url: https://github.com/TIMLG-Protocol
@@ -70,7 +70,6 @@ nav:
       - Tokenomics: protocol/tokenomics.md
       - Treasury & BitIndex: protocol/treasury_bitindex.md
   - Roadmap: roadmap/index.md
-  - Status: status/index.md
   - Security & Control: security/index.md
   - Team & Contact: team/index.md
   - Support: support/index.md

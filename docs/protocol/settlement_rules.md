@@ -8,15 +8,19 @@ It is written to be **accurate and auditable** without exposing operational secr
 
 ## Ticket outcomes
 
-Each ticket escrows a fixed stake (MVP: **exactly 1 token**) at commit time.
+Each ticket escrows a fixed stake at commit time.
+
+!!! info "Whole-token unit (no decimals)"
+    TIMLG is designed as a **whole-unit token (decimals = 0)**. The on-chain `stake_amount` is an integer, and deployments are expected
+    to use a TIMLG mint with `decimals = 0` so that **`stake_amount = 1` means “stake 1 TIMLG.”**
 
 After the oracle publishes the pulse and the reveal window closes, each ticket is classified as:
 
-| Outcome | Condition | Result |
+| Outcome | Condition | Result (MVP) |
 |---|---|---|
-| **WIN** | Valid reveal, and `guess_bit == target_bit` | User can claim **2 tokens** |
-| **LOSE** | Valid reveal, and `guess_bit != target_bit` | User can claim **0 tokens** |
-| **NO‑REVEAL** | No valid reveal by the reveal deadline (or invalid reveal) | Stake is **forfeited** (policy-routed) |
+| **WIN** | Valid reveal, and `guess_bit == target_bit` | user can claim **refund stake + minted reward** (total payout = 2) |
+| **LOSE** | Valid reveal, and `guess_bit != target_bit` | stake is **burned** during token settlement (payout = 0) |
+| **NO-REVEAL** | No valid reveal by the reveal deadline (or invalid reveal) | stake is transferred to **SPL treasury** (no burn, no mint) |
 
 This is the core experimental unit: a Bernoulli trial under a strict anti-leakage commit–reveal schedule.
 
@@ -28,10 +32,16 @@ The oracle submits a **512-bit pulse** (64 bytes). The MVP defines a determinist
 
 - `target_bit = ExtractBit(pulse_512, bit_index)`
 
-Where `bit_index` is defined by the round/target configuration (and is part of the public record).
+With the exact extraction convention:
 
-!!! note
-    The precise extraction convention (endianness, indexing) must remain stable and versioned.
+- `byte_i = bit_index / 8`
+- `bit_i  = bit_index % 8`
+- `target_bit = (pulse[byte_i] >> bit_i) & 1`
+
+So bit 0 is the **least significant bit of pulse[0]**, bit 7 is MSB of pulse[0], bit 8 is LSB of pulse[1], etc.
+
+!!! note "Stability requirement"
+    The extraction convention (byte order + bit order) must remain stable and versioned.
     If it ever changes, it must be treated as a breaking change and documented.
 
 ---
@@ -40,11 +50,11 @@ Where `bit_index` is defined by the round/target configuration (and is part of t
 
 A reveal is valid if:
 
-1) It arrives before the reveal deadline  
+1) It arrives on or before the reveal deadline  
 2) It recomputes the commitment digest for that ticket  
-3) The revealed guess is well-formed (MVP: a single bit)
+3) The revealed guess is well-formed (MVP: a single bit `0/1`)
 
-Invalid reveals are treated as **NO‑REVEAL** for settlement purposes.
+Invalid reveals are treated as **NO-REVEAL** for settlement purposes.
 
 ---
 
@@ -52,13 +62,13 @@ Invalid reveals are treated as **NO‑REVEAL** for settlement purposes.
 
 At a high level, a round moves through these steps:
 
-1) **Commits** are accepted (users escrow stake)
+1) **Commits** are accepted (users escrow stake into the **round token vault**; legacy code name: `chrono_vault`)
 2) Oracle publishes pulse (`set_pulse_signed`)
 3) Users **reveal**
 4) Admin finalizes (`finalize_round`)
 5) Program **settles** token accounting (`settle_round_tokens`)
 6) Winners **claim** (`claim_reward`)
-7) After a grace period, leftovers are swept (`sweep_unclaimed`)
+7) After a grace period, admin may run `sweep_unclaimed` (**SOL-only**)
 
 ### Why settlement is a separate step
 Settlement is intentionally explicit so:
@@ -71,19 +81,19 @@ Settlement is intentionally explicit so:
 
 ## Reward funding and vault behavior (MVP)
 
-The fixed payout rule (**WIN pays 2**) implies the program must have enough liquidity to pay winners even if some stakes
-are forfeited (NO‑REVEAL policy-routing).
+The payout rule is:
 
-In the MVP, this is handled via vaults:
+- **WIN payout total = 2 × stake_amount**
+  - 1× is a **refund** from the round token vault
+  - 1× is a **minted reward** (mint authority = config PDA)
 
-- **Stake vault / reward vault**: funded and managed by the program rules
-- **Treasury vault**: receives policy-routed forfeitures and post-grace leftovers
+So the MVP does **not** require a pre-funded “reward vault” for rewards:
+- stake refunds come from the round token vault
+- rewards are minted on claim by the configured mint authority
 
-The program can include an explicit funding path (e.g., `fund_vault`) so the reward vault always remains solvent.
-
-!!! warning "No hidden promises"
-    The payout rule is a protocol rule, not an investment promise. The experiment measures outcomes; it does not
-    guarantee profit.
+!!! important "MVP nuance"
+    Rewards are minted **only when the winner claims**.
+    If winners do not claim, fewer rewards are minted while loser burns can still occur → net deflation vs “all winners claim”.
 
 ---
 
@@ -91,41 +101,51 @@ The program can include an explicit funding path (e.g., `fund_vault`) so the rew
 
 A claim is valid if:
 
-- the round is settled,
+- the round token settlement has completed (`token_settled == true`),
+- the round has not been swept (`swept == false`),
 - the ticket outcome is WIN,
-- the claimant is the recorded participant (or authorized beneficiary),
+- the claimant is the recorded participant,
 - and the claim has not already been executed.
 
 To prevent double-claims:
-
-- each ticket must carry a **claimed flag** (or equivalent) in on-chain state.
+- each ticket carries a **claimed flag** and a **claimed_slot** in on-chain state.
 
 ---
 
-## Sweep rules
+## Token settlement (what actually moves)
 
-After settlement, unclaimed funds may remain (e.g., winners who never claim).
+During `settle_round_tokens`:
 
-The sweep rule is:
+- For every **LOSE** ticket: `stake_amount` is included in a burn total and burned from the round token vault.
+- For every **NO-REVEAL** ticket: `stake_amount` is included in a transfer total and transferred from the round token vault
+  to the **SPL treasury**.
+- WIN tickets are not paid automatically at settlement; they become claimable.
 
-- sweep is only allowed after `claim_grace_slots` has elapsed
-- sweep routes remaining funds according to the public treasury policy
+---
 
-This ensures:
+## Sweep rules (MVP)
 
-- winners have time to claim,
-- and the protocol state cannot remain “stuck” forever.
+After the grace period, `sweep_unclaimed` may be executed:
+
+- Gate: `current_slot > reveal_deadline_slot + claim_grace_slots`
+- Requires: round is finalized and not already swept
+- Effect (MVP): transfers **native SOL only** (lamports) from a round system vault to the **SOL treasury**
+- Side effect: marks the round as **swept**, which **closes claims** in the MVP (`claim_reward` rejects if `round.swept`)
+
+!!! note "Operational guidance"
+    The MVP code does not require token settlement before the SOL sweep, but operators should typically:
+    finalize → settle tokens → allow claim window → then sweep.
 
 ---
 
 ## Public invariants (what anyone can check)
 
-1) **No commits after commit deadline**  
-2) **No reveals after reveal deadline**  
-3) **Pulse is one-shot and verified on-chain (Ed25519)**  
-4) **Settlement outcomes depend only on**: commitment/reveal validity + finalized pulse + extraction convention  
-5) **Claims are idempotent** (cannot be claimed twice)  
-6) **Sweep cannot happen early**
+1) No commits after commit window closes (and commits are rejected once pulse is set)
+2) No reveals after reveal deadline
+3) Pulse is one-shot and verified on-chain (Ed25519)
+4) Settlement outcomes depend only on: commitment/reveal validity + finalized pulse + extraction convention
+5) Claims are idempotent (cannot be claimed twice)
+6) Sweep cannot happen early (must wait for the grace window)
 
 If any of these invariants are violated, it is considered a protocol bug (H1/H2 in the whitepaper ladder) and must be
 fixed before stronger interpretations are considered.
