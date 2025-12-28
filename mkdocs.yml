@@ -65,7 +65,7 @@ nav:
   - Home: index.md
   - Whitepaper:
       - Overview: whitepaper/index.md
-      - PDF: assets/whitepaper_TIMLG_v0.1.pdf
+      #- PDF: assets/whitepaper_TIMLG_v0.1.pdf
       - Changelog: whitepaper/changelog.md
   - Protocol:
       - Overview: protocol/overview.md
