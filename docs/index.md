@@ -4,8 +4,9 @@ TIMLG is a **public, auditable experiment protocol** built on Solana.
 
 It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **512-bit randomness pulse**. The goal is to measure whether any strategy can predict a bit **under strict anti-leakage constraints** (“Hawking Wall”) — and to make that measurement reproducible by anyone.
 
-[Read the Whitepaper](whitepaper/){ .md-button .md-button--primary }
-[Protocol (MVP Specs)](protocol/overview/){ .md-button }
+[Read the Whitepaper](whitepaper/index.md){ .md-button .md-button--primary }
+[Protocol (MVP Specs)](protocol/overview.md){ .md-button }
+[Devnet Beta](/beta/){ .md-button .md-button--primary }
 
 ---
 
@@ -120,24 +121,24 @@ sequenceDiagram
 
     Canonical narrative: motivation, non-claims, hypothesis ladder, and design rationale.
 
-    [Open Whitepaper](whitepaper/)
+    [Open Whitepaper](whitepaper/index.md)
 
 -   **Protocol**
 
     MVP specification: timing windows, settlement rules, treasury routing, and log formats.
 
-    [Read Protocol Specs](protocol/overview/)
+    [Read Protocol Specs](protocol/overview.md)
 
 -   **Roadmap**
 
     Milestones and “definition of done” (MVP → devnet parity → hardening).
 
-    [View Roadmap](roadmap/)
+    [View Roadmap](roadmap/index.md)
 
 -   **Support**
 
     If you want to support development, see the support page.
 
-    [Support](support/)
+    [Support](support/index.md)
 
 </div>

@@ -2,10 +2,6 @@ site_name: TIMLG Protocol
 site_description: Verifiable time-log coordination for reproducible research.
 site_url: https://www.timlg.org
 
-# Header GitHub icon: point to the org (more meaningful than the docs repo)
-#repo_url: https://github.com/TIMLG-Protocol
-#repo_name: TIMLG Protocol (GitHub)
-
 theme:
   name: material
   language: en
@@ -52,7 +48,6 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_div_format
-
   - pymdownx.inlinehilite
   - pymdownx.highlight
   - pymdownx.tabbed:
@@ -63,9 +58,9 @@ extra_css:
 
 nav:
   - Home: index.md
+  - Devnet Beta: /beta/
   - Whitepaper:
       - Overview: whitepaper/index.md
-      #- PDF: assets/whitepaper_TIMLG_v0.1.pdf
       - Changelog: whitepaper/changelog.md
   - Protocol:
       - Overview: protocol/overview.md
@@ -75,6 +70,10 @@ nav:
       - Tokenomics: protocol/tokenomics.md
       - Treasury & BitIndex: protocol/treasury_bitindex.md
   - Roadmap: roadmap/index.md
-  - Security & Control: security/index.md
+  - Security & Control:
+      - Overview: security/index.md
+      - Authorities: security/authorities.md
+      - Threat Model: security/threat_model.md
+      - Disclosure: security/disclosure.md
   - Team & Contact: team/index.md
   - Support: support/index.md
