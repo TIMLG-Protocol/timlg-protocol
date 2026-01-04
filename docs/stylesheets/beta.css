@@ -1,66 +1,20 @@
-/* --- Container helpers (optional) --- */
-.beta-embed {
-  margin-top: 16px;
-  padding: 0;
-}
-
-.beta-embed__loading,
-.beta-embed__error {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.02);
-}
-
-.beta-embed__error a {
-  text-decoration: underline;
-}
-
-/* --- IMPORTANT: restore button look inside MkDocs Material --- */
-/* Material sometimes makes buttons look like plain text inside md-typeset */
-#beta-embed button,
-#beta-embed .beta-btn {
+/* Scope only our buttons */
+.md-typeset .beta-btn {
   appearance: none;
-  -webkit-appearance: none;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  padding: 8px 14px;
+  border: 1px solid rgba(0,0,0,0.25);
   border-radius: 10px;
-
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  background: rgba(0, 0, 0, 0.04);
-
-  color: inherit;
-  font: inherit;
+  padding: 8px 14px;
   font-weight: 600;
-  line-height: 1;
-
   cursor: pointer;
-  user-select: none;
+  line-height: 1;
+  background: rgba(0,0,0,0.06);
 }
 
-#beta-embed button:hover,
-#beta-embed .beta-btn:hover {
-  background: rgba(0, 0, 0, 0.07);
+.md-typeset .beta-btn:hover {
+  background: rgba(0,0,0,0.10);
 }
 
-#beta-embed button:active,
-#beta-embed .beta-btn:active {
-  transform: translateY(1px);
-}
-
-#beta-embed button:disabled,
-#beta-embed .beta-btn:disabled {
-  opacity: 0.55;
+.md-typeset .beta-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
-}
-
-/* make links inside beta look consistent */
-#beta-embed a {
-  text-decoration: underline;
 }

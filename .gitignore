@@ -2,3 +2,7 @@
 
 # mkdocs build output
 site/
+
+site/
+.venv/
+
