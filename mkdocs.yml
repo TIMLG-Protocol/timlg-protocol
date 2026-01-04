@@ -58,7 +58,7 @@ extra_css:
 
 nav:
   - Home: index.md
-  - Devnet Beta: /beta/
+  - Devnet Beta: beta.md
   - Whitepaper:
       - Overview: whitepaper/index.md
       - Changelog: whitepaper/changelog.md
