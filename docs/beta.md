@@ -1,7 +1,7 @@
 # Devnet Beta
 
-<iframe
-  src="/assets/beta/index.html"
-  style="width:100%; height:900px; border:0; border-radius:12px;"
-  loading="lazy"
-></iframe>
+<div id="beta-root"></div>
+
+<noscript>
+  You need JavaScript enabled to use the Devnet Beta.
+</noscript>
