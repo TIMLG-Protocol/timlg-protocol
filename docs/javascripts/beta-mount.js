@@ -1,61 +1,93 @@
-(function () {
-  // These placeholders will be replaced by publish_beta_to_mkdocs.sh
-  const CSS_REL = "../assets/beta/assets/index-HGo3woVX.css";
-  const JS_REL  = "../assets/beta/assets/index-DBdzFYNW.js";
+(() => {
+  const INDEX_REL = "../assets/beta/index.html";
 
-  function absUrl(rel) {
-    return new URL(rel, window.location.href).toString();
+  const ID_CSS = "beta-embed-css";
+  const ID_JS = "beta-embed-js";
+
+  function log(...args) {
+    // comenta esta línea si no quieres logs
+    console.debug("[beta-mount]", ...args);
   }
 
-  function ensureCssLoaded(hrefAbs) {
-    const exists = document.querySelector(`link[data-beta-css="1"][href="${hrefAbs}"]`);
-    if (exists) return;
-
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = hrefAbs;
-    link.dataset.betaCss = "1";
-    document.head.appendChild(link);
+  function isOnBetaPage() {
+    // La forma más fiable: existe el contenedor
+    return Boolean(document.getElementById("beta-root"));
   }
 
-  function ensureModuleLoaded(srcAbs) {
-    return new Promise((resolve, reject) => {
-      const exists = document.querySelector(`script[data-beta-module="1"][src="${srcAbs}"]`);
-      if (exists) return resolve();
-
-      const s = document.createElement("script");
-      s.type = "module";
-      s.src = srcAbs;
-      s.dataset.betaModule = "1";
-      s.onload = () => resolve();
-      s.onerror = (e) => reject(e);
-      document.head.appendChild(s);
-    });
+  function removeIfExists(id) {
+    const el = document.getElementById(id);
+    if (el && el.parentNode) el.parentNode.removeChild(el);
   }
 
-  async function onNav() {
-    const root = document.getElementById("beta-root");
+  async function mountBeta() {
+    if (!isOnBetaPage()) return;
 
-    // Leaving the page: unmount if possible
-    if (!root) {
-      if (window.__unmountBetaApp) window.__unmountBetaApp();
-      return;
+    const mountEl = document.getElementById("beta-root");
+    if (!mountEl) return;
+
+    // Limpia el contenedor (por si vuelves con navigation.instant)
+    mountEl.innerHTML = "";
+
+    // Quita assets previos para forzar re-ejecución del módulo
+    removeIfExists(ID_CSS);
+    removeIfExists(ID_JS);
+
+    const indexUrl = new URL(INDEX_REL, document.baseURI).toString();
+    log("Loading beta index:", indexUrl);
+
+    const resp = await fetch(indexUrl, { cache: "no-store" });
+    if (!resp.ok) throw new Error(`Cannot fetch beta index.html (HTTP ${resp.status})`);
+
+    const html = await resp.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // Vite suele generar 1 stylesheet principal y 1 module script principal
+    const cssHref =
+      doc.querySelector('link[rel="stylesheet"][href]')?.getAttribute("href") || null;
+
+    const jsSrc =
+      doc.querySelector('script[type="module"][src]')?.getAttribute("src") ||
+      doc.querySelector("script[src]")?.getAttribute("src") ||
+      null;
+
+    if (!jsSrc) throw new Error("Cannot find JS bundle <script src=...> in beta index.html");
+
+    const cssUrl = cssHref ? new URL(cssHref, indexUrl).toString() : null;
+    const jsUrl = new URL(jsSrc, indexUrl).toString();
+
+    log("Detected:", { cssUrl, jsUrl });
+
+    if (cssUrl) {
+      const link = document.createElement("link");
+      link.id = ID_CSS;
+      link.rel = "stylesheet";
+      link.href = cssUrl;
+      document.head.appendChild(link);
     }
 
-    // Entering /beta/: ensure assets loaded, then mount
-    const cssAbs = absUrl(CSS_REL);
-    const jsAbs = absUrl(JS_REL);
-
-    ensureCssLoaded(cssAbs);
-    await ensureModuleLoaded(jsAbs);
-
-    if (window.__mountBetaApp) window.__mountBetaApp();
+    const script = document.createElement("script");
+    script.id = ID_JS;
+    script.type = "module";
+    script.src = jsUrl;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
   }
 
-  // MkDocs Material instant navigation hook
-  if (window.document$ && window.document$.subscribe) {
-    window.document$.subscribe(onNav);
+  function safeMount() {
+    // Deja que Material termine de pintar el contenido
+    setTimeout(() => {
+      mountBeta().catch((e) => {
+        console.error("[beta-mount] Failed:", e);
+      });
+    }, 0);
+  }
+
+  // Hook para Material for MkDocs (navigation.instant)
+  if (window.document$ && typeof window.document$.subscribe === "function") {
+    window.document$.subscribe(() => safeMount());
   } else {
-    document.addEventListener("DOMContentLoaded", onNav);
+    // Fallback si no existe document$ (por si cambias theme/features)
+    document.addEventListener("DOMContentLoaded", safeMount, { once: true });
+    window.addEventListener("popstate", safeMount);
   }
 })();
