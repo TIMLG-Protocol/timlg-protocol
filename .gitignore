@@ -6,3 +6,7 @@ site/
 site/
 .venv/
 
+
+# mkdocs embedded beta build outputs
+docs/assets/beta/assets/index-*.js
+docs/assets/beta/assets/index-*.css
