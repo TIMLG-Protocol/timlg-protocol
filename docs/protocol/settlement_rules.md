@@ -36,9 +36,9 @@ With the exact extraction convention:
 
 - `byte_i = bit_index / 8`
 - `bit_i  = bit_index % 8`
-- `target_bit = (pulse[byte_i] >> bit_i) & 1`
+- `target_bit = (pulse[byte_i] >> (7 - bit_i)) & 1`
 
-So bit 0 is the **least significant bit of pulse[0]**, bit 7 is MSB of pulse[0], bit 8 is LSB of pulse[1], etc.
+So bit 0 is the **most significant bit of pulse[0]**, bit 7 is the LSB of pulse[0], bit 8 is the MSB of pulse[1], etc.
 
 !!! note "Stability requirement"
     The extraction convention (byte order + bit order) must remain stable and versioned.

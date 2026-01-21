@@ -65,14 +65,14 @@ across the pulse.
 
 For each ticket:
 
-- `bit_index = u16_le( SHA256( "bitindex" || round_id_le || participant_pubkey || nonce_le )[0..2] ) mod 512`
+- `bit_index = u64_le( SHA256( "bit_index" || round_id_le || participant_pubkey || nonce_le )[0..8] ) mod 512`
 
 Where:
 - `round_id_le` is `round_id` as 8 bytes little-endian
 - `nonce_le` is `nonce` as 8 bytes little-endian
 - `participant_pubkey` is the raw 32-byte pubkey
 - `SHA256` is computed over the concatenation of those byte slices
-- `u16_le([b0,b1])` interprets the first two bytes as little-endian `u16`
+- `u64_le([b0...b7])` interprets the first eight bytes as little-endian `u64`
 
 !!! note "Versioning"
     This seed format is part of the public protocol surface. If it ever changes, it must be versioned (v2) and treated
@@ -90,9 +90,9 @@ In the MVP extraction convention:
 
 - `byte_i = bit_index / 8`
 - `bit_i  = bit_index % 8`
-- `target_bit = (pulse[byte_i] >> bit_i) & 1`
+- `target_bit = (pulse[byte_i] >> (7 - bit_i)) & 1`
 
-This means bit 0 is the **least significant bit of pulse[0]**, bit 7 is the MSB of pulse[0], bit 8 is the LSB of
+This means bit 0 is the **most significant bit of pulse[0]**, bit 7 is the LSB of pulse[0], bit 8 is the MSB of
 pulse[1], etc.
 
 ---
