@@ -76,18 +76,20 @@ fi
 echo "==> Patch index.html to use RELATIVE ./assets/ (robust for mkdocs / subpaths)…"
 
 # 1) Force any asset path prefix to ./assets/ (covers script, css, modulepreload)
-#    Matches: "assets/..", "./assets/..", "/assets/..", "/beta/assets/.."
+#    Matches: "/beta/assets/..", "/assets/..", "assets/.."
 perl -0777 -i -pe '
-  s|(\b(?:src|href)=\")/beta/assets/|$1./assets/|g;
-  s|(\b(?:src|href)=\")/assets/|$1./assets/|g;
-  s|(\b(?:src|href)=\")assets/|$1./assets/|g;
-  s|(\b(?:src|href)=\")\./assets/|$1./assets/|g;
+  s|src="/beta/assets/|src="./assets/|g;
+  s|href="/beta/assets/|href="./assets/|g;
+  s|src="/assets/|src="./assets/|g;
+  s|href="/assets/|href="./assets/|g;
+  s|src="assets/|src="./assets/|g;
+  s|href="assets/|href="./assets/|g;
 ' "$INDEX_HTML"
 
 # 2) Now ensure the main index hashes match what exists (covers any leftover)
 perl -0777 -i -pe '
-  s|(\b(?:src|href)=\"\./assets/)index-[^"]+\.js\"|$1'"$JS_BASENAME"'\"|g;
-  s|(\b(?:src|href)=\"\./assets/)index-[^"]+\.css\"|$1'"$CSS_BASENAME"'\"|g;
+  s|src="./assets/index-[^"]+\.js"|src="./assets/'"$JS_BASENAME"'"|g;
+  s|href="./assets/index-[^"]+\.css"|href="./assets/'"$CSS_BASENAME"'"|g;
 ' "$INDEX_HTML"
 
 echo "==> Verify index.html references:"

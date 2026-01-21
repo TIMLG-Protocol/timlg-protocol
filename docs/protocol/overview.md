@@ -21,9 +21,10 @@ graph TD
   P[Participant] --> S[On-chain Program]
   O[Oracle] --> S
   S --> V[Round Token Vault]
-  S --> TT[Treasury Token Account]
+  S --> T_SPL[Treasury SPL - TIMLG Fees]
   S --> SV[Round SOL Vault]
-  S --> TS[Treasury SOL Account]
+  S --> T_SOL[Treasury SOL - Rent/Sweeps]
+  S --> RR[RoundRegistry]
 ```
 
 !!! note "MVP vs optional components"
@@ -49,13 +50,22 @@ graph TD
 The **Config** account defines deployment-wide parameters, including:
 
 - `admin` (governing authority for admin-gated instructions)
-- `mint` (TIMLG SPL token mint)
-- `stake_amount` (integer, in mint base units; designed for decimals = 0 so `stake_amount = 1` means 1 TIMLG)
-- treasury endpoints (token treasury account; SOL treasury account)
-- timing knobs (e.g., claim grace slots)
+- `timlg_mint` (TIMLG SPL token mint)
+- `stake_amount` (fixed cost per ticket)
+- `treasury` (SPL account for fee collection)
+- `treasury_sol` (System account for lamport collection)
+- `claim_grace_slots` (standard window before sweep)
 
-!!! info "Whole-token unit (no decimals)"
-    TIMLG is designed as a **whole-unit token** (`decimals = 0`) so that the base unit equals the user-facing unit.
+### RoundRegistry
+
+Used to maintain the sequence of automated rounds:
+- `next_round_id`: The ID to be assigned to the next created round.
+
+### Tokenomics
+
+Configures economic parameters:
+- `reward_fee_bps`: Fees applied to winner rewards.
+- `reward_fee_pool`: PDA vault receiving fees.
 
 ### Round
 
@@ -84,14 +94,13 @@ A **Ticket** binds a participant to a single commitment:
 
 ## Lifecycle (happy path)
 
-1. Admin creates a round (`create_round`)
+1. Admin (or automated system) creates a round (`create_round_auto`)
 2. User commits (`commit_ticket`) during the commit window
 3. Oracle publishes the pulse (`set_pulse_signed`) after commits close
 4. User reveals (`reveal_ticket`) during the reveal window
-5. Admin finalizes (`finalize_round`)
-6. Admin settles token accounting (`settle_round_tokens`)
-7. Winners claim (`claim_reward`)
-8. Optionally, after the grace window, admin sweeps SOL (`sweep_unclaimed`, SOL-only)
+5. Settle token accounting (`settle_round_tokens`) — **Note**: auto-finalizes if reveal window passed.
+6. Winners claim (`claim_reward`)
+7. Optionally, after the grace window, SOL sweep (`sweep_unclaimed`)
 
 ### Key invariants
 

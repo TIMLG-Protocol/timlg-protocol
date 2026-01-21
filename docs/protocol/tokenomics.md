@@ -38,7 +38,7 @@ After the pulse is finalized and the reveal window closes, each ticket is classi
 |---|---|---|
 | **WIN** | valid reveal and matches assigned target bit | user may **claim**: **refund stake** + **mint reward** |
 | **LOSE** | valid reveal but does not match | stake is **burned** during token settlement |
-| **NO-REVEAL** | no valid reveal by deadline (or invalid reveal) | stake is transferred to **SPL treasury** (no burn, no mint) |
+| **NO-REVEAL** | no valid reveal by deadline | stake is **burned** during token settlement (same as LOSE) |
 
 !!! warning "No promises"
     Rewards are protocol-defined accounting outcomes. They are not guarantees of profit, yield, or investment returns.
@@ -49,13 +49,13 @@ After the pulse is finalized and the reveal window closes, each ticket is classi
 
 TIMLG separates “classification” from “distribution”:
 
-1. **Commit:** stake escrowed into the **round token vault** (legacy code name: `chrono_vault`)
+1. **Commit:** stake escrowed into the **round token vault** (legacy code name: `timlg_vault`)
 2. **Pulse:** oracle publishes the 512-bit pulse (Ed25519 verified)
 3. **Reveal:** proof of commitment (guess + salt)
 4. **Finalize:** round is locked
-5. **Settle tokens:** losers are burned, unrevealed are routed to SPL treasury
+5. **Settle tokens:** losers and unrevealed are burned
 6. **Claim:** winners can claim **refund + mint**
-7. **Sweep (SOL-only):** after a grace window, optional native SOL sweep can run
+7. **Sweep (SOL-only):** after a grace window, optional native SOL sweep can run (lamports only)
 
 This separation makes the protocol easier to audit and harder to exploit with timing tricks.
 
@@ -69,7 +69,7 @@ The primary griefing pattern in commit–reveal systems is:
 
 TIMLG addresses this by:
 - enforcing slot-bounded windows
-- routing **NO-REVEAL** stake to the **SPL treasury** (prevents “free option to disappear”)
+- routing **NO-REVEAL** stake to be **burned** (prevents “free option to disappear”)
 - burning **LOSE** stake (makes spam participation costly)
 
 ---
@@ -80,7 +80,7 @@ Per ticket, the token supply changes like this:
 
 - **WIN:** supply **+1** (reward is minted on claim)
 - **LOSE:** supply **−1** (stake is burned during settlement)
-- **NO-REVEAL:** supply **0** (stake is transferred to SPL treasury)
+- **NO-REVEAL:** supply **-1** (stake is burned during settlement)
 
 If the experiment is truly unbiased for a single bit (p ≈ 0.5) and participants are not advantaged,
 then in expectation:
@@ -94,17 +94,12 @@ then in expectation:
 
 ---
 
-## Fees (optional, future-safe)
+## Fees (Implemented)
 
-The MVP keeps fees minimal. Later versions may introduce:
-- small protocol fees (e.g., to fund monitoring and security work)
-- fee splits (SPL treasury vs SOL treasury)
-- anti-spam economics for permissionless participation
-
-Any change must be:
-- versioned (docs + whitepaper release)
-- implemented as an on-chain config change
-- validated by deterministic scripts on devnet
+The system includes a configurable fee on rewards:
+- `reward_fee_bps`: Basis points charged on the minted reward (100 = 1%).
+- Fees are routed to a dedicated **Reward Fee Pool** (SPL TokenAccount).
+- These parameters are initialized via `initialize_tokenomics` and stored in the `Tokenomics` account.
 
 ---
 

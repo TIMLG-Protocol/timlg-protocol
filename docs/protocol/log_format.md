@@ -106,20 +106,20 @@ Some flows support signed batches (for gasless/relayed usage). In those cases, t
 verification instruction exists in the same transaction and that its message bytes match one of the following envelopes.
 
 !!! note "Legacy naming (planned migration)"
-    The v1 message domain separators are currently `chronology:*_v1` in the on-chain codebase (legacy naming from earlier project iterations).
+    The v1 message domain separators are currently `timlglogy:*_v1` in the on-chain codebase (legacy naming from earlier project iterations).
     The public project name is **TIMLG (TimeLog)**. A future version may migrate these separators to `timlg:*_v1` as a breaking change.
 
 ### Signed commit message (v1)
 
-- `msg = "chronology:commit_v1" || program_id || round_id_le || user_pubkey || nonce_le || commitment_32`
+- `msg = "timlglogy:commit_v1" || program_id || round_id_le || user_pubkey || nonce_le || commitment_32`
 
 ### Signed reveal message (v1)
 
-- `msg = "chronology:reveal_v1" || program_id || round_id_le || user_pubkey || nonce_le || guess_byte || salt_32`
+- `msg = "timlglogy:reveal_v1" || program_id || round_id_le || user_pubkey || nonce_le || guess_byte || salt_32`
 
 ### Oracle pulse message (v1)
 
-- `msg = "chronology:pulse_v1" || program_id || round_id_le || target_pulse_index_le || pulse_64`
+- `msg = "timlglogy:pulse_v1" || program_id || round_id_le || target_pulse_index_le || pulse_64`
 
 Indexers can reconstruct these message bytes exactly from the transaction + on-chain state.
 
@@ -149,6 +149,6 @@ You can store a normalized log in JSONL / Parquet. Example (JSONL):
 
 ## Versioning rules
 
-- Any change to message encoding must bump the domain separator (e.g., `chronology:*_v1` → `*_v2`).
+- Any change to message encoding must bump the domain separator (e.g., `timlglogy:*_v1` → `*_v2`).
 - Whitepaper versions should reference the exact encoding version in effect.
 - Public docs may describe the current version and keep old versions in the changelog.

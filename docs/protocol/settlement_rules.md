@@ -20,7 +20,7 @@ After the oracle publishes the pulse and the reveal window closes, each ticket i
 |---|---|---|
 | **WIN** | Valid reveal, and `guess_bit == target_bit` | user can claim **refund stake + minted reward** (total payout = 2) |
 | **LOSE** | Valid reveal, and `guess_bit != target_bit` | stake is **burned** during token settlement (payout = 0) |
-| **NO-REVEAL** | No valid reveal by the reveal deadline (or invalid reveal) | stake is transferred to **SPL treasury** (no burn, no mint) |
+| **NO-REVEAL** | No valid reveal by the reveal deadline | stake is **burned** during token settlement (payout = 0) |
 
 This is the core experimental unit: a Bernoulli trial under a strict anti-leakage commit–reveal schedule.
 
@@ -62,11 +62,11 @@ Invalid reveals are treated as **NO-REVEAL** for settlement purposes.
 
 At a high level, a round moves through these steps:
 
-1) **Commits** are accepted (users escrow stake into the **round token vault**; legacy code name: `chrono_vault`)
+1) **Commits** are accepted (users escrow stake into the **round token vault**; legacy code name: `timlg_vault`)
 2) Oracle publishes pulse (`set_pulse_signed`)
 3) Users **reveal**
-4) Admin finalizes (`finalize_round`)
-5) Program **settles** token accounting (`settle_round_tokens`)
+4) Users **reveal**
+5) **Settle** token accounting (`settle_round_tokens`) — **Note**: this instruction auto-finalizes the round if it hasn't been done yet.
 6) Winners **claim** (`claim_reward`)
 7) After a grace period, admin may run `sweep_unclaimed` (**SOL-only**)
 
@@ -116,9 +116,7 @@ To prevent double-claims:
 
 During `settle_round_tokens`:
 
-- For every **LOSE** ticket: `stake_amount` is included in a burn total and burned from the round token vault.
-- For every **NO-REVEAL** ticket: `stake_amount` is included in a transfer total and transferred from the round token vault
-  to the **SPL treasury**.
+- For every **LOSE** or **NO-REVEAL** ticket: `stake_amount` is included in a burn total and burned from the round token vault.
 - WIN tickets are not paid automatically at settlement; they become claimable.
 
 ---
@@ -131,6 +129,9 @@ After the grace period, `sweep_unclaimed` may be executed:
 - Requires: round is finalized and not already swept
 - Effect (MVP): transfers **native SOL only** (lamports) from a round system vault to the **SOL treasury**
 - Side effect: marks the round as **swept**, which **closes claims** in the MVP (`claim_reward` rejects if `round.swept`)
+
+> [!CAUTION]
+> **Permanent Prize Forfeiture**: In the current MVP implementation, if a winner fails to claim their reward before the **Claim Grace** period expires and the round is **swept**, the prize is **lost forever**. The system does not support late claims or automated reward distribution after a sweep has occurred.
 
 !!! note "Operational guidance"
     The MVP code does not require token settlement before the SOL sweep, but operators should typically:

@@ -29,8 +29,8 @@ The MVP uses two treasury endpoints:
 
 | Treasury | Asset | Purpose (public view) |
 |---|---|---|
-| **SPL Treasury** | TIMLG token (SPL) | receives **NO-REVEAL** stake during token settlement |
-| **SOL Treasury** | lamports | receives optional **post-grace** sweeps of native SOL leftovers |
+| **Reward Fee SPL** | TIMLG token (SPL) | receives **reward fees** (configured in Tokenomics) |
+| **SOL Treasury** | lamports | receives optional **post-grace** sweeps of native SOL leftovers (rent) |
 
 > The exact accounts are configured on-chain and should be treated as canonical by indexers.
 
@@ -40,8 +40,7 @@ The MVP uses two treasury endpoints:
 
 At a high level:
 
-- **LOSE** stake is **burned** during `settle_round_tokens` (burn occurs from the round token vault).
-- **NO-REVEAL** stake is transferred to the **SPL treasury** during `settle_round_tokens` (no burn, no mint).
+- **LOSE** or **NO-REVEAL** stake is **burned** during `settle_round_tokens` (burn occurs from the round token vault).
 - **WIN** stake is refundable only when the winner claims; the **reward is minted on claim** (`claim_reward`).
 - After a **claim grace period**, `sweep_unclaimed` may run to route **native SOL only** (lamports) to the **SOL treasury**.
   - In the MVP, this sweep marks the round as swept and **closes the claim window**.
@@ -102,8 +101,8 @@ pulse[1], etc.
 
 ```mermaid
 flowchart TD
-  P["Onchain program"] -->|burns LOSE| B["Burn (from round token vault)"]
-  P -->|routes NO-REVEAL| SPL["SPL Treasury (token)"]
+  P["Onchain program"] -->|burns LOSE/NO-REVEAL| B["Burn (from round token vault)"]
+  P -->|routes fees| SPL["Reward Fee SPL (token)"]
   P -->|optional post-grace| SOL["SOL Treasury (lamports)"]
   P -->|assigns per-ticket| BI["BitIndex 0..511"]
   BI -->|selects bit| TB["Target bit"]

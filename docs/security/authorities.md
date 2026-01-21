@@ -40,8 +40,10 @@ flowchart TD
   UA["Upgrade authority"] -->|upgrade| P["Onchain program"]
   CA["Config authority"] -->|update config| P
   OK["Oracle signing key"] -->|signed pulse| P
-  P -->|routes| SPL["SPL Treasury"]
-  P -->|sweep after grace| SOL["SOL Treasury"]
+  P -->|routes fees| SPL["Reward Fee SPL"]
+  P -->|sweep SOL rent| SOL["SOL Treasury"]
+  U["Anyone (Permissionless)"] -.->|triggers| S["settle_round_tokens"]
+  S -.-> P
 ```
 
 ---

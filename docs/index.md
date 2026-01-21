@@ -4,9 +4,10 @@ TIMLG is a **public, auditable experiment protocol** built on Solana.
 
 It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **512-bit randomness pulse**. The goal is to measure whether any strategy can predict a bit **under strict anti-leakage constraints** (“Hawking Wall”) — and to make that measurement reproducible by anyone.
 
-[Read the Whitepaper](whitepaper/index.md){ .md-button .md-button--primary }
-[Protocol (MVP Specs)](protocol/overview.md){ .md-button }
-[Devnet Beta](/beta/){ .md-button .md-button--primary }
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;"><a href="/beta/" class="md-button md-button--primary" style="margin: 0; display: flex; align-items: center; gap: 8px;">Try the Devnet Beta <span style="background: #ffeb3b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">New</span></a></div>
+
+!!! warning "Experimental Phase (Devnet)"
+    TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value.
 
 ---
 
@@ -55,22 +56,17 @@ Per ticket, one unit of TIMLG is escrowed. After finalize + settlement:
 |---|---|---|
 | **WIN** | Valid reveal and matches the ticket’s target bit | Winner **claims**: stake refund (transfer) + **+1 TIMLG minted reward** |
 | **LOSE** | Valid reveal but does not match | Stake is **burned** during token settlement |
-| **NO-REVEAL** | No valid reveal by deadline (or invalid reveal) | Stake is transferred to **SPL treasury** (no burn, no mint) |
+| **NO-REVEAL** | No valid reveal by deadline | Stake is **burned** during token settlement (same as LOSE) |
 
 !!! important "MVP nuance: rewards are minted on claim"
     The +1 TIMLG reward is minted **only when the winner claims**. If a winner never claims, that reward is never minted (while loser burns still occur).
 
 ---
 
-## What does a user pay in SOL?
+In this MVP, **winning requires a claim** (user signs the claim transaction). 
 
-A user generally pays **small Solana transaction fees** (in SOL) for:
-
-- `commit_ticket` (always)
-- `reveal_ticket` (always)
-- `claim_reward` (only if they win)
-
-In this MVP, **winning requires a claim** (user signs the claim transaction). A relayer could sponsor fees later, but the default flow is user-paid SOL fees.
+!!! tip "Future Path: Gasless UX"
+    We are working on a **Relayer** that will allow users to participate without needing SOL in their wallet, using off-chain message signatures. This functionality is in the design phase (TBD).
 
 !!! warning "Public docs vs private operations"
     We intentionally do **not** publish private keys, signer infrastructure, privileged configs, or production oracle/relayer runbooks.
@@ -96,19 +92,17 @@ The practical rule is: **an anomaly is a reason to tighten constraints and repli
 
 ```mermaid
 sequenceDiagram
-  participant Admin
-  participant User
-  participant Oracle
-  participant Program
+  participant O as Operator (or Admin)
+  participant U as User
+  participant P as Program
 
-  Admin->>Program: create_round
-  User->>Program: commit_ticket
-  Oracle->>Program: set_pulse_signed
-  User->>Program: reveal_ticket
-  Admin->>Program: finalize_round
-  Admin->>Program: settle_round_tokens
-  User->>Program: claim_reward
-  Admin->>Program: sweep_unclaimed
+  O->>P: create_round_auto
+  U->>P: commit_ticket
+  O->>P: set_pulse_signed
+  U->>P: reveal_ticket
+  O->>P: settle_round_tokens (Auto-Finalizes)
+  U->>P: claim_reward
+  O->>P: sweep_unclaimed (SOL-only)
 ```
 
 ---
