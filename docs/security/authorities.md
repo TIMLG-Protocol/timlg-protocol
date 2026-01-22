@@ -48,6 +48,19 @@ flowchart TD
 
 ---
 
+---
+
+## Progressive Decentralization Roadmap
+
+To ensure both speed of development and long-term security, TIMLG follows a staged decentralization path.
+
+| Phase | Security Model | Governance |
+|---|---|---|
+| **Phase 1: MVP (Current)** | Single-key authorities for rapid iteration. | Developer-controlled. |
+| **Phase 2: Beta Hardening** | Migration to **Multisig (Squads)** for all major authorities. | Advisory board / Early stakeholders. |
+| **Phase 3: Public Mainnet** | Timelocks on upgrades + Security Council. | DAO Governance (TIMLG voting). |
+| **Phase 4: Full Autonomy** | Immutable core logic + Decentralized Oracle network. | Fully community-governed. |
+
 ## Custody recommendations (public)
 
 - Use **hardware wallets** where possible

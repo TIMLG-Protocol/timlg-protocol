@@ -87,6 +87,21 @@ then in expectation:
 
 - `E[Δsupply] ≈ +0.5 − 0.5 = 0` (ignoring NO-REVEAL)
 
+### Token Flow Visualization (Expectation)
+
+The following diagram shows the statistical flow of the TIMLG token per round.
+
+```mermaid
+sankey-beta
+    Total, Played, 1000
+    Played, Revealed, 950
+    Played, No-Reveal (Burn), 50
+    Revealed, Win (Mint), 475
+    Revealed, Lose (Burn), 475
+    Win (Mint), Claimed, 450
+    Win (Mint), Unclaimed (Deflation), 25
+```
+
 !!! important "MVP nuance"
     The reward is minted **only when the winner claims**.
     If winners do not claim, fewer rewards are minted while loser burns still happen → the system becomes
