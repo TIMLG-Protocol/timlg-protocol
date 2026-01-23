@@ -1,6 +1,8 @@
 site_name: TIMLG Protocol
 site_description: Verifiable time-log coordination for reproducible research.
 site_url: https://www.timlg.org
+repo_url: https://github.com/richarddmm/timlg-protocol
+repo_name: richarddmm/timlg-protocol
 
 theme:
   name: material
@@ -34,7 +36,6 @@ plugins:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
   - javascripts/mermaid-init.js
-  - javascripts/beta-mount.js
 
 markdown_extensions:
   - admonition

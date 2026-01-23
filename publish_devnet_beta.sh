@@ -75,9 +75,11 @@ fi
 
 echo "==> Patch index.html to use RELATIVE ./assets/ (robust for mkdocs / subpaths)…"
 
-# 1) Force any asset path prefix to ./assets/ (covers script, css, modulepreload)
-#    Matches: "/beta/assets/..", "/assets/..", "assets/.."
+# 1) Force any asset path prefix to ./ (covers script, css, modulepreload, images)
+#    Matches: "/assets/beta/...", "/beta/assets/...", "/assets/...", "assets/..."
 perl -0777 -i -pe '
+  s|src="/assets/beta/|src="./|g;
+  s|href="/assets/beta/|href="./|g;
   s|src="/beta/assets/|src="./assets/|g;
   s|href="/beta/assets/|href="./assets/|g;
   s|src="/assets/|src="./assets/|g;
