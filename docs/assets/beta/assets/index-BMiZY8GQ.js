@@ -45011,10 +45011,6 @@ function shortPk$1(pk) {
   const s = typeof pk === "string" ? pk : pk?.toBase58?.() ?? "";
   return s.length > 10 ? `${s.slice(0, 4)}…${s.slice(-4)}` : s;
 }
-function explorerAccount(pk) {
-  const s = typeof pk === "string" ? pk : pk?.toBase58?.() ?? "";
-  return `https://explorer.solana.com/address/${s}?cluster=devnet`;
-}
 function parseAnchorErr(e) {
   const msg = e?.error?.errorMessage || e?.message || String(e);
   return msg.replace(/\s+/g, " ").trim();
@@ -45058,105 +45054,57 @@ function ActivityLog({
     /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "beta-log__pre", style: { maxHeight }, children: logs?.length ? text : "—" })
   ] });
 }
-const BullIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 8C10.5 8 8 9 7 11C6 13 6 15 7 18C8 21 10 21 12 21C14 21 16 21 17 18C18 15 18 13 17 11C16 9 13.5 8 12 8Z", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M7 11C5 9.5 2 10 2 13C2 14.5 4 15 5 15C6 15 7 13 7 11Z", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17 11C19 9.5 22 10 22 13C22 14.5 20 15 19 15C18 15 17 13 17 11Z", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M7 11C5 7 2 8 2 8C5 8 7 11 7 11Z", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17 11C19 7 22 8 22 8C19 8 17 11 17 11Z", fill: color })
+const BullIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "5 0.5 90 87.5", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  "path",
+  {
+    fill: color,
+    d: "M91.832,15.056c-1.129,2.58-3.182,4.644-5.755,5.79l-0.074,0.032c-1.491,0.664-3.087,1.002-4.7,1.002  c-3.312,0-8.803,0-8.803,0l-2.813-2.813H30.313L27.5,21.88h-9.429c-1.392,0-2.767-0.285-4.046-0.84  c-2.644-1.174-4.743-3.435-5.896-6.071C6.723,11.751,5,7.817,5,7.817v13.356c0,8.16,6.623,14.776,14.787,14.766l7.713-0.011  l-16.875,5.639l4.718,3.146c2.426,1.617,5.273,2.479,8.191,2.479H27.5v3.35c0,1.818,0.471,3.607,1.364,5.189l3.206,5.671  l4.57,16.875l-0.728,3.326c-0.96,4.38,1.807,8.712,6.184,9.686l0.239,0.053c5.045,1.121,10.273,1.121,15.318,0l0.2-0.042  c4.423-0.984,7.189-5.323,6.23-9.707c-0.408-1.863-0.724-3.315-0.724-3.315l4.57-16.875l3.206-5.671  c0.893-1.582,1.364-3.371,1.364-5.189v-3.35h3.966c2.918,0,5.766-0.861,8.191-2.479l4.718-3.146L72.5,35.942h7.734  C88.391,35.942,95,29.333,95,21.177V7.817L91.832,15.056z M36.89,55.623c-2.078,0-3.765-1.687-3.765-3.765v-4.676l2.521,2.531  c-0.432,0.446-0.696,1.055-0.696,1.726c0,1.378,1.118,2.496,2.496,2.496c0.664,0,1.266-0.26,1.716-0.689l2.366,2.377H36.89z   M56.94,87.179l-0.2,0.042c-2.208,0.492-4.479,0.742-6.739,0.742c-2.268,0-4.535-0.25-6.746-0.742l-0.239-0.053  c-2.102-0.468-3.438-2.559-2.978-4.665l0.362-1.86c0.267-1.375,1.473-2.366,2.872-2.366h13.461c1.399,0,2.602,0.991,2.872,2.366  l0.359,1.849C60.427,84.602,59.07,86.704,56.94,87.179z M66.896,51.868c0,2.081-1.684,3.765-3.765,3.765h-4.637l2.366-2.377  c0.45,0.432,1.051,0.689,1.716,0.689c1.378,0,2.496-1.118,2.496-2.496c0-0.671-0.264-1.276-0.696-1.726l2.521-2.531V51.868z   M47.189,83.502v0.75H44.31c-0.74,0-1.34-0.6-1.34-1.34v-1.465c0-0.338,0.344-0.567,0.655-0.437l2.634,1.097  C46.822,82.342,47.189,82.892,47.189,83.502z M57.032,81.447v1.465c0,0.74-0.6,1.34-1.34,1.34h-2.878v-0.75  c0-0.61,0.367-1.16,0.93-1.395l2.634-1.097C56.689,80.88,57.032,81.109,57.032,81.447z"
+  }
+) });
+const BearIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 191.308 191.308", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  "path",
+  {
+    fill: color,
+    d: "M100.654,133.037v7.882l11.802,6.775c2.395,1.375,3.222,4.431,1.847,6.825c-0.924,1.61-2.608,2.512-4.341,2.512\n            c-0.844,0-1.7-0.214-2.484-0.665l-11.823-6.788l-11.824,6.788c-0.784,0.451-1.641,0.665-2.484,0.665\n            c-1.732,0-3.417-0.901-4.341-2.512c-1.375-2.395-0.548-5.451,1.847-6.825l11.803-6.775v-7.882c-0.369-0.264-0.725-0.55-1.054-0.874\n            l-14.379-14.145c-2.508-2.468-3.268-6.166-1.935-9.423s4.469-5.361,7.987-5.361h28.759c3.519,0,6.654,2.104,7.987,5.361\n            s0.573,6.955-1.936,9.423l-14.378,14.146C101.378,132.488,101.023,132.774,100.654,133.037z M176.528,61.392\n            c5.517,14.341,22.875,65.02,3.198,89.445c-19.04,23.637-50.229,31.811-63.547,35.301c-2.048,0.536-3.816,1-4.895,1.351\n            c-9.157,2.979-14.995,3.064-15.631,3.064s-6.475-0.086-15.633-3.064c-1.077-0.351-2.846-0.814-4.894-1.351\n            c-13.318-3.49-44.507-11.664-63.547-35.301c-19.677-24.426-2.318-75.104,3.198-89.445C9.432,57.237,0,48.059,0,35.016\n            C0,18.045,14.358,0.754,28.451,0.754c0.187,0,0.373,0.003,0.56,0.01c9.311,0.321,17.076,10.051,21.155,16.373\n            c3.383-2.174,8.169-4.457,13.344-4.457h64.288c5.175,0,9.961,2.283,13.344,4.457c4.079-6.322,11.845-16.052,21.156-16.373\n            c0.188-0.007,0.372-0.01,0.56-0.01c14.092,0,28.45,17.291,28.45,34.262C191.308,48.059,181.876,57.237,176.528,61.392z\n             M62.733,87.506c6.585,0,12.359-4.449,14.043-10.82c0.557-2.104-0.313-4.328-2.15-5.496L59.3,61.442\n            c-1.841-1.171-4.224-1.013-5.895,0.386c-3.31,2.772-5.207,6.834-5.207,11.144C48.198,80.986,54.719,87.506,62.733,87.506z\n             M130.642,129.42c0-13.947-6.198-25.626-18.422-34.713c-4.814-3.578-10.543-5.47-16.565-5.47c-6.023,0-11.752,1.892-16.566,5.47\n            c-12.224,9.087-18.422,20.766-18.422,34.713c0,21.661,15.075,30.924,27.722,34.88c4.712,1.473,9.82,1.473,14.532,0\n            C115.566,160.344,130.642,151.082,130.642,129.42z M143.11,72.971c0-4.31-1.897-8.371-5.207-11.144\n            c-1.671-1.399-4.056-1.558-5.895-0.386l-15.326,9.748c-1.837,1.168-2.707,3.392-2.15,5.496c1.684,6.371,7.458,10.82,14.043,10.82\n            C136.59,87.506,143.11,80.986,143.11,72.971z"
+  }
+) });
+const RandomIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-12 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm10 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5-5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z", fill: color }) });
+const TicketAuditIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 1024 1024", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  "path",
+  {
+    fill: color,
+    d: "M978.578286 900.461714l-108.617143-108.617143c30.134857-39.570286 48.274286-88.795429 48.274286-142.189714a235.739429 235.739429 0 0 0-235.52-235.373714 235.739429 235.739429 0 0 0-235.373715 235.373714 235.739429 235.739429 0 0 0 235.446857 235.52c53.467429 0 102.692571-18.139429 142.189715-48.274286l108.617143 108.544a31.524571 31.524571 0 0 0 44.836571 0 31.744 31.744 0 0 0 0.146286-44.982857zM510.902857 649.654857a172.105143 172.105143 0 0 1 171.885714-171.885714 171.885714 171.885714 0 0 1 0 343.771428 172.178286 172.178286 0 0 1-171.885714-171.885714z m270.262857-378.514286c0 17.554286-14.262857 31.744-31.817143 31.744H431.396571a31.744 31.744 0 0 1 0-63.488h317.952c17.554286 0 31.817143 14.189714 31.817143 31.744z m-609.426285 620.032h211.968a31.890286 31.890286 0 0 1 0 63.634286H171.739429c-58.368 0-106.057143-47.542857-106.057143-106.057143V283.062857c0-14.262857 5.12-28.086857 14.262857-39.058286L240.420571 53.101714a57.417143 57.417143 0 0 1 43.885715-20.48h517.997714c58.441143 0 106.057143 47.542857 106.057143-106.057143V366.445714a31.744 31.744 0 0 1-63.634286 0V138.605714a42.422857 42.422857 0 0 0-42.276571-42.349714H336.018286V280.137143a50.688 50.688 0 0 1-50.980572 50.176H129.389714v518.509714c0 23.332571 19.017143 42.349714 42.349715 42.349714zM272.457143 113.810286l-128.512 152.868571h128.512v-152.868571z m79.506286 476.16a31.744 31.744 0 0 0 0-63.634286H240.64a31.744 31.744 0 0 0 0 63.634286h111.323429z m0 146.066285a31.744 31.744 0 0 0 0-63.561142H240.64a31.744 31.744 0 0 0 0 63.561142h111.323429z m31.744-353.206857H240.64a31.744 31.744 0 0 0 0 63.561143h143.067429a31.744 31.744 0 0 0 0-63.561143z"
+  }
+) });
+const RoundInfoIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "path",
+    {
+      d: "M9.14,7.23A4.76,4.76,0,0,1,13,5.32h4.78a4.77,4.77,0,1,1,0,9.54H13a4.77,4.77,0,0,1-4.67-3.81",
+      stroke: color,
+      strokeWidth: "1.91",
+      strokeMiterlimit: "10",
+      strokeLinecap: "round"
+    }
+  ),
+  /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "path",
+    {
+      d: "M15.72,13a4.77,4.77,0,0,0-4.67-3.81H6.27a4.77,4.77,0,0,0,0,9.54h4.78a4.76,4.76,0,0,0,3.37-1.39,3.57,3.57,0,0,0,.44-.52",
+      stroke: color,
+      strokeWidth: "1.91",
+      strokeMiterlimit: "10",
+      strokeLinecap: "round"
+    }
+  )
 ] });
-const BearIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "13", r: "7", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "6.5", cy: "7.5", r: "3.5", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "17.5", cy: "7.5", r: "3.5", fill: color }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "15.5", r: "2.5", fill: "white", fillOpacity: "0.2" })
-] });
-const IconDropdown = ({ value, onChange, disabled }) => {
-  const [isOpen, setIsOpen] = reactExports.useState(false);
-  const options = [
-    { value: 0, label: "Bear", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 20, color: "#9CA3AF" }) },
-    { value: 1, label: "Bull", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 20, color: "#9CA3AF" }) },
-    { value: -1, label: "Random", icon: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 18 }, children: "🎲" }) }
-  ];
-  const selected = options.find((o) => o.value === value) || options[0];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", width: "100%" }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        className: "beta-input",
-        onClick: () => setIsOpen(!isOpen),
-        disabled,
-        style: {
-          width: "100%",
-          height: 42,
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "0 12px",
-          textAlign: "left",
-          background: "rgba(255,255,255,0.8)",
-          cursor: disabled ? "default" : "pointer",
-          border: "1px solid rgba(0,0,0,0.1)",
-          borderRadius: 4,
-          position: "relative"
-        },
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 10, flex: 1 }, children: [
-            selected.icon,
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 14, fontWeight: "600" }, children: selected.label })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 10, opacity: 0.5 }, children: "▼" })
-        ]
-      }
-    ),
-    isOpen && !disabled && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          style: { position: "fixed", inset: 0, zIndex: 999 },
-          onClick: () => setIsOpen(false)
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-        position: "absolute",
-        top: "105%",
-        left: 0,
-        right: 0,
-        background: "white",
-        border: "1px solid rgba(0,0,0,0.1)",
-        borderRadius: 6,
-        boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
-        zIndex: 1e3,
-        overflow: "hidden"
-      }, children: options.map((opt) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          onClick: () => {
-            onChange(opt.value);
-            setIsOpen(false);
-          },
-          style: {
-            padding: "10px 12px",
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            cursor: "pointer",
-            background: value === opt.value ? "rgba(59, 130, 246, 0.05)" : "transparent",
-            transition: "background 0.2s"
-          },
-          onMouseEnter: (e) => e.currentTarget.style.background = "rgba(0,0,0,0.03)",
-          onMouseLeave: (e) => e.currentTarget.style.background = value === opt.value ? "rgba(59, 130, 246, 0.05)" : "transparent",
-          children: [
-            opt.icon,
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 14, fontWeight: value === opt.value ? "700" : "500" }, children: opt.label })
-          ]
-        },
-        opt.value
-      )) })
-    ] })
-  ] });
-};
+const ExportIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 32 32", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  "path",
+  {
+    d: "M27.624 20.955l-0.958 5.072h-21.332l-0.958-5.072h-2.385v8.062h28.018v-8.062h-2.385zM27.020 11.946h-7.022v-2.93h-7.994v2.93h-6.955l10.914 11.412 11.057-11.412zM19.997 3.982h-7.994v1.066h7.994v-1.066zM19.997 5.973h-7.994v2.038h7.994v-2.038z",
+    fill: color
+  }
+) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45166,16 +45114,13 @@ function PlayCard({
   timlgMint,
   pubkey: pubkey2,
   appendLog,
-  // ✅ New props from App.jsx
   chainState,
   refreshProtocolState,
-  // was refreshNow
   statusLine,
   onActionComplete,
   nist,
   logs,
   onClearLog,
-  // Global
   guess,
   setGuess,
   doCommitGlobal,
@@ -45222,31 +45167,13 @@ function PlayCard({
     setLocalReceipt(receipts || null);
     setLocalReceipts(fullList);
   }, [walletStr, currentRoundId]);
-  function assertAccounts(label, accounts2, extra = {}) {
-    const missing = Object.entries(accounts2).filter(([, v]) => v == null).map(([k]) => k);
-    if (missing.length) {
-      console.error(`${label}: missing accounts`, { missing, accounts: accounts2, chainState, ...extra });
-      throw new Error(`${label}: missing accounts: ${missing.join(", ")}`);
-    }
-  }
-  async function doCommit() {
-    await doCommitGlobal({
-      targetRoundId: currentRoundId,
-      targetPulseIndex,
-      targetRoundPda: currentRoundPda,
-      targetTIMLGVaultPda: currentTIMLGVaultPda,
-      targetCommitDl: selectedRound?.commitDeadlineSlot
-    });
-  }
   async function doReveal() {
     if (!pubkey2) return log("Reveal: connect wallet first.");
     if (!walletReady || !program) return log("Reveal: wallet/program not ready yet.");
     if (!selectedRound || currentRoundId == null) return log("Reveal: round not loaded.");
     if (!selectedRound.pulseSet) return log("Reveal: pulse not set yet (pulseSet=false).");
     const r = localReceipt;
-    if (!r?.nonce || !r?.saltHex || !r?.ticketPda) {
-      return log("Reveal: missing local receipt.");
-    }
+    if (!r?.nonce || !r?.saltHex || !r?.ticketPda) return log("Reveal: missing local receipt.");
     setLoading(true);
     setLastTx("");
     try {
@@ -45260,8 +45187,6 @@ function PlayCard({
         ticket: new PublicKey(r.ticketPda),
         user: pubkey2
       };
-      assertAccounts("Reveal", accounts2, { roundId, nonce, revealGuess });
-      log(`Reveal: sending tx… (round=${roundId}, nonce=${nonce})`);
       const sig = await program.methods.revealTicket(new BN(roundId), new BN(nonce), revealGuess, Array.from(salt)).accounts(accounts2).rpc();
       setLastTx(sig);
       log(`Reveal OK ✅ tx=${sig}`);
@@ -45273,7 +45198,6 @@ function PlayCard({
       await refreshNow?.();
     } catch (e) {
       log(`Reveal failed: ${parseAnchorErr(e)}`);
-      console.error("Reveal error:", e);
     } finally {
       setLoading(false);
     }
@@ -45282,17 +45206,13 @@ function PlayCard({
     if (!pubkey2) return log("Claim: connect wallet first.");
     if (!walletReady || !program) return log("Claim: wallet/program not ready yet.");
     if (!selectedRound || currentRoundId == null) return log("Claim: round not loaded.");
-    if (!selectedRound.tokenSettled) return log("Claim: tokenSettled=false (operator hasn't settled).");
-    if (!chainState.tokenomicsExists || !chainState.rewardFeePoolPda) return log("Claim: tokenomics missing.");
+    if (!selectedRound.tokenSettled) return log("Claim: tokenSettled=false.");
     const r = localReceipt;
     if (!r?.nonce || !r?.ticketPda) return log("Claim: missing local ticket.");
     setLoading(true);
     setLastTx("");
     try {
-      const roundId = currentRoundId;
-      const nonce = Number(r.nonce);
       const userTIMLGAta = await getUserTIMLGTokenAccount(connection, pubkey2, mintPk);
-      if (!userTIMLGAta) throw new Error("Missing TIMLG token account.");
       const accounts2 = {
         config: chainState.configPda ?? pdaConfig(programPk),
         tokenomics: chainState.tokenomicsPda,
@@ -45305,20 +45225,17 @@ function PlayCard({
         rewardFeePool: chainState.rewardFeePoolPda,
         tokenProgram: index.token.TOKEN_PROGRAM_ID
       };
-      assertAccounts("Claim", accounts2, { roundId, nonce });
-      log(`Claim: sending tx… (round=${roundId}, nonce=${nonce})`);
-      const sig = await program.methods.claimReward(new BN(roundId), new BN(nonce)).accounts(accounts2).rpc();
+      const sig = await program.methods.claimReward(new BN(currentRoundId), new BN(r.nonce)).accounts(accounts2).rpc();
       setLastTx(sig);
       log(`Claim OK ✅ tx=${sig}`);
       if (r) {
         const updated = { ...r, claimTx: sig, claimedAt: Date.now() };
-        saveLocalReceipt(pubkey2.toBase58(), roundId, updated);
+        saveLocalReceipt(pubkey2.toBase58(), currentRoundId, updated);
         setLocalReceipt(updated);
       }
       await refreshNow?.();
     } catch (e) {
       log(`Claim failed: ${parseAnchorErr(e)}`);
-      console.error("Claim error:", e);
     } finally {
       setLoading(false);
     }
@@ -45356,164 +45273,212 @@ function PlayCard({
   const curSlot = chainState?.currentSlot;
   const commitDl = selectedRound?.commitDeadlineSlot;
   const revealDl = selectedRound?.revealDeadlineSlot;
-  const canCommitEnabled = Boolean(
+  const canCommit = Boolean(
     pubkey2 && selectedRound && curSlot != null && commitDl != null && BigInt(curSlot) < commitDl - 10n && !selectedRound.pulseSet
   );
-  const canCommit = canCommitEnabled;
   const canReveal = Boolean(
     pubkey2 && selectedRound && localReceipt && selectedRound.pulseSet && revealDl != null && BigInt(curSlot) <= revealDl
   );
   const canClaim = Boolean(pubkey2 && selectedRound && selectedRound.tokenSettled && localReceipt);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card__head", style: { paddingBottom: 0, borderBottom: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-card__title", style: { fontSize: 18, fontWeight: "900" }, children: selectedRound ? `Round #${selectedRound.roundId}` : inferredRoundId != null && targetPulseIndex < Number(chainState?.round?.pulseIndexTarget ?? 0) ? `Round #${inferredRoundId}` : "Round Pending..." }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: 11, display: "flex", flexWrap: "wrap", gap: 12, color: "#666", marginTop: 4 }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-            "Target: ",
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { children: [
-              "#",
-              targetPulseIndex
-            ] }),
-            " ",
-            targetArrivalMs && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.8 }, children: [
-              "(Arr: ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: new Date(targetArrivalMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) }),
-              ")"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3 }, children: "|" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-            "Current:",
-            " ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: nist?.pulseUrl ?? "#", target: "_blank", rel: "noreferrer", style: { color: "inherit", textDecoration: "underline" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { children: [
-              "#",
-              currentNistPulse
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontWeight: "600" }, children: [
-              " (At: ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) }),
-              ")"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3 }, children: "|" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-            "UTC: ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { color: "#444" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
-          ] })
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    background: "rgba(0, 0, 0, 0.03)",
+    border: "1px solid #444",
+    borderRadius: "16px",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px"
+  }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+      background: "rgba(255, 255, 255, 0.6)",
+      borderRadius: "14px",
+      padding: "16px",
+      border: "1px solid rgba(0, 0, 0, 0.03)",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "12px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "16px", fontWeight: "900", color: "#111" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "ROUND TRACKING" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          background: canCommit ? "rgba(16, 185, 129, 0.1)" : "rgba(0, 0, 0, 0.05)",
+          color: canCommit ? "#10B981" : "#888",
+          padding: "2px 8px",
+          borderRadius: "20px",
+          fontSize: "10px",
+          fontWeight: "900"
+        }, children: canCommit ? "● OPEN" : "● CLOSED" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "baseline", gap: "6px" }, children: canCommit && secondsLeft != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "18px", fontWeight: "900", color: secondsLeft < 15 ? "#EF4444" : "#111", letterSpacing: "-0.02em" }, children: [
+          secondsLeft,
+          "s"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "REMAINING" })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(0,0,0,0.02)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "4px" }, children: "CURRENT PULSE" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: nist?.pulseUrl || `https://beacon.nist.gov/beacon/2.0/chain/2/pulse/${currentNistPulse}`,
+              target: "_blank",
+              rel: "noreferrer",
+              style: { fontSize: "14px", fontWeight: "800", color: "#444", opacity: 0.6, textDecoration: "none" },
+              onMouseEnter: (e) => e.currentTarget.style.color = "#2D68EA",
+              onMouseLeave: (e) => e.currentTarget.style.color = "#444",
+              children: [
+                "#",
+                currentNistPulse
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "800", color: "#444" }, children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { textAlign: "right" }, children: selectedRound ? canCommitEnabled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#4caf50", fontWeight: "bold", fontSize: 14 }, children: "🟢 OPEN" }),
-        secondsLeft != null && secondsLeft > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 11, color: "#444", fontWeight: "500" }, children: [
-          "Closing in ",
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { children: [
-            secondsLeft,
-            "s"
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(76, 130, 251, 0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", color: "#4C82FB", opacity: 0.8, letterSpacing: "0.05em", marginBottom: "4px" }, children: "TARGET PULSE" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "800", color: "#4C82FB", opacity: 0.7 }, children: [
+            "#",
+            targetPulseIndex
           ] }),
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5, fontSize: 9 }, children: "(est.)" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "800", color: "#4C82FB" }, children: new Date(targetArrivalMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
         ] })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#aaa", fontWeight: "bold", fontSize: 14 }, children: "🔴 CLOSED" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 12, opacity: 0.5 }, children: selectedRound.pulseSet ? "Revealing..." : "Outcome Pending" })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#555", fontWeight: "bold", fontSize: 14 }, children: "⚪ PENDING" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 10, opacity: 0.5 }, children: "Operator Syncing..." })
-      ] }) })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card__body", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: 16 } }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 12, alignItems: "end", marginBottom: 16 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-field", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-field__label", children: "Target Pulse" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "select",
-            {
-              className: "beta-input",
-              value: pulseOffset,
-              onChange: (e) => setPulseOffset(Number(e.target.value)),
-              disabled: loading,
-              style: { height: 42 },
-              children: [
-                { offset: 1, label: "Current + 1" },
-                { offset: 2, label: "Current + 2" },
-                { offset: 3, label: "Current + 3" },
-                { offset: 4, label: "Current + 4" },
-                { offset: 5, label: "Current + 5" }
-              ].map((opt) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: opt.offset, children: opt.label }, opt.offset))
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-field", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-field__label", children: "Prediction" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            IconDropdown,
-            {
-              value: localReceipt ? localReceipt.guess : guess,
-              onChange: setGuess,
-              disabled: loading || !!localReceipt
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-field", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-field__label", style: { fontWeight: "normal", opacity: 0.7, textAlign: "left" }, children: localReceipts.length > 0 ? `Tickets Found (${localReceipts.length}) 🎟️` : "Cost: 1.00 TIMLG + Fee" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(0,0,0,0.02)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "4px" }, children: "NETWORK UTC" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "14px", fontWeight: "800", color: "#444" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1.25fr 1.35fr", gap: "12px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        background: "rgba(255, 255, 255, 0.6)",
+        borderRadius: "14px",
+        padding: "16px",
+        border: "1px solid rgba(0, 0, 0, 0.03)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "PULSE OFFSET" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "4px", height: "54px" }, children: [1, 2, 3, 4, 5].map((offset2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setPulseOffset(offset2),
+            disabled: loading,
+            style: {
+              flex: 1,
+              borderRadius: "4px",
+              border: "1px solid",
+              borderColor: pulseOffset === offset2 ? "#4C82FB" : "rgba(0,0,0,0.06)",
+              background: pulseOffset === offset2 ? "#4C82FB" : "#fff",
+              color: pulseOffset === offset2 ? "#fff" : "#666",
+              fontSize: "18px",
+              fontWeight: "900",
+              cursor: "pointer",
+              transition: "all 0.1s",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: pulseOffset === offset2 ? "0 4px 12px rgba(76, 130, 251, 0.2)" : "none"
+            },
+            children: [
+              "+",
+              offset2
+            ]
+          },
+          offset2
+        )) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        background: "rgba(255, 255, 255, 0.6)",
+        borderRadius: "14px",
+        padding: "16px",
+        border: "1px solid rgba(0, 0, 0, 0.03)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION (1.00 TIMLG)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "8px", height: "54px" }, children: [
+          { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 22, color: guess === 0 ? "#EF4444" : "#9CA3AF" }), color: "#EF4444" },
+          { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 22, color: guess === 1 ? "#10B981" : "#9CA3AF" }), color: "#10B981" },
+          { val: -1, label: "RANDOM", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 22, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
+        ].map((tile) => {
+          const isSubmitting = loading && guess === tile.val;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "beta-play-btn",
-              onClick: doCommit,
-              disabled: !canCommit || loading,
+              onClick: () => {
+                setGuess(tile.val);
+                doCommitGlobal({
+                  targetRoundId: currentRoundId,
+                  targetPulseIndex,
+                  targetRoundPda: currentRoundPda,
+                  targetTIMLGVaultPda: currentTIMLGVaultPda,
+                  targetCommitDl: selectedRound?.commitDeadlineSlot,
+                  forcedGuess: tile.val
+                });
+              },
+              disabled: !canCommit || loading || !!localReceipt,
               style: {
-                height: 42,
-                padding: "0 12px",
-                fontSize: 15,
-                fontWeight: "600",
+                flex: 1,
+                borderRadius: "4px",
+                border: "2px solid",
+                borderColor: guess === tile.val ? tile.color : "rgba(0,0,0,0.05)",
+                background: guess === tile.val ? `${tile.color}14` : "#fff",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: !canCommit || loading ? "#d1d1d1" : "#81c784",
-                color: !canCommit || loading ? "#888" : "#fff",
-                cursor: !canCommit || loading ? "default" : "pointer"
+                cursor: canCommit && !loading && !localReceipt ? "pointer" : "default",
+                boxShadow: guess === tile.val ? `0 4px 12px ${tile.color}26` : "none",
+                transition: "all 0.2s"
               },
-              children: loading ? "..." : "Commit"
-            }
-          )
-        ] })
-      ] }),
-      (canReveal || canClaim) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 16 }, children: [
-        canReveal && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: "beta-play-btn",
-            onClick: doReveal,
-            disabled: loading,
-            style: { width: "100%", height: 38, background: "#f39c12", color: "#000", fontWeight: "bold" },
-            children: loading ? "..." : "🔓 REVEAL TICKET NOW"
-          }
-        ),
-        canClaim && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: "beta-play-btn",
-            onClick: doClaim,
-            disabled: loading,
-            style: { width: "100%", height: 38, background: "#27ae60", color: "#fff", fontWeight: "bold" },
-            children: loading ? "..." : "💰 CLAIM YOUR WIN!"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        ActivityLog,
+              children: [
+                isSubmitting ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: tile.color }, children: "..." }) : tile.icon,
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: guess === tile.val ? tile.color : "#666", marginTop: "2px" }, children: tile.label })
+              ]
+            },
+            tile.val
+          );
+        }) })
+      ] })
+    ] }),
+    (canReveal || canClaim) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px" }, children: [
+      canReveal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
         {
-          logs,
-          onClear: onClearLog,
-          title: "Terminal Output",
-          defaultOpen: false,
-          maxHeight: 160
+          onClick: doReveal,
+          disabled: loading,
+          style: { flex: 1, height: "46px", borderRadius: "4px", background: "#f39c12", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(243, 156, 18, 0.2)" },
+          children: loading ? "..." : "UNLOCK (REVEAL) TICKET"
         }
-      ) })
-    ] })
+      ),
+      canClaim && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: doClaim,
+          disabled: loading,
+          style: { flex: 1, height: "46px", borderRadius: "4px", background: "#10B981", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)" },
+          children: loading ? "..." : "CLAIM PROTOCOL REWARD"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ActivityLog,
+      {
+        logs,
+        onClear: onClearLog,
+        title: "Protocol Terminal",
+        defaultOpen: false,
+        maxHeight: 140
+      }
+    )
   ] });
 }
 const shortPk = (pk, chars = 4) => {
@@ -45627,8 +45592,9 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const pulseUrl = pulseIndex ? `https://beacon.nist.gov/beacon/2.0/chain/1/pulse/${pulseIndex}` : "#";
   const rPda = programPk && roundId != null ? pdaRound(programPk, Number(roundId)) : null;
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal", onClick: (e) => e.stopPropagation(), children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", style: { alignItems: "flex-start", paddingBottom: 16 }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", style: { alignItems: "flex-start", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative", overflow: "hidden", minHeight: "80px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", opacity: 0.06, zIndex: 0 }, children: isBull ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 120, color: statusColor }) : isBear ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 120, color: statusColor }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 120, color: statusColor }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", zIndex: 1 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "beta-modal__title", style: { marginBottom: 4, lineHeight: 1 }, children: "Ticket Details" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 11, opacity: 0.5 }, children: "Ticket:" }),
@@ -45648,83 +45614,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
           )
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: "beta-btn",
-            onClick: (e) => {
-              e.stopPropagation();
-              try {
-                const formatSlot2 = (val) => {
-                  if (!val) return null;
-                  const s = val.toString();
-                  return s === "0" ? null : s;
-                };
-                const data = {
-                  snapshot: {
-                    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
-                    slot: formatSlot2(currentSlot)
-                  },
-                  address: ticketPk ? ticketPk.toString() : "unknown",
-                  roundId: Number(roundId),
-                  nonce: Number(onChainTicket?.nonce ?? receipt?.nonce ?? 0),
-                  bitIndex: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? null,
-                  status,
-                  prediction: isBull ? "Bull" : isBear ? "Bear" : "Unknown",
-                  outcome: onChainTicket?.win ? "Win" : onChainTicket?.revealed ? "Loss" : status === "REFUND AVAILABLE" ? "Refundable" : status === "SWEPT" ? "Swept" : status === "EXPIRED" ? "Expired" : status === "REFUNDED" ? "Refunded" : "Pending",
-                  cryptography: {
-                    commitmentHash: onChainTicket?.commitment ? Buffer.from(onChainTicket.commitment).toString("hex") : receipt?.commitment || null,
-                    localSalt: receipt?.saltHex || (receipt?.salt ? Array.isArray(receipt.salt) ? Buffer.from(receipt.salt).toString("hex") : receipt.salt : null),
-                    isValid: true
-                  },
-                  transactions: {
-                    commit: createdTx ? createdTx.signature : null,
-                    reveal: revealedTx ? revealedTx.signature : null,
-                    claim: claimedTx ? claimedTx.signature : null,
-                    refund: receipt?.refundedTx || null
-                  }
-                };
-                const blob2 = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-                const url = URL.createObjectURL(blob2);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `timlgs_ticket_${roundId}_${ticketPk ? ticketPk.toString().slice(0, 8) : "data"}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-              } catch (err) {
-                console.error("Download failed:", err);
-                alert("Download failed. See console.");
-              }
-            },
-            style: {
-              fontSize: 11,
-              padding: "6px 12px",
-              height: 28,
-              background: "rgba(255,255,255,0.08)",
-              border: "1px solid rgba(255,255,255,0.25)",
-              borderRadius: 4,
-              cursor: "pointer",
-              color: "#ffffff",
-              fontWeight: 500,
-              transition: "all 0.2s"
-            },
-            onMouseEnter: (e) => {
-              e.target.style.background = "rgba(255,255,255,0.15)";
-              e.target.style.borderColor = "rgba(255,255,255,0.5)";
-            },
-            onMouseLeave: (e) => {
-              e.target.style.background = "rgba(255,255,255,0.08)";
-              e.target.style.borderColor = "rgba(255,255,255,0.25)";
-            },
-            title: "Download Receipt JSON",
-            children: "⬇ Download JSON"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-modal__close", onClick: onClose, style: { marginLeft: 0 }, children: "×" })
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-modal__close", onClick: onClose, style: { marginLeft: "auto" }, children: "×" }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__body", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
@@ -45757,8 +45647,10 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Prediction" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", style: {
-            color: isBull ? "#4caf50" : isBear ? "#f44336" : "#ddd"
-          }, children: isBull ? "🐃 Bull (1)" : isBear ? "🐻 Bear (0)" : "—" })
+            color: isBull ? "#4caf50" : isBear ? "#f44336" : "#ddd",
+            fontWeight: "900",
+            fontSize: "16px"
+          }, children: isBull ? "1" : isBear ? "0" : "?" })
         ] }),
         onChainTicket?.bit_index !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Bit Index" }),
@@ -46056,15 +45948,6 @@ const idl = {
   errors,
   types
 };
-const DownloadIcon = ({ size = 14 }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 16L7 11H10V4H14V11H17L12 16Z", fill: "currentColor" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V14H18V18H6V14H4V18Z", fill: "currentColor" })
-] });
-const InfoIcon = ({ size = 15 }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "2.5" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 12V17", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "7.5", r: "1.5", fill: "currentColor" })
-] });
 function formatDuration(seconds) {
   if (seconds <= 0) return "0s";
   const m = Math.floor(seconds / 60);
@@ -46487,14 +46370,27 @@ function MyTickets({
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: headerTimer })
               ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { whiteSpace: "nowrap", fontWeight: 600, fontSize: 13, opacity: 0.8 }, children: rStatus }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(InfoIcon, {}) }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(DownloadIcon, {}) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 17 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: ticketsToReveal.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
-                  style: { background: "#eee", color: "#444", fontWeight: "bold", border: "1px solid #ccc" },
+                  style: {
+                    background: globalLoading ? "#f9f9f9" : "#eee",
+                    color: globalLoading ? "#aaa" : "#444",
+                    height: "36px",
+                    padding: "0 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    fontSize: "13px"
+                  },
                   onClick: () => ticketsToReveal.forEach((t) => doRevealTicket(t)),
+                  disabled: globalLoading,
                   children: [
                     "Reveal All (",
                     ticketsToReveal.length,
@@ -46505,8 +46401,21 @@ function MyTickets({
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
-                  style: { background: "#eee", color: "#444", fontWeight: "bold", border: "1px solid #ccc" },
+                  style: {
+                    background: globalLoading ? "#f9f9f9" : "#eee",
+                    color: globalLoading ? "#aaa" : "#444",
+                    height: "36px",
+                    padding: "0 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    fontSize: "13px"
+                  },
                   onClick: () => ticketsToClaim.forEach((t) => doClaimTicket(t)),
+                  disabled: globalLoading,
                   children: [
                     "Claim All (",
                     ticketsToClaim.length,
@@ -46517,40 +46426,134 @@ function MyTickets({
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
-                  style: { background: "#eee", color: "#444", fontWeight: "bold", border: "1px solid #ccc" },
+                  style: {
+                    background: globalLoading ? "#f9f9f9" : "#eee",
+                    color: globalLoading ? "#aaa" : "#444",
+                    height: "36px",
+                    padding: "0 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    fontSize: "13px"
+                  },
                   onClick: () => ticketsToRefund.forEach((t) => doRefundTicket(t)),
+                  disabled: globalLoading,
                   children: [
                     "Refund All (",
                     ticketsToRefund.length,
                     ")"
                   ]
                 }
-              ) : rStatus === "OPEN" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ) : rStatus === "OPEN" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 4, justifyContent: "flex-end" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "beta-btn beta-btn--sm",
+                    title: "Commit Bear",
+                    style: {
+                      background: globalLoading ? "#f9f9f9" : "#eee",
+                      color: globalLoading ? "#aaa" : "#444",
+                      width: "36px",
+                      height: "36px",
+                      padding: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px"
+                    },
+                    disabled: globalLoading,
+                    onClick: () => doCommitGlobal({
+                      targetRoundId: roundId,
+                      targetPulseIndex: Number(pulseTarget),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetCommitDl: commitDl,
+                      forcedGuess: 0
+                    }),
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 24 })
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "beta-btn beta-btn--sm",
+                    title: "Commit Bull",
+                    style: {
+                      background: globalLoading ? "#f9f9f9" : "#eee",
+                      color: globalLoading ? "#aaa" : "#444",
+                      width: "36px",
+                      height: "36px",
+                      padding: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px"
+                    },
+                    disabled: globalLoading,
+                    onClick: () => doCommitGlobal({
+                      targetRoundId: roundId,
+                      targetPulseIndex: Number(pulseTarget),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetCommitDl: commitDl,
+                      forcedGuess: 1
+                    }),
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 24 })
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "beta-btn beta-btn--sm",
+                    title: "Commit Random",
+                    style: {
+                      background: globalLoading ? "#f9f9f9" : "#eee",
+                      color: globalLoading ? "#aaa" : "#444",
+                      width: "36px",
+                      height: "36px",
+                      padding: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px"
+                    },
+                    disabled: globalLoading,
+                    onClick: () => doCommitGlobal({
+                      targetRoundId: roundId,
+                      targetPulseIndex: Number(pulseTarget),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetCommitDl: commitDl,
+                      forcedGuess: -1
+                    }),
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 22 })
+                  }
+                )
+              ] }) : canSettle ? /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
                   style: {
                     background: globalLoading ? "#f9f9f9" : "#eee",
                     color: globalLoading ? "#aaa" : "#444",
+                    height: "36px",
+                    padding: "0 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
                     fontWeight: "bold",
-                    border: "1px solid #ccc"
+                    fontSize: "13px"
                   },
-                  disabled: globalLoading,
-                  onClick: () => doCommitGlobal({
-                    targetRoundId: roundId,
-                    targetPulseIndex: Number(pulseTarget),
-                    targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
-                    targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
-                    targetCommitDl: commitDl
-                  }),
-                  children: globalLoading ? "..." : "COMMIT"
-                }
-              ) : canSettle ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  className: "beta-btn beta-btn--sm",
-                  style: { background: "#eee", color: "#444", fontWeight: "bold", border: "1px solid #ccc" },
                   onClick: () => doSettleRound({ roundId }),
+                  disabled: globalLoading,
                   children: "Manual Settle"
                 }
               ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3, fontSize: 12 }, children: "—" }) })
@@ -46562,9 +46565,24 @@ function MyTickets({
               if (["LOSS", "EXPIRED", "SWEPT"].includes(status)) iconColor = "#EF4444";
               const guessIcon = t.guess === 1 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { color: iconColor, size: 20 }) : t.guess === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { color: iconColor, size: 20 }) : "—";
               let actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.2 }, children: "—" });
-              if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn beta-btn--icon", onClick: () => doRevealTicket(t), children: "⬇️ Reveal" });
-              if (status === "CLAIM PRIZE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn beta-btn--icon", onClick: () => doClaimTicket(t), children: "💰 Claim" });
-              if (status === "REFUND AVAILABLE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn beta-btn--icon", onClick: () => doRefundTicket(t), children: "↩️ Refund" });
+              const btnStyle = {
+                background: globalLoading ? "#f9f9f9" : "#eee",
+                color: globalLoading ? "#aaa" : "#444",
+                height: "30px",
+                // Slightly smaller for children to keep hierarchy
+                padding: "0 10px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                fontWeight: "bold",
+                fontSize: "11px",
+                cursor: globalLoading ? "default" : "pointer"
+              };
+              if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: "⬇️ Reveal" });
+              if (status === "CLAIM PRIZE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: "💰 Claim" });
+              if (status === "REFUND AVAILABLE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: "↩️ Refund" });
               return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { paddingLeft: 48, borderBottom: "1px solid rgba(0,0,0,0.03)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: 13, display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.4 }, children: "↳" }),
@@ -46578,8 +46596,8 @@ function MyTickets({
                   ] })
                 ] }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(InfoIcon, {}) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId), children: /* @__PURE__ */ jsxRuntimeExports.jsx(DownloadIcon, {}) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 17 }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: actionBtn })
               ] }, t.ticketPk?.toString());
             })
@@ -47568,6 +47586,31 @@ function App() {
   const [loading, setLoading2] = reactExports.useState(false);
   const [lastTx, setLastTx] = reactExports.useState("");
   const [showSankey, setShowSankey] = reactExports.useState(false);
+  const [programStatus, setProgramStatus] = reactExports.useState({
+    verified: null,
+    security: null,
+    loading: true
+  });
+  reactExports.useEffect(() => {
+    async function checkProgramStatus() {
+      try {
+        const resp = await fetch(`https://api.solscan.io/v2/account/options?address=${PROGRAM_ID}&cluster=devnet`).catch(() => null);
+        if (resp && resp.ok) {
+          const data = await resp.json();
+          setProgramStatus({
+            verified: !!data?.data?.is_verified,
+            security: !!data?.data?.is_security_txt,
+            loading: false
+          });
+        } else {
+          setProgramStatus({ verified: false, security: false, loading: false });
+        }
+      } catch (e) {
+        setProgramStatus({ verified: false, security: false, loading: false });
+      }
+    }
+    checkProgramStatus();
+  }, [PROGRAM_ID]);
   const refreshTickets = reactExports.useCallback(() => {
     setTicketVersion((v) => v + 1);
     setTimeout(() => setTicketVersion((v) => v + 1), 1e3);
@@ -47700,7 +47743,7 @@ function App() {
     return { total, revealed, pending, wins, winRate, netProfit: netTokens, efficiency, countable, breakdown, streak };
   }, [ticketRows, chainState?.config?.stakeAmount, chainState?.rewardFeeBps, chainState?.currentSlot]);
   reactExports.useEffect(() => {
-    if (!stats || !stats.breakdown) return;
+    if (!pubkey2 || !stats || !stats.breakdown) return;
     const b = stats.breakdown;
     const played = stats.total - b.REFUNDED;
     appendLog("--- PERFORMANCE AUDIT REPORT ---");
@@ -47739,7 +47782,7 @@ function App() {
     },
     [connection, mintPk]
   );
-  reactExports.useCallback(async () => {
+  const refreshAll = reactExports.useCallback(async () => {
     if (!pubkey2) return;
     await Promise.all([
       refreshSol(pubkey2),
@@ -47749,6 +47792,11 @@ function App() {
     ]);
     refreshTickets();
   }, [pubkey2, refreshSol, refreshTIMLG, refreshProtocolState, refreshTickets]);
+  reactExports.useEffect(() => {
+    if (pubkey2 && !isDemo) {
+      refreshAll();
+    }
+  }, [pubkey2, refreshAll, isDemo]);
   async function connectPhantom() {
     try {
       let p = window?.solana;
@@ -47909,7 +47957,7 @@ Domain: timlg.org`;
       appendLog(`TIMLG faucet error: ${msg}`);
     }
   }
-  const doCommitGlobal = reactExports.useCallback(async ({ targetRoundId, targetPulseIndex, targetRoundPda, targetTIMLGVaultPda, targetCommitDl }) => {
+  const doCommitGlobal = reactExports.useCallback(async ({ targetRoundId, targetPulseIndex, targetRoundPda, targetTIMLGVaultPda, targetCommitDl, forcedGuess }) => {
     if (!pubkey2) {
       appendLog("Commit: connect wallet first.");
       return;
@@ -47927,11 +47975,15 @@ Domain: timlg.org`;
       appendLog(`Commit: Window closed (slot=${curSlot} >= deadline=${targetCommitDl}).`);
       return;
     }
+    if (forcedGuess !== void 0) setGuess(forcedGuess);
     setLoading2(true);
     setTxSig("");
     try {
-      const finalGuess = guess === -1 ? Math.floor(Math.random() * 2) : guess;
-      if (guess === -1) {
+      let finalGuess = forcedGuess;
+      if (finalGuess == null || finalGuess === -1) {
+        finalGuess = guess === -1 ? Math.floor(Math.random() * 2) : guess;
+      }
+      if (forcedGuess === -1 || forcedGuess == null && guess === -1) {
         appendLog(`Randomly picked: ${finalGuess === 1 ? "Bull (1)" : "Bear (0)"} 🎲`);
       }
       const userTIMLGAta = await getUserTIMLGTokenAccount(connection, pubkey2, mintPk);
@@ -48020,173 +48072,312 @@ Domain: timlg.org`;
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__title", children: "Wallet" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__title", children: "Wallet" }),
+          walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+            background: "rgba(16, 185, 129, 0.1)",
+            color: "#10B981",
+            padding: "2px 8px",
+            borderRadius: "20px",
+            fontSize: "11px",
+            fontWeight: "800",
+            fontFamily: "monospace",
+            border: "1px solid rgba(16, 185, 129, 0.2)"
+          }, children: shortPk$1(walletStr) })
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             className: "beta-tooltip",
             onClick: () => setShowInfo(!showInfo),
             type: "button",
-            style: { cursor: "pointer", border: "1px solid #aaa", color: "#666", background: showInfo ? "rgba(0,0,0,0.1)" : "transparent" },
+            style: {
+              cursor: "pointer",
+              border: "1px solid rgba(0,0,0,0.1)",
+              color: showInfo ? "#fff" : "#666",
+              background: showInfo ? "#2D68EA" : "#fff",
+              width: "28px",
+              height: "28px",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "14px",
+              fontWeight: "bold",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+              transition: "all 0.2s ease"
+            },
             children: showInfo ? "✕" : "i"
           }
         )
       ] }),
-      showInfo && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-info-panel", style: { marginTop: 4, marginBottom: 8, fontSize: "11px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "140px 1fr", gap: "6px 12px", alignItems: "start" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "RPC NETWORK" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.8, wordBreak: "break-all" }, children: RPC_URL }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, marginTop: "2px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "PROGRAM ID" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "2px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
-          PROGRAM_ID,
-          " ↗"
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { paddingLeft: "12px", color: "#2e7d32" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "• VERIFICATION" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://solscan.io/account/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2e7d32", textDecoration: "none", fontWeight: "bold" }, children: "TRUE ✅ (View On-chain ↗)" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { paddingLeft: "12px", color: "#1565c0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "• SECURITY.TXT" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/SECURITY.md", target: "_blank", rel: "noreferrer", style: { color: "#1565c0", textDecoration: "none", fontWeight: "bold" }, children: "TRUE ✅ (View Policy ↗)" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "TIMLG MINT" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://solscan.io/account/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
-          TIMLG_MINT,
-          " ↗"
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "BETA FAUCET" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: FAUCET_URL, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
-          FAUCET_URL,
-          " ↗"
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "BUILD VERSION" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4 }, children: "0.1.3-beta-verifiable" })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 20, marginTop: 6, position: "relative", zIndex: 1 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1, display: "flex", flexDirection: "column", gap: 6 }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__row", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__label", children: "Address" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-info", children: walletStr ? /* @__PURE__ */ jsxRuntimeExports.jsx("a", { className: "beta-link", href: explorerAccount(walletStr), target: "_blank", rel: "noreferrer", style: { fontSize: 14, fontWeight: 700, textDecoration: "none" }, children: shortPk$1(walletStr) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-muted", style: { fontSize: 14, fontWeight: 700 }, children: "Not connected" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-action", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
+        marginTop: 8,
+        marginBottom: 12,
+        fontSize: "10px",
+        background: "rgba(255,255,255,0.4)",
+        padding: "12px",
+        borderRadius: "12px",
+        border: "1px solid rgba(0,0,0,0.05)"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "ENVIRONMENT" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "RPC:" }),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "Devnet" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "VERSION:" }),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "0.1.3-verifiable" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { wordBreak: "break-all", opacity: 0.4, fontSize: "8px", marginTop: "4px" }, children: RPC_URL })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "TRUST & SECURITY" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "VERIFICATION:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/verified-build?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
+                  background: programStatus.verified ? "rgba(45, 104, 234, 0.1)" : "rgba(0,0,0,0.05)",
+                  color: programStatus.verified ? "#2D68EA" : "#666",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  fontWeight: "800",
+                  border: "1px solid",
+                  borderColor: programStatus.verified ? "#2D68EA" : "#ccc"
+                }, children: programStatus.verified ? "ON-CHAIN ✅" : "DEVNET-ACTIVE ℹ️" }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "SECURITY.TXT:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/security?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
+                  background: programStatus.security ? "rgba(16, 185, 129, 0.1)" : "rgba(0,0,0,0.05)",
+                  color: programStatus.security ? "#10B981" : "#666",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  fontWeight: "800",
+                  border: "1px solid",
+                  borderColor: programStatus.security ? "#10B981" : "#ccc"
+                }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
+              ] })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "PROTOCOL ASSETS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "100px 1fr", gap: "6px 12px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "PROGRAM ID" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+              PROGRAM_ID,
+              " ↗"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "TIMLG MINT" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+              TIMLG_MINT,
+              " ↗"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "FAUCET API" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontStyle: "italic" }, children: FAUCET_URL })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        display: "grid",
+        gridTemplateColumns: "1.2fr 0.8fr 1.15fr",
+        gap: "16px",
+        marginTop: "16px",
+        position: "relative",
+        zIndex: 1
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: "rgba(255,255,255,0.6)",
+          borderRadius: "16px",
+          padding: "14px",
+          border: "1px solid rgba(0,0,0,0.03)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "YOUR ASSETS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "8px 12px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.02)" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, marginBottom: "2px" }, children: "Solana Native" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "17px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)", borderRadius: "12px", padding: "8px 12px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)", border: "1px solid rgba(45, 104, 234, 0.1)" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: "#2D68EA", fontWeight: "600", marginBottom: "2px" }, children: "Protocol Token" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "17px", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", color: "#2D68EA", opacity: 0.8 }, children: "TIMLG" })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", paddingLeft: "4px" }, children: "QUICK ACTIONS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              className: "beta-btn",
+              style: {
+                height: "36px",
+                borderRadius: "12px",
+                fontWeight: "800",
+                background: walletStr ? "rgba(0,0,0,0.05)" : "#4C82FB",
+                color: walletStr ? "#666" : "#fff",
+                border: "none",
+                fontSize: "13px"
+              },
+              onClick: walletStr ? disconnectPhantom : connectPhantom,
+              type: "button",
+              children: walletStr ? "DISCONNECT" : "CONNECT WALLET"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
-                className: "beta-btn beta-walletbar__btn-main",
-                onClick: walletStr ? disconnectPhantom : connectPhantom,
+                className: "beta-btn",
+                style: { height: "36px", borderRadius: "10px", fontWeight: "700", background: "#fff", borderColor: "rgba(0,0,0,0.1)", color: "#555", fontSize: "12px" },
+                onClick: airdrop1Sol,
+                disabled: !walletStr || isDemo,
                 type: "button",
-                children: walletStr ? "Disconnect" : "Connect"
+                children: "AIRDROP SOL"
               }
-            ) })
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                className: "beta-btn",
+                style: { height: "36px", borderRadius: "10px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "13px" },
+                onClick: claimTIMLG,
+                disabled: !walletStr || isDemo,
+                type: "button",
+                children: "GET TIMLG"
+              }
+            )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__row", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__label", children: "SOL Balance" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-info", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 15, fontWeight: 700 }, children: [
-              displaySol == null ? "—" : displaySol.toFixed(3),
-              " SOL"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-action", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn", onClick: airdrop1Sol, disabled: !walletStr || isDemo, type: "button", children: "Airdrop SOL" }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__row", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__label", children: "TIMLG Balance" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-info", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 15, fontWeight: 700 }, children: [
-              displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2),
-              " TIMLG"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-action", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn", style: { background: "#2D68EA", color: "white", border: "none" }, onClick: claimTIMLG, disabled: !walletStr || isDemo, type: "button", children: "Get TIMLG" }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__row", style: { marginTop: 8 }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__label", children: stats && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "beta-input",
+              style: { padding: "0 10px", textAlign: "center", fontSize: "11px", width: "100%", height: "26px", background: "transparent", border: "1px dashed #ccc", borderRadius: "20px", marginTop: "auto" },
+              value: invite,
+              onChange: (e) => setInvite(e.target.value),
+              placeholder: "INVITE CODE"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: "rgba(255,255,255,0.4)",
+          borderRadius: "16px",
+          padding: "14px",
+          border: "1px solid rgba(0,0,0,0.03)",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              src: tokenLogo,
+              style: { position: "absolute", top: "50%", left: "50%", width: "160px", opacity: 0.05, pointerEvents: "none", transform: "translate(-50%, -50%) rotate(-15deg)", zIndex: 0 },
+              alt: "",
+              "aria-hidden": "true"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "8px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
+          !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", position: "relative", zIndex: 1, flex: 1 }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", width: "65px", height: "65px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "65", height: "65", viewBox: "0 0 100 100", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "50", cy: "50", r: "40", fill: "none", stroke: "rgba(0,0,0,0.05)", strokeWidth: "10" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "circle",
+                    {
+                      cx: "50",
+                      cy: "50",
+                      r: "40",
+                      fill: "none",
+                      stroke: stats.winRate >= 50 ? "#10B981" : "#EF4444",
+                      strokeWidth: "10",
+                      strokeDasharray: `${stats.winRate * 2.51}, 251.2`,
+                      strokeDashoffset: "0",
+                      strokeLinecap: "round",
+                      transform: "rotate(-90 50 50)",
+                      style: { transition: "stroke-dasharray 1s ease-in-out" }
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", fontWeight: "900", color: stats.winRate >= 50 ? "#10B981" : "#EF4444" }, children: [
+                    stats.winRate.toFixed(0),
+                    "%"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "6px", fontWeight: "800", opacity: 0.4 }, children: "WIN RATE" })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1 }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "7px", opacity: 0.5, fontWeight: "900" }, children: "TOTAL PROFIT" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "20px", fontWeight: "900", color: stats.netProfit >= 0 ? "#10B981" : "#EF4444", display: "flex", alignItems: "baseline" }, children: [
+                  stats.netProfit >= 0 ? "▲" : "▼",
+                  Math.abs(stats.netProfit).toFixed(0),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5, marginLeft: "4px" }, children: "TIMLG" })
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+              paddingTop: "8px",
+              borderTop: "1px solid rgba(0,0,0,0.05)",
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "8px"
+            }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(0,0,0,0.02)", padding: "4px 8px", borderRadius: "8px", flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "7px", opacity: 0.4, fontWeight: "800" }, children: "STREAK" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: "10px", color: stats.streak > 0 ? "#10B981" : "#888" }, children: [
+                  stats.streak,
+                  "W"
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(0,0,0,0.02)", padding: "4px 8px", borderRadius: "8px", flex: 1.2, display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "7px", opacity: 0.4, fontWeight: "800" }, children: "AUDITED" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: "10px" }, children: [
+                  stats.revealed,
+                  "/",
+                  stats.total
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "beta-btn",
                 style: {
                   width: "100%",
-                  padding: "4px 8px",
-                  fontSize: 10,
-                  background: showSankey ? "rgba(45, 104, 234, 0.1)" : "transparent",
-                  borderColor: showSankey ? "#2D68EA" : "rgba(0,0,0,0.2)",
-                  color: showSankey ? "#2D68EA" : "inherit",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 2
+                  padding: "5px",
+                  fontSize: "9px",
+                  borderRadius: "10px",
+                  background: showSankey ? "rgba(45, 104, 234, 0.1)" : "#fff",
+                  borderColor: showSankey ? "#2D68EA" : "rgba(0,0,0,0.1)",
+                  color: "#2D68EA",
+                  fontWeight: "800",
+                  marginTop: "auto"
                 },
                 onClick: () => setShowSankey(!showSankey),
-                children: showSankey ? "▲ HIDE FLOW" : "▼ SHOW FLOW"
+                children: showSankey ? "HIDE FLOW ANALYSIS ▲" : "VIEW FLOW ANALYSIS ▼"
               }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-info", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__label", style: { fontSize: 13, display: "flex", alignItems: "center", gap: 6 }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 16, lineHeight: 1 }, children: "↳" }),
-              " INVITE CODE"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__cell-action", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                className: "beta-input",
-                style: { padding: "0 10px", textAlign: "center", fontSize: 13, width: "100%", height: 32, background: "rgba(0,0,0,0.05)", border: "1px solid #ccc", borderRadius: 10 },
-                value: invite,
-                onChange: (e) => setInvite(e.target.value),
-                placeholder: "Code..."
-              }
-            ) })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { width: 280, borderLeft: "1px solid rgba(0,0,0,0.05)", paddingLeft: 20, display: "flex", flexDirection: "column", gap: 12, zIndex: 1, position: "relative", overflow: "hidden" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "img",
-            {
-              src: tokenLogo,
-              style: { position: "absolute", top: "50%", left: "50%", width: 350, opacity: 0.04, pointerEvents: "none", transform: "translate(-50%, -50%) rotate(-15deg)", zIndex: 0 },
-              alt: "",
-              "aria-hidden": "true"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, fontWeight: 800, opacity: 0.5, textTransform: "uppercase", letterSpacing: "0.05em", position: "relative", zIndex: 1 }, children: "Performance" }),
-          !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed #ccc", borderRadius: 8, opacity: 0.3, fontSize: 11 }, children: ticketsLoading ? "Calculating..." : "No Data Yet" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 16, marginTop: 8 }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", alignItems: "flex-start" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 9, opacity: 0.6, fontWeight: 700, letterSpacing: "0.02em" }, children: "NET P&L" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: 22, color: stats.netProfit >= 0 ? "#2D68EA" : "#c62828", letterSpacing: "-0.02em", lineHeight: 1.1 }, children: [
-                  stats.netProfit >= 0 ? "+" : "",
-                  stats.netProfit.toFixed(0),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 11, marginLeft: 1, opacity: 0.7 }, children: "T" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 9, opacity: 0.6, fontWeight: 700, letterSpacing: "0.02em" }, children: "WIN RATE" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: 22, color: stats.winRate >= 50 ? "#10B981" : "#c62828", letterSpacing: "-0.02em", lineHeight: 1.1 }, children: [
-                  stats.winRate.toFixed(1),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 11, marginLeft: 1, opacity: 0.7 }, children: "%" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 9, opacity: 0.6, fontWeight: 700, letterSpacing: "0.02em" }, children: "STRIKE" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: 22, color: stats.streak > 0 ? "#10B981" : "rgba(0,0,0,0.3)", letterSpacing: "-0.02em", lineHeight: 1.1 }, children: [
-                  stats.streak,
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 11, marginLeft: 1, opacity: 0.7 }, children: "W" })
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "100px 1fr", gap: "20px", paddingTop: 12, borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 9, opacity: 0.4, fontWeight: 700, letterSpacing: "0.02em" }, children: "REVEALED TIX" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: 16, opacity: 0.8, lineHeight: 1.1 }, children: [
-                  stats.revealed,
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 10, opacity: 0.4, fontWeight: 500, marginLeft: 2 }, children: [
-                    "/ ",
-                    stats.total
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 9, opacity: 0.4, fontWeight: 700, letterSpacing: "0.02em" }, children: "EXPECTED FLOW" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: 13, fontWeight: 800, lineHeight: 1.1, marginTop: 2 }, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { color: "#10B981" }, children: [
-                    "+",
-                    Math.floor(stats.breakdown.WIN * (isDemo ? 1 : 1 - (chainState?.rewardFeeBps ?? 0) / 1e4))
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.2, margin: "0 4px" }, children: "/" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { color: "#EF4444" }, children: [
-                    "-",
-                    stats.total - stats.breakdown.PENDING - stats.breakdown.REFUNDED - stats.breakdown.WIN
-                  ] })
-                ] })
-              ] })
-            ] })
+            )
           ] })
         ] })
       ] }),
