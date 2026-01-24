@@ -6,7 +6,7 @@
 
 <!-- Automagically updated by publish script -->
 <link rel="stylesheet" crossorigin href="../assets/beta/assets/index-RinpiP-M.css">
-<script type="module" crossorigin src="../assets/beta/assets/index-tfeqRTXP.js"></script>
+<script type="module" crossorigin src="../assets/beta/assets/index-BMiZY8GQ.js"></script>
 
 <noscript>
 You need JavaScript enabled to use the Devnet Beta.
