@@ -44831,6 +44831,19 @@ async function commitHash(roundId, userPk, nonce, guess, salt32) {
   );
   return sha256(data);
 }
+async function deriveBitIndex(roundId, userPk, nonce) {
+  const user = userPk instanceof PublicKey ? userPk : new PublicKey(userPk);
+  const prefix = new TextEncoder().encode("bitindex");
+  const data = concat(
+    prefix,
+    u64ToLeBytes(roundId),
+    user.toBytes(),
+    u64ToLeBytes(nonce)
+  );
+  const hash2 = await sha256(data);
+  const val = hash2[0] | hash2[1] << 8;
+  return val % 512;
+}
 function randomBytes32() {
   const u82 = new Uint8Array(32);
   globalThis.crypto.getRandomValues(u82);
@@ -45105,6 +45118,13 @@ const ExportIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ js
     fill: color
   }
 ) });
+const CopyIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  "path",
+  {
+    d: "M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z",
+    fill: color
+  }
+) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45133,6 +45153,11 @@ function PlayCard({
   const [pulseOffset, setPulseOffset] = reactExports.useState(3);
   const loading = globalLoading;
   const [lastTx, setLastTx] = reactExports.useState("");
+  const [stableNonce, setStableNonce] = reactExports.useState(null);
+  const [stableSalt, setStableSalt] = reactExports.useState(null);
+  const [previewBitIndex, setPreviewBitIndex] = reactExports.useState(null);
+  const [previewTicketPda, setPreviewTicketPda] = reactExports.useState(null);
+  const [previewCommitment, setPreviewCommitment] = reactExports.useState(null);
   const [localReceipt, setLocalReceipt] = reactExports.useState(null);
   const [localReceipts, setLocalReceipts] = reactExports.useState([]);
   const [now, setNow] = reactExports.useState(Date.now());
@@ -45167,6 +45192,23 @@ function PlayCard({
     setLocalReceipt(receipts || null);
     setLocalReceipts(fullList);
   }, [walletStr, currentRoundId]);
+  reactExports.useEffect(() => {
+    if (!walletStr || currentRoundId == null) {
+      setStableNonce(null);
+      setStableSalt(null);
+      setPreviewBitIndex(null);
+      return;
+    }
+    const n = Math.floor(Math.random() * 1e9);
+    const s = randomBytes32();
+    setStableNonce(n);
+    setStableSalt(s);
+    deriveBitIndex(currentRoundId, new PublicKey(walletStr), n).then(setPreviewBitIndex);
+    const pda = pdaTicket(programPk, currentRoundId, new PublicKey(walletStr), n);
+    setPreviewTicketPda(pda.toBase58());
+    const previewGuess = guess == null || guess === -1 ? 0 : guess;
+    commitHash(currentRoundId, new PublicKey(walletStr), n, previewGuess, s).then((bytes) => setPreviewCommitment(bytesToHex(bytes)));
+  }, [walletStr, currentRoundId, guess]);
   async function doReveal() {
     if (!pubkey2) return log("Reveal: connect wallet first.");
     if (!walletReady || !program) return log("Reveal: wallet/program not ready yet.");
@@ -45293,10 +45335,12 @@ function PlayCard({
       background: "rgba(255, 255, 255, 0.6)",
       borderRadius: "14px",
       padding: "16px",
+      height: "58px",
       border: "1px solid rgba(0, 0, 0, 0.03)",
       display: "flex",
       justifyContent: "space-between",
-      alignItems: "center"
+      alignItems: "center",
+      boxSizing: "border-box"
     }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "12px" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "16px", fontWeight: "900", color: "#111" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "ROUND TRACKING" }),
@@ -45315,138 +45359,233 @@ function PlayCard({
           "s"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "REMAINING" })
-      ] }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(0,0,0,0.02)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "4px" }, children: "CURRENT PULSE" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "a",
-            {
-              href: nist?.pulseUrl || `https://beacon.nist.gov/beacon/2.0/chain/2/pulse/${currentNistPulse}`,
-              target: "_blank",
-              rel: "noreferrer",
-              style: { fontSize: "14px", fontWeight: "800", color: "#444", opacity: 0.6, textDecoration: "none" },
-              onMouseEnter: (e) => e.currentTarget.style.color = "#2D68EA",
-              onMouseLeave: (e) => e.currentTarget.style.color = "#444",
-              children: [
-                "#",
-                currentNistPulse
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "800", color: "#444" }, children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: "12px", opacity: 0.6 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", letterSpacing: "0.05em" }, children: "CURRENT PULSE" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "a",
+              {
+                href: nist?.pulseUrl || `https://beacon.nist.gov/beacon/2.0/chain/2/pulse/${currentNistPulse}`,
+                target: "_blank",
+                rel: "noreferrer",
+                style: { fontSize: "12px", fontWeight: "800", color: "#444", textDecoration: "none", fontFamily: "monospace" },
+                onMouseEnter: (e) => e.currentTarget.style.color = "#2D68EA",
+                onMouseLeave: (e) => e.currentTarget.style.color = "#444",
+                children: [
+                  "#",
+                  currentNistPulse
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", fontWeight: "700", opacity: 0.6 }, children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "12px", background: "rgba(0,0,0,0.1)" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", letterSpacing: "0.05em" }, children: "UTC" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
         ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(76, 130, 251, 0.1)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", color: "#4C82FB", opacity: 0.8, letterSpacing: "0.05em", marginBottom: "4px" }, children: "TARGET PULSE" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "800", color: "#4C82FB", opacity: 0.7 }, children: [
-            "#",
-            targetPulseIndex
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "800", color: "#4C82FB" }, children: new Date(targetArrivalMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "10px 14px", border: "1px solid rgba(0,0,0,0.02)", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "4px" }, children: "NETWORK UTC" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "14px", fontWeight: "800", color: "#444" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1.25fr 1.35fr", gap: "12px" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        background: "rgba(255, 255, 255, 0.6)",
+        background: canCommit ? "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)" : "rgba(255, 255, 255, 0.4)",
         borderRadius: "14px",
         padding: "16px",
-        border: "1px solid rgba(0, 0, 0, 0.03)",
+        border: canCommit ? "1px solid rgba(76, 130, 251, 0.15)" : "1px solid rgba(0, 0, 0, 0.05)",
         display: "flex",
         flexDirection: "column",
-        gap: "8px"
+        gap: "16px",
+        boxShadow: canCommit ? "0 4px 12px rgba(76, 130, 251, 0.05)" : "none",
+        filter: canCommit ? "none" : "grayscale(1)"
       }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "PULSE OFFSET" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "4px", height: "54px" }, children: [1, 2, 3, 4, 5].map((offset2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setPulseOffset(offset2),
-            disabled: loading,
-            style: {
-              flex: 1,
-              borderRadius: "4px",
-              border: "1px solid",
-              borderColor: pulseOffset === offset2 ? "#4C82FB" : "rgba(0,0,0,0.06)",
-              background: pulseOffset === offset2 ? "#4C82FB" : "#fff",
-              color: pulseOffset === offset2 ? "#fff" : "#666",
-              fontSize: "18px",
-              fontWeight: "900",
-              cursor: "pointer",
-              transition: "all 0.1s",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: pulseOffset === offset2 ? "0 4px 12px rgba(76, 130, 251, 0.2)" : "none"
-            },
-            children: [
-              "+",
-              offset2
-            ]
-          },
-          offset2
-        )) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", color: "#4C82FB", opacity: 0.8, letterSpacing: "0.05em", marginBottom: "6px" }, children: "TARGET PULSE" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-end" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", color: "#4C82FB" }, children: [
+              "#",
+              targetPulseIndex
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { textAlign: "right" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "EST. ARRIVAL" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "700", opacity: 0.5 }, children: [
+                new Date(targetArrivalMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }),
+                " UTC"
+              ] })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: "1px", background: "rgba(0, 0, 0, 0.05)" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1, display: "flex", flexDirection: "column" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", color: canCommit ? "#4C82FB" : "#888", opacity: 0.6, letterSpacing: "0.05em", marginBottom: "8px" }, children: "TICKET PREVIEW" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { minHeight: "134px", display: "flex", flexDirection: "column", justifyContent: canCommit ? "flex-start" : "center" }, children: !canCommit ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { py: 10, textAlign: "center", fontSize: "10px", fontWeight: "800", color: "#888", opacity: 0.5, border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "8px", padding: "12px" }, children: "COMMIT WINDOW CLOSED" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "ASSIGNED BIT" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "20px", fontWeight: "900", color: "#4C82FB" }, children: [
+                  "#",
+                  previewBitIndex ?? "..."
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "STAKE" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "14px", fontWeight: "900", color: "#4C82FB", opacity: 0.8 }, children: [
+                  "1.00 ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px" }, children: "TIMLG" })
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "NONCE" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "700", fontFamily: "monospace", opacity: 0.6 }, children: stableNonce ?? "n/a" }),
+                  stableNonce && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => navigator.clipboard.writeText(stableNonce.toString()),
+                      style: { background: "none", border: "none", padding: 0, cursor: "pointer", opacity: 0.4 },
+                      title: "Copy Nonce",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(CopyIcon, { size: 10 })
+                    }
+                  )
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "COMMITMENT" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "700", fontFamily: "monospace", opacity: 0.4, overflow: "hidden", textOverflow: "ellipsis" }, children: previewCommitment ? `${previewCommitment.slice(0, 12)}...` : "..." }),
+                  previewCommitment && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => navigator.clipboard.writeText(previewCommitment),
+                      style: { background: "none", border: "none", padding: 0, cursor: "pointer", opacity: 0.4 },
+                      title: "Copy Commitment",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(CopyIcon, { size: 10 })
+                    }
+                  )
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "4px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", opacity: 0.4, marginBottom: "2px" }, children: "TICKET ADDRESS (PDA)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "700", fontFamily: "monospace", opacity: 0.4, overflow: "hidden", textOverflow: "ellipsis" }, children: previewTicketPda ?? "..." }),
+                previewTicketPda && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: () => navigator.clipboard.writeText(previewTicketPda),
+                    style: { background: "none", border: "none", padding: 0, cursor: "pointer", opacity: 0.4 },
+                    title: "Copy PDA",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(CopyIcon, { size: 10 })
+                  }
+                )
+              ] })
+            ] })
+          ] }) })
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        background: "rgba(255, 255, 255, 0.6)",
-        borderRadius: "14px",
-        padding: "16px",
-        border: "1px solid rgba(0, 0, 0, 0.03)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px"
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION (1.00 TIMLG)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "8px", height: "54px" }, children: [
-          { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 22, color: guess === 0 ? "#EF4444" : "#9CA3AF" }), color: "#EF4444" },
-          { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 22, color: guess === 1 ? "#10B981" : "#9CA3AF" }), color: "#10B981" },
-          { val: -1, label: "RANDOM", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 22, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
-        ].map((tile) => {
-          const isSubmitting = loading && guess === tile.val;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: canCommit ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.4)",
+          borderRadius: "14px",
+          padding: "16px",
+          border: "1px solid rgba(0, 0, 0, 0.03)",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "PULSE OFFSET" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "4px", flex: 1 }, children: [1, 2, 3, 4, 5].map((offset2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              onClick: () => {
-                setGuess(tile.val);
-                doCommitGlobal({
-                  targetRoundId: currentRoundId,
-                  targetPulseIndex,
-                  targetRoundPda: currentRoundPda,
-                  targetTIMLGVaultPda: currentTIMLGVaultPda,
-                  targetCommitDl: selectedRound?.commitDeadlineSlot,
-                  forcedGuess: tile.val
-                });
-              },
-              disabled: !canCommit || loading || !!localReceipt,
+              onClick: () => setPulseOffset(offset2),
+              disabled: loading,
               style: {
                 flex: 1,
                 borderRadius: "4px",
-                border: "2px solid",
-                borderColor: guess === tile.val ? tile.color : "rgba(0,0,0,0.05)",
-                background: guess === tile.val ? `${tile.color}14` : "#fff",
+                border: "1px solid",
+                borderColor: pulseOffset === offset2 ? "#4C82FB" : "rgba(0,0,0,0.06)",
+                background: pulseOffset === offset2 ? "#4C82FB" : "#fff",
+                color: pulseOffset === offset2 ? "#fff" : "#666",
+                fontSize: "16px",
+                fontWeight: "900",
+                cursor: loading ? "default" : "pointer",
+                transition: "all 0.1s",
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                cursor: canCommit && !loading && !localReceipt ? "pointer" : "default",
-                boxShadow: guess === tile.val ? `0 4px 12px ${tile.color}26` : "none",
-                transition: "all 0.2s"
+                boxShadow: pulseOffset === offset2 ? "0 4px 12px rgba(76, 130, 251, 0.2)" : "none"
               },
               children: [
-                isSubmitting ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: tile.color }, children: "..." }) : tile.icon,
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: guess === tile.val ? tile.color : "#666", marginTop: "2px" }, children: tile.label })
+                "+",
+                offset2
               ]
             },
-            tile.val
-          );
-        }) })
+            offset2
+          )) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: canCommit ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.4)",
+          borderRadius: "14px",
+          padding: "16px",
+          border: "1px solid rgba(0, 0, 0, 0.03)",
+          flex: 1.5,
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+          filter: canCommit ? "none" : "grayscale(1)"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "8px", flex: 1 }, children: [
+            { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 42, color: guess === 0 ? "#EF4444" : "#9CA3AF" }), color: "#EF4444" },
+            { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#10B981" : "#9CA3AF" }), color: "#10B981" },
+            { val: -1, label: "RAND", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 42, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
+          ].map((tile) => {
+            const isSubmitting = loading && guess === tile.val;
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: () => {
+                  setGuess(tile.val);
+                  doCommitGlobal({
+                    targetRoundId: currentRoundId,
+                    targetPulseIndex,
+                    targetRoundPda: currentRoundPda,
+                    targetTIMLGVaultPda: currentTIMLGVaultPda,
+                    targetCommitDl: selectedRound?.commitDeadlineSlot,
+                    forcedGuess: tile.val,
+                    nonce: stableNonce,
+                    salt: stableSalt
+                  });
+                },
+                disabled: !canCommit || loading || !!localReceipt,
+                style: {
+                  flex: 1,
+                  borderRadius: "4px",
+                  border: "2px solid",
+                  borderColor: guess === tile.val ? tile.color : "rgba(0,0,0,0.05)",
+                  background: guess === tile.val ? `${tile.color}14` : "#fff",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: canCommit && !loading && !localReceipt ? "pointer" : "default",
+                  boxShadow: guess === tile.val ? `0 4px 12px ${tile.color}26` : "none",
+                  transition: "all 0.2s"
+                },
+                children: [
+                  isSubmitting ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: tile.color }, children: "..." }) : tile.icon,
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: guess === tile.val ? tile.color : "#666", marginTop: "2px" }, children: tile.label })
+                ]
+              },
+              tile.val
+            );
+          }) })
+        ] })
       ] })
     ] }),
     (canReveal || canClaim) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px" }, children: [
@@ -47957,7 +48096,7 @@ Domain: timlg.org`;
       appendLog(`TIMLG faucet error: ${msg}`);
     }
   }
-  const doCommitGlobal = reactExports.useCallback(async ({ targetRoundId, targetPulseIndex, targetRoundPda, targetTIMLGVaultPda, targetCommitDl, forcedGuess }) => {
+  const doCommitGlobal = reactExports.useCallback(async ({ targetRoundId, targetPulseIndex, targetRoundPda, targetTIMLGVaultPda, targetCommitDl, forcedGuess, nonce: passedNonce, salt: passedSalt }) => {
     if (!pubkey2) {
       appendLog("Commit: connect wallet first.");
       return;
@@ -47981,15 +48120,15 @@ Domain: timlg.org`;
     try {
       let finalGuess = forcedGuess;
       if (finalGuess == null || finalGuess === -1) {
-        finalGuess = guess === -1 ? Math.floor(Math.random() * 2) : guess;
+        finalGuess = guess === -1 ? Math.floor(Math.random() * 1e9) % 2 : guess;
       }
       if (forcedGuess === -1 || forcedGuess == null && guess === -1) {
         appendLog(`Randomly picked: ${finalGuess === 1 ? "Bull (1)" : "Bear (0)"} 🎲`);
       }
       const userTIMLGAta = await getUserTIMLGTokenAccount(connection, pubkey2, mintPk);
       if (!userTIMLGAta) throw new Error("You don't have TIMLG yet. Use the faucet first.");
-      const nonce = Math.floor(Math.random() * 1e9);
-      const salt = randomBytes32();
+      const nonce = passedNonce ?? Math.floor(Math.random() * 1e9);
+      const salt = passedSalt ?? randomBytes32();
       const commitment = await commitHash(targetRoundId, pubkey2, nonce, finalGuess, salt);
       const accounts2 = {
         config: chainState.configPda ?? pdaConfig(programPk),
