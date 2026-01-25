@@ -2,9 +2,9 @@
 
 This section hosts the canonical **web version** of the TIMLG Protocol whitepaper.
 
-## Formats
-- **Web:** this documentation site (recommended for navigation)
-- **PDF:** [whitepaper_TIMLG_v0.1.pdf](../assets/whitepaper_TIMLG_v0.1.pdf)
+## Versions
+- [**v1.0-beta (Latest)**](../assets/whitepaper_TIMLG_v1.0-beta.pdf) - *Reflects current devnet implementation (Jan 2026)*
+- [**v0.1 (Legacy)**](../assets/whitepaper_TIMLG_v0.1.pdf) - *Original conceptual draft (Dec 2025)*
 
 ## Planned structure (short)
 - Motivation & Goals

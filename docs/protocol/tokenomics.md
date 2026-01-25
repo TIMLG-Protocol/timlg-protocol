@@ -55,7 +55,7 @@ TIMLG separates “classification” from “distribution”:
 4. **Finalize:** round is locked
 5. **Settle tokens:** losers and unrevealed are burned
 6. **Claim:** winners can claim **refund + mint**
-7. **Sweep (SOL-only):** after a grace window, optional native SOL sweep can run (lamports only)
+7. **Sweep:** after a grace window, native SOL and **remaining SPL tokens** are swept to their respective treasuries.
 
 This separation makes the protocol easier to audit and harder to exploit with timing tricks.
 

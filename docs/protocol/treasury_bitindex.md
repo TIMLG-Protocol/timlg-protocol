@@ -30,7 +30,8 @@ The MVP uses two treasury endpoints:
 | Treasury | Asset | Purpose (public view) |
 |---|---|---|
 | **Reward Fee SPL** | TIMLG token (SPL) | receives **reward fees** (configured in Tokenomics) |
-| **SOL Treasury** | lamports | receives optional **post-grace** sweeps of native SOL leftovers (rent) |
+| **SOL Treasury** | lamports | receives **post-grace** sweeps of native SOL (rent) |
+| **Protocol Treasury SPL** | TIMLG token (SPL) | receives **post-grace** sweeps of unclaimed winner rewards |
 
 > The exact accounts are configured on-chain and should be treated as canonical by indexers.
 
@@ -42,7 +43,7 @@ At a high level:
 
 - **LOSE** or **NO-REVEAL** stake is **burned** during `settle_round_tokens` (burn occurs from the round token vault).
 - **WIN** stake is refundable only when the winner claims; the **reward is minted on claim** (`claim_reward`).
-- After a **claim grace period**, `sweep_unclaimed` may run to route **native SOL only** (lamports) to the **SOL treasury**.
+- After a **claim grace period**, `sweep_unclaimed` may run to route **native SOL and unclaimed SPL tokens** to their respective treasuries.
   - In the MVP, this sweep marks the round as swept and **closes the claim window**.
 
 For timing and gating details, see:
@@ -65,14 +66,14 @@ across the pulse.
 
 For each ticket:
 
-- `bit_index = u64_le( SHA256( "bit_index" || round_id_le || participant_pubkey || nonce_le )[0..8] ) mod 512`
+- `bit_index = u16_le( SHA256( "bitindex" || round_id_le || participant_pubkey || nonce_le )[0..2] ) mod 512`
 
 Where:
 - `round_id_le` is `round_id` as 8 bytes little-endian
 - `nonce_le` is `nonce` as 8 bytes little-endian
 - `participant_pubkey` is the raw 32-byte pubkey
 - `SHA256` is computed over the concatenation of those byte slices
-- `u64_le([b0...b7])` interprets the first eight bytes as little-endian `u64`
+- `u16_le([b0, b1])` interprets the first two bytes as little-endian `u16`
 
 !!! note "Versioning"
     This seed format is part of the public protocol surface. If it ever changes, it must be versioned (v2) and treated
@@ -90,10 +91,9 @@ In the MVP extraction convention:
 
 - `byte_i = bit_index / 8`
 - `bit_i  = bit_index % 8`
-- `target_bit = (pulse[byte_i] >> (7 - bit_i)) & 1`
+- `target_bit = (pulse[byte_i] >> bit_i) & 1`
 
-This means bit 0 is the **most significant bit of pulse[0]**, bit 7 is the LSB of pulse[0], bit 8 is the MSB of
-pulse[1], etc.
+This means bit 0 is the **least significant bit (LSB) of pulse[0]**, bit 7 is the MSB of pulse[0], bit 8 is the LSB of pulse[1], etc.
 
 ---
 

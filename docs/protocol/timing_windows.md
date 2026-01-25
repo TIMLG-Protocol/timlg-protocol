@@ -80,11 +80,11 @@ Notes:
       <td>Claim refunds stake + mints reward. Claims are blocked once swept.</td>
     </tr>
     <tr>
-      <td><strong>Sweep (SOL-only)</strong></td>
+      <td><strong>Sweep (SOL + SPL)</strong></td>
       <td><code>slot &gt; reveal_deadline_slot + claim_grace_slots</code> and round finalized</td>
-      <td>Sweep native SOL leftovers (<code>sweep_unclaimed</code>)</td>
+      <td>Sweep SOL and tokens (<code>sweep_unclaimed</code>)</td>
       <td>
-        MVP sweep transfers lamports from a system vault to the SOL treasury and marks the round swept (closing claims).
+        MVP sweep transfers lamports to the SOL treasury and remaining tokens to the SPL treasury, then marks the round swept (closing claims).
       </td>
     </tr>
   </tbody>

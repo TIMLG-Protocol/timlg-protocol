@@ -36,9 +36,9 @@ With the exact extraction convention:
 
 - `byte_i = bit_index / 8`
 - `bit_i  = bit_index % 8`
-- `target_bit = (pulse[byte_i] >> (7 - bit_i)) & 1`
+- `target_bit = (pulse[byte_i] >> bit_i) & 1`
 
-So bit 0 is the **most significant bit of pulse[0]**, bit 7 is the LSB of pulse[0], bit 8 is the MSB of pulse[1], etc.
+So bit 0 is the **least significant bit (LSB) of pulse[0]**, bit 7 is the MSB of pulse[0], bit 8 is the LSB of pulse[1], etc.
 
 !!! note "Stability requirement"
     The extraction convention (byte order + bit order) must remain stable and versioned.
@@ -68,7 +68,7 @@ At a high level, a round moves through these steps:
 4) Users **reveal**
 5) **Settle** token accounting (`settle_round_tokens`) — **Note**: this instruction auto-finalizes the round if it hasn't been done yet.
 6) Winners **claim** (`claim_reward`)
-7) After a grace period, admin may run `sweep_unclaimed` (**SOL-only**)
+7) After a grace period, admin may run `sweep_unclaimed` (**SOL + SPL tokens**)
 
 ### Why settlement is a separate step
 Settlement is intentionally explicit so:
@@ -119,6 +119,21 @@ During `settle_round_tokens`:
 - For every **LOSE** or **NO-REVEAL** ticket: `stake_amount` is included in a burn total and burned from the round token vault.
 - WIN tickets are not paid automatically at settlement; they become claimable.
 
+### Edge cases and rules of thumb
+
+#### 1) Pulse arrives early or late
+(Handled in Timing Windows)
+
+#### 2) Users commit at the boundary slot
+(Handled in Timing Windows)
+
+#### 3) Permissionless Refunds (Cranker)
+
+If the randomness pulse is never posted (e.g., oracle failure), users have an **infinite refund right**. To prevent rounds from staying open indefinitely if users are inactive, the protocol allows **permissionless refunds**:
+- Anyone can trigger a refund for any ticket after the **Refund Timeout** has passed.
+- The funds are always sent to the original participant's Token Account.
+- The ticket PDA is closed, and its remaining lamports are returned to the participant.
+
 ---
 
 ## Sweep rules (MVP)
@@ -127,15 +142,16 @@ After the grace period, `sweep_unclaimed` may be executed:
 
 - Gate: `current_slot > reveal_deadline_slot + claim_grace_slots`
 - Requires: round is finalized and not already swept
-- Effect (MVP): transfers **native SOL only** (lamports) from a round system vault to the **SOL treasury**
-- Side effect: marks the round as **swept**, which **closes claims** in the MVP (`claim_reward` rejects if `round.swept`)
+- Effect (MVP): transfers **native SOL** (lamports) to the **SOL treasury** and **remaining tokens** to the **Protocol Treasury SPL**.
+- Side effect: marks the round as **swept**, which **closes claims** in the MVP (`claim_reward` rejects if `round.swept`).
+- This ensures the round vault is emptied, allowing for a successful `close_round`.
 
 > [!CAUTION]
 > **Permanent Prize Forfeiture**: In the current MVP implementation, if a winner fails to claim their reward before the **Claim Grace** period expires and the round is **swept**, the prize is **lost forever**. The system does not support late claims or automated reward distribution after a sweep has occurred.
 
 !!! note "Operational guidance"
-    The MVP code does not require token settlement before the SOL sweep, but operators should typically:
-    finalize → settle tokens → allow claim window → then sweep.
+    The MVP code allows sweeping both SOL and SPL. Operators should typically:
+    finalize → settle tokens → allow claim window → then sweep everything.
 
 ---
 

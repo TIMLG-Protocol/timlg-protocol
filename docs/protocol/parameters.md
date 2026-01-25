@@ -16,10 +16,10 @@ Devnet runs with shorter windows so rounds complete quickly.
 | Parameter | Devnet value | What it means |
 |---|---|---|
 | Stake per ticket | **1 token** | The amount paid per commit (TIMLG whole-token unit). |
-| Commit window | **Up to ~1,050 slots** | ~7 minutes betting window (`COMMIT_DURATION_SEC=420`). |
-| Reveal window | **1,000 slots** | Window to reveal your guess after pulse publication. |
-| Claim Grace | **900 slots** | Min. delay (~6 min) after reveal deadline before a sweep is allowed. |
-| Refund timeout | **150 slots** | Safety window (~1 min) to recover stake if the Oracle fails. |
+| Commit window | **120 slots** | betting window (default devnet config). |
+| Reveal window | **120 slots** | Window to reveal your guess after pulse publication. |
+| Claim Grace | **0 slots** | Default grace period before a sweep is allowed (configurable). |
+| Refund timeout | **150 slots** | Safety window (~1 min) to recover stake if the Oracle fails (permissionless). |
 | Reward fee | **100 bps (1%)** | Fee taken from winner rewards to the protocol fee pool. |
 | Operator pipeline depth | **7 rounds** | Number of future rounds maintained by the operator. |
 | Operator tick | **5 seconds** | Frequency of the automated maintenance loop. |
@@ -58,6 +58,6 @@ Mainnet parameters will be tuned for real users and reliable claims across time 
 
 - **Commit window:** time allowed to submit commitments (tickets).
 - **Reveal window:** time allowed to reveal guesses after the randomness pulse is posted.
-- **Claim Grace:** the safety period (in slots) after the **Reveal Deadline** during which winners can claim. The round **cannot** be swept until this grace expires.
+- **Claim Grace:** the safety period (in slots) after the **Reveal Deadline** during which winners can claim. The round **cannot** be swept until this grace expires. After this window, remaining tokens are swept to Treasury.
 - **Fee (bps):** basis points; 100 bps = 1%.
 - **Pipeline depth:** how many future rounds the operator keeps ready.

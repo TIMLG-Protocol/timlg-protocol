@@ -45078,7 +45078,7 @@ const BearIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRu
   "path",
   {
     fill: color,
-    d: "M100.654,133.037v7.882l11.802,6.775c2.395,1.375,3.222,4.431,1.847,6.825c-0.924,1.61-2.608,2.512-4.341,2.512\n            c-0.844,0-1.7-0.214-2.484-0.665l-11.823-6.788l-11.824,6.788c-0.784,0.451-1.641,0.665-2.484,0.665\n            c-1.732,0-3.417-0.901-4.341-2.512c-1.375-2.395-0.548-5.451,1.847-6.825l11.803-6.775v-7.882c-0.369-0.264-0.725-0.55-1.054-0.874\n            l-14.379-14.145c-2.508-2.468-3.268-6.166-1.935-9.423s4.469-5.361,7.987-5.361h28.759c3.519,0,6.654,2.104,7.987,5.361\n            s0.573,6.955-1.936,9.423l-14.378,14.146C101.378,132.488,101.023,132.774,100.654,133.037z M176.528,61.392\n            c5.517,14.341,22.875,65.02,3.198,89.445c-19.04,23.637-50.229,31.811-63.547,35.301c-2.048,0.536-3.816,1-4.895,1.351\n            c-9.157,2.979-14.995,3.064-15.631,3.064s-6.475-0.086-15.633-3.064c-1.077-0.351-2.846-0.814-4.894-1.351\n            c-13.318-3.49-44.507-11.664-63.547-35.301c-19.677-24.426-2.318-75.104,3.198-89.445C9.432,57.237,0,48.059,0,35.016\n            C0,18.045,14.358,0.754,28.451,0.754c0.187,0,0.373,0.003,0.56,0.01c9.311,0.321,17.076,10.051,21.155,16.373\n            c3.383-2.174,8.169-4.457,13.344-4.457h64.288c5.175,0,9.961,2.283,13.344,4.457c4.079-6.322,11.845-16.052,21.156-16.373\n            c0.188-0.007,0.372-0.01,0.56-0.01c14.092,0,28.45,17.291,28.45,34.262C191.308,48.059,181.876,57.237,176.528,61.392z\n             M62.733,87.506c6.585,0,12.359-4.449,14.043-10.82c0.557-2.104-0.313-4.328-2.15-5.496L59.3,61.442\n            c-1.841-1.171-4.224-1.013-5.895,0.386c-3.31,2.772-5.207,6.834-5.207,11.144C48.198,80.986,54.719,87.506,62.733,87.506z\n             M130.642,129.42c0-13.947-6.198-25.626-18.422-34.713c-4.814-3.578-10.543-5.47-16.565-5.47c-6.023,0-11.752,1.892-16.566,5.47\n            c-12.224,9.087-18.422,20.766-18.422,34.713c0,21.661,15.075,30.924,27.722,34.88c4.712,1.473,9.82,1.473,14.532,0\n            C115.566,160.344,130.642,151.082,130.642,129.42z M143.11,72.971c0-4.31-1.897-8.371-5.207-11.144\n            c-1.671-1.399-4.056-1.558-5.895-0.386l-15.326,9.748c-1.837,1.168-2.707,3.392-2.15,5.496c1.684,6.371,7.458,10.82,14.043,10.82\n            C136.59,87.506,143.11,80.986,143.11,72.971z"
+    d: "M100.654,133.037v7.882l11.802,6.775c2.395,1.375,3.222,4.431,1.847,6.825c-0.924,1.61-2.608,2.512-4.341,2.512\n            c-0.844,0-1.7-0.214-2.484-0.665l-11.823-6.788l-11.824,6.788c-0.784,0.451-1.641,0.665-2.484,0.665\n            c-1.732,0-3.417-0.901-4.341-2.512c-1.375-2.395-0.548-5.451,1.847-6.825l11.803-6.775v-7.882c-0.369-0.264-0.725-0.55-1.054-0.874\n            l-14.379-14.145c-2.508-2.468-3.268-6.166-1.935-9.423s4.469-5.361,7.987-5.361h28.759c3.519,0,6.654,2.104,7.987,5.361\n            s0.573,6.955-1.936,9.423l-14.378,14.146C101.378,132.488,101.023,132.774,100.654,133.037z M176.528,61.392\n            c5.517,14.341,22.875,65.02,3.198,89.445c-19.04,23.637-50.229,31.811-63.547,35.301c-2.048,0.536-3.816,1-4.895,1.351\n            c-9.157,2.979-14.995,3.064-15.631,3.064s-6.475-0.086-15.633-3.064c-1.077-0.351-2.846-0.814-4.894-1.351\n            c-13.318-3.49-44.507-11.664-63.547-35.301c-19.677-24.426-2.318-75.104,3.198-89.445C9.432,57.237,0,48.059,0,35.016\n            C0,18.045,14.358,0.754,28.451,0.754c0.187,0,0.373,0.003,0.56,0.01c9.311,0.321,17.076,10.051,21.155,16.373\n            c3.383-2.174,8.169-4.457,13.344-4.457h64.288c5.175,0,9.961,2.283,13.344,4.457c4.079-6.322,11.845-16.052,21.156-16.373\n            c0.188-0.007,0.372-0.01,0.56-0.01c14.092,0,28.45,17.291,28.45,34.262C191.308,48.059,181.876,57.237,176.528,61.392z\n            M62.733,87.506c6.585,0,12.359-4.449,14.043-10.82c0.557-2.104-0.313-4.328-2.15-5.496L59.3,61.442\n            c-1.841-1.171-4.224-1.013-5.895,0.386c-3.31,2.772-5.207,6.834-5.207,11.144C48.198,80.986,54.719,87.506,62.733,87.506z\n            M130.642,129.42c0-13.947-6.198-25.626-18.422-34.713c-4.814-3.578-10.543-5.47-16.565-5.47c-6.023,0-11.752,1.892-16.566,5.47\n            c-12.224,9.087-18.422,20.766-18.422,34.713c0,21.661,15.075,30.924,27.722,34.88c4.712,1.473,9.82,1.473,14.532,0\n            C115.566,160.344,130.642,151.082,130.642,129.42z M143.11,72.971c0-4.31-1.897-8.371-5.207-11.144\n            c-1.671-1.399-4.056-1.558-5.895-0.386l-15.326,9.748c-1.837,1.168-2.707,3.392-2.15,5.496c1.684,6.371,7.458,10.82,14.043,10.82\n            C136.59,87.506,143.11,80.986,143.11,72.971z"
   }
 ) });
 const RandomIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-12 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm10 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5-5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z", fill: color }) });
@@ -45125,6 +45125,15 @@ const CopyIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxR
     fill: color
   }
 ) });
+const TimlgIcon = ({ size = 20, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 1024 1024", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M0,0 L38,0 L66,4 L99,12 L108,16 L119,21 L124,23 L127,26 L141,34 L154,43 L165,52 L177,63 L188,75 L191,78 L196,84 L198,85 L204,96 L211,106 L221,123 L227,139 L234,162 L239,186 L241,202 L242,219 L242,232 L239,260 L236,273 L231,289 L223,312 L212,333 L202,348 L194,358 L180,373 L169,384 L158,393 L154,397 L149,400 L141,406 L124,416 L103,426 L85,429 L59,437 L52,439 L35,440 L6,440 L-17,437 L-40,432 L-49,431 L-71,422 L-87,414 L-102,405 L-106,401 L-113,397 L-128,383 L-138,374 L-147,365 L-158,351 L-168,336 L-178,318 L-182,310 L-186,297 L-192,279 L-196,264 L-199,244 L-200,230 L-200,198 L-196,172 L-190,149 L-182,129 L-179,123 L-177,123 L-175,117 L-166,101 L-156,87 L-146,74 L-138,65 L-128,57 L-118,48 L-108,41 L-99,34 L-82,24 L-60,14 L-39,7 L-16,2 Z M-1,33 L-16,35 L-35,40 L-52,46 L-77,59 L-93,70 L-104,79 L-119,93 L-128,104 L-137,116 L-146,132 L-153,147 L-161,171 L-166,193 L-167,200 L-167,236 L-163,260 L-157,281 L-149,300 L-139,319 L-128,335 L-117,348 L-103,362 L-90,372 L-77,380 L-74,380 L-73,383 L-54,392 L-36,399 L-15,405 L5,408 L36,408 L56,405 L76,400 L96,392 L119,380 L131,372 L136,367 L147,359 L165,341 L175,328 L184,314 L192,299 L205,264 L208,250 L210,228 L209,203 L206,183 L201,163 L197,151 L194,150 L192,140 L182,121 L172,107 L163,96 L145,78 L129,66 L108,53 L92,45 L77,40 L56,35 L43,33 Z ", fill: color, transform: "translate(491,294)" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M0,0 L226,0 L229,5 L239,43 L239,48 L143,48 L144,213 L146,231 L152,253 L162,271 L162,274 L141,274 L126,271 L114,266 L105,259 L96,250 L88,237 L84,224 L84,48 L-13,48 L-11,35 L-4,11 L-2,2 Z ", fill: color, transform: "translate(399,402)" })
+] });
+const SolanaIcon = ({ size = 20, color = "#000" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 5.22265C7.17671 5.08355 7.33282 5 7.5 5H18.5C18.6844 5 18.8538 5.10149 18.9408 5.26407C19.0278 5.42665 19.0183 5.62392 18.916 5.77735L16.916 8.77735C16.8233 8.91645 16.6672 9 16.5 9H5.5C5.3156 9 5.14617 8.89851 5.05916 8.73593C4.97215 8.57335 4.98169 8.3761 5.08398 8.22265L7.08398 5.22265ZM7.76759 6L6.43426 8H16.2324L17.5657 6H7.76759Z", fill: color }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 15.2226C7.17671 15.0836 7.33282 15 7.5 15H18.5C18.6844 15 18.8538 15.1015 18.9408 15.2641C19.0278 15.4267 19.0183 15.6239 18.916 15.7774L16.916 18.7774C16.8233 18.9164 16.6672 19 16.5 19H5.5C5.3156 19 5.14617 18.8985 5.05916 18.7359C4.97215 18.5734 4.98169 18.3761 5.08398 18.2226L7.08398 15.2226ZM7.76759 16L6.43426 18H16.2324L17.5657 16H7.76759Z", fill: color }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 13.7774C7.17671 13.9164 7.33282 14 7.5 14H18.5C18.6844 14 18.8538 13.8985 18.9408 13.7359C19.0278 13.5733 19.0183 13.3761 18.916 13.2226L16.916 10.2226C16.8233 10.0836 16.6672 10 16.5 10H5.5C5.3156 10 5.14617 10.1015 5.05916 10.2641C4.97215 10.4267 4.98169 10.6239 5.08398 10.7774L7.08398 13.7774ZM7.76759 13L6.43426 11H16.2324L17.5657 13H7.76759Z", fill: color })
+] });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45161,6 +45170,7 @@ function PlayCard({
   const [localReceipt, setLocalReceipt] = reactExports.useState(null);
   const [localReceipts, setLocalReceipts] = reactExports.useState([]);
   const [now, setNow] = reactExports.useState(Date.now());
+  const [nonceVersion, setNonceVersion] = reactExports.useState(0);
   reactExports.useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1e3);
     return () => clearInterval(timer);
@@ -45196,19 +45206,42 @@ function PlayCard({
     if (!walletStr || currentRoundId == null) {
       setStableNonce(null);
       setStableSalt(null);
-      setPreviewBitIndex(null);
       return;
     }
-    const n = Math.floor(Math.random() * 1e9);
-    const s = randomBytes32();
-    setStableNonce(n);
-    setStableSalt(s);
-    deriveBitIndex(currentRoundId, new PublicKey(walletStr), n).then(setPreviewBitIndex);
-    const pda = pdaTicket(programPk, currentRoundId, new PublicKey(walletStr), n);
+    setStableNonce((n) => n ?? Math.floor(Math.random() * 1e9));
+    setStableSalt((s) => s ?? randomBytes32());
+  }, [walletStr, currentRoundId]);
+  reactExports.useEffect(() => {
+    if (!walletStr || currentRoundId == null || stableNonce == null || !stableSalt) {
+      setPreviewBitIndex(null);
+      setPreviewTicketPda(null);
+      setPreviewCommitment(null);
+      return;
+    }
+    deriveBitIndex(currentRoundId, new PublicKey(walletStr), stableNonce).then(setPreviewBitIndex);
+    const pda = pdaTicket(programPk, currentRoundId, new PublicKey(walletStr), stableNonce);
     setPreviewTicketPda(pda.toBase58());
     const previewGuess = guess == null || guess === -1 ? 0 : guess;
-    commitHash(currentRoundId, new PublicKey(walletStr), n, previewGuess, s).then((bytes) => setPreviewCommitment(bytesToHex(bytes)));
-  }, [walletStr, currentRoundId, guess]);
+    commitHash(currentRoundId, new PublicKey(walletStr), stableNonce, previewGuess, stableSalt).then((bytes) => setPreviewCommitment(bytesToHex(bytes)));
+  }, [walletStr, currentRoundId, stableNonce, stableSalt, guess]);
+  async function doCommit(guessOverride) {
+    await doCommitGlobal({
+      targetRoundId: currentRoundId,
+      targetPulseIndex,
+      targetRoundPda: currentRoundPda,
+      targetTIMLGVaultPda: currentTIMLGVaultPda,
+      targetCommitDl: selectedRound?.commitDeadlineSlot,
+      nonce: stableNonce,
+      salt: stableSalt,
+      forcedGuess: guessOverride
+      // Pass it through
+    });
+    const nextNonce = Math.floor(Math.random() * 1e9);
+    const nextSalt = randomBytes32();
+    console.log("Refreshing Nonce:", nextNonce);
+    setStableNonce(nextNonce);
+    setStableSalt(nextSalt);
+  }
   async function doReveal() {
     if (!pubkey2) return log("Reveal: connect wallet first.");
     if (!walletReady || !program) return log("Reveal: wallet/program not ready yet.");
@@ -45541,8 +45574,8 @@ function PlayCard({
         }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "8px", flex: 1 }, children: [
-            { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 42, color: guess === 0 ? "#EF4444" : "#9CA3AF" }), color: "#EF4444" },
-            { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#10B981" : "#9CA3AF" }), color: "#10B981" },
+            { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 42, color: guess === 0 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
+            { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
             { val: -1, label: "RAND", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 42, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
           ].map((tile) => {
             const isSubmitting = loading && guess === tile.val;
@@ -45551,16 +45584,7 @@ function PlayCard({
               {
                 onClick: () => {
                   setGuess(tile.val);
-                  doCommitGlobal({
-                    targetRoundId: currentRoundId,
-                    targetPulseIndex,
-                    targetRoundPda: currentRoundPda,
-                    targetTIMLGVaultPda: currentTIMLGVaultPda,
-                    targetCommitDl: selectedRound?.commitDeadlineSlot,
-                    forcedGuess: tile.val,
-                    nonce: stableNonce,
-                    salt: stableSalt
-                  });
+                  doCommit(tile.val);
                 },
                 disabled: !canCommit || loading || !!localReceipt,
                 style: {
@@ -47860,11 +47884,10 @@ function App() {
       if (!rounds.has(r.roundId)) rounds.set(r.roundId, []);
       rounds.get(r.roundId).push(r);
     });
-    const sortedRoundIds = Array.from(rounds.keys()).sort((a, b) => b - a);
-    let streak = 0;
-    let streakBroken = false;
-    for (const rid of sortedRoundIds) {
-      if (streakBroken) break;
+    const chronoRoundIds = Array.from(rounds.keys()).sort((a, b) => a - b);
+    let currentRun = 0;
+    let maxStreak = 0;
+    for (const rid of chronoRoundIds) {
       const tix = rounds.get(rid);
       const finished2 = tix.every((t) => {
         const revealDl = t.round?.revealDeadlineSlot || t.round?.reveal_deadline_slot ? BigInt(t.round.revealDeadlineSlot || t.round.reveal_deadline_slot) : null;
@@ -47872,14 +47895,25 @@ function App() {
         return t.revealed || isExpired;
       });
       if (!finished2) continue;
-      const hasWin = tix.some((t) => t.revealed && t.win);
-      if (hasWin) {
-        streak++;
+      let roundPnL = 0;
+      tix.forEach((t) => {
+        const revealDl = t.round?.revealDeadlineSlot || t.round?.reveal_deadline_slot ? BigInt(t.round.revealDeadlineSlot || t.round.reveal_deadline_slot) : null;
+        const isExpired = !t.revealed && !t.win && revealDl && currentSlot && currentSlot > revealDl;
+        if (t.revealed && t.win) {
+          const fee = Math.floor(uiStake * feeBps / 1e4);
+          roundPnL += uiStake - fee;
+        } else if (t.revealed || isExpired) {
+          roundPnL -= uiStake;
+        }
+      });
+      if (roundPnL > 0) {
+        currentRun++;
+        maxStreak = Math.max(maxStreak, currentRun);
       } else {
-        streakBroken = true;
+        currentRun = 0;
       }
     }
-    return { total, revealed, pending, wins, winRate, netProfit: netTokens, efficiency, countable, breakdown, streak };
+    return { total, revealed, pending, wins, winRate, netProfit: netTokens, efficiency, countable, breakdown, streak: maxStreak };
   }, [ticketRows, chainState?.config?.stakeAmount, chainState?.rewardFeeBps, chainState?.currentSlot]);
   reactExports.useEffect(() => {
     if (!pubkey2 || !stats || !stats.breakdown) return;
@@ -48200,6 +48234,7 @@ Domain: timlg.org`;
     return { label: "Ready", tone: "ok" };
   }, [walletStr, sol, timlg]);
   const [showInfo, setShowInfo] = reactExports.useState(false);
+  const [isCompact, setIsCompact] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-app", children: [
     !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card beta-card--warn", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "Phantom not detected." }),
@@ -48222,35 +48257,116 @@ Domain: timlg.org`;
             fontWeight: "800",
             fontFamily: "monospace",
             border: "1px solid rgba(16, 185, 129, 0.2)"
-          }, children: shortPk$1(walletStr) })
+          }, children: shortPk$1(walletStr) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              style: {
+                height: "24px",
+                padding: "0 12px",
+                borderRadius: "20px",
+                fontSize: "10px",
+                fontWeight: "800",
+                background: walletStr ? "rgba(0,0,0,0.05)" : "#2D68EA",
+                color: walletStr ? "#666" : "#fff",
+                border: walletStr ? "1px solid rgba(0,0,0,0.1)" : "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                transition: "all 0.2s"
+              },
+              onClick: walletStr ? disconnectPhantom : connectPhantom,
+              onMouseEnter: (e) => {
+                if (walletStr) {
+                  e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
+                  e.currentTarget.style.color = "#EF4444";
+                  e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.2)";
+                }
+              },
+              onMouseLeave: (e) => {
+                if (walletStr) {
+                  e.currentTarget.style.background = "rgba(0,0,0,0.05)";
+                  e.currentTarget.style.color = "#666";
+                  e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
+                }
+              },
+              children: walletStr ? "Disconnect" : "Connect Wallet"
+            }
+          ),
+          isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 16, marginLeft: 20 }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "SOL" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "TIMLG" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) })
+            ] })
+          ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: "beta-tooltip",
-            onClick: () => setShowInfo(!showInfo),
-            type: "button",
-            style: {
-              cursor: "pointer",
-              border: "1px solid rgba(0,0,0,0.1)",
-              color: showInfo ? "#fff" : "#666",
-              background: showInfo ? "#2D68EA" : "#fff",
-              width: "28px",
-              height: "28px",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "14px",
-              fontWeight: "bold",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-              transition: "all 0.2s ease"
-            },
-            children: showInfo ? "✕" : "i"
-          }
-        )
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+          !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              className: "beta-tooltip",
+              onClick: () => setShowInfo(!showInfo),
+              type: "button",
+              style: {
+                cursor: "pointer",
+                border: "1px solid rgba(0,0,0,0.1)",
+                color: showInfo ? "#fff" : "#666",
+                background: showInfo ? "#2D68EA" : "#fff",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "14px",
+                fontWeight: "bold",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                transition: "all 0.2s ease"
+              },
+              children: showInfo ? "✕" : "i"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              className: "beta-tooltip",
+              onClick: () => {
+                const next = !isCompact;
+                setIsCompact(next);
+                if (next) {
+                  setShowSankey(false);
+                  setShowInfo(false);
+                }
+              },
+              type: "button",
+              style: {
+                cursor: "pointer",
+                border: "1px solid rgba(0,0,0,0.1)",
+                color: "#666",
+                background: isCompact ? "#f0f0f0" : "#fff",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "12px",
+                fontWeight: "bold",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                transition: "all 0.2s ease"
+              },
+              title: isCompact ? "Expand" : "Compact",
+              children: isCompact ? "▼" : "▲"
+            }
+          )
+        ] })
       ] }),
-      showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
+      !isCompact && showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
         marginTop: 8,
         marginBottom: 12,
         fontSize: "10px",
@@ -48324,9 +48440,9 @@ Domain: timlg.org`;
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+      !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
         display: "grid",
-        gridTemplateColumns: "1.2fr 0.8fr 1.15fr",
+        gridTemplateColumns: "1.8fr 1.2fr",
         gap: "16px",
         marginTop: "16px",
         position: "relative",
@@ -48335,86 +48451,88 @@ Domain: timlg.org`;
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
           background: "rgba(255,255,255,0.6)",
           borderRadius: "16px",
-          padding: "14px",
+          padding: "16px",
           border: "1px solid rgba(0,0,0,0.03)",
           display: "flex",
           flexDirection: "column",
-          gap: "10px"
+          gap: "12px"
         }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "YOUR ASSETS" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#fff", borderRadius: "12px", padding: "8px 12px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.02)" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, marginBottom: "2px" }, children: "Solana Native" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "17px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
-            ] })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "YOUR ASSETS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "ACTIONS" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)", borderRadius: "12px", padding: "8px 12px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)", border: "1px solid rgba(45, 104, 234, 0.1)" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: "#2D68EA", fontWeight: "600", marginBottom: "2px" }, children: "Protocol Token" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "17px", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", color: "#2D68EA", opacity: 0.8 }, children: "TIMLG" })
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px"
-        }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", paddingLeft: "4px" }, children: "QUICK ACTIONS" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              className: "beta-btn",
-              style: {
-                height: "36px",
-                borderRadius: "12px",
-                fontWeight: "800",
-                background: walletStr ? "rgba(0,0,0,0.05)" : "#4C82FB",
-                color: walletStr ? "#666" : "#fff",
-                border: "none",
-                fontSize: "13px"
-              },
-              onClick: walletStr ? disconnectPhantom : connectPhantom,
-              type: "button",
-              children: walletStr ? "DISCONNECT" : "CONNECT WALLET"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(0,0,0,0.05)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 26, color: "#111" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, fontWeight: "600" }, children: "Solana Native" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
+                ] })
+              ] })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "beta-btn",
-                style: { height: "36px", borderRadius: "10px", fontWeight: "700", background: "#fff", borderColor: "rgba(0,0,0,0.1)", color: "#555", fontSize: "12px" },
+                style: { width: "110px", height: "32px", borderRadius: "10px", fontWeight: "700", background: "rgba(255,255,255,0.5)", border: "1px solid rgba(0,0,0,0.1)", color: "#555", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
                 onClick: airdrop1Sol,
                 disabled: !walletStr || isDemo,
                 type: "button",
                 children: "AIRDROP SOL"
               }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                className: "beta-btn",
-                style: { height: "36px", borderRadius: "10px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "13px" },
-                onClick: claimTIMLG,
-                disabled: !walletStr || isDemo,
-                type: "button",
-                children: "GET TIMLG"
-              }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              className: "beta-input",
-              style: { padding: "0 10px", textAlign: "center", fontSize: "11px", width: "100%", height: "26px", background: "transparent", border: "1px dashed #ccc", borderRadius: "20px", marginTop: "auto" },
-              value: invite,
-              onChange: (e) => setInvite(e.target.value),
-              placeholder: "INVITE CODE"
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#EFF6FF", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(45, 104, 234, 0.08)", border: "1px solid rgba(45, 104, 234, 0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(45, 104, 234, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 32, color: "#2D68EA" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: "#2D68EA", fontWeight: "700" }, children: "Protocol Token" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", color: "#2D68EA", opacity: 0.8 }, children: "TIMLG" })
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  className: "beta-btn",
+                  style: { width: "110px", height: "30px", borderRadius: "8px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
+                  onClick: claimTIMLG,
+                  disabled: !walletStr || isDemo,
+                  type: "button",
+                  children: "GET TIMLG"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: "#2D68EA", opacity: 0.5, letterSpacing: "0.05em" }, children: "INVITE CODE" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    style: {
+                      background: "#EFF6FF",
+                      borderRadius: "8px",
+                      padding: "6px 12px",
+                      color: "#2D68EA",
+                      fontWeight: "900",
+                      fontSize: "12px",
+                      letterSpacing: "0.05em",
+                      width: "100px",
+                      textAlign: "center",
+                      border: "1px solid rgba(45, 104, 234, 0.1)",
+                      outline: "none"
+                    },
+                    value: invite,
+                    onChange: (e) => setInvite(e.target.value),
+                    placeholder: "CODE"
+                  }
+                )
+              ] })
+            ] })
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
           background: "rgba(255,255,255,0.4)",
@@ -48435,67 +48553,54 @@ Domain: timlg.org`;
               "aria-hidden": "true"
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "8px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
-          !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", position: "relative", zIndex: 1, flex: 1 }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", width: "65px", height: "65px" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "65", height: "65", viewBox: "0 0 100 100", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "50", cy: "50", r: "40", fill: "none", stroke: "rgba(0,0,0,0.05)", strokeWidth: "10" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "circle",
-                    {
-                      cx: "50",
-                      cy: "50",
-                      r: "40",
-                      fill: "none",
-                      stroke: stats.winRate >= 50 ? "#10B981" : "#EF4444",
-                      strokeWidth: "10",
-                      strokeDasharray: `${stats.winRate * 2.51}, 251.2`,
-                      strokeDashoffset: "0",
-                      strokeLinecap: "round",
-                      transform: "rotate(-90 50 50)",
-                      style: { transition: "stroke-dasharray 1s ease-in-out" }
-                    }
-                  )
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", fontWeight: "900", color: stats.winRate >= 50 ? "#10B981" : "#EF4444" }, children: [
-                    stats.winRate.toFixed(0),
-                    "%"
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "6px", fontWeight: "800", opacity: 0.4 }, children: "WIN RATE" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1 }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "7px", opacity: 0.5, fontWeight: "900" }, children: "TOTAL PROFIT" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "20px", fontWeight: "900", color: stats.netProfit >= 0 ? "#10B981" : "#EF4444", display: "flex", alignItems: "baseline" }, children: [
-                  stats.netProfit >= 0 ? "▲" : "▼",
-                  Math.abs(stats.netProfit).toFixed(0),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5, marginLeft: "4px" }, children: "TIMLG" })
-                ] })
-              ] })
-            ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "12px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
+          !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", flex: 1 }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-              paddingTop: "8px",
-              borderTop: "1px solid rgba(0,0,0,0.05)",
+              background: stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.06)" : "rgba(239, 68, 68, 0.06)",
+              border: `1px solid ${stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
+              borderRadius: "12px",
+              padding: "10px 14px",
               display: "flex",
               justifyContent: "space-between",
-              gap: "8px"
+              alignItems: "center"
             }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(0,0,0,0.02)", padding: "4px 8px", borderRadius: "8px", flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "7px", opacity: 0.4, fontWeight: "800" }, children: "STREAK" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: "10px", color: stats.streak > 0 ? "#10B981" : "#888" }, children: [
-                  stats.streak,
-                  "W"
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PROFIT" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "22px", fontWeight: "900", color: stats.netProfit >= 0 ? "#059669" : "#DC2626", letterSpacing: "-0.02em" }, children: [
+                  stats.netProfit > 0 ? "+" : "",
+                  stats.netProfit,
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.7 }, children: "TIMLG" })
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(0,0,0,0.02)", padding: "4px 8px", borderRadius: "8px", flex: 1.2, display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "7px", opacity: 0.4, fontWeight: "800" }, children: "AUDITED" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("b", { style: { fontSize: "10px" }, children: [
-                  stats.revealed,
-                  "/",
-                  stats.total
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: stats.netProfit >= 0 ? "#10B981" : "#EF4444",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "14px",
+                fontWeight: "900"
+              }, children: stats.netProfit >= 0 ? "↗" : "↘" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "WIN RATE" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats.winRate >= 50 ? "#10B981" : "#EF4444" }, children: [
+                  stats.winRate.toFixed(0),
+                  "%"
                 ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, title: "Longest sequence of consecutive rounds with at least one win", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "BEST STREAK" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.streak })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "VOLUME" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.total })
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(

@@ -4,32 +4,61 @@ This document outlines how the TIMLG protocol handles technical failures, oracle
 
 ## 1. Oracle Failures (NIST Outage)
 
-The protocol depends on signed pulses from the NIST Randomness Beacon. If the NIST service is offline or the pulse cannot be retrieved:
+TIMLG depends on signed pulses from the NIST Randomness Beacon. If a pulse cannot be retrieved or is never set on-chain, the protocol provides a **slot-based refund path** to protect users.
 
-| Scenario | Protocol Response | Mitigation |
-|---|---|---|
-| **Pulse Delay (< 1 hour)** | Round remains in `SET_PULSE` state. | The Supervisor continues retrying until the pulse is available. |
-| **Prolonged Outage (> 24 hours)** | Expiration policy applies. | If a pulse is not set before the `refund_deadline_slot`, the round can be invalidated. |
-| **Invalid Signature** | Pulse is rejected by the on-chain Ed25519 program. | Prevents corrupted or malicious data from settling rounds. |
+### Refund availability (slot-based)
+
+A ticket becomes refundable when **all** of the following are true:
+
+- The round has **no valid pulse set** (`pulse_set == false`).
+- The reveal window has ended (the round reached `reveal_deadline_slot`).
+- The current slot exceeds the refund safety timeout:
+
+`current_slot > reveal_deadline_slot + REFUND_TIMEOUT_SLOTS`
+
+`REFUND_TIMEOUT_SLOTS` is a protocol parameter (see `parameters.md`). On Devnet it is typically **150 slots**.
+
+### How refunds are executed
+
+There are two refund instructions:
+
+- **`recover_funds`**: the ticket owner triggers the refund.
+- **`recover_funds_anyone`**: **permissionless** refund — anyone can trigger the refund on behalf of the ticket owner (useful for bots/operators to guarantee refunds even if users do not return promptly).
+
+Refunds return the original stake (SPL tokens) from the round’s token vault to the user’s associated token account and close/mark the ticket to prevent double-refunds.
+
+### Notes
+
+- All timeouts are expressed in **Solana slots**; real wall-clock time depends on cluster conditions.
+- If a pulse is posted later and becomes valid before refund conditions are met, the round proceeds normally and refunds are not available.
+
+---
 
 ## 2. Network Congestion (Solana Delays)
 
-Solana network congestion can delay transactions. The TIMLG timing windows are designed with "buffer zones":
+Solana network congestion can delay transactions. TIMLG timing windows include safety margins to absorb these variations:
 
-- **Reveal Deadline**: Provides a generous window after the pulse is published to ensure users have enough slots to submit reveals even during high fee periods.
-- **Permissionless Settlement**: Any user can trigger `settle_round_tokens` once the reveal window closes, preventing the protocol from getting "stuck" due to specific relayer failures.
+- **Reveal Deadline**: Provides a buffer after pulse publication to ensure users can submit reveals even during high-fee periods.
+- **Permissionless Settlement**: Once a round is finalized, any user can trigger `settle_round_tokens`, preventing the protocol from stalling due to specific operator failures.
+
+---
 
 ## 3. Protocol Safety Switches
 
-The `Config Authority` (eventually a Multisig) has access to safety parameters:
+The `Config Authority` (intended for Multisig management) controls critical safety parameters:
 
-- **Circuit Breakers**: Ability to pause new round creation in case of identified exploits or critical external failures.
-- **Refund Logic**: In extreme cases where a round cannot be resolved via pulse, the protocol allows for stake refunds to ensure users are not locked out of their capital.
+- **Circuit Breakers**: The ability to **pause** the protocol via `set_pause`, which stops new rounds and most core instructions until the system is restored.
+- **Parameter Tuning**: Authorities can adjust window sizes and timeouts (within safe bounds) to adapt to changing network conditions.
 
-## 4. Economic Risks
+---
+
+## 4. Economic Risks & Invariants
 
 | Risk | Mitigation Strategy |
 |---|---|
-| **Hyper-inflation** | Balanced mint (wins) vs. burn (losses/expired) mechanics. Statistical expectation is net-neutral or deflationary. |
-| **Liquidity Drain** | Rewards are minted on-demand, meaning they don't depend on a pre-funded vault that can be emptied. |
-| **Griefing** | Staking requirements and "burn-on-failure" make it economically irrational to attempt to stall the protocol through non-revelation. |
+| **Hyper-inflation** | Balanced mint (wins) vs. burn (losses/expired) mechanics. The protocol is statistically designed to be net-neutral or deflationary. |
+| **Liquidity Drain** | **Reward Minting**: Rewards are minted on-demand at claim time, eliminating the risk of an emptied reward vault. |
+| **Griefing** | **Burn-on-failure**: Tickets that are not revealed are burned during settlement, making it economically irrational to stall the protocol. |
+
+!!! note "Timing Note"
+    All timeouts and deadlines are expressed and enforced in **Solana slots**. Any wall-clock time shown in the UI is an approximation based on current cluster performance.
