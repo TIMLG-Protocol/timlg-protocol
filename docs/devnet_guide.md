@@ -138,7 +138,10 @@ In our example, of the 6 tickets:
 
 ### Step 5: Awaiting Settlement
 After the reveal window closes, the round briefly updates to **AWAITING SETTLE**.
-The protocol calculates the total prize pool and shares for the winners. Note that the unrevealed ticket is now marked **EXPIRED**.
+The protocol verifies the results on-chain:
+- **Losers' stakes** are **burned** (removed from circulation).
+- **Winners** are authorized to claim their original stake plus the **minted reward**.
+Note that the unrevealed ticket is now marked **EXPIRED** (treated as a loss).
 
 ![Awaiting Settle](assets/start_guide/9-orderhistory-awatingsettle-3winners2loses1experied.png)
 
