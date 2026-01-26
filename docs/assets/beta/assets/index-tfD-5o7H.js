@@ -45748,9 +45748,15 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
       return sSlot === slotStr || Math.abs(Number(sSlot) - Number(slotStr)) <= 1;
     });
   };
-  const createdTx = findTx(onChainTicket?.createdSlot || onChainTicket?.created_slot);
-  const revealedTx = findTx(onChainTicket?.revealedSlot || onChainTicket?.revealed_slot);
-  const claimedTx = findTx(onChainTicket?.claimedSlot || onChainTicket?.claimed_slot);
+  const findTxSig = (slot, fallbackKey) => {
+    const slotMatch = findTx(slot);
+    if (slotMatch) return slotMatch.signature;
+    if (receipt && receipt[fallbackKey]) return receipt[fallbackKey];
+    return null;
+  };
+  const createdTxSig = findTxSig(onChainTicket?.createdSlot || onChainTicket?.created_slot, "commitTx");
+  const revealedTxSig = findTxSig(onChainTicket?.revealedSlot || onChainTicket?.revealed_slot, "revealTx");
+  const claimedTxSig = findTxSig(onChainTicket?.claimedSlot || onChainTicket?.claimed_slot, "claimTx");
   const pulseIndex = round?.pulseIndexTarget ?? round?.pulse_index_target;
   const pulseUrl = pulseIndex ? `https://beacon.nist.gov/beacon/2.0/chain/1/pulse/${pulseIndex}` : "#";
   const rPda = programPk && roundId != null ? pdaRound(programPk, Number(roundId)) : null;
@@ -45826,22 +45832,22 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 20, marginBottom: 8, fontSize: 11, fontWeight: "bold", opacity: 0.5 }, children: "ON-CHAIN TRANSACTIONS" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Commit (Buy)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: createdTx ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTx.signature}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
-            shortPk(createdTx.signature),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+            shortPk(createdTxSig),
             " ↗"
           ] }) : loadingSigs ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Searching..." }) : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Reveal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: revealedTx ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${revealedTx.signature}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
-            shortPk(revealedTx.signature),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: revealedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${revealedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+            shortPk(revealedTxSig),
             " ↗"
           ] }) : loadingSigs ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Searching..." }) : onChainTicket?.revealed ? "—" : "Pending" })
         ] }),
         onChainTicket?.win && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Claim Reward" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: claimedTx ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${claimedTx.signature}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
-            shortPk(claimedTx.signature),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: claimedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${claimedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+            shortPk(claimedTxSig),
             " ↗"
           ] }) : onChainTicket?.claimed ? "—" : "Unclaimed" })
         ] }),
@@ -45854,7 +45860,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Commitment Hash" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: onChainTicket?.commitment ? createdTx ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTx.signature}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", title: Buffer.from(onChainTicket.commitment).toString("hex"), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: onChainTicket?.commitment ? createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", title: Buffer.from(onChainTicket.commitment).toString("hex"), children: [
             shortPk(Buffer.from(onChainTicket.commitment).toString("hex"), 10),
             " ↗"
           ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: Buffer.from(onChainTicket.commitment).toString("hex"), children: shortPk(Buffer.from(onChainTicket.commitment).toString("hex"), 10) }) : receipt?.commitment ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: receipt.commitment, children: shortPk(receipt.commitment, 10) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pending / Not Found" }) })
@@ -45936,7 +45942,8 @@ function generateTicketExportJSON(ticketData) {
       commit: createdTx ? createdTx.signature : null,
       reveal: revealedTx ? revealedTx.signature : null,
       claim: claimedTx ? claimedTx.signature : null,
-      refund: receipt?.refundedTx || null
+      refund: receipt?.refundedTx || null,
+      treasury: receipt?.sweepTx || null
     }
   };
   return data;
@@ -46145,7 +46152,7 @@ function MyTickets({
   currentSlot,
   activeRoundId,
   nist,
-  claimGraceSlots,
+  claimGraceSlots = 0,
   // Global
   guess,
   doCommitGlobal,
@@ -46160,7 +46167,7 @@ function MyTickets({
   doRefundTicket,
   doSettleRound
 }) {
-  reactExports.useMemo(() => {
+  const userPk = reactExports.useMemo(() => {
     if (!pubkey2) return null;
     return pubkey2 instanceof PublicKey ? pubkey2 : new PublicKey(pubkey2);
   }, [pubkey2]);
@@ -46176,16 +46183,16 @@ function MyTickets({
     if (row.receipt?.refunded === true) return "REFUNDED";
     if (claimed) return "CLAIMED";
     if (win) {
-      if (tokenSettled) {
-        if (currentSlot2 && row.round && claimGraceSlots != null) {
-          const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
-          if (revealDl) {
-            const sweepSlot = revealDl + BigInt(claimGraceSlots);
-            if (BigInt(currentSlot2) > sweepSlot) return "SWEPT";
-          }
+      if (!row.round) return "SWEPT";
+      if (row.swept) return "SWEPT";
+      if (currentSlot2 && row.round && claimGraceSlots != null) {
+        const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
+        if (revealDl) {
+          const sweepSlot = revealDl + BigInt(claimGraceSlots);
+          if (BigInt(currentSlot2) > sweepSlot) return "SWEPT";
         }
-        return "CLAIM PRIZE";
       }
+      if (tokenSettled) return "CLAIM PRIZE";
       return "WIN";
     }
     if (revealed && !win) return "LOSS";
@@ -46249,72 +46256,99 @@ function MyTickets({
     if (status === "CLAIM" || status === "CLAIM PRIZE") return "READY TO CLAIM";
     return status;
   };
+  const ensureSweepTx = async (ticket, rId) => {
+    let treasurySig = ticket.receipt?.sweepTx || null;
+    const computedStatus = getComputedStatus(ticket, currentSlot);
+    if (computedStatus === "SWEPT" && !treasurySig && connection && ticket.ticketPk) {
+      try {
+        const sigs = await connection.getSignaturesForAddress(ticket.ticketPk, { limit: 10 });
+        const commitSig = ticket.createdTx || ticket.receipt?.commitTx;
+        const revealSig = ticket.revealedTx || ticket.receipt?.revealTx;
+        const claimSig = ticket.claimedTx || ticket.receipt?.claimTx;
+        const known = new Set([commitSig, revealSig, claimSig].filter(Boolean));
+        const candidate = sigs.find((s) => !known.has(s.signature));
+        if (candidate) {
+          treasurySig = candidate.signature;
+          const sweptAt = candidate.blockTime ? candidate.blockTime * 1e3 : Date.now();
+          if (userPk) {
+            const roundIdStr = rId?.toString() || ticket.roundId?.toString();
+            const updatedReceipt = {
+              ...ticket.receipt || {},
+              sweepTx: treasurySig,
+              sweptAt
+            };
+            saveLocalReceipt(userPk.toString(), roundIdStr, updatedReceipt);
+            if (!ticket.receipt) ticket.receipt = {};
+            ticket.receipt.sweepTx = treasurySig;
+            ticket.receipt.sweptAt = sweptAt;
+          }
+        }
+      } catch (err) {
+      }
+    }
+    return treasurySig;
+  };
   const handleDownloadBatch = async (roundId, tickets, roundData) => {
     try {
       console.log("Downloading batch for round", roundId);
-      const walletAddr = tickets[0]?.ticket?.user?.toString() || "unknown";
+      const walletAddr = userPk?.toString() || tickets[0]?.ticket?.user?.toString() || "unknown";
       const rPda = await pdaRound(programPk, Number(roundId));
-      const freshReceipts = loadAllLocalReceipts(walletAddr, roundId.toString()) || [];
       const ticketsData = [];
       const chunkSize = 5;
       for (let i = 0; i < tickets.length; i += chunkSize) {
         const chunk = tickets.slice(i, i + chunkSize);
         const chunkResults = await Promise.all(chunk.map(async (t) => {
-          const tAcc = t.ticket;
-          const matchingRec = freshReceipts.find(
-            (r) => r.nonce != null && tAcc?.nonce && Number(r.nonce) === Number(tAcc.nonce) || r.nonce != null && t.nonce != null && Number(r.nonce) === Number(t.nonce)
-          );
-          let tRec = matchingRec ? { ...matchingRec } : t.receipt ? { ...t.receipt } : {};
           const status = getComputedStatus(t, currentSlot);
-          const revealed = status === "LOSS" || status === "WIN" || status === "CLAIM PRIZE" || status === "CLAIMED" || t.revealed;
-          const claimed = status === "CLAIMED" || t.claimed;
-          if ((!tRec.commitTx || !tRec.revealTx && revealed || !tRec.claimTx && claimed) && t.ticketPk && connection) {
-            try {
-            } catch (e) {
-            }
+          const treasurySig = await ensureSweepTx(t, roundId);
+          const commitSig = t.createdTx || t.receipt?.commitTx || null;
+          const revealSig = t.revealedTx || t.receipt?.revealTx || null;
+          const claimSig = t.claimedTx || t.receipt?.claimTx || null;
+          const refundSig = t.receipt?.refundedTx || null;
+          const cleanReceipt = t.receipt ? { ...t.receipt } : {};
+          if (cleanReceipt) {
+            delete cleanReceipt.commitTx;
+            delete cleanReceipt.revealTx;
+            delete cleanReceipt.claimTx;
+            delete cleanReceipt.sweepTx;
+            delete cleanReceipt.refundedTx;
+            cleanReceipt.committedAt = cleanReceipt.committedAt || null;
+            cleanReceipt.revealedAt = cleanReceipt.revealedAt || null;
+            cleanReceipt.claimedAt = cleanReceipt.claimedAt || null;
+            cleanReceipt.refundedAt = cleanReceipt.refundedAt || null;
+            cleanReceipt.sweptAt = cleanReceipt.sweptAt || cleanReceipt.treasuryAt || null;
+            delete cleanReceipt.treasuryAt;
           }
           return {
             address: t.ticketPk?.toString(),
-            nonce: Number(t.nonce ?? tAcc?.nonce ?? 0),
-            bitIndex: tAcc?.bitIndex ?? tAcc?.bit_index ?? null,
+            nonce: Number(t.nonce ?? t.ticket?.nonce ?? 0),
+            bitIndex: t.ticket?.bitIndex ?? t.ticket?.bit_index ?? null,
             status,
-            prediction: t.guess === 1 ? "Bull" : t.guess === 0 ? "Bear" : "Unknown",
+            prediction: t.guess === 1 ? "Bull" : "Bear",
+            receipt: cleanReceipt,
             transactions: {
-              commit: t.createdTx || tRec?.commitTx || null,
-              reveal: t.revealedTx || tRec?.revealTx || null,
-              claim: t.claimedTx || tRec?.claimTx || null
+              commit: commitSig,
+              reveal: revealSig,
+              claim: claimSig,
+              refund: refundSig,
+              treasury: treasurySig
             }
-            // ... shortened for brevity, use real helper if possible or full obj
           };
         }));
         ticketsData.push(...chunkResults);
       }
-      const tDataFormatted = tickets.map((t) => {
-        const status = getComputedStatus(t, currentSlot);
-        return {
-          address: t.ticketPk?.toString(),
-          nonce: Number(t.nonce ?? t.ticket?.nonce ?? 0),
-          bitIndex: t.ticket?.bitIndex ?? null,
-          status,
-          prediction: t.guess === 1 ? "Bull" : "Bear",
-          receipt: t.receipt,
-          transactions: {
-            // Placeholder simple map
-            commit: t.createdTx,
-            reveal: t.revealedTx,
-            claim: t.claimedTx
-          }
-        };
-      });
-      const exportData = generateBatchExportJSON(roundId, rPda, "EXPORTED", roundData, tDataFormatted, walletAddr);
+      const exportData = generateBatchExportJSON(roundId, rPda, "EXPORTED", roundData, ticketsData, walletAddr);
       triggerDownload(`timlgs_round_${roundId}_batch.json`, exportData);
     } catch (e) {
       console.error(e);
       alert("Export error: " + e.message);
     }
   };
-  const handleDownloadTicket = (ticket, roundId) => {
+  const handleDownloadTicket = async (ticket, roundId) => {
     const status = getComputedStatus(ticket, currentSlot);
+    const commitSig = ticket.createdTx || ticket.receipt?.commitTx;
+    const revealSig = ticket.revealedTx || ticket.receipt?.revealTx;
+    const claimSig = ticket.claimedTx || ticket.receipt?.claimTx;
+    const treasurySig = await ensureSweepTx(ticket, roundId);
     const data = {
       ticketPk: ticket.ticketPk,
       roundId,
@@ -46322,10 +46356,14 @@ function MyTickets({
       receipt: ticket.receipt,
       status,
       currentSlot,
-      createdTx: { signature: ticket.createdTx },
-      revealedTx: { signature: ticket.revealedTx },
-      claimedTx: { signature: ticket.claimedTx }
+      createdTx: commitSig ? { signature: commitSig } : null,
+      revealedTx: revealSig ? { signature: revealSig } : null,
+      claimedTx: claimSig ? { signature: claimSig } : null
     };
+    if (treasurySig) {
+      if (!data.receipt) data.receipt = {};
+      data.receipt.sweepTx = treasurySig;
+    }
     const json = generateTicketExportJSON(data);
     triggerDownload(`timlgs_ticket_${ticket.nonce}.json`, json);
   };
@@ -46768,7 +46806,7 @@ function MyTickets({
         }) })
       ] }) }),
       renderPagination(false)
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card", style: { padding: 40, textAlign: "center", opacity: 0.5 }, children: "No history found." }),
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card", style: { padding: 40, textAlign: "center", opacity: 0.5, marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTop: "none" }, children: "No history found." }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       TicketDetailModal,
       {
@@ -47369,9 +47407,10 @@ function useUserTickets({
           const win = Boolean(pick(row.ticket, ["win"], false));
           const claimed = Boolean(pick(row.ticket, ["claimed"], false));
           const pulseSet = Boolean(pick(round, ["pulseSet", "pulse_set"], false));
+          const swept = Boolean(pick(round, ["swept"], false));
           const tokenSettled = Boolean(pick(round, ["tokenSettled", "token_settled"], false));
           const uiStatus = computeUiStatus({ ticket: row.ticket, round });
-          return { ...row, round, guess, win, revealed, claimed, pulseSet, tokenSettled, uiStatus };
+          return { ...row, round, guess, win, revealed, claimed, pulseSet, swept, tokenSettled, uiStatus };
         });
         setRows(next);
         setLastUpdatedAt(Date.now());
@@ -47849,7 +47888,7 @@ function App() {
         return;
       }
       const revealDl = r.round?.revealDeadlineSlot || r.round?.reveal_deadline_slot ? BigInt(r.round.revealDeadlineSlot || r.round.reveal_deadline_slot) : null;
-      const isExpired = !r.revealed && !r.win && revealDl && currentSlot && currentSlot > revealDl;
+      const isExpired = !r.revealed && !r.win && (!r.round || revealDl && currentSlot && currentSlot > revealDl);
       const isResolved = r.revealed || isExpired;
       if (!isResolved) {
         pending++;
@@ -47862,11 +47901,27 @@ function App() {
         if (r.win) {
           wins++;
           breakdown.WIN++;
-          if (r.claimed) breakdown.CLAIMED++;
-          else if (r.round?.swept) breakdown.SWEPT++;
           const fee = Math.floor(uiStake * feeBps / 1e4);
           const mintedReward = uiStake - fee;
-          netTokens += mintedReward;
+          if (r.claimed) {
+            breakdown.CLAIMED++;
+            netTokens += mintedReward;
+          } else {
+            let isSwept = r.swept;
+            if (!isSwept && !r.round) isSwept = true;
+            if (!isSwept && currentSlot && r.round && chainState?.config?.claimGraceSlots != null) {
+              const revealDl2 = r.round?.revealDeadlineSlot || r.round?.reveal_deadline_slot ? BigInt(r.round.revealDeadlineSlot || r.round.reveal_deadline_slot) : 0n;
+              const grace = BigInt(chainState.config.claimGraceSlots);
+              const sweepSlot = revealDl2 + grace;
+              if (revealDl2 > 0n && currentSlot > sweepSlot) isSwept = true;
+            }
+            if (isSwept) {
+              breakdown.SWEPT++;
+              netTokens -= uiStake;
+            } else {
+              netTokens += mintedReward;
+            }
+          }
         } else {
           breakdown.LOSS++;
           netTokens -= uiStake;
@@ -48440,7 +48495,7 @@ Domain: timlg.org`;
           ] })
         ] })
       ] }),
-      !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+      walletStr && !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
         display: "grid",
         gridTemplateColumns: "1.8fr 1.2fr",
         gap: "16px",
@@ -48661,7 +48716,7 @@ Domain: timlg.org`;
           globalLoading: loading
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx(
         MyTickets,
         {
           program,
