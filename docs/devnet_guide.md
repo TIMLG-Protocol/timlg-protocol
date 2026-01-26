@@ -50,33 +50,43 @@ The **Play Card** is the tactical center of the game. Here you analyze the timel
 
 ### 2.1 Understanding the Interface
 
-The interface is divided into specific zones to give you full control over your timing and strategy:
+The interface is divided into three clear zones (Header, Left, Right) to give you full control:
 
-**Top Bar: Timeline & Timer**
-- **Center Top (Current Pulse)**: Shows the current verifiable random number (Pulse) of the network. This is the "now".
-- **Top Right (Timer)**: A countdown showing exactly how much time remains before the current round closes. When this hits zero, no more tickets can be committed to this specific round.
+**Zone 1: The Header (Timeline)**
+Located at the very top of the card.
+- **Round Status & ID**: Shows which Round you are viewing (e.g. **ROUND #6867**) and its status (**OPEN**).
+- **Current Pulse**: Displays the *current* network pulse (the "now").
+- **Timer**: In the top right, a countdown shows exactly how much time remains before this round closes.
 
-**Center: Target Selection**
-- **Left (Target Round)**: Shows the Round ID you are currently targeting (e.g., Round #6883). Each round corresponds to a specific future pulse.
-- **Center Left (Ticket Preview)**: Displays the specific ticket you are about to commit.
-- **Pulse Offset (Center Right)**: This selector controls *which* future round you are betting on.
-    - **Offset**: Indicates the number of pulses into the future relative to the current pulse.
-    - **Strategy**: You have the opportunity to target up to **5 open rounds** simultaneously. You can bet on the very next pulse (Offset +1) or strategize for a pulse further out (Offset +5).
+**Zone 2: Left Panel (Information)**
+This area confirms *what* you are betting on.
+- **Target Pulse**: The large number indicates the exact pulse this round is targeting.
+- **Ticket Preview**: Below the target, you see the details of the ticket you are creating:
+    - **Assigned Bit**: The specific bit index you are predicting.
+    - **Stake**: The cost (e.g., 1.00 TIMLG).
+    - **Technical Data**: Nonce, Commitment Hash, and Ticket PDA (for transparency).
 
-**Bottom Right: Prediction Controls**
-Here you choose the outcome for the assigned bit in your ticket:
-- **BEAR (0)**: Betting the bit will be 0.
-- **BULL (1)**: Betting the bit will be 1.
-- **RAND**: Let the system pick a random prediction for you.
+**Zone 3: Right Panel (The Controls)**
+This is the interactive "Button Panel" where you make your strategic choices.
+- **Pulse Offset (Top Row)**: Selects *which* future round you want to target.
+    - **Concept**: Each button (+1, +2, +3...) points to a specific round relative to the *current* pulse.
+    - **+1**: Targets the very next pulse.
+    - **+5**: Targets a pulse further in the future.
+    - *Example:* If you select **+3**, the "Target Pulse" on the left will update to show Current Pulse + 3.
+- **Commit Prediction (Bottom Row)**: Once your target is set, choose your outcome:
+    - **BEAR (0)**
+    - **BULL (1)**
+    - **RAND**: Random selection.
 
-**Footer: Live Console**
-- **Dropdown Console**: At the very bottom, there is a collapsible console. Open it to view a real-time log of actions, transaction signatures, and protocol events as they happen.
+**Footer: Protocol Terminal**
+At the bottom, a collapsible blue bar (**Protocol Terminal**) logs all your actions and transaction signatures in real-time.
 
 ### 2.2 Committing Your Ticket
-Once you have selected your **Pulse Offset** and **Prediction**:
-1.  Review your choice in the Ticket Preview.
-2.  Click the **COMMIT TICKET** button.
-3.  Approve the transaction in your wallet.
+1.  **Select Offset**: Use the top row of the Right Panel to pick your target round.
+2.  **Select Prediction**: Use the bottom row of the Right Panel to choose Bear/Bull.
+3.  **Verify**: Check the **Target Pulse** in the Left Panel to ensure it's the one you want.
+4.  **Action**: The prediction button effectively acts as the "Prepare" step. (Depending on the specific UI version, you then click **COMMIT** or sign the transaction triggered by your selection).
+5.  **Sign**: Approve the transaction in your wallet.
 
 Only after signing is your ticket sent to the blockchain.
 
