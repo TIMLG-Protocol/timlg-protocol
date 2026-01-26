@@ -54,12 +54,14 @@ The interface is divided into three clear zones (Header, Left, Right) to give yo
 
 **Zone 1: The Header (Timeline)**
 Located at the very top of the card.
+
 - **Round Status & ID**: Shows which Round you are viewing (e.g. **ROUND #6867**) and its status (**OPEN**).
 - **Current Pulse**: Displays the *current* network pulse (the "now").
 - **Timer**: In the top right, a countdown shows exactly how much time remains before this round closes.
 
 **Zone 2: Left Panel (Information)**
 This area confirms *what* you are betting on.
+
 - **Target Pulse**: The large number indicates the exact pulse this round is targeting.
 - **Ticket Preview**: Below the target, you see the details of the ticket you are creating:
     - **Assigned Bit**: The specific bit index you are predicting.
@@ -68,25 +70,27 @@ This area confirms *what* you are betting on.
 
 **Zone 3: Right Panel (The Controls)**
 This is the interactive "Button Panel" where you make your strategic choices.
+
 - **Pulse Offset (Top Row)**: Selects *which* future round you want to target.
     - **Concept**: Each button (+1, +2, +3...) points to a specific round relative to the *current* pulse.
     - **+1**: Targets the very next pulse.
     - **+5**: Targets a pulse further in the future.
     - *Example:* If you select **+3**, the "Target Pulse" on the left will update to show Current Pulse + 3.
-- **Commit Prediction (Bottom Row)**: Once your target is set, choose your outcome:
+- **Commit Prediction (Bottom Row)**: These are the **Action Buttons**. Clicking one will immediately initiate the commit transaction for the selected outcome:
     - **BEAR (0)**
     - **BULL (1)**
-    - **RAND**: Random selection.
+    - **RAND** (Random)
 
 **Footer: Protocol Terminal**
 At the bottom, a collapsible blue bar (**Protocol Terminal**) logs all your actions and transaction signatures in real-time.
 
 ### 2.2 Committing Your Ticket
-1.  **Select Offset**: Use the top row of the Right Panel to pick your target round.
-2.  **Select Prediction**: Use the bottom row of the Right Panel to choose Bear/Bull.
-3.  **Verify**: Check the **Target Pulse** in the Left Panel to ensure it's the one you want.
-4.  **Action**: The prediction button effectively acts as the "Prepare" step. (Depending on the specific UI version, you then click **COMMIT** or sign the transaction triggered by your selection).
-5.  **Sign**: Approve the transaction in your wallet.
+Playing is simple and fast. Follow these steps:
+
+1.  **Select Round**: Choose your target by clicking a **Pulse Offset** button (e.g., +1).
+2.  **Verify**: Check the **Ticket Preview** (left panel) to ensure the summary is correct.
+3.  **Commit**: Click **BEAR**, **BULL**, or **RAND** to place your prediction.
+4.  **Sign**: Approve the transaction in your connected wallet.
 
 Only after signing is your ticket sent to the blockchain.
 
@@ -102,6 +106,8 @@ Below, we follow **Round #6883** from start to finish to demonstrate the complet
 At this stage, the round is **OPEN**. You can place multiple tickets on the same round.
 In this example, we have committed **6 tickets** to Round #6883. All of them are **PENDING**, meaning the prediction is recorded on-chain but encrypted.
 
+*Tip: Once you have at least one open ticket, you will see **COMMIT** buttons (Bear/Bull) in the **Action** column, allowing you to quickly place more bets on this specific round directly from this list.*
+
 ![Commit Window](assets/start_guide/5-orderhistory-commitwindow1round6tickets.png)
 
 ---
@@ -116,7 +122,7 @@ No more tickets can be added. The protocol is now waiting for the Oracle to publ
 
 ### Step 3: Reveal Window Opens
 The Oracle publishes the pulse! The round immediately shifts to **REVEAL OPEN**.
-You initiate the reveal process to prove your predictions match. Notice the orange **REVEAL ALL (6)** button header, allowing you to reveal all 6 tickets in one click.
+You initiate the reveal process to prove your predictions match. Notice the orange **REVEAL ALL (6)** button header, allowing you to reveal all 6 tickets (initiating one transaction per ticket).
 
 ![Reveal Window Open](assets/start_guide/7-orderhistory-revealwindow1round6tickets.png)
 
@@ -139,9 +145,8 @@ In our example, of the 6 tickets:
 ### Step 5: Awaiting Settlement
 After the reveal window closes, the round briefly updates to **AWAITING SETTLE**.
 The protocol verifies the results on-chain:
-- **Losers' stakes** are **burned** (removed from circulation).
+- **Losers' stakes** and **EXPIRED (Unrevealed)** tickets are **burned** (removed from circulation).
 - **Winners** are authorized to claim their original stake plus the **minted reward**.
-Note that the unrevealed ticket is now marked **EXPIRED** (treated as a loss).
 
 ![Awaiting Settle](assets/start_guide/9-orderhistory-awatingsettle-3winners2loses1experied.png)
 
@@ -149,7 +154,7 @@ Note that the unrevealed ticket is now marked **EXPIRED** (treated as a loss).
 
 ### Step 6: Claiming Prizes
 Settlement is complete. The status becomes **CLAIM WINDOW**.
-Our **3 Winning Tickets** are now marked **READY TO CLAIM**. You can click **CLAIM ALL (3)** to withdraw all winnings to your wallet in a single transaction.
+Our **3 Winning Tickets** are now marked **READY TO CLAIM**. You can click **CLAIM ALL (3)** to withdraw all winnings via sequential transactions (one per winning ticket).
 
 ![Claim Window](assets/start_guide/10-orderhistory-claimwindow3readytoclaim.png)
 
