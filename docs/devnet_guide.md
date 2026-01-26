@@ -92,125 +92,90 @@ Only after signing is your ticket sent to the blockchain.
 
 ---
 
-## 3. Order History (Tracking Rounds & Tickets)
+## 3. Order History: Following Round #6883
 
-Order History is your timeline. It groups tickets under each round and shows what you can do *right now*.
+Once you commit a ticket, it appears in your **Order History**. This timeline groups your tickets by Round, allowing you to track the exact lifecycle of your bets.
 
-![Order History — Commit window](assets/start_guide/5-orderhistory-commitwindow1round6tickets.png)
+Below, we follow **Round #6883** from start to finish to demonstrate the complete game flow.
 
-### 3.1 Common controls
-- **All Status**: filter by ticket/round status.
-- **Rounds per page**: pagination sizing.
-- **Info / Export icons**: per round and per ticket.
+### Step 1: The Commit Window (Open)
+At this stage, the round is **OPEN**. You can place multiple tickets on the same round.
+In this example, we have committed **6 tickets** to Round #6883. All of them are **PENDING**, meaning the prediction is recorded on-chain but encrypted.
 
-### 3.2 Icons
-- **INFO**: opens technical details (nonce, commitment, PDA, explorer links).
-- **EXPORT**: exports ticket/round data for auditing/logging.
+![Commit Window](assets/start_guide/5-orderhistory-commitwindow1round6tickets.png)
 
 ---
 
-## 4. Round Lifecycle (All Phases)
+### Step 2: Waiting for Pulse
+Once the timer hits zero, the Commit Window closes. The status changes to **WAITING PULSE**.
+No more tickets can be added. The protocol is now waiting for the Oracle to publish the verifiable random number for this specific round.
 
-Below are the main states you will see in the round row (the colored band).
-
-### Phase A — OPEN (Commit Window)
-![OPEN — Commit window](assets/start_guide/5-orderhistory-commitwindow1round6tickets.png)
-
-- **Round status: OPEN** → you can still commit tickets.
-- **Ticket status: PENDING** → your prediction is committed on-chain but still hidden (commit-reveal).
+![Waiting Pulse](assets/start_guide/6-orderhistory-waitingpulse1round6tickets.png)
 
 ---
 
-### Phase B — WAITING PULSE (Oracle pending)
-![WAITING PULSE](assets/start_guide/6-orderhistory-waitingpulse1round6tickets.png)
+### Step 3: Reveal Window Opens
+The Oracle publishes the pulse! The round immediately shifts to **REVEAL OPEN**.
+You initiate the reveal process to prove your predictions match. Notice the orange **REVEAL ALL (6)** button header, allowing you to reveal all 6 tickets in one click.
 
-- **Round status: WAITING PULSE**
-- No more commits.
-- The protocol is waiting for the oracle pulse publication.
-
-!!! info "Timeout protection exists"
-    If the pulse does not arrive within the timeout, the round can enter **REFUND MODE** via the **Escape Hatch** (see Section 6).
+![Reveal Window Open](assets/start_guide/7-orderhistory-revealwindow1round6tickets.png)
 
 ---
 
-### Phase C — REVEAL OPEN (Reveal Window)
-Once the oracle pulse is published, the reveal window opens.
+### Step 4: Outcomes Revealed
+As you reveal tickets, their results appear instantly.
+In our example, of the 6 tickets:
+- **3 Tickets** matched the pulse (**WIN**).
+- **2 Tickets** did not match (**LOSS**).
+- **1 Ticket** has not been revealed yet (**REVEAL NOW** is still active).
 
-![REVEAL OPEN](assets/start_guide/7-orderhistory-revealwindow1round6tickets.png)
+![Revealed Outcomes](assets/start_guide/8-orderhistory-revealwindow5revealed3won2lose1unrevealed.png)
 
-**Your actions**
-- Reveal individually: **Reveal**
-- Batch reveal: **Reveal All (N)**
-
-**Ticket statuses you may see**
-- **REVEAL NOW** → this ticket must be revealed by you.
-- **WIN / LOSS** → once revealed, the outcome is known immediately.
-
-Example with mixed outcomes + one pending reveal:
-
-![Reveal outcomes (mixed)](assets/start_guide/8-orderhistory-revealwindow5revealed3won2lose1unrevealed.png)
-
-!!! danger "Expired tickets"
-    If you do not reveal before the reveal window ends, the ticket becomes **EXPIRED**.  
-    **EXPIRED = not revealed in time** (not claimable, treated as a lost opportunity).
+!!! danger "Don't Forget!"
+    If you leave a ticket unrevealed (like the last one here) until the window closes, it becomes **EXPIRED (Loss)**.
 
 ---
 
-### Phase D — AWAITING SETTLE (Settlement)
-After reveal ends, the round settles (usually automatically).
+### Step 5: Awaiting Settlement
+After the reveal window closes, the round briefly updates to **AWAITING SETTLE**.
+The protocol calculates the total prize pool and shares for the winners. Note that the unrevealed ticket is now marked **EXPIRED**.
 
-![AWAITING SETTLE](assets/start_guide/9-orderhistory-awatingsettle-3winners2loses1experied.png)
-
-- **Round status: AWAITING SETTLE**
-- Settlement finalizes payout availability for winners.
+![Awaiting Settle](assets/start_guide/9-orderhistory-awatingsettle-3winners2loses1experied.png)
 
 ---
 
-### Phase E — CLAIM WINDOW (Claim prizes)
-When settlement is complete, winners can claim.
+### Step 6: Claiming Prizes
+Settlement is complete. The status becomes **CLAIM WINDOW**.
+Our **3 Winning Tickets** are now marked **READY TO CLAIM**. You can click **CLAIM ALL (3)** to withdraw all winnings to your wallet in a single transaction.
 
-![CLAIM WINDOW — Ready to claim](assets/start_guide/10-orderhistory-claimwindow3readytoclaim.png)
-
-**Round header**
-- **CLAIM WINDOW**
-- May show a countdown like **“Sweep risk in: X”** (very important UX cue).
-
-**Ticket statuses**
-- **READY TO CLAIM** → prize available.
-- **CLAIMED** → already claimed.
-
-Batch claim:
-- **Claim All (N)**
-
-Individual claim:
-- **Claim** button on each READY TO CLAIM ticket.
-
-Example: some already claimed, one still pending claim (sweep risk visible):
-
-![CLAIM WINDOW — partial claims](assets/start_guide/11-orderhistory-claimwindow2claims1no.png)
+![Claim Window](assets/start_guide/10-orderhistory-claimwindow3readytoclaim.png)
 
 ---
 
-## 5. Final States (Archived / Done)
+### Step 7: Partial Claims
+In this view, we checked back after claiming some rewards.
+- **2 Tickets** are marked **CLAIMED** (Green badge). The funds are safe in the wallet.
+- **1 Ticket** is still **READY TO CLAIM**.
 
-When the round is fully finished (and windows are closed), it becomes archived.
-
-![ARCHIVED (with swept/expired/loss)](assets/start_guide/12-orderhistory-archived2claimed1swept2lose1experied.png)
-
-### 5.1 ARCHIVED
-- **ARCHIVED = done** (no more actions possible)
-
-### 5.2 SWEPT
-- **SWEPT = you had a winning ticket, but did not claim in time**
-- This usually happens after the claim window ends (or the grace period expires).
+![Partial Claims](assets/start_guide/11-orderhistory-claimwindow2claims1no.png)
 
 ---
 
-## 6. Edge Cases & Safety: Refund Mode (Escape Hatch)
+### Step 8: Final State (Archived)
+The round is finished.
+- **CLAIMED** tickets are finalized.
+- **LOSS** and **EXPIRED** tickets remain as history.
+- **SWEPT**: The one winning ticket we *didn't* claim in time has been "Swept" to the Treasury. It is no longer claimable.
+
+![Archived State](assets/start_guide/12-orderhistory-archived2claimed1swept2lose1experied.png)
+
+---
+
+## 4. Edge Cases & Safety: Refund Mode (Escape Hatch)
 
 If the oracle/pulse pipeline fails, the protocol protects users by entering **REFUND MODE**.
 
-### 6.1 Refund available
+### 4.1 Refund available
 ![REFUND MODE — Refund available](assets/start_guide/13-orderhistory-1round1ticket-refoundavailable.png)
 
 - Round status: **REFUND MODE**
@@ -218,7 +183,7 @@ If the oracle/pulse pipeline fails, the protocol protects users by entering **RE
 - Ticket status: **REFUND AVAILABLE**
 - Action: **Refund** or **Refund All (N)**
 
-### 6.2 Refunded
+### 4.2 Refunded
 ![REFUND MODE — Refunded](assets/start_guide/14-orderhistory-1round1ticket-refounded.png)
 
 - Ticket status: **REFUNDED**
@@ -226,20 +191,20 @@ If the oracle/pulse pipeline fails, the protocol protects users by entering **RE
 
 ---
 
-## 7. Analytics & Verification (Performance + Flow Analysis)
+## 5. Analytics & Verification (Performance + Flow Analysis)
 
 The wallet screen includes a **Performance Audit** and a **Participation Volume Flow** chart that lets you audit where your tickets ended up.
 
 ![Wallet overview — Performance + Flow analysis](assets/start_guide/15-walletoverview-analitics&flowchart.png)
 
-### 7.1 Performance Audit cards
+### 5.1 Performance Audit cards
 Typical metrics:
 - **Net Profit (TIMLG)**: realized P&L based on claimed wins minus losses (Devnet numbers only).
 - **Win Rate**: your win percentage.
 - **Best Streak**: longest win streak.
 - **Volume**: number of tickets played.
 
-### 7.2 Sankey Flow (Participation Volume Flow)
+### 5.2 Sankey Flow (Participation Volume Flow)
 The Sankey summarizes your lifecycle funnel:
 - **Total** → **Played** → **Revealed** → splits into **Win / Loss**
 - Win splits into **Claimed / Swept**
@@ -252,7 +217,7 @@ The Sankey summarizes your lifecycle funnel:
 
 ---
 
-## 8. Quick Status Glossary (User-facing definitions)
+## 6. Quick Status Glossary (User-facing definitions)
 
 - **OPEN**: you can still commit tickets.
 - **PENDING**: committed; reveal not done yet.
