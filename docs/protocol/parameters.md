@@ -1,63 +1,143 @@
-# Parameters (Devnet vs Mainnet)
+# Protocol Parameters
 
-This page summarizes the **key parameters** that shape the user experience and protocol economics.
+This page documents **slot-based timing** and **deployment parameters** for TIMLG.
+It includes:
+- a **timeline diagram** (slots),
+- a **Devnet** table (current supervisor + on-chain settings),
+- a **Mainnet** table (planned / longer windows).
 
-- **Devnet** values are intentionally short for rapid testing.
-- **Mainnet** will use larger values (especially for claim grace) to match real user behavior.
-
-> The protocol enforces timing in **slots**. Any wall-clock time shown in UI is approximate.
-
----
-
-## Devnet (demo / testing)
-
-Devnet runs with shorter windows so rounds complete quickly.
-
-| Parameter | Devnet value | What it means |
-|---|---|---|
-| Stake per ticket | **1 token** | The amount paid per commit (TIMLG whole-token unit). |
-| Commit window | **120 slots** | betting window (default devnet config). |
-| Reveal window | **120 slots** | Window to reveal your guess after pulse publication. |
-| Claim Grace | **0 slots** | Default grace period before a sweep is allowed (configurable). |
-| Refund timeout | **150 slots** | Safety window (~1 min) to recover stake if the Oracle fails (permissionless). |
-| Reward fee | **100 bps (1%)** | Fee taken from winner rewards to the protocol fee pool. |
-| Operator pipeline depth | **7 rounds** | Number of future rounds maintained by the operator. |
-| Operator tick | **5 seconds** | Frequency of the automated maintenance loop. |
-
-**Notes**
-- Devnet numbers may change frequently during testing.
-- The Devnet Beta UI reads live state from chain; if the UI shows different values, the UI is the correct reference.
+> **Important:** The program enforces gates using **Solana slots** and per-round deadlines (`commit_deadline_slot`, `reveal_deadline_slot`).
+> The operator/supervisor creates rounds by choosing those deadlines (subject to on-chain validation).
 
 ---
 
-## Mainnet (planned)
+## Round timeline (slots)
 
-Mainnet parameters will be tuned for real users and reliable claims across time zones.
+The protocol phases are gated by **slots** (not wall-clock seconds). The diagram below is an **example round** that matches the
+current Devnet supervisor defaults and the currently observed claim grace.
+
+- Example commit window uses the **Devnet cap** (≈7 minutes).
+- Reveal window uses **`REVEAL_WINDOW_SLOTS = 1000`**.
+- Claim grace uses **`claim_grace_slots = 900`** (observed on-chain from live rounds).
+- Refund eligibility is shown for the **oracle-failure path** (no pulse ever set).
+
+```mermaid
+gantt
+    title Round Timeline (X-Axis = Slots)
+    dateFormat  X
+    axisFormat  %s
+
+    section PHASE 1<br/>Commit
+    Commit window                 : c, 0, 919
+    Commit (user)                 : done, milestone, mCommit, 460, 460
+
+    section Pulse<br/>(NIST + oracle)
+    Pulse-set lag                 : lag, 919, 1414
+    Pulse set on-chain            : active, milestone, mPulse, 1414, 1414
+
+    section PHASE 3<br/>Reveal
+    Reveal window                 : r, 919, 1919
+    Reveal (user)                 : done, milestone, mReveal, 1500, 1500
+
+    section PHASE 4<br/>Finalize / Settle
+    Settle (observed)             : crit, milestone, mSettle, 1959, 1959
+
+    section PHASE 5<br/>Claim / Sweep
+    Claim grace window            : g, 1919, 2819
+    Claim (user)                  : done, milestone, mClaim, 2300, 2300
+    Sweep (action)                : crit, milestone, mSweep, 2819, 2819
+
+    section Oracle failure<br/>(no pulse)
+    Refund available (gate)       : active, milestone, mRefundGate, 2069, 2069
+    Refund window (∞)             : ref, 2069, 3200
+    Refund (user/anyone)          : done, milestone, mRefundAct, 2400, 2400
+```
+
+<div style="margin-top:0.4rem; margin-bottom:0.8rem; padding:0.6rem 0.8rem; border:1px solid rgba(0,0,0,0.12); border-radius:12px; display:inline-block;">
+  <div style="font-weight:700; margin-bottom:0.35rem;">Legend (diamond colors / responsibility)</div>
+  <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+    <div><span style="color:#9ca3af; font-size:1.1em;">◆</span> <b>User</b></div>
+    <div><span style="color:#3b82f6; font-size:1.1em;">◆</span> <b>Oracle / Gate</b></div>
+    <div><span style="color:#ef4444; font-size:1.1em;">◆</span> <b>Operator / Admin</b></div>
+  </div>
+</div>
+
+!!! note "About the action diamonds"
+    The **Commit / Reveal / Claim** diamonds are illustrative examples of when a user might act inside each window.
+    They are not fixed deadlines: a user may commit/reveal/claim at any time while the corresponding phase is open.
+
+!!! note "Claim grace ≠ “time to claim”"
+    `claim_grace_slots` is the minimum guarantee before `sweep_unclaimed` becomes eligible.
+    Claim remains possible until a sweep is actually executed on-chain and sets `round.swept = true`.
+
+!!! note "Refund window (oracle failure)"
+    Refund becomes available only if no pulse is ever set (`pulse_set = false`).
+    Once available, refunds can be triggered at any later time (owner: `recover_funds`, or permissionless: `recover_funds_anyone`).
+    The diagram draws an “∞” window as a long bar for readability.
+
+
+
+!!! note "Refund marker"
+    Refund only applies when **no pulse is ever set** (`pulse_set = false`). In that failure path, the normal claim flow is not used.
+
+---
+
+## Devnet parameters (current)
+
+These values reflect **how Devnet is running right now** with `./oracle/run_operator_supervisor_devnet.sh` (default env values in the script)
+and the currently observed on-chain config behavior.
+
+### Timing & scheduling
+
+| Parameter | Devnet value | Notes |
+|---|---:|---|
+| Round scheduler mode | `nist` | Rounds target NIST pulse indices. |
+| NIST pulse offset | `1` | Target is offset from “current” NIST pulse. |
+| Pipeline depth | `7` | Supervisor keeps ~7 upcoming rounds “in flight”. |
+| Commit duration cap | `420 sec` | Commit window is **variable** in NIST mode, capped at 420s. |
+| Commit window (slots) | ~150–1050 slots | Derived from time-until-target pulse using ~0.40s/slot approximation. |
+| Reveal window | `1000 slots` | Supervisor sets `reveal_deadline = commit_deadline + 1000`. |
+| Claim grace | `900 slots` | Observed via: `sweep_at - reveal_deadline = 900` on live rounds. |
+| Refund timeout | `150 slots` | On-chain constant `REFUND_TIMEOUT_SLOTS = 150`. |
+| Operator tick | `5 sec` | Supervisor loop frequency (`OPERATOR_TICK_SEC`). |
+
+### Economics (Devnet MVP)
+
+| Parameter | Devnet value | Notes |
+|---|---:|---|
+| Stake per ticket | `1` | Whole-token design expected (decimals=0) so stake=1 means 1 TIMLG. |
+| Reward fee | `reward_fee_bps` (default 100 = 1%) | Fee applies to minted reward; routed to Reward Fee Pool. |
+
+!!! note "Wall-clock time vs slots"
+    Slots vary with cluster conditions. The supervisor uses a fixed approximation (~0.40s/slot) to compute deadlines in NIST mode,
+    but the program itself only enforces **real slots** recorded on-chain.
+
+---
+
+## Mainnet parameters (planned)
+
+Mainnet values will be tuned for real users and reliable claim behavior across time zones.
+Exact numbers are **TBD** until final launch config is published.
 
 | Parameter | Mainnet policy (planned) | Why |
 |---|---|---|
-| Stake per ticket | **TBD (announced before launch)** | Depends on target economy and incentives. |
-| Commit window | **Longer than Devnet** | Gives users time to participate and handles network variance. |
-| Reveal window | **Longer than Devnet** | Reduces accidental “NO-REVEAL” outcomes. |
-| Claim Grace | **Significantly longer** | Supports realistic claim habits (e.g. 24h - 48h). |
-| Reward fee | **Stable + announced** | Predictable economics; avoid frequent changes. |
-| Operator pipeline depth | **Conservative (≥ Devnet)** | Resilience against temporary oracle delays. |
-| Operator tick | **Tuned for reliability** | Balanced for cost and responsiveness. |
+| Commit duration | Longer than Devnet | More time for participation and network variance. |
+| Reveal window | Longer than Devnet | Reduce accidental NO-REVEAL outcomes. |
+| Claim grace | Significantly longer (hours/days) | Users should not need to monitor constantly. |
+| Refund timeout | Stable + announced | Clear oracle-failure policy. |
+| Fees | Stable + announced | Predictable economics. |
+| Scheduler mode | `nist` (likely) | Matches the public randomness cadence. |
 
 ---
 
-## Change policy (responsible disclosure)
+## Technical phase gating (conceptual)
 
-- During **Devnet**, parameters can change as part of iteration.
-- Before **Mainnet**, final values will be **published and versioned** as part of the launch announcement.
-- On Mainnet, parameter changes are intended to be **tightly controlled** (e.g., admin/multisig policy) to protect users.
-
----
-
-## Glossary (quick)
-
-- **Commit window:** time allowed to submit commitments (tickets).
-- **Reveal window:** time allowed to reveal guesses after the randomness pulse is posted.
-- **Claim Grace:** the safety period (in slots) after the **Reveal Deadline** during which winners can claim. The round **cannot** be swept until this grace expires. After this window, remaining tokens are swept to Treasury.
-- **Fee (bps):** basis points; 100 bps = 1%.
-- **Pipeline depth:** how many future rounds the operator keeps ready.
+| Phase | Gate (simplified) | Allowed actions |
+|---|---|---|
+| Commit | `slot <= commit_deadline` and `!pulse_set` and `!finalized` | commit instructions |
+| Pulse publication | `slot >= commit_deadline` and `!pulse_set` | `set_pulse_signed` |
+| Reveal | `pulse_set` and `slot <= reveal_deadline` and `!finalized` | reveal instructions |
+| Finalize / Settle | `slot > reveal_deadline` and `pulse_set` | finalize / settle |
+| Claim | `token_settled` and `!swept` | `claim_reward` |
+| Sweep | `slot > reveal_deadline + claim_grace_slots` | `sweep_unclaimed` |
+| Refund (oracle failure) | `!pulse_set` and `slot > reveal_deadline + REFUND_TIMEOUT_SLOTS` | `recover_funds`, `recover_funds_anyone` |
