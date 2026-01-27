@@ -116,6 +116,15 @@ The oracle may be delayed or the network may vary. The protocol remains safe as 
 - the oracle does not post the pulse while commits are still allowed
 - users cannot reveal before the pulse is posted
 
+#### Oracle Liveness Check (Safety Buffer)
+
+To protect the **Refund availability**, the protocol enforces a strict **Liveness Check** on pulose posting:
+If the Oracle attempts to post a pulse when there are **less than 50 slots (~20s)** remaining before the `reveal_deadline_slot`, the transaction is **rejected** with `PulseTooLate`.
+
+This guarantees that:
+1. If a pulse is accepted, users always have at least ~20s to submit reveals.
+2. If the Oracle is too late, the round remains in the "Pulse Not Set" state, ensuring users can claim a **Refund** after the timeout.
+
 ### 2) Users commit at the boundary slot
 
 The boundary is defined in slots. If a commit lands at exactly `commit_deadline_slot`, it is still within the window.

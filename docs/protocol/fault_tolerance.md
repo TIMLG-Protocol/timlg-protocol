@@ -30,7 +30,8 @@ Refunds return the original stake (SPL tokens) from the round’s token vault to
 ### Notes
 
 - All timeouts are expressed in **Solana slots**; real wall-clock time depends on cluster conditions.
-- If a pulse is posted later and becomes valid before refund conditions are met, the round proceeds normally and refunds are not available.
+- If a pulse is posted later but **within the safety buffer** (>20s left), the round proceeds normally.
+- If the pulse is **too late** (<20s left), the protocol **rejects** it, forcing the round to remain in the Refund state.
 
 ---
 
