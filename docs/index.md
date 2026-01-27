@@ -1,4 +1,4 @@
-# TIMLG Protocol
+# <img src="assets/beta/assets/token_logo-Dt5qbkym.png" width="40" style="vertical-align: bottom; margin-right: 10px;"> TIMLG Protocol
 
 TIMLG is a **public, auditable experiment protocol** built on Solana.
 
@@ -11,99 +11,71 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 ---
 
-## What TIMLG is trying to achieve (non-technical)
+## Token Specifications
 
-### 1) Audit randomness providers and publishing pipelines
-Many systems rely on “randomness” provided by an oracle, beacon, or infrastructure operator. TIMLG turns that into an **audit trail**:
-
-- rounds target a specific pulse index (public source),
-- the oracle publishes the pulse on-chain with a verifiable signature,
-- the program settles outcomes deterministically.
-
-### 2) Measure “predictability under constraints”
-If a strategy claims an edge, it must survive:
-
-- commit–reveal timing,
-- deterministic on-chain rules,
-- reproducible replication by independent observers.
-
-### 3) Preserve credibility with “non-claims”
-TIMLG is **not an investment product** and makes **no claims** about guaranteed profit or exotic explanations. It is a measurement framework.
-
-!!! note "What this site is"
-    This site is the **public documentation hub**. It describes the protocol surface, threat model, invariants, and public evidence — without exposing operational secrets.
+<div style="background: #f8f9fa; border-left: 4px solid #3b82f6; padding: 15px; border-radius: 4px; margin-bottom: 2em;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <div><strong>Ticker</strong><br><code>$TIMLG</code></div>
+    <div><strong>Decimals</strong><br>0 (Whole units only)</div>
+    <div><strong>Mint (Devnet)</strong><br><small><code>7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf</code></small></div>
+    <div><strong>Supply Model</strong><br>Mint on Claim / Burn on Loss</div>
+  </div>
+</div>
 
 ---
 
-## What TIMLG does (in one minute)
+## How it works (The Play Loop)
 
-1) **Commit** a private guess during a round’s commit window  
-2) The commit **escrows exactly 1 TIMLG** (one whole token unit) into the round vault  
-3) After commits close, an **oracle publishes** a 512-bit pulse tied to a public source  
-4) **Reveal** the guess + salt so the program can verify the commitment  
-5) The program **settles** outcomes deterministically and enables **claims** (winners)
+The protocol operates in continuous, overlapping rounds. Users participate via the interface:
 
-!!! info "Whole-token unit (no decimals)"
-    TIMLG is designed as a **whole-unit token (decimals = 0)**. The on-chain config uses an integer `stake_amount`, and deployments are expected to use a TIMLG mint with `decimals = 0` so that **`stake_amount = 1` means “stake 1 TIMLG.”**
+1.  **Commit**: Choose a bit (Bear/Bull) and stake 1 TIMLG.
+2.  **Wait**: The commit window closes, and the protocol waits for the Oracle Pulse.
+3.  **Reveal**: Once the pulse is published, you reveal your encrypted guess.
+4.  **Settle**: Winners claim rewards; losers' stakes are burned.
+
+![TIMLG Play Card Interface](assets/start_guide/4-playcard.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
+
+---
+
+## What TIMLG is trying to achieve (Scientific Goals)
+
+### 1) Audit randomness providers
+Many systems rely on "randomness" provided by an oracle. TIMLG turns that into an **audit trail**: if the "randomness" is manipulable or leaky, a winning strategy will emerge on-chain.
+
+### 2) Measure "predictability under constraints"
+If a strategy claims an edge, it must survive commit–reveal timing and deterministic settlement.
+
+### 3) Visual Evidence (Sankey Audit)
+Every token is accounted for. The protocol provides radical transparency on where funds go: claimed, burned (loss), or swept (unclaimed wins).
+
+![Flow Analysis - Sankey Diagram](assets/start_guide/15-walletoverview-analitics&flowchart.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
 
 ---
 
 ## Economics per ticket (MVP)
 
-Per ticket, one unit of TIMLG is escrowed. After finalize + settlement:
+Per ticket, exactly **1 TIMLG unit** is escrowed.
 
 | Outcome | Condition | What happens (MVP) |
 |---|---|---|
-| **WIN** | Valid reveal and matches the ticket’s target bit | Winner **claims**: stake refund (transfer) + **+1 TIMLG minted reward** |
-| **LOSE** | Valid reveal but does not match | Stake is **burned** during token settlement |
-| **NO-REVEAL** | No valid reveal by deadline | Stake is **burned** during token settlement (same as LOSE) |
-
-!!! important "MVP nuance: rewards are minted on claim"
-    The +1 TIMLG reward is minted **only when the winner claims**. If a winner never claims, that reward is never minted (while loser burns still occur).
+| **WIN** | Matches the ticket’s target bit | Winner Claims: stake refund + **1 TIMLG minted reward** |
+| **LOSE** | Does not match | Stake is **burned** |
+| **NO-REVEAL** | No valid reveal by deadline | Stake is **burned** |
 
 ---
 
-In this MVP, **winning requires a claim** (user signs the claim transaction). 
+## Interpretation: The Hypothesis Ladder
 
-!!! tip "Future Path: Gasless UX"
-    We are working on a **Relayer** that will allow users to participate without needing SOL in their wallet, using off-chain message signatures. This functionality is in the design phase (TBD).
+TIMLG follows a pre-registered scientific ladder to interpret results, avoiding sensationalism:
 
-!!! warning "Public docs vs private operations"
-    We intentionally do **not** publish private keys, signer infrastructure, privileged configs, or production oracle/relayer runbooks.
-
----
-
-## How results are interpreted (H0–H5 ladder)
-
-TIMLG follows a pre-registered “hypothesis ladder” to avoid over-interpreting noise:
-
-- **H0 — Null:** no effect (ordinary randomness)
-- **H1 — Bug:** implementation error or measurement artifact
-- **H2 — Leakage:** early access / timing / data exposure
-- **H3 — Oracle bias:** source or publishing pipeline is biased or manipulable
-- **H4 — Unknown strategy:** a real advantage survives constraints
-- **H5 — Exotic framing:** last resort, only after exhausting ordinary explanations
+*   **H0 — Null:** no effect (ordinary randomness).
+*   **H1 — Bug:** implementation error.
+*   **H2 — Leakage:** timing/data exposure.
+*   **H3 — Oracle bias:** source manipulation.
+*   **H4 — Unknown strategy:** a real advantage survives constraints.
+*   **H5 — Exotic framing:** last resort explanation.
 
 The practical rule is: **an anomaly is a reason to tighten constraints and replicate**, not to declare victory.
-
----
-
-## How it works (as implemented in the MVP)
-
-```mermaid
-sequenceDiagram
-  participant O as Operator (or Admin)
-  participant U as User
-  participant P as Program
-
-  O->>P: create_round_auto
-  U->>P: commit_ticket
-  O->>P: set_pulse_signed
-  U->>P: reveal_ticket
-  O->>P: settle_round_tokens (Auto-Finalizes)
-  U->>P: claim_reward
-  O->>P: sweep_unclaimed (SOL-only)
-```
 
 ---
 
