@@ -13,16 +13,47 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 ## Token Specifications
 
-<div style="background: #f8f9fa; border-left: 4px solid #3b82f6; padding: 15px; border-radius: 4px; margin-bottom: 2em;">
-  <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-    <div style="text-align: center; min-width: 100px;">
-        <img src="assets/icon_vector_logo.svg" width="60" style="display: block; margin: 0 auto 5px;">
-        <strong>$TIMLG</strong>
+<div style="background: #ffffff; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2em; display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+
+  <!-- Left: Identity -->
+  <div style="text-align: center; min-width: 140px; flex-shrink: 0;">
+    <img src="assets/icon_vector_logo.svg" width="100" height="100" style="display: block; margin: 0 auto 12px;">
+    <h3 style="margin: 0; font-size: 1.8em; line-height: 1;">TIMLG</h3>
+    <span style="color: #6b7280; font-weight: 600; font-size: 1.1em;">$TIMLG</span>
+  </div>
+
+  <!-- Divider (Visual separation) -->
+  <div style="width: 1px; background: #e5e7eb; align-self: stretch; display: none;"></div>
+
+  <!-- Right: Specs Grid -->
+  <div style="flex-grow: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px;">
+    
+    <!-- Spec Item: Contract -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Mint Address</div>
+      <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; font-size: 1.2em; color: #3b82f6; text-decoration: none; font-weight: 700; background: #eff6ff; padding: 4px 8px; border-radius: 6px;">
+        7nJ9...8cEf ↗
+      </a>
     </div>
-    <div style="flex-grow: 1;">
-        <div style="margin-bottom: 4px;"><strong>Mint (Devnet)</strong></div>
-        <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; word-break: break-all;">7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf ↗</a>
+
+    <!-- Spec Item: Network -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Network</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">Solana Devnet</div>
     </div>
+
+    <!-- Spec Item: Type -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Token Standard</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">SPL Token</div>
+    </div>
+
+    <!-- Spec Item: Decimals -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Decimals</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">0 <span style="font-weight: 400; color: #9ca3af; font-size: 0.9em;">(Whole)</span></div>
+    </div>
+    
   </div>
 </div>
 
