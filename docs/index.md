@@ -14,11 +14,15 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 ## Token Specifications
 
 <div style="background: #f8f9fa; border-left: 4px solid #3b82f6; padding: 15px; border-radius: 4px; margin-bottom: 2em;">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: center;">
-    <div style="text-align: center;"><img src="assets/icon_vector_logo.svg" width="80" style="display: block; margin: 0 auto 8px;"><strong>$TIMLG</strong></div>
-    <div><strong>Decimals</strong><br>0 (Whole units only)</div>
-    <div><strong>Mint (Devnet)</strong><br><small><code>7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf</code></small></div>
-    <div><strong>Supply Model</strong><br>Mint on Claim / Burn on Loss</div>
+  <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+    <div style="text-align: center; min-width: 100px;">
+        <img src="assets/icon_vector_logo.svg" width="60" style="display: block; margin: 0 auto 5px;">
+        <strong>$TIMLG</strong>
+    </div>
+    <div style="flex-grow: 1;">
+        <div style="margin-bottom: 4px;"><strong>Mint (Devnet)</strong></div>
+        <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; word-break: break-all;">7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf ↗</a>
+    </div>
   </div>
 </div>
 
