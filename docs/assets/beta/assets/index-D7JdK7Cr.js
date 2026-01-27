@@ -14435,7 +14435,7 @@ function requireClient() {
   return client.exports;
 }
 var clientExports = requireClient();
-const tokenLogo = "/assets/beta/assets/token_logo-Dt5qbkym.png";
+const tokenLogo = "" + new URL("token_logo-Dt5qbkym.png", import.meta.url).href;
 const crypto$1 = typeof globalThis === "object" && "crypto" in globalThis ? globalThis.crypto : void 0;
 function isBytes(a) {
   return a instanceof Uint8Array || ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array";
@@ -46549,6 +46549,15 @@ function MyTickets({
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#888", fontWeight: 400 }, children: "Auto-Settling..." });
               }
             }
+          } else {
+            const anyRefunded = tickets.some((t) => getComputedStatus(t, currentSlot) === "REFUNDED");
+            if (anyRefunded) {
+              rStatus = "REFUNDED";
+              headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Funds Recovered" });
+            } else {
+              rStatus = "ARCHIVED";
+              headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Done" });
+            }
           }
           const ticketsToReveal = tickets.filter((t) => getComputedStatus(t, currentSlot) === "REVEAL NOW" && !t.revealed);
           const ticketsToClaim = tickets.filter((t) => getComputedStatus(t, currentSlot) === "CLAIM PRIZE" && !t.claimed);
@@ -46560,6 +46569,7 @@ function MyTickets({
           if (rStatus === "REVEAL OPEN") rBg = "#e3f2fd";
           if (rStatus === "AWAITING SETTLE") rBg = "#f3e5f5";
           if (rStatus === "REFUND MODE") rBg = "#ffebee";
+          if (rStatus === "REFUNDED") rBg = "#f0f0f0";
           if (rStatus === "CLAIM WINDOW") rBg = "#e0f2f1";
           return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { background: rBg }, children: [
@@ -47794,6 +47804,14 @@ function App() {
     loading: true
   });
   reactExports.useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ type: "BETA_RESIZE", height }, "*");
+    });
+    observer.observe(document.body);
+    return () => observer.disconnect();
+  }, []);
+  reactExports.useEffect(() => {
     async function checkProgramStatus() {
       try {
         const resp = await fetch(`https://api.solscan.io/v2/account/options?address=${PROGRAM_ID}&cluster=devnet`).catch(() => null);
@@ -48777,10 +48795,15 @@ class ErrorBoundary extends React.Component {
 }
 let root = null;
 function mountBetaApp() {
-  const mount = document.getElementById("beta-root");
+  const mount = document.getElementById("beta-root") || document.getElementById("root");
   if (!mount) return;
   if (root) {
-    return;
+    try {
+      root.unmount();
+    } catch (e) {
+      console.warn("Unmount error", e);
+    }
+    root = null;
   }
   root = clientExports.createRoot(mount);
   root.render(
