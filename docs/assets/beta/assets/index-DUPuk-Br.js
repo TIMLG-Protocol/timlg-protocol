@@ -37254,9 +37254,9 @@ var flattenChunks = (chunks2) => {
   }
   const result = new Uint8Array(len);
   for (let i = 0, pos = 0, l = chunks2.length; i < l; i++) {
-    let chunk2 = chunks2[i];
-    result.set(chunk2, pos);
-    pos += chunk2.length;
+    let chunk = chunks2[i];
+    result.set(chunk, pos);
+    pos += chunk.length;
   }
   return result;
 };
@@ -39324,8 +39324,8 @@ Inflate$1.prototype.push = function(data, flush_mode) {
   }
   return true;
 };
-Inflate$1.prototype.onData = function(chunk2) {
-  this.chunks.push(chunk2);
+Inflate$1.prototype.onData = function(chunk) {
+  this.chunks.push(chunk);
 };
 Inflate$1.prototype.onEnd = function(status) {
   if (status === Z_OK) {
@@ -46248,7 +46248,11 @@ function MyTickets({
   doClaimTicket,
   doRefundTicket,
   doSettleRound,
-  doCloseTicket
+  doCloseTicket,
+  loadingHistory,
+  // ✅ New
+  historyProgress
+  // ✅ New
 }) {
   const userPk = reactExports.useMemo(() => {
     if (!pubkey2) return null;
@@ -46325,6 +46329,7 @@ function MyTickets({
     if (revealed && !win) {
       const pulseSet = Boolean(row.round?.pulseSet || row.round?.pulse_set);
       if (!pulseSet && row.round) return "PENDING";
+      if (row.reconstructed && !claimed) return "SYNCING";
       return "LOSS";
     }
     if (!revealed && !win) {
@@ -46388,6 +46393,7 @@ function MyTickets({
     if (status === "CLAIM" || status === "CLAIM PRIZE") return "READY TO CLAIM";
     if (status === "NO RECEIPT") return "LOST KEY";
     if (status === "REFUND RENT") return "RECOVER RENT";
+    if (status === "SYNCING") return "SYNCING...";
     return status;
   };
   const ensureSweepTx = async (ticket, rId) => {
@@ -46430,8 +46436,8 @@ function MyTickets({
       const ticketsData = [];
       const chunkSize = 5;
       for (let i = 0; i < tickets.length; i += chunkSize) {
-        const chunk2 = tickets.slice(i, i + chunkSize);
-        const chunkResults = await Promise.all(chunk2.map(async (t) => {
+        const chunk = tickets.slice(i, i + chunkSize);
+        const chunkResults = await Promise.all(chunk.map(async (t) => {
           const status = getComputedStatus(t, currentSlot);
           const treasurySig = await ensureSweepTx(t, roundId2);
           const commitSig = t.createdTx || t.receipt?.commitTx || null;
@@ -46566,6 +46572,18 @@ function MyTickets({
           " TICKETS / ",
           groupedRounds.length,
           " ROUNDS"
+        ] }),
+        loadingHistory && historyProgress?.total > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6, paddingLeft: 8, borderLeft: "1px solid #E5E7EB" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "relative", width: 14, height: 14 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { className: "spinner", viewBox: "0 0 50 50", style: { width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { className: "path", cx: "25", cy: "25", r: "20", fill: "none", strokeWidth: "5", stroke: "#3B82F6" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 10, color: "#3B82F6", fontWeight: 700, letterSpacing: "0.02em" }, children: [
+            "SCANNING HISTORY ",
+            Math.round(historyProgress.current / (historyProgress.total || 1) * 100),
+            "% (",
+            historyProgress.current,
+            "/",
+            historyProgress.total,
+            ")"
+          ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 12 }, children: [
@@ -47475,15 +47493,10 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
   }, [pubkey2, refreshNow, chainState?.round?.pulseSet, chainState?.round?.finalized]);
   return { chainState, statusLine, refreshNow };
 }
-function chunk(arr, size) {
-  return Array.from(
-    { length: Math.ceil(arr.length / size) },
-    (_, i) => arr.slice(i * size, i * size + size)
-  );
-}
 function decodeInstruction(coder, ix) {
   try {
-    return coder.instruction.decode(ix.data, "base58");
+    const data = typeof ix.data === "string" ? bs58$3.decode(ix.data) : ix.data;
+    return coder.instruction.decode(data);
   } catch (e) {
     return null;
   }
@@ -47493,10 +47506,12 @@ function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
   const [historyRows, setHistoryRows] = reactExports.useState([]);
   const [loadingHistory, setLoadingHistory] = reactExports.useState(false);
   const [historyError, setHistoryError] = reactExports.useState(null);
+  const [historyProgress, setHistoryProgress] = reactExports.useState({ current: 0, total: 0 });
   const fetchHistory = reactExports.useCallback(async () => {
     if (!connection || !userPubkey || !programPk || !coder) return;
     setLoadingHistory(true);
     setHistoryError(null);
+    setHistoryProgress({ current: 0, total: 0 });
     console.log("[History] === RECONSTRUCTOR V6 (STABLE + 500) ACTIVATED ===");
     try {
       const sigs = await connection.getSignaturesForAddress(userPubkey, { limit: 500 });
@@ -47507,27 +47522,35 @@ function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
         return;
       }
       const successfulSigs = sigs.filter((s) => !s.err).map((s) => s.signature);
-      const BATCH_SIZE = 3;
-      const txBatches = chunk(successfulSigs, BATCH_SIZE);
+      setHistoryProgress({ current: 0, total: successfulSigs.length });
+      const BATCH_SIZE = 1;
       const reconstructedByType = /* @__PURE__ */ new Map();
-      for (let i = 0; i < txBatches.length; i++) {
-        const batch = txBatches[i];
+      for (let i = 0; i < successfulSigs.length; i++) {
+        setHistoryProgress({ current: i + 1, total: successfulSigs.length });
+        const sig = successfulSigs[i];
         try {
-          console.log(`[History] Batch ${i + 1}/${txBatches.length}... (Delay 2s)`);
-          const txs = await connection.getParsedTransactions(batch, {
+          console.log(`[History] Tx ${i + 1}/${successfulSigs.length}...`);
+          const tx = await connection.getParsedTransaction(sig, {
             commitment: "confirmed",
             maxSupportedTransactionVersion: 0
           });
-          txs.filter(Boolean).forEach((tx) => {
-            if (!tx?.transaction?.message?.instructions) return;
-            const ixs = tx.transaction.message.instructions.filter(
+          const txs = tx ? [tx] : [];
+          txs.filter(Boolean).forEach((tx2) => {
+            if (!tx2?.transaction?.message?.instructions) return;
+            const ixs = tx2.transaction.message.instructions.filter(
               (ix) => ix.programId.toString() === programPk.toBase58()
             );
+            if (ixs.length === 0) {
+            }
             ixs.forEach((ix) => {
               const decoded = decodeInstruction(coder, ix);
-              if (!decoded) return;
+              if (!decoded) {
+                console.log("[History] Failed to decode instruction. Data:", ix.data);
+                return;
+              }
               const args = decoded.data;
               const name = decoded.name;
+              console.log("[History] Found Action:", name);
               let rid = null;
               if (args.roundId) rid = args.roundId.toNumber();
               else if (args.round_id) rid = args.round_id.toNumber();
@@ -47570,17 +47593,17 @@ function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
                 }
               };
               if (name === "commit_ticket" || name === "commitTicket") {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "COMMIT", tx);
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "COMMIT", tx2);
               } else if (name.includes("commit_batch") || name.includes("commitBatch")) {
                 const entries = args.entries || [];
                 entries.forEach((e) => {
                   const n = e.nonce ? typeof e.nonce.toNumber === "function" ? e.nonce.toNumber() : e.nonce : null;
-                  processEntry(rid, n, "COMMIT", tx);
+                  processEntry(rid, n, "COMMIT", tx2);
                 });
               } else if (name.includes("reveal")) {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "REVEAL", tx);
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "REVEAL", tx2);
               } else if (name.includes("claim_reward") || name.includes("claimReward")) {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "CLAIM", tx);
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "CLAIM", tx2);
               }
             });
           });
@@ -47606,12 +47629,12 @@ function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
             reconstructed: true
           }));
           setHistoryRows(currentRows);
-          if (i < txBatches.length - 1) await delay(2e3);
+          if (i < successfulSigs.length - 1) await delay(300);
         } catch (err) {
           const msg = err.message || "";
           if (msg.includes("429") || msg.includes("Too many requests")) {
-            console.warn("[History] 429 BLOCK. Waiting 10 seconds...");
-            await delay(1e4);
+            console.warn("[History] 429 BLOCK. Waiting 5 seconds...");
+            await delay(5e3);
             i--;
           } else {
             console.error("[History] Error batch:", err);
@@ -47624,9 +47647,10 @@ function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
       setHistoryError(e.message);
     } finally {
       setLoadingHistory(false);
+      setHistoryProgress({ current: 0, total: 0 });
     }
   }, [connection, userPubkey, programPk, coder]);
-  return { historyRows, loadingHistory, historyError, fetchHistory };
+  return { historyRows, loadingHistory, historyError, fetchHistory, historyProgress };
 }
 const TICKET_DATA_SIZE = 122;
 const USER_MEMCMP_OFFSET = 16;
@@ -47694,7 +47718,7 @@ function useUserTickets({
   const backoffMsRef = reactExports.useRef(BASE_POLL_MS);
   const nextAllowedAtRef = reactExports.useRef(0);
   const retryTimerRef = reactExports.useRef(null);
-  const { historyRows, fetchHistory } = useHistoryReconstructor(connection, userPubkey, programPk, coder);
+  const { historyRows, loadingHistory, fetchHistory, historyProgress } = useHistoryReconstructor(connection, userPubkey, programPk, coder);
   const historyStartedRef = reactExports.useRef(false);
   reactExports.useEffect(() => {
     if (userPubkey && connection && !historyStartedRef.current) {
@@ -47789,8 +47813,8 @@ function useUserTickets({
           const infos = [];
           const CHUNK_SIZE2 = 100;
           for (let i = 0; i < roundPdas.length; i += CHUNK_SIZE2) {
-            const chunk2 = roundPdas.slice(i, i + CHUNK_SIZE2);
-            const chunkInfos = await connection.getMultipleAccountsInfo(chunk2, "confirmed");
+            const chunk = roundPdas.slice(i, i + CHUNK_SIZE2);
+            const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
             infos.push(...chunkInfos);
           }
           const vaultPks = [];
@@ -47814,8 +47838,8 @@ function useUserTickets({
             console.log(`[useUserTickets] Fetching ${vaultPks.length} vaults for mint verification...`);
             const vaultInfos = [];
             for (let i = 0; i < vaultPks.length; i += CHUNK_SIZE2) {
-              const chunk2 = vaultPks.slice(i, i + CHUNK_SIZE2);
-              const chunkInfos = await connection.getMultipleAccountsInfo(chunk2, "confirmed");
+              const chunk = vaultPks.slice(i, i + CHUNK_SIZE2);
+              const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
               vaultInfos.push(...chunkInfos);
             }
             for (let i = 0; i < vaultInfos.length; i++) {
@@ -47951,6 +47975,7 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save reveal receipt", e);
         }
+        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, revealed: true, receipt: { ...r.receipt, revealTx: sig, revealedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48013,6 +48038,7 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save claim receipt", e);
         }
+        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, claimed: true, receipt: { ...r.receipt, claimTx: sig, claimedAt: Date.now() }, uiStatus: "CLAIMED" } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48084,6 +48110,7 @@ function useUserTickets({
           console.error("Failed to update receipt for refund:", err);
         }
         console.log("Receipt saved/updated successfully for", row.ticketPk.toBase58());
+        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48188,7 +48215,7 @@ function useUserTickets({
           ticket: row.ticketPk,
           user: userPubkey
         }).rpc();
-        appendLog?.(`Close Ticket OK ✅ tx=${sig}`);
+        appendLog?.(`Close Ticket OK (+~0.002 SOL) ✅ tx=${sig}`);
         try {
           const walletStr = userPubkey.toBase58();
           const updated = {
@@ -48203,6 +48230,7 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save close receipt", e);
         }
+        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48221,7 +48249,7 @@ function useUserTickets({
               win: row.win
             };
             saveLocalReceipt(walletStr, row.roundId, updated);
-            appendLog?.(`Ticket marked as closed locally (account already gone).`);
+            appendLog?.(`Ticket marked as closed locally (already closed).`);
             refresh("action");
           } catch (err) {
             console.error("Failed to mark ghost ticket as closed", err);
@@ -48241,11 +48269,22 @@ function useUserTickets({
     lastUpdatedAt,
     retryInSec,
     forceRefresh: () => refresh("manual"),
+    loadingHistory,
+    // ✅ Expose loadingHistory
+    historyProgress,
+    // ✅ Expose historyProgress
     doRevealTicket,
     doClaimTicket,
     doRefundTicket,
     doSettleRound,
-    doCloseTicket
+    doCloseTicket,
+    injectOptimisticTicket: (newRow) => {
+      setRows((prev) => {
+        const exists = prev.some((r) => r.ticketPk.toBase58() === newRow.ticketPk.toBase58());
+        if (exists) return prev;
+        return [newRow, ...prev];
+      });
+    }
   };
 }
 clusterApiUrl("devnet");
@@ -48337,15 +48376,9 @@ function App() {
   reactExports.useEffect(() => {
     async function checkProgramStatus() {
       try {
-        const resp = await fetch(`https://api.solscan.io/v2/account/options?address=${PROGRAM_ID}&cluster=devnet`).catch(() => null);
-        if (resp && resp.ok) {
-          const data = await resp.json();
-          setProgramStatus({
-            verified: !!data?.data?.is_verified,
-            security: !!data?.data?.is_security_txt,
-            loading: false
-          });
-        } else {
+        const resp = null;
+        if (resp && resp.ok) ;
+        else {
           setProgramStatus({ verified: false, security: false, loading: false });
         }
       } catch (e) {
@@ -48367,7 +48400,11 @@ function App() {
     doClaimTicket,
     doRefundTicket,
     doSettleRound,
-    doCloseTicket
+    doCloseTicket,
+    // ✅ Fixed
+    injectOptimisticTicket,
+    loadingHistory,
+    historyProgress
   } = useUserTickets({
     program,
     connection,
@@ -48795,6 +48832,32 @@ Domain: timlg.org`;
       appendLog(`Commit OK ✅ tx=${sig}`);
       receipt.commitTx = sig;
       saveLocalReceipt(pubkey2.toBase58(), targetRoundId, receipt);
+      injectOptimisticTicket({
+        ticketPk: accounts2.ticket,
+        ticket: {
+          roundId: new BN(targetRoundId),
+          nonce: new BN(nonce),
+          guess: finalGuess,
+          revealed: false,
+          claimed: false,
+          win: false,
+          processed: false,
+          createdSlot: new BN(chainState?.currentSlot || 0)
+        },
+        roundId: targetRoundId,
+        createdSlot: chainState?.currentSlot || 0,
+        // Fallback
+        nonce,
+        receipt: { ...receipt, commitTx: sig },
+        // Ensure updated receipt
+        revealed: false,
+        claimed: false,
+        win: false,
+        processed: false,
+        // Mock round to prevent "EXPIRED" default
+        round: { finalized: false, pulseSet: false },
+        uiStatus: "PENDING"
+      });
       await refreshProtocolState?.();
       refreshTickets();
     } catch (e) {
@@ -49291,6 +49354,8 @@ Domain: timlg.org`;
           doRefundTicket,
           doSettleRound,
           doCloseTicket,
+          loadingHistory,
+          historyProgress,
           currentSlot: chainState?.currentSlot,
           claimGraceSlots: chainState?.config?.claimGraceSlots,
           activeRoundId: chainState?.roundId ?? null,
