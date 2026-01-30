@@ -30,8 +30,8 @@ Refunds return the original stake (SPL tokens) from the round’s token vault to
 ### Notes
 
 - All timeouts are expressed in **Solana slots**; real wall-clock time depends on cluster conditions.
-- If a pulse is posted later but **within the safety buffer** (>20s left), the round proceeds normally.
-- If the pulse is **too late** (<20s left), the protocol **rejects** it, forcing the round to remain in the Refund state.
+- If a pulse is posted later but **within the safety buffer** (at least `LATE_PULSE_SAFETY_BUFFER_SLOTS = 50` slots remaining), the round proceeds normally.
+- If the pulse is **too late** (fewer than `LATE_PULSE_SAFETY_BUFFER_SLOTS = 50` slots remaining), the protocol **rejects** it, forcing the round to remain in the Refund state.
 
 ---
 
@@ -63,3 +63,12 @@ The `Config Authority` (intended for Multisig management) controls critical safe
 
 !!! note "Timing Note"
     All timeouts and deadlines are expressed and enforced in **Solana slots**. Any wall-clock time shown in the UI is an approximation based on current cluster performance.
+
+
+---
+
+## 5. Rent recovery and archived rounds
+
+Tickets are rent-exempt accounts that hold a lamport deposit. After settlement (and after claim if you won), the user can reclaim this SOL by calling `close_ticket`.
+
+If a round account is later archived/closed (`round.lamports() == 0`), `close_ticket` is allowed for any ticket as an auto-healing path so users can always recover rent even if round state is gone.

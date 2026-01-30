@@ -30,7 +30,7 @@ The MVP uses two treasury endpoints:
 | Treasury | Asset | Purpose (public view) |
 |---|---|---|
 | **Reward Fee SPL** | TIMLG token (SPL) | receives **reward fees** (configured in Tokenomics) |
-| **SOL Treasury** | lamports | receives **post-grace** sweeps of native SOL (rent) |
+| **SOL Treasury** | lamports | receives **post-grace** sweeps of **round vault** native SOL (does not include user ticket rent deposits) |
 | **Protocol Treasury SPL** | TIMLG token (SPL) | receives **post-grace** sweeps of unclaimed winner rewards |
 
 > The exact accounts are configured on-chain and should be treated as canonical by indexers.
@@ -52,6 +52,13 @@ For timing and gating details, see:
 
 ---
 
+## Ticket rent deposits (lamports)
+
+Each ticket PDA holds a rent-exempt lamport deposit. The protocol sweep does **not** close tickets. Instead, the ticket owner reclaims this SOL by calling `close_ticket` once the ticket is finished (processed; winners must claim first). If the round account is archived (`round.lamports()==0`), `close_ticket` is allowed for any ticket as an auto-healing path.
+
+
+---
+
 ## BitIndex (as implemented)
 
 ### Why BitIndex exists
@@ -66,12 +73,12 @@ across the pulse.
 
 For each ticket:
 
-- `bit_index = u16_le( SHA256( "bitindex" || round_id_le || participant_pubkey || nonce_le )[0..2] ) mod 512`
+- `bit_index = u16_le( SHA256( "bitindex" || round_id_le || user_pubkey || nonce_le )[0..2] ) mod 512`
 
 Where:
 - `round_id_le` is `round_id` as 8 bytes little-endian
 - `nonce_le` is `nonce` as 8 bytes little-endian
-- `participant_pubkey` is the raw 32-byte pubkey
+- `user_pubkey` is the raw 32-byte pubkey
 - `SHA256` is computed over the concatenation of those byte slices
 - `u16_le([b0, b1])` interprets the first two bytes as little-endian `u16`
 

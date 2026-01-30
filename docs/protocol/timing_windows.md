@@ -52,7 +52,7 @@ Notes:
       <td><code>slot &gt;= commit_deadline_slot</code> and <code>pulse_set == false</code></td>
       <td>Oracle posts pulse (<code>set_pulse_signed</code>)</td>
       <td>
-        The pulse must be posted after commits close. This overlap is intentional: the oracle can post from the boundary onward, while commits stop once the pulse is set.
+        The pulse must be posted after commits close. Posting is allowed from the boundary onward (`slot >= commit_deadline_slot`). Note that in the *boundary slot*, ordering matters: once `pulse_set = true`, commits are rejected even if `slot == commit_deadline_slot`.
       </td>
     </tr>
     <tr>
@@ -79,6 +79,18 @@ Notes:
       <td>Users claim rewards (<code>claim_reward</code>)</td>
       <td>Claim refunds stake + mints reward. Claims are blocked once swept.</td>
     </tr>
+<tr>
+  <td><strong>Ticket cleanup</strong></td>
+  <td>
+    If round is alive: <code>ticket.processed == true</code> and (if <code>ticket.win</code>) <code>ticket.claimed == true</code><br/>
+    If round is archived: <code>round.lamports() == 0</code>
+  </td>
+  <td>Close ticket and reclaim its SOL rent deposit (<code>close_ticket</code>)</td>
+  <td>
+    <code>close_ticket</code> is user-signed and returns the ticket account’s lamports to the user (<code>close = user</code>). It is not part of token rewards.
+  </td>
+</tr>
+
     <tr>
       <td><strong>Sweep (SOL + SPL)</strong></td>
       <td><code>slot &gt; reveal_deadline_slot + claim_grace_slots</code> and round finalized</td>

@@ -13,52 +13,54 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 ## Token Specifications
 
-<div style="background: #ffffff; border: 1px solid #e5e7eb; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(0,0,0,0.08); margin-bottom: 2em; display: flex; flex-direction: column; gap: 24px;">
+<div style="background: #ffffff; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2em; display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
 
-  <!-- Header: Identity & Network -->
-  <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-    <div style="background: #eff6ff; padding: 12px; border-radius: 12px;">
-      <img src="assets/icon_vector_logo.svg" width="64" height="64" style="display: block;">
-    </div>
-    
-    <div style="flex-grow: 1;">
-      <h3 style="margin: 0; font-size: 1.8em; line-height: 1.2; color: #111827; font-weight: 800;">TIMLG Protocol</h3>
-      <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
-        <span style="background: #e5e7eb; color: #374151; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600;">$TIMLG</span>
-        <span style="color: #9ca3af;">•</span>
-        <span style="color: #6b7280; font-size: 0.95em;">Solana Devnet</span>
-      </div>
-    </div>
+  <!-- Left: Identity -->
+  <div style="text-align: center; min-width: 140px; flex-shrink: 0;">
+    <img src="assets/icon_vector_logo.svg" width="100" height="100" style="display: block; margin: 0 auto 12px;">
+    <h3 style="margin: 0; font-size: 1.8em; line-height: 1;">TIMLG</h3>
+    <span style="color: #6b7280; font-weight: 600; font-size: 1.1em;">$TIMLG</span>
   </div>
 
-  <div style="height: 1px; background: #f3f4f6; width: 100%;"></div>
+  <!-- Divider (Visual separation) -->
+  <div style="width: 1px; background: #e5e7eb; align-self: stretch; display: none;"></div>
 
-  <!-- Specs Grid -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+  <!-- Right: Specs Grid -->
+  <div style="flex-grow: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px;">
     
-    <!-- Token Type -->
+    <!-- Spec Item: Contract -->
     <div>
-      <div style="font-size: 0.8em; color: #9ca3af; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 4px;">TOKEN STANDARD</div>
-      <div style="color: #111827; font-weight: 600; font-size: 1.1em;">SPL Token</div>
-    </div>
-
-    <!-- Precision -->
-    <div>
-      <div style="font-size: 0.8em; color: #9ca3af; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 4px;">PRECISION</div>
-      <div style="color: #111827; font-weight: 600; font-size: 1.1em;">0 Decimals <span style="font-weight: 400; color: #9ca3af;">(Whole Units)</span></div>
-    </div>
-
-    <!-- Contract -->
-    <div>
-      <div style="font-size: 0.8em; color: #9ca3af; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 4px;">MINT ADDRESS</div>
-      <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #2563eb; padding: 6px 12px; border-radius: 99px; font-family: monospace; font-weight: 700; text-decoration: none; font-size: 1em; white-space: nowrap;">
-        <span>7nJ9...8cEf</span>
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Mint Address</div>
+      <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; font-size: 1.2em; color: #3b82f6; text-decoration: none; font-weight: 700; background: #eff6ff; padding: 4px 8px; border-radius: 6px;">
+        7nJ9...8cEf ↗
       </a>
     </div>
 
+    <!-- Spec Item: Network -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Network</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">Solana Devnet</div>
+    </div>
+
+    <!-- Spec Item: Type -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Token Standard</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">SPL Token</div>
+    </div>
+
+    <!-- Spec Item: Decimals -->
+    <div>
+      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Decimals</div>
+      <div style="font-weight: 600; font-size: 1.1em; color: #111;">0 <span style="font-weight: 400; color: #9ca3af; font-size: 0.9em;">(Whole)</span></div>
+    </div>
+    
   </div>
 </div>
+
+!!! note "Decimals, base units, and ticket cleanup"
+    - The protocol accounts in **base units** (`u64`). Devnet may use a mint with `decimals = 0` for simple testing UX.
+    - `claim_reward` pays **SPL tokens** only. To reclaim the ticket account’s **SOL rent deposit**, the user closes the ticket (`close_ticket`) after settlement (and after claim if you won).
+
 
 ---
 
@@ -70,6 +72,7 @@ The protocol operates in continuous, overlapping rounds. Users participate via t
 2.  **Wait**: The commit window closes, and the protocol waits for the Oracle Pulse.
 3.  **Reveal**: Once the pulse is published, you reveal your encrypted guess.
 4.  **Settle**: Winners claim rewards; losers' stakes are burned.
+5.  **Cleanup (SOL rent)**: Close your finished ticket to recover the ticket account’s SOL rent deposit.
 
 ![TIMLG Play Card Interface](assets/start_guide/4-playcard.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
 

@@ -1,6 +1,6 @@
 # Protocol Overview
 
-TIMLG (TimeLog) is a **verifiable time-log protocol**: participants commit during a commit window, an oracle publishes a public randomness pulse after commits close, participants reveal their guess, and the program settles outcomes deterministically.
+TIMLG (TimeLog) is a **verifiable time-log protocol**: users commit during a commit window, an oracle publishes a public randomness pulse after commits close, users reveal their guess, and the program settles outcomes deterministically.
 
 This documentation is **public** and intentionally avoids operational or privileged details.
 
@@ -79,11 +79,11 @@ A **Round** defines:
 
 ### Ticket
 
-A **Ticket** binds a participant to a single commitment:
+A **Ticket** binds a user to a single commitment:
 
-- `round_id`, `participant`, `nonce`
+- `round_id`, `user`, `nonce`
 - `commitment` (32 bytes)
-- `bit_index` (0–511), derived from `(round_id, participant, nonce)`
+- `bit_index` (0–511), derived from `(round_id, user, nonce)`
 - reveal markers (`revealed`, `guess` as 0/1) and outcome (`win`)
 - claim guards (`claimed`, `claimed_slot` or equivalent)
 
@@ -118,3 +118,10 @@ A **Ticket** binds a participant to a single commitment:
 - **Settlement Rules** → how winners/losers/no-reveal are handled
 - **Tokenomics** → how the MVP distributes and accounts for value
 - **Treasury & BitIndex** → treasury flows and how bit indexes are derived
+
+
+---
+
+## Ticket cleanup (rent)
+
+Tickets are rent-exempt PDAs that hold a lamport deposit. After settlement (and after claim if you won), the owner can reclaim this SOL by calling `close_ticket`.

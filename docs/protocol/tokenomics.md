@@ -13,14 +13,13 @@ allocations, and vesting.
 
 ## What exists today (MVP-aligned)
 
-### Economic unit (whole-token design)
+### Economic unit (base units)
 - Each ticket escrows a fixed stake of the **protocol token**.
-- TIMLG is designed as a **whole-unit token (decimals = 0)**.
-- The on-chain config stores `stake_amount` as an integer, and deployments are expected to use a TIMLG mint with `decimals = 0`
-  so that **`stake_amount = 1` means “stake 1 TIMLG.”**
+- The protocol accounts in **base units** (`u64`).
+- Devnet may use a TIMLG mint with `decimals = 0` for easier UX during testing. Mainnet deployments may choose a different `decimals` value; `stake_amount` remains base units.
 
 !!! note "Implementation note"
-    The on-chain program does not currently enforce mint decimals; this is a **deployment invariant** (the configured mint must use `decimals = 0`).
+    The on-chain program does not enforce mint decimals; `stake_amount` should be interpreted as **base units** of the configured mint.
 
 ### Why this exists
 The economics are designed to:
@@ -45,6 +44,18 @@ After the pulse is finalized and the reveal window closes, each ticket is classi
 
 ---
 
+---
+
+## Ticket rent (SOL) and “residue zero” cleanup
+
+Each ticket is an on-chain account that holds a **rent-exempt lamport deposit**. This deposit is **not** part of the TIMLG reward.
+
+- Winners claim **SPL tokens** via `claim_reward` (stake refund + minted reward).
+- After settlement (and after claim if you won), the ticket owner should call **`close_ticket`** to close the ticket PDA and reclaim its lamports.
+
+This keeps the system “residue zero” for users: token outcomes are auditable on-chain, and the network deposit is recoverable by the user.
+
+
 ## Claim + settlement model (what happens and when)
 
 TIMLG separates “classification” from “distribution”:
@@ -55,7 +66,8 @@ TIMLG separates “classification” from “distribution”:
 4. **Finalize:** round is locked
 5. **Settle tokens:** losers and unrevealed are burned
 6. **Claim:** winners can claim **refund + mint**
-7. **Sweep:** after a grace window, native SOL and **remaining SPL tokens** are swept to their respective treasuries.
+7. **Close ticket:** users close finished tickets to reclaim the ticket account’s SOL rent deposit (`close_ticket`)
+8. **Sweep:** after a grace window, **round vault** native SOL and **remaining SPL tokens** are swept to their respective treasuries (tickets are not closed by sweep).
 
 This separation makes the protocol easier to audit and harder to exploit with timing tricks.
 

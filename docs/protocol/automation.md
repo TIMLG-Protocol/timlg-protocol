@@ -41,15 +41,37 @@ To maximize decentralization and liveness, the settlement process has been harde
 
 ---
 
-## TIMLG Supervisor (Devnet Operations)
+## 4. TIMLG Supervisor (Devnet Operations)
 
-The devnet environment is driven by a **Supervisor Script** (`run_operator_supervisor_devnet.sh`) that manages the lifecycle of multiple rounds automatically.
+The protocol's off-chain infrastructure runs a continuous **Supervisor** process (Oracle Operator) to manage rounds.
 
-### Key Operational Features:
+### 4.1 Standard Operator
 
-- **Lookahead Buffer (Pipeline Depth)**: The supervisor maintains a queue of **N concurrent rounds** (default=7). This ensures that even if a NIST pulse is delayed or the network is congested, there is always an open `COMMIT` window for users.
-- **Heartbeat Tick**: The operator checks the chain every 5 seconds to post pulses, finalize expired windows, and trigger settlement.
-- **Sequential Safety**: Each round is strictly bound to a specific NIST pulse index. The supervisor ensures rounds are created in the correct sequence to prevent "pulse skips."
+The standard operator implementation (`node oracle/run_oracle_devnet.js`) manages the full lifecycle:
 
-> [!TIP]
-> To participate in the devnet beta, the **TIMLG Supervisor** must be running to drive the state transitions of the rounds.
+*   **Dynamic Commit Windows (NIST Mode)**: Uses `ROUND_SCHEDULER_MODE=nist` to align rounds with external randomness arrival time.
+*   **Standardized Reveal**: Uses `1000 slots` (~6.5 min) reveal window.
+*   **Pipeline Management**: Maintains a lookahead buffer (Default=7 rounds) to ensure continuous availability.
+*   **Heartbeat Tick**: Checks chain state frequently to trigger transitions.
+
+### 4.2 Operational Features
+
+*   **Cost Efficiency**: Checks strict preconditions (including grace periods) before sending transactions.
+*   **Sequential Safety**: Enforces strict ordering of pulse indices.
+*   **Concurrency**: Capable of handling pulse injection, creation, and settlement in parallel.
+
+
+---
+
+## User-driven cleanup (ticket rent)
+
+Automation manages **round creation, pulse posting, finalize/settle, and sweeps**. Ticket rent recovery is intentionally **user-driven**:
+
+- `close_ticket` is signed by the ticket owner and returns the ticket PDA’s lamports to the user.
+- Sweeps do **not** close user tickets.
+
+This design reduces centralized maintenance and keeps user cleanup permissioned to the owner.
+
+!!! note "Grace windows"
+    The canonical sweep eligibility is enforced by the program using `claim_grace_slots` from on-chain `Config`.
+    The supervisor may use a shorter local precheck before attempting sweeps, but early attempts will be rejected on-chain.

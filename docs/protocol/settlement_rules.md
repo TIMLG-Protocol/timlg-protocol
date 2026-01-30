@@ -65,10 +65,10 @@ At a high level, a round moves through these steps:
 1) **Commits** are accepted (users escrow stake into the **round token vault**; legacy code name: `timlg_vault`)
 2) Oracle publishes pulse (`set_pulse_signed`)
 3) Users **reveal**
-4) Users **reveal**
 5) **Settle** token accounting (`settle_round_tokens`) — **Note**: this instruction auto-finalizes the round if it hasn't been done yet.
 6) Winners **claim** (`claim_reward`)
-7) After a grace period, admin may run `sweep_unclaimed` (**SOL + SPL tokens**)
+7) Users **close** finished tickets to reclaim the ticket account’s SOL rent deposit (`close_ticket`)
+8) After a grace period, admin may run `sweep_unclaimed` (round vault **SOL + remaining SPL tokens**)
 
 ### Why settlement is a separate step
 Settlement is intentionally explicit so:
@@ -76,6 +76,29 @@ Settlement is intentionally explicit so:
 - accounting is deterministic and observable,
 - claim gating can be hardened,
 - and the sweep policy can run only after a known grace period.
+
+
+---
+
+## Ticket rent recovery (`close_ticket`)
+
+A ticket is an on-chain account (PDA) that holds a **Solana rent-exempt deposit** (lamports). This deposit is **not** part of the TIMLG reward; it exists to keep the account alive.
+
+- `claim_reward` distributes **SPL tokens** (stake refund + minted reward). It does **not** close the ticket account.
+- To reclaim the ticket account’s lamports, the ticket owner calls **`close_ticket`** (user-signed).
+
+### When can a user close a ticket?
+
+If the round account still exists (“round alive”), the program enforces that the ticket is fully finished:
+
+- The ticket must be `processed == true` (i.e., settlement has processed it).
+- If `ticket.win == true`, the user must have claimed first: `claimed == true`.
+
+If the round account has been closed/archived (“round dead”, detected via `round.lamports() == 0`), the program allows closing **any** ticket to recover rent. This is a safe “auto-healing” path because the round state no longer exists to pay out rewards.
+
+> Practical UX rule: **after settlement (and after claim if you won), close your ticket to recover SOL.**
+
+
 
 ---
 
@@ -104,7 +127,7 @@ A claim is valid if:
 - the round token settlement has completed (`token_settled == true`),
 - the round has not been swept (`swept == false`),
 - the ticket outcome is WIN,
-- the claimant is the recorded participant,
+- the claimant is the recorded user,
 - and the claim has not already been executed.
 
 To prevent double-claims:
@@ -131,8 +154,8 @@ During `settle_round_tokens`:
 
 If the randomness pulse is never posted (e.g., oracle failure), users have an **infinite refund right**. To prevent rounds from staying open indefinitely if users are inactive, the protocol allows **permissionless refunds**:
 - Anyone can trigger a refund for any ticket after the **Refund Timeout** has passed.
-- The funds are always sent to the original participant's Token Account.
-- The ticket PDA is closed, and its remaining lamports are returned to the participant.
+- The funds are always sent to the original user's Token Account.
+- The ticket PDA is closed, and its remaining lamports are returned to the user.
 
 ---
 

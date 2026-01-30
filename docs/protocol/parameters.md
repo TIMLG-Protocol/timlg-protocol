@@ -14,11 +14,11 @@ It includes:
 ## Round timeline (slots)
 
 The protocol phases are gated by **slots** (not wall-clock seconds). The diagram below is an **example round** that matches the
-current Devnet supervisor defaults and the currently observed claim grace.
+current Devnet supervisor defaults and a typical claim grace configuration.
 
 - Example commit window uses the **Devnet cap** (≈7 minutes).
-- Reveal window uses **`REVEAL_WINDOW_SLOTS = 1000`**.
-- Claim grace uses **`claim_grace_slots = 900`** (observed on-chain from live rounds).
+- Reveal window commonly uses **`DEFAULT_REVEAL_WINDOW_SLOTS = 1000`**.
+- Claim grace is a **Config parameter** (`claim_grace_slots`). The program default is **`DEFAULT_CLAIM_GRACE_SLOTS = 900`**.
 - Refund eligibility is shown for the **oracle-failure path** (no pulse ever set).
 
 ```mermaid
@@ -50,7 +50,7 @@ gantt
     section Oracle failure<br/>(no pulse)
     Refund available (gate)       : active, milestone, mRefundGate, 2069, 2069
     Refund window (∞)             : ref, 2069, 3200
-    Refund (user/anyone)          : done, milestone, mRefundAct, 2400, 2400
+    Refund (user/anyone)          : done, milestone, mRefundAct, 2150, 2150
 ```
 
 <div style="margin-top:0.4rem; margin-bottom:0.8rem; padding:0.6rem 0.8rem; border:1px solid rgba(0,0,0,0.12); border-radius:12px; display:inline-block;">
@@ -82,10 +82,24 @@ gantt
 
 ---
 
+## Devnet operator entrypoints (timing)
+
+## Devnet operator entrypoints (timing)
+
+The Devnet environment runs a standard **Oracle Operator** configuration which you can replicate using the provided infrastructure.
+
+- **Standard Oracle Mode (NIST):**
+  - Creates rounds in **`ROUND_SCHEDULER_MODE=nist`**.
+  - **Commit window is dynamic** (derived from "time until pulse deadline", capped by `COMMIT_DURATION_SEC`).
+  - Reveal window is fixed by `REVEAL_WINDOW_SLOTS` (default **1000**).
+
+> **Note:** The timeline and tables below assume these standard NIST defaults.
+
+---
+
 ## Devnet parameters (current)
 
-These values reflect **how Devnet is running right now** with `./oracle/run_operator_supervisor_devnet.sh` (default env values in the script)
-and the currently observed on-chain config behavior.
+These values reflect **how Devnet is running right now** using the standard NIST configuration and the currently observed on-chain config behavior.
 
 ### Timing & scheduling
 
@@ -97,15 +111,16 @@ and the currently observed on-chain config behavior.
 | Commit duration cap | `420 sec` | Commit window is **variable** in NIST mode, capped at 420s. |
 | Commit window (slots) | ~150–1050 slots | Derived from time-until-target pulse using ~0.40s/slot approximation. |
 | Reveal window | `1000 slots` | Supervisor sets `reveal_deadline = commit_deadline + 1000`. |
-| Claim grace | `900 slots` | Observed via: `sweep_at - reveal_deadline = 900` on live rounds. |
+| Claim grace | `claim_grace_slots` (default `900`) | Canonical value is stored on-chain in `Config`. The supervisor may use a shorter local *precheck* before attempting sweeps, but the program enforces the real grace gate. |
 | Refund timeout | `150 slots` | On-chain constant `REFUND_TIMEOUT_SLOTS = 150`. |
+| Late pulse safety buffer | `50 slots` | On-chain constant `LATE_PULSE_SAFETY_BUFFER_SLOTS = 50` (pulse rejected if too close to reveal deadline). |
 | Operator tick | `5 sec` | Supervisor loop frequency (`OPERATOR_TICK_SEC`). |
 
 ### Economics (Devnet MVP)
 
 | Parameter | Devnet value | Notes |
 |---|---:|---|
-| Stake per ticket | `1` | Whole-token design expected (decimals=0) so stake=1 means 1 TIMLG. |
+| Stake per ticket | `stake_amount` (u64) | Stake is stored in **base units**. Devnet UI typically uses `stake_amount = 1` with a mint that may have `decimals = 0`, but decimals are a deployment choice. |
 | Reward fee | `reward_fee_bps` (default 100 = 1%) | Fee applies to minted reward; routed to Reward Fee Pool. |
 
 !!! note "Wall-clock time vs slots"
@@ -139,5 +154,6 @@ Exact numbers are **TBD** until final launch config is published.
 | Reveal | `pulse_set` and `slot <= reveal_deadline` and `!finalized` | reveal instructions |
 | Finalize / Settle | `slot > reveal_deadline` and `pulse_set` | finalize / settle |
 | Claim | `token_settled` and `!swept` | `claim_reward` |
-| Sweep | `slot > reveal_deadline + claim_grace_slots` | `sweep_unclaimed` |
+| Close ticket (rent) | If round alive: `ticket.processed` and (if winner) `ticket.claimed`; if round archived: `round.lamports()==0` | `close_ticket` |
+| Sweep | `slot > reveal_deadline + claim_grace_slots` | `sweep_unclaimed` (round vault SOL + remaining SPL; does not close user tickets) |
 | Refund (oracle failure) | `!pulse_set` and `slot > reveal_deadline + REFUND_TIMEOUT_SLOTS` | `recover_funds`, `recover_funds_anyone` |

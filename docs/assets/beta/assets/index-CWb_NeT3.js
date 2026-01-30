@@ -37254,9 +37254,9 @@ var flattenChunks = (chunks2) => {
   }
   const result = new Uint8Array(len);
   for (let i = 0, pos = 0, l = chunks2.length; i < l; i++) {
-    let chunk = chunks2[i];
-    result.set(chunk, pos);
-    pos += chunk.length;
+    let chunk2 = chunks2[i];
+    result.set(chunk2, pos);
+    pos += chunk2.length;
   }
   return result;
 };
@@ -39324,8 +39324,8 @@ Inflate$1.prototype.push = function(data, flush_mode) {
   }
   return true;
 };
-Inflate$1.prototype.onData = function(chunk) {
-  this.chunks.push(chunk);
+Inflate$1.prototype.onData = function(chunk2) {
+  this.chunks.push(chunk2);
 };
 Inflate$1.prototype.onEnd = function(status) {
   if (status === Z_OK) {
@@ -44818,12 +44818,12 @@ async function sha256(u82) {
   const digest = await globalThis.crypto.subtle.digest("SHA-256", u82);
   return new Uint8Array(digest);
 }
-async function commitHash(roundId, userPk, nonce, guess, salt32) {
+async function commitHash(roundId2, userPk, nonce, guess, salt32) {
   const user = userPk instanceof PublicKey ? userPk : new PublicKey(userPk);
   const prefix = new TextEncoder().encode("commit");
   const data = concat(
     prefix,
-    u64ToLeBytes(roundId),
+    u64ToLeBytes(roundId2),
     user.toBytes(),
     u64ToLeBytes(nonce),
     Uint8Array.from([guess & 255]),
@@ -44831,12 +44831,12 @@ async function commitHash(roundId, userPk, nonce, guess, salt32) {
   );
   return sha256(data);
 }
-async function deriveBitIndex(roundId, userPk, nonce) {
+async function deriveBitIndex(roundId2, userPk, nonce) {
   const user = userPk instanceof PublicKey ? userPk : new PublicKey(userPk);
   const prefix = new TextEncoder().encode("bitindex");
   const data = concat(
     prefix,
-    u64ToLeBytes(roundId),
+    u64ToLeBytes(roundId2),
     user.toBytes(),
     u64ToLeBytes(nonce)
   );
@@ -44865,36 +44865,36 @@ function seed(s) {
   return new TextEncoder().encode(s);
 }
 function pdaConfig(programId) {
-  const [pda] = PublicKey.findProgramAddressSync([seed("config")], programId);
+  const [pda] = PublicKey.findProgramAddressSync([seed("config_v3")], programId);
   return pda;
 }
 function pdaRoundRegistry(programId, configPda) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("round_registry"), configPda.toBytes()],
+    [seed("round_registry_v3"), configPda.toBytes()],
     programId
   );
   return pda;
 }
-function pdaRound(programId, roundId) {
+function pdaRound(programId, roundId2) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("round"), u64ToLeBytes(roundId)],
+    [seed("round_v3"), u64ToLeBytes(roundId2)],
     programId
   );
   return pda;
 }
-function pdaTIMLGVault(programId, roundId) {
+function pdaTIMLGVault(programId, roundId2) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("timlg_vault"), u64ToLeBytes(roundId)],
+    [seed("timlg_vault_v3"), u64ToLeBytes(roundId2)],
     programId
   );
   return pda;
 }
-function pdaTicket(programId, roundId, userPk, nonce) {
+function pdaTicket(programId, roundId2, userPk, nonce) {
   const user = userPk instanceof PublicKey ? userPk : new PublicKey(userPk);
   const [pda] = PublicKey.findProgramAddressSync(
     [
-      seed("ticket"),
-      u64ToLeBytes(roundId),
+      seed("ticket_v3"),
+      u64ToLeBytes(roundId2),
       user.toBytes(),
       u64ToLeBytes(nonce)
     ],
@@ -44904,27 +44904,27 @@ function pdaTicket(programId, roundId, userPk, nonce) {
 }
 function pdaTokenomics(programId, configPda) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("tokenomics"), configPda.toBytes()],
+    [seed("tokenomics_v3"), configPda.toBytes()],
     programId
   );
   return pda;
 }
 function pdaRewardFeePool(programId, tokenomicsPda) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("reward_fee_pool"), tokenomicsPda.toBytes()],
+    [seed("reward_fee_pool_v3"), tokenomicsPda.toBytes()],
     programId
   );
   return pda;
 }
 function pdaReplicationPool(programId, tokenomicsPda) {
   const [pda] = PublicKey.findProgramAddressSync(
-    [seed("replication_pool"), tokenomicsPda.toBytes()],
+    [seed("replication_pool_v3"), tokenomicsPda.toBytes()],
     programId
   );
   return pda;
 }
 function pdaTreasury(programId) {
-  const [pda] = PublicKey.findProgramAddressSync([seed("treasury")], programId);
+  const [pda] = PublicKey.findProgramAddressSync([seed("treasury_v3")], programId);
   return pda;
 }
 async function getUserTIMLGTokenAccount(connection, ownerPk, mintPk) {
@@ -44936,13 +44936,14 @@ async function getUserTIMLGTokenAccount(connection, ownerPk, mintPk) {
   if (!res.value.length) return null;
   return new PublicKey(res.value[0].pubkey);
 }
-function key(walletStr, roundId) {
-  return `timlg_play_v1:${walletStr}:round:${roundId}`;
+const PROGRAM_ID$1 = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
+function key(walletStr, roundId2) {
+  return `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:${roundId2}`;
 }
-function loadLocalState(walletStr, roundId) {
+function loadLocalState(walletStr, roundId2) {
   if (!walletStr) return null;
   try {
-    const raw = localStorage.getItem(key(walletStr, roundId));
+    const raw = localStorage.getItem(key(walletStr, roundId2));
     if (!raw) return null;
     const data = JSON.parse(raw);
     if (Array.isArray(data)) {
@@ -44953,10 +44954,10 @@ function loadLocalState(walletStr, roundId) {
     return null;
   }
 }
-function loadAllLocalState(walletStr, roundId) {
+function loadAllLocalState(walletStr, roundId2) {
   if (!walletStr) return [];
   try {
-    const raw = localStorage.getItem(key(walletStr, roundId));
+    const raw = localStorage.getItem(key(walletStr, roundId2));
     if (!raw) return [];
     const data = JSON.parse(raw);
     if (Array.isArray(data)) return data;
@@ -44965,9 +44966,9 @@ function loadAllLocalState(walletStr, roundId) {
     return [];
   }
 }
-function saveLocalState(walletStr, roundId, receipt) {
+function saveLocalState(walletStr, roundId2, receipt) {
   if (!walletStr) return;
-  const k = key(walletStr, roundId);
+  const k = key(walletStr, roundId2);
   try {
     const raw = localStorage.getItem(k);
     let existing = [];
@@ -44989,7 +44990,7 @@ function saveLocalState(walletStr, roundId, receipt) {
 }
 function loadAllWalletReceipts(walletStr) {
   if (!walletStr) return [];
-  const prefix = `timlg_play_v1:${walletStr}:round:`;
+  const prefix = `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:`;
   const all = [];
   try {
     for (let i = 0; i < localStorage.length; i++) {
@@ -45008,63 +45009,143 @@ function loadAllWalletReceipts(walletStr) {
   }
   return all;
 }
-function loadLocalReceipt(walletStr, roundId) {
-  return loadLocalState(walletStr, roundId);
+function loadLocalReceipt(walletStr, roundId2) {
+  return loadLocalState(walletStr, roundId2);
 }
-function loadAllLocalReceipts(walletStr, roundId) {
-  return loadAllLocalState(walletStr, roundId);
+function loadAllLocalReceipts(walletStr, roundId2) {
+  return loadAllLocalState(walletStr, roundId2);
 }
 function loadAllWalletReceiptsWrapper(walletStr) {
   return loadAllWalletReceipts(walletStr);
 }
-function saveLocalReceipt(walletStr, roundId, receipt) {
-  saveLocalState(walletStr, roundId, receipt);
+function saveLocalReceipt(walletStr, roundId2, receipt) {
+  saveLocalState(walletStr, roundId2, receipt);
 }
 function shortPk$1(pk) {
   const s = typeof pk === "string" ? pk : pk?.toBase58?.() ?? "";
   return s.length > 10 ? `${s.slice(0, 4)}…${s.slice(-4)}` : s;
 }
 function parseAnchorErr(e) {
-  const msg = e?.error?.errorMessage || e?.message || String(e);
-  return msg.replace(/\s+/g, " ").trim();
+  let msg = e?.error?.errorMessage || e?.message || String(e);
+  msg = msg.replace(/\s+/g, " ").trim();
+  if (msg.includes("already been processed") || msg.includes("0x0")) {
+    return "Success (Transaction already processed)";
+  }
+  return msg;
 }
 function ActivityLog({
   logs = [],
   onClear,
-  title = "Activity log",
+  title = "System Log",
   defaultOpen = false,
   maxHeight = 220
 }) {
+  const [isOpen, setIsOpen] = reactExports.useState(defaultOpen);
   const text = reactExports.useMemo(() => logs?.length ? logs.join("\n") : "", [logs]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("details", { className: "beta-log", open: defaultOpen, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("summary", { className: "beta-log__summary", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: title }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-log__meta", children: logs?.length ? `${logs.length} lines` : "empty" })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-log__toolbar", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          className: "beta-btn",
-          onClick: () => navigator.clipboard?.writeText(text),
-          disabled: !logs?.length,
-          title: "Copy to clipboard",
-          type: "button",
-          children: "Copy"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          className: "beta-btn",
-          onClick: () => onClear?.(),
-          disabled: !logs?.length,
-          type: "button",
-          children: "Clear"
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "beta-log__pre", style: { maxHeight }, children: logs?.length ? text : "—" })
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    borderRadius: "12px",
+    // Softer corners
+    overflow: "hidden",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+    // Softer shadow
+    border: "1px solid rgba(0,0,0,0.08)",
+    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+    marginTop: "16px",
+    transition: "all 0.2s ease"
+  }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        onClick: () => setIsOpen(!isOpen),
+        style: {
+          background: "#f8f9fa",
+          // Light grey to match app
+          padding: "10px 14px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          cursor: "pointer",
+          borderBottom: "1px solid rgba(0,0,0,0.05)"
+        },
+        onMouseEnter: (e) => e.currentTarget.style.background = "#f1f1f1",
+        onMouseLeave: (e) => e.currentTarget.style.background = "#f8f9fa",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "6px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "10px", height: "10px", borderRadius: "50%", background: "#ff5f56", opacity: 0.8 } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "10px", height: "10px", borderRadius: "50%", background: "#ffbd2e", opacity: 0.8 } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "10px", height: "10px", borderRadius: "50%", background: "#27c93f", opacity: 0.8 } })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+            color: "#666",
+            fontSize: "11px",
+            fontWeight: "600",
+            letterSpacing: "0.05em",
+            fontFamily: "system-ui"
+          }, children: title }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, onClick: (e) => e.stopPropagation(), children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => onClear?.(),
+                disabled: !logs?.length,
+                style: {
+                  background: "transparent",
+                  border: "none",
+                  color: "#999",
+                  fontSize: "10px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  padding: "2px 6px"
+                },
+                onMouseEnter: (e) => e.target.style.color = "#555",
+                onMouseLeave: (e) => e.target.style.color = "#999",
+                children: "CLEAR"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => navigator.clipboard?.writeText(text),
+                disabled: !logs?.length,
+                style: {
+                  background: "transparent",
+                  border: "none",
+                  color: "#999",
+                  fontSize: "10px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  padding: "2px 6px"
+                },
+                onMouseEnter: (e) => e.target.style.color = "#555",
+                onMouseLeave: (e) => e.target.style.color = "#999",
+                children: "COPY"
+              }
+            )
+          ] })
+        ]
+      }
+    ),
+    isOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      background: "#1e1e2e",
+      // Draco/Catppuccin dark slate
+      padding: "16px",
+      position: "relative"
+    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      maxHeight,
+      overflowY: "auto",
+      fontSize: "11px",
+      lineHeight: "1.5",
+      color: "#cdd6f4",
+      // Soft white
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-all",
+      fontFamily: "monospace"
+    }, children: logs?.length ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5, color: "#6c7086" }, children: "# Connected to DEVNET-BETA..." }),
+      "\n",
+      text,
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "cursor-blink", style: { color: "#89b4fa" }, children: "_" })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3, color: "#6c7086" }, children: "$ waiting for system events..." }) }) })
   ] });
 }
 const BullIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "5 0.5 90 87.5", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -45134,6 +45215,7 @@ const SolanaIcon = ({ size = 20, color = "#000" }) => /* @__PURE__ */ jsxRuntime
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 15.2226C7.17671 15.0836 7.33282 15 7.5 15H18.5C18.6844 15 18.8538 15.1015 18.9408 15.2641C19.0278 15.4267 19.0183 15.6239 18.916 15.7774L16.916 18.7774C16.8233 18.9164 16.6672 19 16.5 19H5.5C5.3156 19 5.14617 18.8985 5.05916 18.7359C4.97215 18.5734 4.98169 18.3761 5.08398 18.2226L7.08398 15.2226ZM7.76759 16L6.43426 18H16.2324L17.5657 16H7.76759Z", fill: color }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 13.7774C7.17671 13.9164 7.33282 14 7.5 14H18.5C18.6844 14 18.8538 13.8985 18.9408 13.7359C19.0278 13.5733 19.0183 13.3761 18.916 13.2226L16.916 10.2226C16.8233 10.0836 16.6672 10 16.5 10H5.5C5.3156 10 5.14617 10.1015 5.05916 10.2641C4.97215 10.4267 4.98169 10.6239 5.08398 10.7774L7.08398 13.7774ZM7.76759 13L6.43426 11H16.2324L17.5657 13H7.76759Z", fill: color })
 ] });
+const SaveIcon = ({ size = 15, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { fill: color, width: size, height: size, viewBox: "0 0 32 32", version: "1.1", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M30.48 13.243l-8.485 8.485-8.484-8.485 2.83-2.828 3.659 3.656v-6.071h-12v20h-4v-24h20v10.071l3.654-3.657 2.826 2.829z" }) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45252,7 +45334,7 @@ function PlayCard({
     setLoading(true);
     setLastTx("");
     try {
-      const roundId = currentRoundId;
+      const roundId2 = currentRoundId;
       const nonce = Number(r.nonce);
       const salt = hexToBytes(r.saltHex);
       const revealGuess = Number(r.guess ?? guess);
@@ -45262,12 +45344,12 @@ function PlayCard({
         ticket: new PublicKey(r.ticketPda),
         user: pubkey2
       };
-      const sig = await program.methods.revealTicket(new BN(roundId), new BN(nonce), revealGuess, Array.from(salt)).accounts(accounts2).rpc();
+      const sig = await program.methods.revealTicket(new BN(roundId2), new BN(nonce), revealGuess, Array.from(salt)).accounts(accounts2).rpc();
       setLastTx(sig);
       log(`Reveal OK ✅ tx=${sig}`);
       if (r) {
         const updated = { ...r, revealTx: sig, revealedAt: Date.now() };
-        saveLocalReceipt(pubkey2.toBase58(), roundId, updated);
+        saveLocalReceipt(pubkey2.toBase58(), roundId2, updated);
         setLocalReceipt(updated);
       }
       await refreshNow?.();
@@ -45637,7 +45719,7 @@ function PlayCard({
       {
         logs,
         onClear: onClearLog,
-        title: "Protocol Terminal",
+        title: "LOG MONITOR",
         defaultOpen: false,
         maxHeight: 140
       }
@@ -45657,7 +45739,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const [pulseTx, setPulseTx] = reactExports.useState(null);
   const [showTrace, setShowTrace] = reactExports.useState(false);
   const {
-    roundId,
+    roundId: roundId2,
     ticketPk,
     receipt,
     ticket: onChainTicket,
@@ -45670,12 +45752,12 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     connection.getSignaturesForAddress(ticketPk, { limit: 10 }).then((sigs) => setSignatures(sigs)).catch((err) => console.error("Err fetching sigs:", err)).finally(() => setLoadingSigs(false));
   }, [ticketPk, connection]);
   reactExports.useEffect(() => {
-    if (!round || !connection || !programPk || !roundId) return;
+    if (!round || !connection || !programPk || !roundId2) return;
     const pSlot = round?.pulseSetSlot || round?.pulse_set_slot;
     if (!pSlot) return;
     const fetchPulseTx = async () => {
       try {
-        const rPda2 = await pdaRound(programPk, Number(roundId));
+        const rPda2 = await pdaRound(programPk, Number(roundId2));
         const sigs = await connection.getSignaturesForAddress(rPda2, { limit: 50 });
         const targetSlot = Number(pSlot);
         const found = sigs.find((s) => Math.abs(s.slot - targetSlot) <= 1);
@@ -45687,7 +45769,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
       }
     };
     fetchPulseTx();
-  }, [round, connection, programPk, roundId]);
+  }, [round, connection, programPk, roundId2]);
   if (!ticket) return null;
   const guess = onChainTicket?.revealed ? onChainTicket.guess : receipt?.guess ?? onChainTicket?.guess;
   const isBull = guess === 1;
@@ -45759,7 +45841,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const claimedTxSig = findTxSig(onChainTicket?.claimedSlot || onChainTicket?.claimed_slot, "claimTx");
   const pulseIndex = round?.pulseIndexTarget ?? round?.pulse_index_target;
   const pulseUrl = pulseIndex ? `https://beacon.nist.gov/beacon/2.0/chain/1/pulse/${pulseIndex}` : "#";
-  const rPda = programPk && roundId != null ? pdaRound(programPk, Number(roundId)) : null;
+  const rPda = programPk && roundId2 != null ? pdaRound(programPk, Number(roundId2)) : null;
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal", onClick: (e) => e.stopPropagation(), children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", style: { alignItems: "flex-start", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative", overflow: "hidden", minHeight: "80px" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", opacity: 0.06, zIndex: 0 }, children: isBull ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 120, color: statusColor }) : isBear ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 120, color: statusColor }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 120, color: statusColor }) }),
@@ -45801,9 +45883,9 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Round ID" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: rPda ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/address/${rPda.toString()}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
             "#",
-            String(roundId),
+            String(roundId2),
             " ↗"
-          ] }) : `#${String(roundId)}` })
+          ] }) : `#${String(roundId2)}` })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Target Pulse" }),
@@ -45910,7 +45992,7 @@ const toHex$1 = (u82) => {
 function generateTicketExportJSON(ticketData) {
   const {
     ticketPk,
-    roundId,
+    roundId: roundId2,
     onChainTicket,
     receipt,
     status,
@@ -45927,7 +46009,7 @@ function generateTicketExportJSON(ticketData) {
       slot: formatSlot(currentSlot)
     },
     address: ticketPk ? ticketPk.toString() : "unknown",
-    roundId: Number(roundId),
+    roundId: Number(roundId2),
     nonce: Number(onChainTicket?.nonce ?? receipt?.nonce ?? 0),
     bitIndex: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? null,
     status,
@@ -45948,7 +46030,7 @@ function generateTicketExportJSON(ticketData) {
   };
   return data;
 }
-function generateBatchExportJSON(roundId, rPda, roundStatusLabel, rData, ticketsData, walletAddr) {
+function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticketsData, walletAddr) {
   const exportData = {
     snapshot: {
       type: "ROUND_BATCH_EXPORT",
@@ -45957,7 +46039,7 @@ function generateBatchExportJSON(roundId, rPda, roundStatusLabel, rData, tickets
       wallet: walletAddr
     },
     round: {
-      id: Number(roundId),
+      id: Number(roundId2),
       address: rPda?.toString() || null,
       status: roundStatusLabel,
       slots: {
@@ -45996,22 +46078,22 @@ const toHex = (u82) => {
   if (!u82) return "";
   return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
 };
-function RoundDetailModal({ round, roundId, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection }) {
-  console.log("RoundDetailModal mounted", { roundId, programPk, rPda, hasRound: !!round });
+function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection }) {
+  console.log("RoundDetailModal mounted", { roundId: roundId2, programPk, rPda, hasRound: !!round });
   const [derivedPda, setDerivedPda] = reactExports.useState(null);
   const [accountStatus, setAccountStatus] = reactExports.useState(null);
   reactExports.useEffect(() => {
-    if (!rPda && programPk && roundId) {
+    if (!rPda && programPk && roundId2) {
       try {
         const pk = new PublicKey(programPk);
-        const rid = BigInt(roundId);
+        const rid = BigInt(roundId2);
         const derived = pdaRound(pk, rid);
         setDerivedPda(derived);
       } catch (e) {
         console.error("Failed to derive PDA", e);
       }
     }
-  }, [rPda, programPk, roundId]);
+  }, [rPda, programPk, roundId2]);
   reactExports.useEffect(() => {
     const target = rPda || derivedPda;
     if (!round && target && connection) {
@@ -46028,7 +46110,7 @@ function RoundDetailModal({ round, roundId, rPda, onClose, currentSlot, programP
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__title", children: [
         "Round Details #",
-        roundId
+        roundId2
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn-close", onClick: onClose, style: { color: "white" }, children: "×" })
     ] }),
@@ -46104,11 +46186,11 @@ function RoundDetailModal({ round, roundId, rPda, onClose, currentSlot, programP
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal__footer", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn beta-btn--soft", onClick: onClose, style: { width: "100%", color: "white", background: "rgba(255,255,255,0.1)" }, children: " Close " }) })
   ] }) });
 }
-const address = "DrsJxZRNuEFHVyj3Sz5CzpVeacpAGHBoZrg9NtRH9JqR";
+const address = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const metadata = { "name": "timlg_protocol", "version": "0.1.0", "spec": "0.1.0", "description": "Created with Anchor" };
-const instructions = /* @__PURE__ */ JSON.parse('[{"name":"add_oracle","discriminator":[185,165,165,167,208,207,55,35],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"claim_reward","discriminator":[149,95,181,242,94,90,158,162],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"user_timlg_ata","writable":true},{"name":"reward_fee_pool","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"close_round","discriminator":[149,14,81,88,230,226,234,37],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"commit_batch","discriminator":[27,234,100,224,134,31,168,142],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitEntry"}}}}]},{"name":"commit_batch_signed","discriminator":[114,249,180,103,248,14,43,173],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"payer","docs":["Relayer (paga fees)"],"writable":true,"signer":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116]},{"kind":"account","path":"user"}]}},{"name":"user"},{"name":"instructions"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitSignedEntry"}}}}]},{"name":"commit_ticket","discriminator":[15,97,55,56,38,249,88,220],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"commitment","type":{"array":["u8",32]}}]},{"name":"create_round","discriminator":[229,218,236,169,231,80,134,112],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint"},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"create_round_auto","discriminator":[203,214,64,8,185,82,116,71],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint"},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"deposit_escrow","discriminator":[226,112,158,176,178,118,153,128],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"finalize_round","discriminator":[239,160,254,11,254,144,53,148],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","signer":true}],"args":[{"name":"round_id","type":"u64"}]},{"name":"fund_vault","discriminator":[26,33,207,242,119,108,134,73],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"funder","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"amount","type":"u64"}]},{"name":"init_user_escrow","discriminator":[122,51,129,53,23,2,205,146],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[]},{"name":"initialize_config","discriminator":[208,127,21,1,194,190,196,70],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint","docs":["Mint SPL del token TIMLG (ya creado off-chain en tests o en deploy script)"],"writable":true},{"name":"treasury_sol","docs":["✅ NUEVO: Treasury SOL (lamports) como system-owned PDA (igual que vault)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108]}]}},{"name":"treasury","docs":["Treasury SPL = TokenAccount PDA controlado por el programa (authority = config PDA)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121]}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"stake_amount","type":"u64"},{"name":"commit_window_slots","type":"u64"},{"name":"reveal_window_slots","type":"u64"}]},{"name":"initialize_oracle_set","discriminator":[130,190,220,106,237,202,154,216],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"threshold","type":"u8"},{"name":"initial_oracles","type":{"vec":"pubkey"}}]},{"name":"initialize_round_registry","discriminator":[168,224,102,212,197,199,124,55],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"start_round_id","type":"u64"}]},{"name":"initialize_tokenomics","discriminator":[212,84,141,244,21,193,39,208],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint"},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115]},{"kind":"account","path":"config"}]}},{"name":"reward_fee_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,119,97,114,100,95,102,101,101,95,112,111,111,108]},{"kind":"account","path":"tokenomics"}]}},{"name":"replication_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,112,108,105,99,97,116,105,111,110,95,112,111,111,108]},{"kind":"account","path":"tokenomics"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"recover_funds","discriminator":[194,165,70,223,66,241,45,34],"accounts":[{"name":"config","writable":true},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"account","path":"ticket.nonce","account":"Ticket"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"remove_oracle","discriminator":[60,93,51,197,182,42,170,26],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"reveal_batch","discriminator":[42,176,196,168,123,47,195,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealEntry"}}}}]},{"name":"reveal_batch_signed","discriminator":[157,126,204,244,23,210,88,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"payer","docs":["Relayer paying tx fees (must sign tx)"],"signer":true},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealSignedEntry"}}}}]},{"name":"reveal_ticket","discriminator":[223,24,70,21,181,13,151,239],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"guess","type":"u8"},{"name":"salt","type":{"array":["u8",32]}}]},{"name":"set_claim_grace_slots","discriminator":[186,199,198,137,128,29,135,49],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"admin","signer":true}],"args":[{"name":"claim_grace_slots","type":"u64"}]},{"name":"set_oracle_pubkey","discriminator":[90,135,153,229,200,95,163,243],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle_pubkey","type":"pubkey"}]},{"name":"set_oracle_threshold","discriminator":[181,85,21,30,120,168,37,233],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"threshold","type":"u8"}]},{"name":"set_pause","discriminator":[63,32,154,2,56,103,79,45],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"admin","signer":true}],"args":[{"name":"paused","type":"bool"}]},{"name":"set_pulse_signed","discriminator":[50,221,54,125,25,40,123,89],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse","type":{"array":["u8",64]}}]},{"name":"settle_round_tokens","discriminator":[237,209,221,2,7,78,113,158],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"treasury","writable":true},{"name":"replication_pool","writable":true},{"name":"payer","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"sweep_unclaimed","discriminator":[64,168,221,224,42,216,138,144],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury_sol","docs":["✅ NUEVO: destino del sweep = treasury SOL PDA (lamports)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108]}]}},{"name":"admin","signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"withdraw_escrow","discriminator":[81,84,226,128,245,47,96,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]}]');
+const instructions = /* @__PURE__ */ JSON.parse('[{"name":"add_oracle","discriminator":[185,165,165,167,208,207,55,35],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"claim_reward","discriminator":[149,95,181,242,94,90,158,162],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"user_timlg_ata","writable":true},{"name":"reward_fee_pool","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"close_config","discriminator":[145,9,72,157,95,125,61,85],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","writable":true,"signer":true}],"args":[]},{"name":"close_round","discriminator":[149,14,81,88,230,226,234,37],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"close_ticket","discriminator":[66,209,114,197,75,27,182,117],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","docs":["Address verification is secondary as Ticket PDA already enforces the round_id."]},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"commit_batch","discriminator":[27,234,100,224,134,31,168,142],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitEntry"}}}}]},{"name":"commit_batch_signed","discriminator":[114,249,180,103,248,14,43,173],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"payer","docs":["Relayer (paga fees)"],"writable":true,"signer":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user"},{"name":"instructions"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitSignedEntry"}}}}]},{"name":"commit_ticket","discriminator":[15,97,55,56,38,249,88,220],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"commitment","type":{"array":["u8",32]}}]},{"name":"create_round","discriminator":[229,218,236,169,231,80,134,112],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"create_round_auto","discriminator":[203,214,64,8,185,82,116,71],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"deposit_escrow","discriminator":[226,112,158,176,178,118,153,128],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"finalize_round","discriminator":[239,160,254,11,254,144,53,148],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","signer":true}],"args":[{"name":"round_id","type":"u64"}]},{"name":"fund_vault","discriminator":[26,33,207,242,119,108,134,73],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"funder","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"amount","type":"u64"}]},{"name":"init_user_escrow","discriminator":[122,51,129,53,23,2,205,146],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[]},{"name":"initialize_config","discriminator":[208,127,21,1,194,190,196,70],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","docs":["Mint SPL del token TIMLG (ya creado off-chain en tests o en deploy script)"],"writable":true},{"name":"treasury_sol","docs":["✅ NUEVO: Treasury SOL (lamports) como system-owned PDA (igual que vault)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"treasury","docs":["Treasury SPL = TokenAccount PDA controlado por el programa (authority = config PDA)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"stake_amount","type":"u64"},{"name":"commit_window_slots","type":"u64"},{"name":"reveal_window_slots","type":"u64"}]},{"name":"initialize_oracle_set","discriminator":[130,190,220,106,237,202,154,216],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"threshold","type":"u8"},{"name":"initial_oracles","type":{"vec":"pubkey"}}]},{"name":"initialize_round_registry","discriminator":[168,224,102,212,197,199,124,55],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"start_round_id","type":"u64"}]},{"name":"initialize_tokenomics","discriminator":[212,84,141,244,21,193,39,208],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"reward_fee_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,119,97,114,100,95,102,101,101,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"replication_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,112,108,105,99,97,116,105,111,110,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"recover_funds","discriminator":[194,165,70,223,66,241,45,34],"accounts":[{"name":"config","writable":true},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"recover_funds_anyone","discriminator":[63,252,95,65,228,16,150,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"account","path":"ticket.nonce","account":"Ticket"}]}},{"name":"user","writable":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"cranker","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"remove_oracle","discriminator":[60,93,51,197,182,42,170,26],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"reveal_batch","discriminator":[42,176,196,168,123,47,195,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealEntry"}}}}]},{"name":"reveal_batch_signed","discriminator":[157,126,204,244,23,210,88,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"payer","docs":["Relayer paying tx fees (must sign tx)"],"signer":true},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealSignedEntry"}}}}]},{"name":"reveal_ticket","discriminator":[223,24,70,21,181,13,151,239],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"guess","type":"u8"},{"name":"salt","type":{"array":["u8",32]}}]},{"name":"set_claim_grace_slots","discriminator":[186,199,198,137,128,29,135,49],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"claim_grace_slots","type":"u64"}]},{"name":"set_oracle_pubkey","discriminator":[90,135,153,229,200,95,163,243],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle_pubkey","type":"pubkey"}]},{"name":"set_oracle_threshold","discriminator":[181,85,21,30,120,168,37,233],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"threshold","type":"u8"}]},{"name":"set_pause","discriminator":[63,32,154,2,56,103,79,45],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"paused","type":"bool"}]},{"name":"set_pulse_signed","discriminator":[50,221,54,125,25,40,123,89],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse","type":{"array":["u8",64]}}]},{"name":"settle_round_tokens","discriminator":[237,209,221,2,7,78,113,158],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"treasury","writable":true},{"name":"replication_pool","writable":true},{"name":"payer","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"sweep_unclaimed","discriminator":[64,168,221,224,42,216,138,144],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury_sol","docs":["✅ SOL destination"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"timlg_vault","docs":["✅ SPL vault per round"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury","docs":["✅ SPL destination (from config)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"timlg_mint"},{"name":"admin","signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"update_stake_amount","discriminator":[253,105,70,4,212,31,206,34],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"new_stake_amount","type":"u64"}]},{"name":"withdraw_escrow","discriminator":[81,84,226,128,245,47,96,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]}]');
 const accounts = [{ "name": "Config", "discriminator": [155, 12, 170, 224, 30, 250, 204, 130] }, { "name": "OracleSet", "discriminator": [128, 26, 73, 134, 218, 90, 126, 42] }, { "name": "Round", "discriminator": [87, 127, 165, 51, 73, 78, 116, 174] }, { "name": "RoundRegistry", "discriminator": [89, 3, 13, 175, 73, 80, 211, 206] }, { "name": "Ticket", "discriminator": [41, 228, 24, 165, 78, 90, 235, 200] }, { "name": "Tokenomics", "discriminator": [252, 176, 228, 183, 130, 36, 15, 194] }, { "name": "UserEscrow", "discriminator": [242, 233, 85, 38, 26, 5, 142, 109] }];
-const errors = [{ "code": 6e3, "name": "Unauthorized", "msg": "Unauthorized" }, { "code": 6001, "name": "Paused", "msg": "Protocol paused" }, { "code": 6002, "name": "InvalidDeadlines", "msg": "Invalid deadlines" }, { "code": 6003, "name": "CommitClosed", "msg": "Commit window closed" }, { "code": 6004, "name": "RevealClosed", "msg": "Reveal window closed" }, { "code": 6005, "name": "PulseNotSet", "msg": "Pulse not set" }, { "code": 6006, "name": "PulseAlreadySet", "msg": "Round pulse already set" }, { "code": 6007, "name": "AlreadyFinalized", "msg": "Round already finalized" }, { "code": 6008, "name": "NotFinalized", "msg": "Round not finalized" }, { "code": 6009, "name": "CannotFinalizeYet", "msg": "Cannot finalize yet" }, { "code": 6010, "name": "AlreadyRevealed", "msg": "Already revealed" }, { "code": 6011, "name": "CommitmentMismatch", "msg": "Commitment mismatch" }, { "code": 6012, "name": "InvalidGuess", "msg": "Invalid guess (must be 0/1)" }, { "code": 6013, "name": "TooManyEntries", "msg": "Too many entries" }, { "code": 6014, "name": "TicketPdaMismatch", "msg": "Ticket PDA mismatch" }, { "code": 6015, "name": "TicketAlreadyExists", "msg": "Ticket already exists" }, { "code": 6016, "name": "TicketNotOwnedByProgram", "msg": "Ticket not owned by program" }, { "code": 6017, "name": "VaultPdaMismatch", "msg": "Vault PDA mismatch" }, { "code": 6018, "name": "InsufficientVaultFunds", "msg": "Insufficient vault funds" }, { "code": 6019, "name": "MissingOrInvalidEd25519Ix", "msg": "Missing or invalid ed25519 verify instruction" }, { "code": 6020, "name": "Ed25519PubkeyMismatch", "msg": "Ed25519 pubkey mismatch" }, { "code": 6021, "name": "Ed25519MessageMismatch", "msg": "Ed25519 message mismatch" }, { "code": 6022, "name": "OracleNotSet", "msg": "Oracle pubkey not set" }, { "code": 6023, "name": "BitIndexMismatch", "msg": "Bit index mismatch" }, { "code": 6024, "name": "AccountBorrowFailed", "msg": "Failed to borrow account data" }, { "code": 6025, "name": "RoundFinalized", "msg": "Round is finalized" }, { "code": 6026, "name": "CommitAfterPulseSet", "msg": "Commit not allowed after pulse is set" }, { "code": 6027, "name": "SweepTooEarly", "msg": "Sweep not allowed yet (grace period not elapsed)" }, { "code": 6028, "name": "AlreadySwept", "msg": "Vault already swept for this round" }, { "code": 6029, "name": "ClaimAfterSweep", "msg": "Cannot claim after vault sweep" }, { "code": 6030, "name": "InvalidStakeAmount", "msg": "Invalid stake amount" }, { "code": 6031, "name": "InvalidWindow", "msg": "Invalid window" }, { "code": 6032, "name": "MissingBump", "msg": "Missing bump" }, { "code": 6033, "name": "MathOverflow", "msg": "Math overflow" }, { "code": 6034, "name": "TIMLGMintMismatch", "msg": "timlg_mint does not match config" }, { "code": 6035, "name": "InvalidUserTIMLGAta", "msg": "Invalid user TIMLG token account" }, { "code": 6036, "name": "TicketNotRevealed", "msg": "Ticket not revealed" }, { "code": 6037, "name": "NotWinner", "msg": "Not a winner" }, { "code": 6038, "name": "AlreadyClaimed", "msg": "Already claimed" }, { "code": 6039, "name": "StakeNotPaid", "msg": "Stake not paid for this ticket" }, { "code": 6040, "name": "InsufficientEscrow", "msg": "Insufficient escrow funds" }, { "code": 6041, "name": "SignedBatchMixedUsers", "msg": "Signed batch contains mixed users" }, { "code": 6042, "name": "RoundNotSettled", "msg": "Round tokens not settled yet" }, { "code": 6043, "name": "SettleTooEarly", "msg": "Too early to settle round tokens" }, { "code": 6044, "name": "RoundTokensAlreadySettled", "msg": "Round tokens already settled" }, { "code": 6045, "name": "OracleSetFull", "msg": "OracleSet is full" }, { "code": 6046, "name": "OracleAlreadyExists", "msg": "Oracle already exists in allowlist" }, { "code": 6047, "name": "OracleNotFound", "msg": "Oracle not found in allowlist" }, { "code": 6048, "name": "InvalidThreshold", "msg": "Invalid threshold" }, { "code": 6049, "name": "ThresholdExceedsOracleCount", "msg": "Threshold exceeds current oracle count" }, { "code": 6050, "name": "InvalidFeeBps", "msg": "Invalid fee bps (must be 0..=10_000)." }, { "code": 6051, "name": "InvalidBps", "msg": "Invalid basis points (must be <= 10000)" }, { "code": 12052, "name": "RefundTooEarly", "msg": "Refund too early" }, { "code": 12053, "name": "VaultNotEmpty", "msg": "Vault not empty" }, { "code": 12054, "name": "RevealWindowTooShort", "msg": "Reveal window too short" }, { "code": 12055, "name": "TokenomicsNotInitialized", "msg": "Tokenomics not initialized" }, { "code": 12056, "name": "NotSwept", "msg": "Round not swept" }, { "code": 12057, "name": "RoundTokensNotSettled", "msg": "Round tokens not settled" }, { "code": 12058, "name": "TicketAlreadyProcessed", "msg": "Ticket already processed" }];
+const errors = [{ "code": 6e3, "name": "Unauthorized", "msg": "Unauthorized" }, { "code": 6001, "name": "Paused", "msg": "Protocol paused" }, { "code": 6002, "name": "InvalidDeadlines", "msg": "Invalid deadlines" }, { "code": 6003, "name": "CommitClosed", "msg": "Commit window closed" }, { "code": 6004, "name": "RevealClosed", "msg": "Reveal window closed" }, { "code": 6005, "name": "PulseNotSet", "msg": "Pulse not set" }, { "code": 6006, "name": "PulseAlreadySet", "msg": "Round pulse already set" }, { "code": 6007, "name": "AlreadyFinalized", "msg": "Round already finalized" }, { "code": 6008, "name": "NotFinalized", "msg": "Round not finalized" }, { "code": 6009, "name": "CannotFinalizeYet", "msg": "Cannot finalize yet" }, { "code": 6010, "name": "AlreadyRevealed", "msg": "Already revealed" }, { "code": 6011, "name": "CommitmentMismatch", "msg": "Commitment mismatch" }, { "code": 6012, "name": "InvalidGuess", "msg": "Invalid guess (must be 0/1)" }, { "code": 6013, "name": "TooManyEntries", "msg": "Too many entries" }, { "code": 6014, "name": "TicketPdaMismatch", "msg": "Ticket PDA mismatch" }, { "code": 6015, "name": "TicketAlreadyExists", "msg": "Ticket already exists" }, { "code": 6016, "name": "TicketNotOwnedByProgram", "msg": "Ticket not owned by program" }, { "code": 6017, "name": "VaultPdaMismatch", "msg": "Vault PDA mismatch" }, { "code": 6018, "name": "InsufficientVaultFunds", "msg": "Insufficient vault funds" }, { "code": 6019, "name": "MissingOrInvalidEd25519Ix", "msg": "Missing or invalid ed25519 verify instruction" }, { "code": 6020, "name": "Ed25519PubkeyMismatch", "msg": "Ed25519 pubkey mismatch" }, { "code": 6021, "name": "Ed25519MessageMismatch", "msg": "Ed25519 message mismatch" }, { "code": 6022, "name": "OracleNotSet", "msg": "Oracle pubkey not set" }, { "code": 6023, "name": "BitIndexMismatch", "msg": "Bit index mismatch" }, { "code": 6024, "name": "AccountBorrowFailed", "msg": "Failed to borrow account data" }, { "code": 6025, "name": "RoundFinalized", "msg": "Round is finalized" }, { "code": 6026, "name": "CommitAfterPulseSet", "msg": "Commit not allowed after pulse is set" }, { "code": 6027, "name": "SweepTooEarly", "msg": "Sweep not allowed yet (grace period not elapsed)" }, { "code": 6028, "name": "AlreadySwept", "msg": "Vault already swept for this round" }, { "code": 6029, "name": "ClaimAfterSweep", "msg": "Cannot claim after vault sweep" }, { "code": 6030, "name": "InvalidStakeAmount", "msg": "Invalid stake amount" }, { "code": 6031, "name": "InvalidWindow", "msg": "Invalid window" }, { "code": 6032, "name": "MissingBump", "msg": "Missing bump" }, { "code": 6033, "name": "MathOverflow", "msg": "Math overflow" }, { "code": 6034, "name": "TIMLGMintMismatch", "msg": "timlg_mint does not match config" }, { "code": 6035, "name": "InvalidUserTIMLGAta", "msg": "Invalid user TIMLG token account" }, { "code": 6036, "name": "TicketNotRevealed", "msg": "Ticket not revealed" }, { "code": 6037, "name": "NotWinner", "msg": "Not a winner" }, { "code": 6038, "name": "AlreadyClaimed", "msg": "Already claimed" }, { "code": 6039, "name": "StakeNotPaid", "msg": "Stake not paid for this ticket" }, { "code": 6040, "name": "InsufficientEscrow", "msg": "Insufficient escrow funds" }, { "code": 6041, "name": "SignedBatchMixedUsers", "msg": "Signed batch contains mixed users" }, { "code": 6042, "name": "RoundNotSettled", "msg": "Round tokens not settled yet" }, { "code": 6043, "name": "SettleTooEarly", "msg": "Too early to settle round tokens" }, { "code": 6044, "name": "RoundTokensAlreadySettled", "msg": "Round tokens already settled" }, { "code": 6045, "name": "OracleSetFull", "msg": "OracleSet is full" }, { "code": 6046, "name": "OracleAlreadyExists", "msg": "Oracle already exists in allowlist" }, { "code": 6047, "name": "OracleNotFound", "msg": "Oracle not found in allowlist" }, { "code": 6048, "name": "InvalidThreshold", "msg": "Invalid threshold" }, { "code": 6049, "name": "ThresholdExceedsOracleCount", "msg": "Threshold exceeds current oracle count" }, { "code": 6050, "name": "InvalidFeeBps", "msg": "Invalid fee bps (must be 0..=10_000)." }, { "code": 6051, "name": "InvalidBps", "msg": "Invalid basis points (must be <= 10000)" }, { "code": 12052, "name": "RefundTooEarly", "msg": "Refund too early" }, { "code": 12053, "name": "VaultNotEmpty", "msg": "Vault not empty" }, { "code": 12054, "name": "RevealWindowTooShort", "msg": "Reveal window too short" }, { "code": 12055, "name": "TokenomicsNotInitialized", "msg": "Tokenomics not initialized" }, { "code": 12056, "name": "NotSwept", "msg": "Round not swept" }, { "code": 12057, "name": "RoundTokensNotSettled", "msg": "Round tokens not settled" }, { "code": 12058, "name": "TicketAlreadyProcessed", "msg": "Ticket already processed" }, { "code": 12059, "name": "TicketNotProcessed", "msg": "Ticket not processed yet" }, { "code": 12060, "name": "WinnerMustClaimFirst", "msg": "Winner must claim reward first" }, { "code": 12061, "name": "PulseTooLate", "msg": "Pulse too late (liveness hazard)" }];
 const types = [{ "name": "CommitEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "CommitSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "Config", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "stake_amount", "type": "u64" }, { "name": "commit_window_slots", "type": "u64" }, { "name": "reveal_window_slots", "type": "u64" }, { "name": "claim_grace_slots", "type": "u64" }, { "name": "oracle_pubkey", "type": "pubkey" }, { "name": "paused", "type": "bool" }, { "name": "version", "type": "u16" }, { "name": "timlg_mint", "type": "pubkey" }, { "name": "treasury", "type": "pubkey" }, { "name": "treasury_bump", "type": "u8" }, { "name": "treasury_sol", "type": "pubkey" }, { "name": "treasury_sol_bump", "type": "u8" }] } }, { "name": "OracleSet", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "threshold", "docs": ["Minimum number of oracle attestations required (PR2 will consume this)."], "type": "u8" }, { "name": "oracles", "docs": ["Allowlisted oracle pubkeys.", "NOTE: fixed max_len to keep account size deterministic."], "type": { "vec": "pubkey" } }, { "name": "version", "type": "u16" }] } }, { "name": "RevealEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "RevealSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "Round", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "state", "type": "u8" }, { "name": "vault", "type": "pubkey" }, { "name": "vault_bump", "type": "u8" }, { "name": "pulse_index_target", "type": "u64" }, { "name": "commit_deadline_slot", "type": "u64" }, { "name": "reveal_deadline_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "pulse_set", "type": "bool" }, { "name": "pulse", "type": { "array": ["u8", 64] } }, { "name": "pulse_set_slot", "type": "u64" }, { "name": "finalized", "type": "bool" }, { "name": "finalized_slot", "type": "u64" }, { "name": "swept", "type": "bool" }, { "name": "swept_slot", "type": "u64" }, { "name": "timlg_vault", "type": "pubkey" }, { "name": "timlg_vault_bump", "type": "u8" }, { "name": "committed_count", "type": "u64" }, { "name": "revealed_count", "type": "u64" }, { "name": "win_count", "type": "u64" }, { "name": "settled_count", "type": "u64" }, { "name": "token_settled", "type": "bool" }, { "name": "token_settled_slot", "type": "u64" }] } }, { "name": "RoundRegistry", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "next_round_id", "type": "u64" }, { "name": "version", "type": "u16" }] } }, { "name": "Ticket", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "commitment", "type": { "array": ["u8", 32] } }, { "name": "stake_paid", "type": "bool" }, { "name": "stake_slashed", "type": "bool" }, { "name": "processed", "type": "bool" }, { "name": "revealed", "type": "bool" }, { "name": "guess", "type": "u8" }, { "name": "win", "type": "bool" }, { "name": "bit_index", "type": "u16" }, { "name": "claimed", "type": "bool" }, { "name": "claimed_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "revealed_slot", "type": "u64" }] } }, { "name": "Tokenomics", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "reward_fee_bps", "docs": ["Fee charged on minted rewards (basis points). 100 = 1%."], "type": "u16" }, { "name": "reward_fee_pool", "docs": ["SPL TokenAccount PDAs (TIMLG mint)"], "type": "pubkey" }, { "name": "reward_fee_pool_bump", "type": "u8" }, { "name": "replication_pool", "type": "pubkey" }, { "name": "replication_pool_bump", "type": "u8" }, { "name": "version", "type": "u16" }] } }, { "name": "UserEscrow", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "created_slot", "type": "u64" }, { "name": "updated_slot", "type": "u64" }] } }];
 const idl = {
   address,
@@ -46165,7 +46247,8 @@ function MyTickets({
   doRevealTicket,
   doClaimTicket,
   doRefundTicket,
-  doSettleRound
+  doSettleRound,
+  doCloseTicket
 }) {
   const userPk = reactExports.useMemo(() => {
     if (!pubkey2) return null;
@@ -46180,7 +46263,48 @@ function MyTickets({
     const win = Boolean(row.win);
     const claimed = Boolean(row.claimed);
     const tokenSettled = Boolean(row.tokenSettled);
+    if (row.round) {
+      const r = row.round;
+      const pulseSet = Boolean(r.pulseSet || r.pulse_set);
+      const finalized = Boolean(r.finalized);
+      if (!pulseSet && !finalized) {
+        if (row.receipt?.refunded === true) return "REFUNDED";
+        if (currentSlot2) {
+          const revealDl = bnToBigInt(r.revealDeadlineSlot || r.reveal_deadline_slot);
+          if (revealDl) {
+            const cur = BigInt(currentSlot2);
+            if (cur > revealDl + 150n) return "REFUND AVAILABLE";
+          }
+        }
+        return "PENDING";
+      }
+    }
+    if (!row.receipt) {
+      if (row.revealed) {
+        if (row.win) {
+          if (row.swept) return "SWEPT";
+          if (row.round && row.round.finalized) return "SWEPT";
+          return "WIN";
+        } else {
+          if (row.processed) return "LOSS";
+          return "LOSS";
+        }
+      }
+      if (row.processed) return "REFUND RENT";
+      if (row.round) {
+        const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
+        if (currentSlot2 && revealDl) {
+          if (BigInt(currentSlot2) > revealDl + 150n) return "REFUND RENT";
+        }
+      }
+      return "NO RECEIPT";
+    }
     if (row.receipt?.refunded === true) return "REFUNDED";
+    if (row.receipt?.closed) {
+      if (row.receipt.outcome === "win" || row.receipt.sweepTx || row.receipt.sweptAt) {
+        return "SWEPT";
+      }
+    }
     if (claimed) return "CLAIMED";
     if (win) {
       if (!row.round) return "SWEPT";
@@ -46195,7 +46319,14 @@ function MyTickets({
       if (tokenSettled) return "CLAIM PRIZE";
       return "WIN";
     }
-    if (revealed && !win) return "LOSS";
+    if (revealed && !win && row.round && !row.round.pulse_set && !row.round.pulseSet) {
+      return "PENDING";
+    }
+    if (revealed && !win) {
+      const pulseSet = Boolean(row.round?.pulseSet || row.round?.pulse_set);
+      if (!pulseSet && row.round) return "PENDING";
+      return "LOSS";
+    }
     if (!revealed && !win) {
       if (!row.round || row.round.finalized) return "EXPIRED";
       const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
@@ -46221,7 +46352,8 @@ function MyTickets({
     if (statusFilter === "ALL") return indexedRows;
     return indexedRows.filter((row) => {
       const status = getComputedStatus(row, currentSlot);
-      if (statusFilter === "ACTION") return ["REVEAL NOW", "CLAIM PRIZE", "REFUND AVAILABLE"].includes(status);
+      if (statusFilter === "ACTION") return ["REVEAL NOW", "CLAIM PRIZE", "REFUND AVAILABLE", "REFUND RENT", "LOSS", "SWEPT"].includes(status);
+      if (statusFilter === "CLAIMED") return status === "CLAIMED" || status === "CLOSED";
       if (statusFilter === "WIN") return status === "CLAIM PRIZE" || status === "WIN";
       return status === statusFilter;
     });
@@ -46254,6 +46386,8 @@ function MyTickets({
     if (status === "WIN") return "WINNER";
     if (status === "LOSE" || status === "LOSS") return "LOSS";
     if (status === "CLAIM" || status === "CLAIM PRIZE") return "READY TO CLAIM";
+    if (status === "NO RECEIPT") return "LOST KEY";
+    if (status === "REFUND RENT") return "RECOVER RENT";
     return status;
   };
   const ensureSweepTx = async (ticket, rId) => {
@@ -46288,18 +46422,18 @@ function MyTickets({
     }
     return treasurySig;
   };
-  const handleDownloadBatch = async (roundId, tickets, roundData) => {
+  const handleDownloadBatch = async (roundId2, tickets, roundData) => {
     try {
-      console.log("Downloading batch for round", roundId);
+      console.log("Downloading batch for round", roundId2);
       const walletAddr = userPk?.toString() || tickets[0]?.ticket?.user?.toString() || "unknown";
-      const rPda = await pdaRound(programPk, Number(roundId));
+      const rPda = await pdaRound(programPk, Number(roundId2));
       const ticketsData = [];
       const chunkSize = 5;
       for (let i = 0; i < tickets.length; i += chunkSize) {
-        const chunk = tickets.slice(i, i + chunkSize);
-        const chunkResults = await Promise.all(chunk.map(async (t) => {
+        const chunk2 = tickets.slice(i, i + chunkSize);
+        const chunkResults = await Promise.all(chunk2.map(async (t) => {
           const status = getComputedStatus(t, currentSlot);
-          const treasurySig = await ensureSweepTx(t, roundId);
+          const treasurySig = await ensureSweepTx(t, roundId2);
           const commitSig = t.createdTx || t.receipt?.commitTx || null;
           const revealSig = t.revealedTx || t.receipt?.revealTx || null;
           const claimSig = t.claimedTx || t.receipt?.claimTx || null;
@@ -46336,22 +46470,22 @@ function MyTickets({
         }));
         ticketsData.push(...chunkResults);
       }
-      const exportData = generateBatchExportJSON(roundId, rPda, "EXPORTED", roundData, ticketsData, walletAddr);
-      triggerDownload(`timlgs_round_${roundId}_batch.json`, exportData);
+      const exportData = generateBatchExportJSON(roundId2, rPda, "EXPORTED", roundData, ticketsData, walletAddr);
+      triggerDownload(`timlgs_round_${roundId2}_batch.json`, exportData);
     } catch (e) {
       console.error(e);
       alert("Export error: " + e.message);
     }
   };
-  const handleDownloadTicket = async (ticket, roundId) => {
+  const handleDownloadTicket = async (ticket, roundId2) => {
     const status = getComputedStatus(ticket, currentSlot);
     const commitSig = ticket.createdTx || ticket.receipt?.commitTx;
     const revealSig = ticket.revealedTx || ticket.receipt?.revealTx;
     const claimSig = ticket.claimedTx || ticket.receipt?.claimTx;
-    const treasurySig = await ensureSweepTx(ticket, roundId);
+    const treasurySig = await ensureSweepTx(ticket, roundId2);
     const data = {
       ticketPk: ticket.ticketPk,
-      roundId,
+      roundId: roundId2,
       onChainTicket: ticket.ticket,
       receipt: ticket.receipt,
       status,
@@ -46465,7 +46599,7 @@ function MyTickets({
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { textAlign: "center", width: 85 }, children: "Export" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { textAlign: "right", paddingRight: 24, width: "22%" }, children: "Action" })
         ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: visibleRounds.map(({ roundId, tickets, round }) => {
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: visibleRounds.map(({ roundId: roundId2, tickets, round }) => {
           const valCommit = round?.commitDeadlineSlot ?? round?.commit_deadline_slot;
           const valReveal = round?.revealDeadlineSlot ?? round?.reveal_deadline_slot;
           const valPulse = round?.pulseIndexTarget ?? round?.pulse_index_target;
@@ -46500,7 +46634,7 @@ function MyTickets({
                 "Commit ends: ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
               ] });
-            } else if (refundEligible > 0n && cSlot > refundEligible) {
+            } else if (refundEligible > 0n && cSlot > refundEligible && !pulseSet) {
               rStatus = "REFUND MODE";
               headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "bold" }, children: "Escape Hatch Active" });
             } else if (!pulseSet) {
@@ -46561,7 +46695,15 @@ function MyTickets({
           }
           const ticketsToReveal = tickets.filter((t) => getComputedStatus(t, currentSlot) === "REVEAL NOW" && !t.revealed);
           const ticketsToClaim = tickets.filter((t) => getComputedStatus(t, currentSlot) === "CLAIM PRIZE" && !t.claimed);
-          const ticketsToRefund = tickets.filter((t) => getComputedStatus(t, currentSlot) === "REFUND AVAILABLE" && !t.receipt?.refunded);
+          const ticketsToRefund = tickets.filter((t) => {
+            const s = getComputedStatus(t, currentSlot);
+            return (s === "REFUND AVAILABLE" || s === "REFUND RENT") && !t.receipt?.refunded;
+          });
+          const ticketsToReclaim = tickets.filter((t) => {
+            const s = getComputedStatus(t, currentSlot);
+            const isProcessed = t.processed || !t.round;
+            return (s === "LOSS" || s === "SWEPT" || s === "PENDING" || s === "EXPIRED") && !t.receipt?.closed && isProcessed && (!t.round || finalized);
+          });
           const canSettle = round && !finalized && revealDl > 0n && cSlot > revealDl && pulseSet && !tokenSettled;
           let rBg = "#f5f5f5";
           if (rStatus === "OPEN") rBg = "#e8f5e9";
@@ -46576,13 +46718,13 @@ function MyTickets({
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { paddingLeft: 24, borderBottom: "1px solid rgba(0,0,0,0.05)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontWeight: 800, fontSize: 15, whiteSpace: "nowrap" }, children: [
                   "Round #",
-                  roundId
+                  roundId2
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: headerTimer })
               ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { whiteSpace: "nowrap", fontWeight: 600, fontSize: 13, opacity: 0.8 }, children: rStatus }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 17 }) }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId: roundId2, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 17 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId2, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: ticketsToReveal.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
@@ -46650,11 +46792,48 @@ function MyTickets({
                     fontWeight: "bold",
                     fontSize: "13px"
                   },
-                  onClick: () => ticketsToRefund.forEach((t) => doRefundTicket(t)),
+                  onClick: async () => {
+                    if (globalLoading) return;
+                    for (const t of ticketsToRefund) {
+                      await doRefundTicket(t);
+                    }
+                  },
                   disabled: globalLoading,
                   children: [
                     "Refund All (",
                     ticketsToRefund.length,
+                    ")"
+                  ]
+                }
+              ) : ticketsToReclaim.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  className: "beta-btn beta-btn--sm",
+                  style: {
+                    background: globalLoading ? "#f9f9f9" : "#eee",
+                    color: globalLoading ? "#aaa" : "#444",
+                    height: "36px",
+                    padding: "0 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    fontSize: "13px"
+                  },
+                  onClick: async () => {
+                    if (globalLoading) return;
+                    if (window.confirm(`Reclaim all ${ticketsToReclaim.length} tickets?`)) {
+                      for (const t of ticketsToReclaim) {
+                        await doCloseTicket(t);
+                      }
+                    }
+                  },
+                  disabled: globalLoading,
+                  children: [
+                    "Reclaim All (",
+                    ticketsToReclaim.length,
                     ")"
                   ]
                 }
@@ -46678,10 +46857,10 @@ function MyTickets({
                     },
                     disabled: globalLoading,
                     onClick: () => doCommitGlobal({
-                      targetRoundId: roundId,
+                      targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
-                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
-                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId2),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId2),
                       targetCommitDl: commitDl,
                       forcedGuess: 0
                     }),
@@ -46707,10 +46886,10 @@ function MyTickets({
                     },
                     disabled: globalLoading,
                     onClick: () => doCommitGlobal({
-                      targetRoundId: roundId,
+                      targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
-                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
-                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId2),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId2),
                       targetCommitDl: commitDl,
                       forcedGuess: 1
                     }),
@@ -46736,10 +46915,10 @@ function MyTickets({
                     },
                     disabled: globalLoading,
                     onClick: () => doCommitGlobal({
-                      targetRoundId: roundId,
+                      targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
-                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId),
-                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId),
+                      targetRoundPda: pdaRound(new PublicKey(programPkStr), roundId2),
+                      targetTIMLGVaultPda: pdaTIMLGVault(new PublicKey(programPkStr), roundId2),
                       targetCommitDl: commitDl,
                       forcedGuess: -1
                     }),
@@ -46763,17 +46942,28 @@ function MyTickets({
                     fontWeight: "bold",
                     fontSize: "13px"
                   },
-                  onClick: () => doSettleRound({ roundId }),
+                  onClick: () => doSettleRound({ roundId: roundId2 }),
                   disabled: globalLoading,
                   children: "Manual Settle"
                 }
               ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3, fontSize: 12 }, children: "—" }) })
-            ] }, `round-${roundId}`),
+            ] }, `round-${roundId2}`),
             tickets.map((t) => {
               const status = getComputedStatus(t, currentSlot);
               let iconColor = "#9CA3AF";
-              if (["WIN", "CLAIM PRIZE", "CLAIMED"].includes(status)) iconColor = "#10B981";
-              if (["LOSS", "EXPIRED", "SWEPT"].includes(status)) iconColor = "#EF4444";
+              if (["WIN", "CLAIM PRIZE", "CLAIMED"].includes(status)) {
+                iconColor = "#10B981";
+              } else if (status === "SWEPT") {
+                if (t.win || t.revealed && t.guess === t.round?.result) {
+                  iconColor = "#10B981";
+                } else {
+                  iconColor = "#EF4444";
+                }
+              } else if (["LOSS", "EXPIRED"].includes(status)) {
+                if (status === "LOSS") iconColor = "#EF4444";
+                if (status === "EXPIRED") iconColor = "#EF4444";
+                if (!t.revealed) iconColor = "#9CA3AF";
+              }
               const guessIcon = t.guess === 1 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { color: iconColor, size: 20 }) : t.guess === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { color: iconColor, size: 20 }) : "—";
               let actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.2 }, children: "—" });
               const btnStyle = {
@@ -46791,24 +46981,35 @@ function MyTickets({
                 fontSize: "11px",
                 cursor: globalLoading ? "default" : "pointer"
               };
-              if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: "⬇️ Reveal" });
-              if (status === "CLAIM PRIZE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: "💰 Claim" });
-              if (status === "REFUND AVAILABLE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: "↩️ Refund" });
+              if (!t.receipt?.closed) {
+                if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: "⬇️ Reveal" });
+                if (status === "CLAIM PRIZE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: "💰 Claim" });
+                if (status === "REFUND AVAILABLE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: "↩️ Refund" });
+                const roundArchived = !t.round;
+                const isProcessed = t.processed || roundArchived;
+                if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SaveIcon, { size: 13, style: { marginRight: 6 } }),
+                    " Reclaim SOL"
+                  ] });
+                }
+              }
               return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { paddingLeft: 48, borderBottom: "1px solid rgba(0,0,0,0.03)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: 13, display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { paddingLeft: 48, borderBottom: "1px solid rgba(0,0,0,0.03)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.4 }, children: "↳" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { whiteSpace: "nowrap" }, children: [
                     "Ticket #",
                     t.absoluteIndex
                   ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4, position: "relative" }, children: [
                     guessIcon,
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SaveIcon, { size: 14, color: t.claimed || t.receipt?.closed ? "#10B981" : "#D1D5DB" }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { whiteSpace: "nowrap", fontSize: 11, opacity: 0.6, textTransform: "uppercase" }, children: t.guess === 1 ? "Bull" : "Bear" })
                   ] })
                 ] }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "SWEPT" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 17 }) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: actionBtn })
               ] }, t.ticketPk?.toString());
             })
@@ -47274,9 +47475,162 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
   }, [pubkey2, refreshNow, chainState?.round?.pulseSet, chainState?.round?.finalized]);
   return { chainState, statusLine, refreshNow };
 }
+function chunk(arr, size) {
+  return Array.from(
+    { length: Math.ceil(arr.length / size) },
+    (_, i) => arr.slice(i * size, i * size + size)
+  );
+}
+function decodeInstruction(coder, ix) {
+  try {
+    return coder.instruction.decode(ix.data, "base58");
+  } catch (e) {
+    return null;
+  }
+}
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
+  const [historyRows, setHistoryRows] = reactExports.useState([]);
+  const [loadingHistory, setLoadingHistory] = reactExports.useState(false);
+  const [historyError, setHistoryError] = reactExports.useState(null);
+  const fetchHistory = reactExports.useCallback(async () => {
+    if (!connection || !userPubkey || !programPk || !coder) return;
+    setLoadingHistory(true);
+    setHistoryError(null);
+    console.log("[History] === RECONSTRUCTOR V6 (STABLE + 500) ACTIVATED ===");
+    try {
+      const sigs = await connection.getSignaturesForAddress(userPubkey, { limit: 500 });
+      console.log(`[History] Signatures found: ${sigs.length}. Processing...`);
+      if (!sigs.length) {
+        setHistoryRows([]);
+        setLoadingHistory(false);
+        return;
+      }
+      const successfulSigs = sigs.filter((s) => !s.err).map((s) => s.signature);
+      const BATCH_SIZE = 3;
+      const txBatches = chunk(successfulSigs, BATCH_SIZE);
+      const reconstructedByType = /* @__PURE__ */ new Map();
+      for (let i = 0; i < txBatches.length; i++) {
+        const batch = txBatches[i];
+        try {
+          console.log(`[History] Batch ${i + 1}/${txBatches.length}... (Delay 2s)`);
+          const txs = await connection.getParsedTransactions(batch, {
+            commitment: "confirmed",
+            maxSupportedTransactionVersion: 0
+          });
+          txs.filter(Boolean).forEach((tx) => {
+            if (!tx?.transaction?.message?.instructions) return;
+            const ixs = tx.transaction.message.instructions.filter(
+              (ix) => ix.programId.toString() === programPk.toBase58()
+            );
+            ixs.forEach((ix) => {
+              const decoded = decodeInstruction(coder, ix);
+              if (!decoded) return;
+              const args = decoded.data;
+              const name = decoded.name;
+              let rid = null;
+              if (args.roundId) rid = args.roundId.toNumber();
+              else if (args.round_id) rid = args.round_id.toNumber();
+              const processEntry = (r, n, status, txData) => {
+                if (n == null) return;
+                const key2 = `${r}-${n}`;
+                const existing = reconstructedByType.get(key2);
+                if (status === "COMMIT") {
+                  if (!existing) {
+                    reconstructedByType.set(key2, {
+                      roundId: r,
+                      nonce: n,
+                      status: "PENDING",
+                      createdSlot: txData.slot,
+                      tx: txData.transaction.signatures[0],
+                      timestamp: txData.blockTime * 1e3
+                    });
+                  }
+                } else if (status === "REVEAL") {
+                  if (existing) {
+                    existing.status = "REVEALED";
+                    existing.revealTx = txData.transaction.signatures[0];
+                    if (args.guess !== void 0) existing.guess = args.guess;
+                  }
+                } else if (status === "CLAIM") {
+                  if (existing) {
+                    existing.status = "CLAIMED";
+                    existing.claimTx = txData.transaction.signatures[0];
+                  } else {
+                    reconstructedByType.set(key2, {
+                      roundId: r,
+                      nonce: n,
+                      status: "CLAIMED",
+                      createdSlot: txData.slot,
+                      tx: "history",
+                      claimTx: txData.transaction.signatures[0],
+                      timestamp: txData.blockTime * 1e3
+                    });
+                  }
+                }
+              };
+              if (name === "commit_ticket" || name === "commitTicket") {
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "COMMIT", tx);
+              } else if (name.includes("commit_batch") || name.includes("commitBatch")) {
+                const entries = args.entries || [];
+                entries.forEach((e) => {
+                  const n = e.nonce ? typeof e.nonce.toNumber === "function" ? e.nonce.toNumber() : e.nonce : null;
+                  processEntry(rid, n, "COMMIT", tx);
+                });
+              } else if (name.includes("reveal")) {
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "REVEAL", tx);
+              } else if (name.includes("claim_reward") || name.includes("claimReward")) {
+                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "CLAIM", tx);
+              }
+            });
+          });
+          const currentRows = Array.from(reconstructedByType.values()).map((r) => ({
+            ticketPk: PublicKey.default,
+            ticket: {
+              roundId: new BN(r.roundId),
+              nonce: new BN(r.nonce),
+              createdSlot: new BN(r.createdSlot),
+              guess: r.guess,
+              revealed: r.status === "REVEALED" || r.status === "CLAIMED",
+              claimed: r.status === "CLAIMED"
+            },
+            roundId: r.roundId,
+            createdSlot: r.createdSlot,
+            nonce: r.nonce,
+            receipt: {
+              guess: r.guess,
+              revealTx: r.revealTx,
+              claimTx: r.claimTx,
+              status: r.status
+            },
+            reconstructed: true
+          }));
+          setHistoryRows(currentRows);
+          if (i < txBatches.length - 1) await delay(2e3);
+        } catch (err) {
+          const msg = err.message || "";
+          if (msg.includes("429") || msg.includes("Too many requests")) {
+            console.warn("[History] 429 BLOCK. Waiting 10 seconds...");
+            await delay(1e4);
+            i--;
+          } else {
+            console.error("[History] Error batch:", err);
+          }
+        }
+      }
+      console.log("[History] Full scan completed.");
+    } catch (e) {
+      console.error("[History] Fatal error:", e);
+      setHistoryError(e.message);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }, [connection, userPubkey, programPk, coder]);
+  return { historyRows, loadingHistory, historyError, fetchHistory };
+}
 const TICKET_DATA_SIZE = 122;
 const USER_MEMCMP_OFFSET = 16;
-const BASE_POLL_MS = 5e3;
+const BASE_POLL_MS = 15e3;
 const MAX_BACKOFF_MS = 3e4;
 function bnToNumber(v, fallback = 0) {
   try {
@@ -47340,6 +47694,22 @@ function useUserTickets({
   const backoffMsRef = reactExports.useRef(BASE_POLL_MS);
   const nextAllowedAtRef = reactExports.useRef(0);
   const retryTimerRef = reactExports.useRef(null);
+  const { historyRows, fetchHistory } = useHistoryReconstructor(connection, userPubkey, programPk, coder);
+  const historyStartedRef = reactExports.useRef(false);
+  reactExports.useEffect(() => {
+    if (userPubkey && connection && !historyStartedRef.current) {
+      historyStartedRef.current = true;
+      fetchHistory();
+    }
+  }, [userPubkey, connection]);
+  reactExports.useEffect(() => {
+    const fn = () => {
+      localStorage.clear();
+      console.log("Chronos storage cleared. Please refresh (F5).");
+    };
+    window.clearChronosStorage = fn;
+    if (window.top) window.top.clearChronosStorage = fn;
+  }, []);
   const refresh = reactExports.useCallback(
     async (reason = "manual") => {
       if (!connection || !programPk || !userPubkey) {
@@ -47366,19 +47736,19 @@ function useUserTickets({
         const rows2 = accounts2.map((acc) => {
           try {
             const t = coder.decode("Ticket", Buffer$1.from(acc.account.data));
-            const roundId = bnToNumber(pick(t, ["roundId", "round_id"], 0), 0);
+            const roundId2 = bnToNumber(pick(t, ["roundId", "round_id"], 0), 0);
             const createdSlot = bnToNumber(pick(t, ["createdSlot", "created_slot"], 0), 0);
             const nonce = bnToNumber(pick(t, ["nonce"], 0), 0);
-            const receipts = loadAllLocalReceipts(walletStr, roundId);
+            const receipts = loadAllLocalReceipts(walletStr, roundId2);
             const receiptForThisTicket = receipts.find((r) => r.ticketPda === acc.pubkey.toBase58()) || null;
-            return { ticketPk: acc.pubkey, ticket: t, roundId, createdSlot, nonce, receipt: receiptForThisTicket };
+            return { ticketPk: acc.pubkey, ticket: t, roundId: roundId2, createdSlot, nonce, receipt: receiptForThisTicket };
           } catch {
             return null;
           }
         }).filter(Boolean);
         const existingPks = new Set(rows2.map((r) => r.ticketPk.toBase58()));
         const allReceipts = loadAllWalletReceiptsWrapper(walletStr);
-        const ghostRows = allReceipts.filter((r) => r.refunded && !existingPks.has(r.ticketPda)).map((r) => ({
+        const ghostRows = allReceipts.filter((r) => (r.refunded || r.closed || r.claimTx || r.revealedAt) && !existingPks.has(r.ticketPda)).map((r) => ({
           ticketPk: new PublicKey(r.ticketPda),
           ticket: null,
           // Account is gone from Solana
@@ -47386,42 +47756,127 @@ function useUserTickets({
           createdSlot: r.createdSlot || 0,
           // Use original slot if preserved
           nonce: r.nonce,
+          revealed: r.revealed || !!r.revealedAt,
+          win: r.win || !!r.claimTx,
+          processed: true,
+          // If it's a ghost, it must be effectively processed for rent recovery
           receipt: r
         }));
-        const decoded = [...rows2, ...ghostRows].sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0)).slice(0, Math.max(1, limit));
-        const uniqRoundIds = Array.from(new Set(decoded.map((x) => x.roundId))).filter((x) => x != null);
+        const uniqueHistory = historyRows.filter((h) => {
+          return !rows2.some((live) => live.roundId === h.roundId && live.nonce === h.nonce);
+        });
+        const uniqueGhosts = ghostRows.filter((g) => {
+          const inHistory = historyRows.some((h) => h.roundId === g.roundId && h.nonce === g.nonce);
+          return !inHistory;
+        });
+        const decoded = [...rows2, ...uniqueHistory, ...uniqueGhosts].sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0)).slice(0, Math.max(1, limit));
+        const uniqRoundIds = Array.from(new Set(decoded.map((x) => Number(x.roundId)))).filter((x) => x != null);
         const roundMap = /* @__PURE__ */ new Map();
+        const roundMintMap = /* @__PURE__ */ new Map();
+        let registryLimit = null;
         if (uniqRoundIds.length) {
           const roundPdas = await Promise.all(uniqRoundIds.map((rid) => pdaRound(programPk, rid)));
+          try {
+            const [rrPda] = PublicKey.findProgramAddressSync([Buffer$1.from("round_registry_v3")], programPk);
+            const rrInfo = await connection.getAccountInfo(rrPda, "confirmed");
+            if (rrInfo) {
+              const rr = coder.decode("RoundRegistry", Buffer$1.from(rrInfo.data));
+              registryLimit = bnToNumber(rr.nextRoundId || rr.next_round_id, Infinity);
+            }
+          } catch (e) {
+            console.warn("Failed to fetch RoundRegistry limit", e);
+          }
           const infos = [];
           const CHUNK_SIZE2 = 100;
           for (let i = 0; i < roundPdas.length; i += CHUNK_SIZE2) {
-            const chunk = roundPdas.slice(i, i + CHUNK_SIZE2);
-            const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
+            const chunk2 = roundPdas.slice(i, i + CHUNK_SIZE2);
+            const chunkInfos = await connection.getMultipleAccountsInfo(chunk2, "confirmed");
             infos.push(...chunkInfos);
           }
+          const vaultPks = [];
+          const vaultToRound = [];
           for (let i = 0; i < uniqRoundIds.length; i++) {
             const info = infos[i];
             if (!info?.data) continue;
             try {
-              roundMap.set(uniqRoundIds[i], coder.decode("Round", Buffer$1.from(info.data)));
+              const rid = Number(uniqRoundIds[i]);
+              if (rid === 130) console.log(`[useUserTickets] Found Round 130 account on-chain. Data length: ${info.data.length}`);
+              const decodedRound = coder.decode("Round", Buffer$1.from(info.data));
+              roundMap.set(rid, decodedRound);
+              if (decodedRound.timlgVault || decodedRound.timlg_vault) {
+                vaultPks.push(new PublicKey(decodedRound.timlgVault || decodedRound.timlg_vault));
+                vaultToRound.push(rid);
+              }
             } catch {
+            }
+          }
+          if (vaultPks.length) {
+            console.log(`[useUserTickets] Fetching ${vaultPks.length} vaults for mint verification...`);
+            const vaultInfos = [];
+            for (let i = 0; i < vaultPks.length; i += CHUNK_SIZE2) {
+              const chunk2 = vaultPks.slice(i, i + CHUNK_SIZE2);
+              const chunkInfos = await connection.getMultipleAccountsInfo(chunk2, "confirmed");
+              vaultInfos.push(...chunkInfos);
+            }
+            for (let i = 0; i < vaultInfos.length; i++) {
+              const info = vaultInfos[i];
+              if (!info?.data) {
+                console.warn(`[useUserTickets] Vault info missing for round ${vaultToRound[i]}`);
+                continue;
+              }
+              try {
+                const mintBytes = info.data.slice(0, 32);
+                const mintStr = new PublicKey(mintBytes).toBase58();
+                roundMintMap.set(vaultToRound[i], mintStr);
+              } catch (e) {
+                console.error(`[useUserTickets] Failed to parse vault for round ${vaultToRound[i]}`, e);
+              }
             }
           }
         }
         const next = decoded.map((row) => {
-          const round = roundMap.get(row.roundId) || null;
-          const revealed = Boolean(pick(row.ticket, ["revealed"], false));
+          const rid = Number(row.roundId);
+          const round = roundMap.get(rid) || null;
+          const roundMint = roundMintMap.get(rid) || null;
+          if (registryLimit !== null && rid >= registryLimit) {
+            return null;
+          }
+          if (mintPk) {
+            const targetMint = mintPk.toBase58();
+            const mintMismatch = roundMint && roundMint !== targetMint;
+            if (mintMismatch) {
+              return null;
+            }
+          }
+          if (round && rid === 130) {
+            const roundCreated = bnToNumber(pick(round, ["createdSlot", "created_slot"], 0), 0);
+            console.log(`[useUserTickets] Round 130 Stats: TicketSlot=${row.createdSlot}, RoundCreated=${roundCreated}`);
+          }
           const onChainGuess = pick(row.ticket, ["guess"], null);
-          const guess = revealed ? onChainGuess : row.receipt?.guess ?? null;
+          const rcpConfirmedReveal = Boolean(row.receipt?.revealTx);
+          const rcpConfirmedClaim = Boolean(row.receipt?.claimTx);
+          const revealed = Boolean(pick(row.ticket, ["revealed"], false)) || rcpConfirmedReveal;
+          const claimed = Boolean(pick(row.ticket, ["claimed"], false)) || rcpConfirmedClaim;
+          const guess = revealed && row.ticket ? onChainGuess : row.receipt?.guess ?? null;
           const win = Boolean(pick(row.ticket, ["win"], false));
-          const claimed = Boolean(pick(row.ticket, ["claimed"], false));
+          const processed = Boolean(pick(row.ticket, ["processed"], false)) || row.ticket === null;
           const pulseSet = Boolean(pick(round, ["pulseSet", "pulse_set"], false));
           const swept = Boolean(pick(round, ["swept"], false));
           const tokenSettled = Boolean(pick(round, ["tokenSettled", "token_settled"], false));
-          const uiStatus = computeUiStatus({ ticket: row.ticket, round });
-          return { ...row, round, guess, win, revealed, claimed, pulseSet, swept, tokenSettled, uiStatus };
-        });
+          const mergedTicket = { ...row.ticket || {}, revealed, claimed, win };
+          const uiStatus = computeUiStatus({ ticket: mergedTicket, round });
+          if (win && row.receipt && !row.receipt.outcome) {
+            try {
+              row.receipt.outcome = "win";
+              const updated = { ...row.receipt, outcome: "win" };
+              saveLocalReceipt(userPubkey.toBase58(), round ? roundId : row.roundId, updated);
+              console.log("[Resilience] Saved WIN outcome for ticket", rid, row.nonce);
+            } catch (err) {
+            }
+          }
+          const finalStatus = claimed ? "CLAIMED" : uiStatus;
+          return { ...row, round, guess, win, revealed, claimed, processed, pulseSet, swept, tokenSettled, uiStatus: finalStatus };
+        }).filter(Boolean);
         setRows(next);
         setLastUpdatedAt(Date.now());
         backoffMsRef.current = BASE_POLL_MS;
@@ -47455,7 +47910,8 @@ function useUserTickets({
         setLoading2(false);
       }
     },
-    [connection, programPk, userPubkey, coder, limit, appendLog]
+    [connection, programPk, userPubkey, coder, limit]
+    // removed historyRows/fetchHistory
   );
   reactExports.useEffect(() => {
     let timer = null;
@@ -47563,8 +48019,8 @@ function useUserTickets({
         return sig;
       } catch (e) {
         const msg = formatSolanaError(e);
-        if (msg.includes("already processed") || msg.includes("0x0")) {
-          appendLog?.(`Claim success (already processed) ⚠️`);
+        if (msg.includes("already processed") || msg.includes("0x0") || msg.toLowerCase().includes("transaction has already been processed")) {
+          appendLog?.(`Claim success (already processed) ✅`);
           if (row.receipt) {
             const updated = { ...row.receipt, claimTx: "already-processed", claimedAt: Date.now() };
             saveLocalReceipt(userPubkey.toBase58(), row.roundId, updated);
@@ -47700,8 +48156,8 @@ function useUserTickets({
             if (myTicketPdas.has(tAddr)) {
               const rec = myReceipts.find((r) => r.ticketPda === tAddr);
               if (rec) {
-                rec.claimTx = sig;
-                rec.claimedAt = Date.now();
+                rec.settleTx = sig;
+                rec.settledAt = Date.now();
                 saveLocalReceipt(walletStr, row.roundId, rec);
               }
             }
@@ -47722,6 +48178,62 @@ function useUserTickets({
     },
     [program, programPk, userPubkey, mintPk, connection, coder, appendLog, setLastTx, onAfterAction, refresh]
   );
+  const doCloseTicket = reactExports.useCallback(
+    async (row) => {
+      if (!program || !userPubkey) throw new Error("Wallet not connected");
+      appendLog?.(`Close Ticket: recovering rent… (round=${row.roundId}, nonce=${row.nonce})`);
+      try {
+        const sig = await program.methods.closeTicket(new BN(row.roundId), new BN(row.nonce)).accounts({
+          round: await pdaRound(programPk, row.roundId),
+          ticket: row.ticketPk,
+          user: userPubkey
+        }).rpc();
+        appendLog?.(`Close Ticket OK ✅ tx=${sig}`);
+        try {
+          const walletStr = userPubkey.toBase58();
+          const updated = {
+            ...row.receipt || {},
+            closed: true,
+            closedTx: sig,
+            closedAt: Date.now(),
+            revealed: row.revealed,
+            win: row.win
+          };
+          saveLocalReceipt(walletStr, row.roundId, updated);
+        } catch (e) {
+          console.error("Failed to save close receipt", e);
+        }
+        setLastTx?.(sig);
+        onAfterAction?.();
+        await refresh("action");
+        return sig;
+      } catch (e) {
+        const errorStr = formatSolanaError(e);
+        appendLog?.(`Close Ticket failed: ${errorStr}`);
+        if (errorStr.includes("AccountNotInitialized") || errorStr.includes("3012") || errorStr.includes("0xbc4")) {
+          try {
+            const walletStr = userPubkey.toBase58();
+            const updated = {
+              ...row.receipt || {},
+              closed: true,
+              closedAt: Date.now(),
+              revealed: row.revealed,
+              win: row.win
+            };
+            saveLocalReceipt(walletStr, row.roundId, updated);
+            appendLog?.(`Ticket marked as closed locally (account already gone).`);
+            refresh("action");
+          } catch (err) {
+            console.error("Failed to mark ghost ticket as closed", err);
+          }
+        }
+        const logs = extractProgramLogs(e);
+        if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
+        return null;
+      }
+    },
+    [program, programPk, userPubkey, appendLog, setLastTx, onAfterAction, refresh]
+  );
   return {
     rows,
     loading,
@@ -47732,17 +48244,19 @@ function useUserTickets({
     doRevealTicket,
     doClaimTicket,
     doRefundTicket,
-    doSettleRound
+    doSettleRound,
+    doCloseTicket
   };
 }
 clusterApiUrl("devnet");
 const RPC_URL = "https://api.devnet.solana.com";
 const DEFAULT_INVITE = "BETA2026";
-const PROGRAM_ID = "DrsJxZRNuEFHVyj3Sz5CzpVeacpAGHBoZrg9NtRH9JqR";
+const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
-const TIMLG_MINT = "7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf";
+const TIMLG_MINT = "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy";
 const MIN_SOL = Number("0.05");
 const MIN_TIMLG = Number("1");
+const PROTOCOL_VERSION = "3.0.1-NUCLEAR";
 function getPhantomProvider() {
   if (typeof window === "undefined") return null;
   return window?.phantom?.solana ?? window?.solana ?? null;
@@ -47772,6 +48286,15 @@ function App() {
     });
   }, []);
   const clearLogs = reactExports.useCallback(() => setLogs([]), []);
+  reactExports.useEffect(() => {
+    const saved = localStorage.getItem("TIMLG_PROTOCOL_VERSION");
+    if (saved !== PROTOCOL_VERSION) {
+      console.log(`[system] Protocol version mismatch (${saved} != ${PROTOCOL_VERSION}). Clearing cache...`);
+      localStorage.removeItem("timlg_receipts");
+      localStorage.removeItem("performance_stats");
+      localStorage.setItem("TIMLG_PROTOCOL_VERSION", PROTOCOL_VERSION);
+    }
+  }, []);
   const isDemo = reactExports.useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("demo") === "true";
@@ -47843,7 +48366,8 @@ function App() {
     doRevealTicket,
     doClaimTicket,
     doRefundTicket,
-    doSettleRound
+    doSettleRound,
+    doCloseTicket
   } = useUserTickets({
     program,
     connection,
@@ -47885,7 +48409,7 @@ function App() {
     let revealed = 0;
     let pending = 0;
     let countable = 0;
-    let netTokens = 0;
+    let netTokensRaw = 0n;
     const breakdown = {
       WIN: 0,
       LOSS: 0,
@@ -47895,9 +48419,8 @@ function App() {
       CLAIMED: 0,
       SWEPT: 0
     };
-    const rawStake = chainState?.config?.stakeAmount ? Number(chainState.config.stakeAmount) : 1;
-    const uiStake = rawStake;
-    const feeBps = chainState?.rewardFeeBps ?? 0;
+    const rawStake = chainState?.config?.stakeAmount ? BigInt(chainState.config.stakeAmount) : 1000000000n;
+    const feeBps = BigInt(chainState?.rewardFeeBps ?? 0);
     const currentSlot = chainState?.currentSlot ? BigInt(chainState.currentSlot) : null;
     ticketRows.forEach((r) => {
       total++;
@@ -47919,11 +48442,11 @@ function App() {
         if (r.win) {
           wins++;
           breakdown.WIN++;
-          const fee = Math.floor(uiStake * feeBps / 1e4);
-          const mintedReward = uiStake - fee;
+          const fee = rawStake * feeBps / 10000n;
+          const mintedReward = rawStake - fee;
           if (r.claimed) {
             breakdown.CLAIMED++;
-            netTokens += mintedReward;
+            netTokensRaw += mintedReward;
           } else {
             let isSwept = r.swept;
             if (!isSwept && !r.round) isSwept = true;
@@ -47935,22 +48458,28 @@ function App() {
             }
             if (isSwept) {
               breakdown.SWEPT++;
-              netTokens -= uiStake;
+              netTokensRaw -= rawStake;
             } else {
-              netTokens += mintedReward;
+              netTokensRaw += mintedReward;
             }
           }
+        } else if (r.receipt?.outcome === "win" || r.receipt?.guess != null && r.round?.result != null && r.receipt.guess === r.round.result) {
+          wins++;
+          breakdown.WIN++;
+          breakdown.SWEPT++;
+          netTokensRaw -= rawStake;
         } else {
           breakdown.LOSS++;
-          netTokens -= uiStake;
+          netTokensRaw -= rawStake;
         }
       } else {
         breakdown.EXPIRED++;
-        netTokens -= uiStake;
+        netTokensRaw -= rawStake;
       }
     });
     const winRate = countable > 0 ? wins / countable * 100 : 0;
     const efficiency = total > 0 ? revealed / (total - breakdown.REFUNDED - pending) * 100 : 0;
+    const netProfit = Number(netTokensRaw) / 1e9;
     const rounds = /* @__PURE__ */ new Map();
     ticketRows.forEach((r) => {
       if (r.receipt?.refunded === true) return;
@@ -47968,25 +48497,25 @@ function App() {
         return t.revealed || isExpired;
       });
       if (!finished2) continue;
-      let roundPnL = 0;
+      let roundPnLRaw = 0n;
       tix.forEach((t) => {
         const revealDl = t.round?.revealDeadlineSlot || t.round?.reveal_deadline_slot ? BigInt(t.round.revealDeadlineSlot || t.round.reveal_deadline_slot) : null;
         const isExpired = !t.revealed && !t.win && revealDl && currentSlot && currentSlot > revealDl;
         if (t.revealed && t.win) {
-          const fee = Math.floor(uiStake * feeBps / 1e4);
-          roundPnL += uiStake - fee;
+          const fee = rawStake * feeBps / 10000n;
+          roundPnLRaw += rawStake - fee;
         } else if (t.revealed || isExpired) {
-          roundPnL -= uiStake;
+          roundPnLRaw -= rawStake;
         }
       });
-      if (roundPnL > 0) {
+      if (roundPnLRaw > 0n) {
         currentRun++;
         maxStreak = Math.max(maxStreak, currentRun);
       } else {
         currentRun = 0;
       }
     }
-    return { total, revealed, pending, wins, winRate, netProfit: netTokens, efficiency, countable, breakdown, streak: maxStreak };
+    return { total, revealed, pending, wins, winRate, netProfit, efficiency, countable, breakdown, streak: maxStreak };
   }, [ticketRows, chainState?.config?.stakeAmount, chainState?.rewardFeeBps, chainState?.currentSlot]);
   reactExports.useEffect(() => {
     if (!pubkey2 || !stats || !stats.breakdown) return;
@@ -48269,7 +48798,14 @@ Domain: timlg.org`;
       await refreshProtocolState?.();
       refreshTickets();
     } catch (e) {
-      appendLog(`Commit failed: ${parseAnchorErr(e)}`);
+      const errState = parseAnchorErr(e);
+      if (errState.includes("Success")) {
+        appendLog(`Commit OK (Dedup) ✅`);
+        await refreshProtocolState?.();
+        refreshTickets();
+      } else {
+        appendLog(`Commit failed: ${errState}`);
+      }
       console.error("Commit error:", e);
     } finally {
       setLoading2(false);
@@ -48472,13 +49008,14 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "VERIFICATION:" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/verified-build?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
                   background: programStatus.verified ? "rgba(45, 104, 234, 0.1)" : "rgba(0,0,0,0.05)",
-                  color: programStatus.verified ? "#2D68EA" : "#666",
+                  color: programStatus.verified ? "#2D68EA" : "#555",
                   padding: "2px 6px",
                   borderRadius: "4px",
                   fontWeight: "800",
                   border: "1px solid",
-                  borderColor: programStatus.verified ? "#2D68EA" : "#ccc"
-                }, children: programStatus.verified ? "ON-CHAIN ✅" : "DEVNET-ACTIVE ℹ️" }) })
+                  borderColor: programStatus.verified ? "#2D68EA" : "#ccc",
+                  fontSize: "9px"
+                }, children: programStatus.verified ? "ON-CHAIN ✅" : "VERIFY ON EXPLORER ↗" }) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "SECURITY.TXT:" }),
@@ -48489,7 +49026,8 @@ Domain: timlg.org`;
                   borderRadius: "4px",
                   fontWeight: "800",
                   border: "1px solid",
-                  borderColor: programStatus.security ? "#10B981" : "#ccc"
+                  borderColor: programStatus.security ? "#10B981" : "#ccc",
+                  fontSize: "9px"
                 }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
               ] })
             ] })
@@ -48641,7 +49179,7 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PROFIT" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "22px", fontWeight: "900", color: stats.netProfit >= 0 ? "#059669" : "#DC2626", letterSpacing: "-0.02em" }, children: [
                   stats.netProfit > 0 ? "+" : "",
-                  stats.netProfit,
+                  stats.netProfit.toLocaleString(void 0, { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
                   " ",
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.7 }, children: "TIMLG" })
                 ] })
@@ -48752,6 +49290,7 @@ Domain: timlg.org`;
           doClaimTicket,
           doRefundTicket,
           doSettleRound,
+          doCloseTicket,
           currentSlot: chainState?.currentSlot,
           claimGraceSlots: chainState?.config?.claimGraceSlots,
           activeRoundId: chainState?.roundId ?? null,

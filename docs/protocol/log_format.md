@@ -49,32 +49,44 @@ A round is identified by its on-chain address (PDA). The round state includes (a
 Tickets are created and updated by instructions like `commit_ticket` and `reveal_ticket`.
 
 In the MVP implementation, a ticket PDA is derived from:
-- `["ticket", round_id_le, participant_pubkey, nonce_le]`
+- `["ticket_v3", round_id_le, user_pubkey, nonce_le]`
 
-For indexing purposes, the minimal record is:
+For indexing purposes, a **useful minimal record** (aligned with on-chain `Ticket`) is:
 
 | Field | Type | Meaning |
 |---|---:|---|
 | `round_id` | u64 | Round ID |
-| `participant` | Pubkey | Wallet that committed (or authorized the commit) |
+| `user` | Pubkey | Ticket owner (wallet) |
 | `nonce` | u64 | Ticket nonce |
 | `commitment` | [32]byte | Commitment digest submitted in the commit step |
-| `stake_amount` | u64 | Fixed stake in **base units** of the TIMLG mint |
-| `commit_slot` | u64 | Slot where commit landed |
-| `reveal_slot` | u64? | Slot where reveal landed (if any) |
-| `bit_index` | u16 | Derived bit index (0..511) |
+| `stake_amount` | u64 | Fixed stake in **base units** of the TIMLG mint (read from on-chain `Config`) |
+| `bit_index` | u16 | Derived bit index (0..511), stored on commit |
+| `stake_paid` | bool | Whether stake was transferred to the round vault |
+| `stake_slashed` | bool | Whether stake was burned/slashed during settlement |
+| `processed` | bool | Whether settlement has processed the ticket (idempotency guard) |
 | `revealed` | bool | Whether reveal succeeded |
-| `win` | bool | Outcome flag (valid only after reveal) |
-| `claimed` | bool | Whether reward claim has executed |
-| `outcome` | enum? | WIN / LOSE / NO-REVEAL (available after settlement) |
+| `win` | bool | Outcome flag after reveal (true/false) |
+| `claimed` | bool | Whether reward claim has executed (winners only) |
+| `created_slot` | u64 | Slot when commit landed |
+| `revealed_slot` | u64 | Slot when reveal landed (0 if never revealed) |
+| `claimed_slot` | u64 | Slot when claim landed (0 if not claimed) |
 
-!!! info "Whole-token unit (no decimals)"
-    TIMLG is designed as a **whole-unit token (decimals = 0)**, so the base unit is the user-facing unit:
-    **`stake_amount = 1` means “stake 1 TIMLG.”**
+!!! note "Decimals and base units"
+    The protocol accounts in **base units** (`u64`). The TIMLG mint may use different `decimals` across deployments.
+    Devnet may use `decimals = 0` for easier testing, but indexers and tooling should treat `stake_amount` as base units.
+
+---
+
+## Ticket closure (`close_ticket`) and rent reclamation
+
+A ticket PDA holds a **rent-exempt lamport deposit**. The owner can reclaim it by calling `close_ticket`, which closes the ticket account (`close = user`).
+
+Indexers can treat a successful `close_ticket` as the terminal cleanup step for a ticket. The protocol sweep does **not** close user tickets.
 
 ---
 
 ## Commitment digest (as implemented)
+
 
 TIMLG uses a standard **commit–reveal** scheme:
 
@@ -85,18 +97,18 @@ TIMLG uses a standard **commit–reveal** scheme:
 
 The commitment hash is:
 
-- `commitment = SHA256( "commit" || round_id_le || participant_pubkey || nonce_le || guess_byte || salt_32 )`
+- `commitment = SHA256( "commit" || round_id_le || user_pubkey || nonce_le || guess_byte || salt_32 )`
 
 Where:
 - `"commit"` is the ASCII prefix (domain separator)
 - `round_id_le` is `round_id` as 8 bytes little-endian
-- `participant_pubkey` is the raw 32-byte pubkey
+- `user_pubkey` is the raw 32-byte pubkey
 - `nonce_le` is `nonce` as 8 bytes little-endian
 - `guess_byte` is a single byte `0x00` or `0x01`
 - `salt_32` is 32 bytes
 
-!!! note "Why include round + participant + nonce?"
-    This prevents reusing the same reveal across different rounds or participants, and makes each ticket unique.
+!!! note "Why include round + user + nonce?"
+    This prevents reusing the same reveal across different rounds or users, and makes each ticket unique.
 
 ---
 
@@ -133,12 +145,12 @@ You can store a normalized log in JSONL / Parquet. Example (JSONL):
 
 ```json
 {"type":"round_created","round":"<PUBKEY>","round_id":1,"target_pulse_index":123456,"commit_deadline_slot":999999,"reveal_deadline_slot":1000999,"slot":999000,"sig":"<TX_SIG>"}
-{"type":"ticket_committed","round_id":1,"participant":"<PUBKEY>","nonce":7,"commitment":"<HEX32>","stake_amount":1,"slot":999100,"sig":"<TX_SIG>"}
+{"type":"ticket_committed","round_id":1,"user":"<PUBKEY>","nonce":7,"commitment":"<HEX32>","stake_amount":1,"slot":999100,"sig":"<TX_SIG>"}
 {"type":"pulse_set","round_id":1,"target_pulse_index":123456,"pulse_hash":"<HEX32>","slot":999500,"sig":"<TX_SIG>"}
-{"type":"ticket_revealed","round_id":1,"participant":"<PUBKEY>","nonce":7,"guess_bit":1,"slot":999700,"sig":"<TX_SIG>"}
+{"type":"ticket_revealed","round_id":1,"user":"<PUBKEY>","nonce":7,"guess_bit":1,"slot":999700,"sig":"<TX_SIG>"}
 {"type":"round_finalized","round_id":1,"slot":1001200,"sig":"<TX_SIG>"}
 {"type":"round_token_settled","round_id":1,"slot":1001300,"sig":"<TX_SIG>"}
-{"type":"ticket_claimed","round_id":1,"participant":"<PUBKEY>","nonce":7,"slot":1001400,"sig":"<TX_SIG>"}
+{"type":"ticket_claimed","round_id":1,"user":"<PUBKEY>","nonce":7,"slot":1001400,"sig":"<TX_SIG>"}
 ```
 
 !!! tip "Minimal is fine"

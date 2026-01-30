@@ -18,10 +18,27 @@
   font-weight: 600;
   text-decoration: none;
 }
+
 :where(#beta-root, #root) a:hover {
   text-decoration: underline;
 }
-/* All styles are scoped to the embed root to avoid breaking MkDocs pages */
+
+/* Terminal Cursor Blink */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}/* All styles are scoped to the embed root to avoid breaking MkDocs pages */
 :where(#beta-root, #root) .beta-app {
   display: flex;
   flex-direction: column;
