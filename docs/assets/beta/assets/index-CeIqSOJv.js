@@ -13203,7 +13203,7 @@ function requireReactDomClient_production() {
     r: requestFormReset,
     D: prefetchDNS,
     C: preconnect,
-    L: preload,
+    L: preload2,
     m: preloadModule,
     X: preinitScript,
     S: preinitStyle,
@@ -13235,7 +13235,7 @@ function requireReactDomClient_production() {
     previousDispatcher.C(href, crossOrigin);
     preconnectAs("preconnect", href, crossOrigin);
   }
-  function preload(href, as, options2) {
+  function preload2(href, as, options2) {
     previousDispatcher.L(href, as, options2);
     var ownerDocument = globalDocument;
     if (ownerDocument && href && as) {
@@ -27786,13 +27786,13 @@ class Transaction {
     if (signers.length === 0) {
       throw new Error("No signers");
     }
-    const seen = /* @__PURE__ */ new Set();
+    const seen2 = /* @__PURE__ */ new Set();
     this.signatures = signers.filter((publicKey2) => {
       const key2 = publicKey2.toString();
-      if (seen.has(key2)) {
+      if (seen2.has(key2)) {
         return false;
       } else {
-        seen.add(key2);
+        seen2.add(key2);
         return true;
       }
     }).map((publicKey2) => ({
@@ -27820,14 +27820,14 @@ class Transaction {
     if (signers.length === 0) {
       throw new Error("No signers");
     }
-    const seen = /* @__PURE__ */ new Set();
+    const seen2 = /* @__PURE__ */ new Set();
     const uniqueSigners = [];
     for (const signer of signers) {
       const key2 = signer.publicKey.toString();
-      if (seen.has(key2)) {
+      if (seen2.has(key2)) {
         continue;
       } else {
-        seen.add(key2);
+        seen2.add(key2);
         uniqueSigners.push(signer);
       }
     }
@@ -27851,14 +27851,14 @@ class Transaction {
     if (signers.length === 0) {
       throw new Error("No signers");
     }
-    const seen = /* @__PURE__ */ new Set();
+    const seen2 = /* @__PURE__ */ new Set();
     const uniqueSigners = [];
     for (const signer of signers) {
       const key2 = signer.publicKey.toString();
-      if (seen.has(key2)) {
+      if (seen2.has(key2)) {
         continue;
       } else {
-        seen.add(key2);
+        seen2.add(key2);
         uniqueSigners.push(signer);
       }
     }
@@ -28369,7 +28369,7 @@ async function sendAndConfirmTransaction(connection, transaction, signers, optio
   }
   return signature2;
 }
-function sleep(ms) {
+function sleep$1(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 function encodeData(type2, fields) {
@@ -29179,7 +29179,7 @@ class Loader {
       }));
       if (connection._rpcEndpoint.includes("solana.com")) {
         const REQUESTS_PER_SECOND = 4;
-        await sleep(1e3 / REQUESTS_PER_SECOND);
+        await sleep$1(1e3 / REQUESTS_PER_SECOND);
       }
       offset2 += chunkSize;
       array2 = array2.slice(chunkSize);
@@ -29763,7 +29763,7 @@ function createRpcClient(url, httpHeaders, customFetch, fetchMiddleware, disable
           break;
         }
         console.error(`Server responded with ${res.status} ${res.statusText}.  Retrying after ${waitTime}ms delay...`);
-        await sleep(waitTime);
+        await sleep$1(waitTime);
         waitTime *= 2;
       }
       const text = await res.text();
@@ -30878,7 +30878,7 @@ class Connection {
         let currentBlockHeight = await checkBlockHeight();
         if (done) return;
         while (currentBlockHeight <= lastValidBlockHeight) {
-          await sleep(1e3);
+          await sleep$1(1e3);
           if (done) return;
           currentBlockHeight = await checkBlockHeight();
           if (done) return;
@@ -30950,7 +30950,7 @@ class Connection {
             });
             return;
           }
-          await sleep(2e3);
+          await sleep$1(2e3);
           if (done) return;
           currentNonceValue = await getCurrentNonceValue();
           if (done) return;
@@ -30978,7 +30978,7 @@ class Connection {
             break;
           }
           if (status.context.slot < (outcome.slotInWhichNonceDidAdvance ?? minContextSlot)) {
-            await sleep(400);
+            await sleep$1(400);
             continue;
           }
           signatureStatus = status;
@@ -32050,7 +32050,7 @@ class Connection {
   async _blockhashWithExpiryBlockHeight(disableCache) {
     if (!disableCache) {
       while (this._pollingBlockhash) {
-        await sleep(100);
+        await sleep$1(100);
       }
       const timeSinceFetch = Date.now() - this._blockhashInfo.lastFetch;
       const expired = timeSinceFetch >= BLOCKHASH_CACHE_TIMEOUT_MS;
@@ -32080,7 +32080,7 @@ class Connection {
           };
           return latestBlockhash;
         }
-        await sleep(MS_PER_SLOT / 2);
+        await sleep$1(MS_PER_SLOT / 2);
       }
       throw new Error(`Unable to obtain a new blockhash after ${Date.now() - startTime}ms`);
     } finally {
@@ -44928,41 +44928,182 @@ function pdaTreasury(programId) {
   return pda;
 }
 async function getUserTIMLGTokenAccount(connection, ownerPk, mintPk) {
-  const res = await connection.getParsedTokenAccountsByOwner(
-    ownerPk,
-    { mint: mintPk },
-    "confirmed"
-  );
-  if (!res.value.length) return null;
-  return new PublicKey(res.value[0].pubkey);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await connection.getParsedTokenAccountsByOwner(
+        ownerPk,
+        { mint: mintPk },
+        "confirmed"
+      );
+      if (!res.value.length) return null;
+      return new PublicKey(res.value[0].pubkey);
+    } catch (e) {
+      if (String(e).includes("429")) {
+        await new Promise((r) => setTimeout(r, 1e3 * (attempt + 1)));
+        continue;
+      }
+      throw e;
+    }
+  }
+  return null;
 }
+const scriptRel = "modulepreload";
+const assetsURL = function(dep, importerUrl) {
+  return new URL(dep, importerUrl).href;
+};
+const seen = {};
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  let promise = Promise.resolve();
+  if (deps && deps.length > 0) {
+    let allSettled = function(promises$2) {
+      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
+        status: "fulfilled",
+        value: value$1
+      }), (reason) => ({
+        status: "rejected",
+        reason
+      }))));
+    };
+    const links = document.getElementsByTagName("link");
+    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+    promise = allSettled(deps.map((dep) => {
+      dep = assetsURL(dep, importerUrl);
+      if (dep in seen) return;
+      seen[dep] = true;
+      const isCss = dep.endsWith(".css");
+      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+      if (!!importerUrl) for (let i$1 = links.length - 1; i$1 >= 0; i$1--) {
+        const link$1 = links[i$1];
+        if (link$1.href === dep && (!isCss || link$1.rel === "stylesheet")) return;
+      }
+      else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+      const link = document.createElement("link");
+      link.rel = isCss ? "stylesheet" : scriptRel;
+      if (!isCss) link.as = "script";
+      link.crossOrigin = "";
+      link.href = dep;
+      if (cspNonce) link.setAttribute("nonce", cspNonce);
+      document.head.appendChild(link);
+      if (isCss) return new Promise((res, rej) => {
+        link.addEventListener("load", res);
+        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }));
+  }
+  function handlePreloadError(err$2) {
+    const e$1 = new Event("vite:preloadError", { cancelable: true });
+    e$1.payload = err$2;
+    window.dispatchEvent(e$1);
+    if (!e$1.defaultPrevented) throw err$2;
+  }
+  return promise.then((res) => {
+    for (const item of res || []) {
+      if (item.status !== "rejected") continue;
+      handlePreloadError(item.reason);
+    }
+    return baseModule().catch(handlePreloadError);
+  });
+};
 const PROGRAM_ID$1 = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
+const RECEIPT_VERSION = 2;
 function key(walletStr, roundId2) {
   return `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:${roundId2}`;
 }
+function safePk(pkStr) {
+  if (!pkStr || typeof pkStr !== "string") return null;
+  try {
+    return new PublicKey(pkStr);
+  } catch {
+    return null;
+  }
+}
+function validateReceipt(receipt) {
+  if (!receipt || typeof receipt !== "object") return null;
+  if (typeof receipt.roundId !== "number") return null;
+  if (!receipt.ticketPda || typeof receipt.ticketPda !== "string") return null;
+  if (!safePk(receipt.ticketPda)) return null;
+  return receipt;
+}
+function migrateReceipt(receipt) {
+  if (!receipt) return null;
+  if (!receipt.version) {
+    return { ...receipt, version: RECEIPT_VERSION };
+  }
+  return receipt;
+}
 function loadLocalState(walletStr, roundId2) {
   if (!walletStr) return null;
+  const k = key(walletStr, roundId2);
   try {
-    const raw = localStorage.getItem(key(walletStr, roundId2));
+    const raw = localStorage.getItem(k);
     if (!raw) return null;
-    const data = JSON.parse(raw);
+    let data = JSON.parse(raw);
     if (Array.isArray(data)) {
-      return data.length > 0 ? data[data.length - 1] : null;
+      if (data.length === 0) return null;
+      const validated = data.map((item) => migrateReceipt(item)).map((item) => validateReceipt(item)).filter((item) => item !== null);
+      if (validated.length === 0) {
+        console.warn(`[Storage] All receipts invalid for round ${roundId2}, cleaning up`);
+        localStorage.removeItem(k);
+        return null;
+      }
+      if (validated.length !== data.length) {
+        localStorage.setItem(k, JSON.stringify(validated));
+      }
+      return validated[validated.length - 1];
     }
-    return data;
-  } catch {
+    let receipt = migrateReceipt(data);
+    receipt = validateReceipt(receipt);
+    if (!receipt) {
+      console.warn(`[Storage] Invalid receipt for round ${roundId2}, cleaning up`);
+      localStorage.removeItem(k);
+      return null;
+    }
+    if (!data.version) {
+      localStorage.setItem(k, JSON.stringify([receipt]));
+    }
+    return receipt;
+  } catch (e) {
+    console.error(`[Storage] Failed to load receipt for round ${roundId2}:`, e);
+    try {
+      localStorage.removeItem(k);
+    } catch {
+    }
     return null;
   }
 }
 function loadAllLocalState(walletStr, roundId2) {
   if (!walletStr) return [];
+  const k = key(walletStr, roundId2);
   try {
-    const raw = localStorage.getItem(key(walletStr, roundId2));
+    const raw = localStorage.getItem(k);
     if (!raw) return [];
-    const data = JSON.parse(raw);
-    if (Array.isArray(data)) return data;
-    return [data];
-  } catch {
+    let data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+      const validated = data.map((item) => migrateReceipt(item)).map((item) => validateReceipt(item)).filter((item) => item !== null);
+      if (validated.length === 0) {
+        localStorage.removeItem(k);
+        return [];
+      }
+      if (validated.length !== data.length) {
+        localStorage.setItem(k, JSON.stringify(validated));
+      }
+      return validated;
+    }
+    let receipt = migrateReceipt(data);
+    receipt = validateReceipt(receipt);
+    if (!receipt) {
+      localStorage.removeItem(k);
+      return [];
+    }
+    localStorage.setItem(k, JSON.stringify([receipt]));
+    return [receipt];
+  } catch (e) {
+    console.error(`[Storage] Failed to load all receipts for round ${roundId2}:`, e);
+    try {
+      localStorage.removeItem(k);
+    } catch {
+    }
     return [];
   }
 }
@@ -44970,18 +45111,30 @@ function saveLocalState(walletStr, roundId2, receipt) {
   if (!walletStr) return;
   const k = key(walletStr, roundId2);
   try {
-    const raw = localStorage.getItem(k);
+    const versionedReceipt = { ...receipt, version: RECEIPT_VERSION };
+    let raw = null;
+    try {
+      raw = localStorage.getItem(k);
+    } catch (e) {
+      console.warn("Storage access failed", e);
+      return;
+    }
     let existing = [];
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) existing = parsed;
-      else existing = [parsed];
+      if (Array.isArray(parsed)) {
+        existing = parsed.map((item) => migrateReceipt(item)).map((item) => validateReceipt(item)).filter((item) => item !== null);
+      } else {
+        const migrated = migrateReceipt(parsed);
+        const validated = validateReceipt(migrated);
+        if (validated) existing = [validated];
+      }
     }
-    const idx = existing.findIndex((r) => r.ticketPda === receipt.ticketPda);
+    const idx = existing.findIndex((r) => r.ticketPda === versionedReceipt.ticketPda);
     if (idx >= 0) {
-      existing[idx] = receipt;
+      existing[idx] = versionedReceipt;
     } else {
-      existing.push(receipt);
+      existing.push(versionedReceipt);
     }
     localStorage.setItem(k, JSON.stringify(existing));
   } catch (e) {
@@ -44992,23 +45145,127 @@ function loadAllWalletReceipts(walletStr) {
   if (!walletStr) return [];
   const prefix = `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:`;
   const all = [];
+  const keysToClean = [];
   try {
-    for (let i = 0; i < localStorage.length; i++) {
+    const len = localStorage.length;
+    for (let i = 0; i < len; i++) {
       const k = localStorage.key(i);
       if (k && k.startsWith(prefix)) {
         const raw = localStorage.getItem(k);
         if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) all.push(...parsed);
-          else all.push(parsed);
+          try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              const validated = parsed.map((item) => migrateReceipt(item)).map((item) => validateReceipt(item)).filter((item) => item !== null);
+              if (validated.length === 0) {
+                keysToClean.push(k);
+              } else {
+                all.push(...validated);
+                if (validated.length !== parsed.length) {
+                  try {
+                    localStorage.setItem(k, JSON.stringify(validated));
+                  } catch {
+                  }
+                }
+              }
+            } else {
+              const migrated = migrateReceipt(parsed);
+              const validated = validateReceipt(migrated);
+              if (validated) {
+                all.push(validated);
+                if (!parsed.version) {
+                  try {
+                    localStorage.setItem(k, JSON.stringify([validated]));
+                  } catch {
+                  }
+                }
+              } else {
+                keysToClean.push(k);
+              }
+            }
+          } catch (err) {
+            console.warn(`[Storage] Skipping malformed receipt: ${k}`, err);
+            keysToClean.push(k);
+          }
         }
       }
     }
+    for (const k of keysToClean) {
+      try {
+        localStorage.removeItem(k);
+        console.log(`[Storage] Cleaned up invalid receipt: ${k}`);
+      } catch {
+      }
+    }
   } catch (e) {
-    console.error("Failed to scan local storage", e);
+    console.error("Failed to scan local storage (likely restricted in iframe)", e);
   }
   return all;
 }
+function clearLocalState(walletStr, roundId2) {
+  if (!walletStr) return;
+  localStorage.removeItem(key(walletStr, roundId2));
+}
+function deleteLocalTicket(walletStr, roundId2, ticketPda) {
+  if (!walletStr) return;
+  const k = key(walletStr, roundId2);
+  try {
+    const raw = localStorage.getItem(k);
+    if (!raw) return;
+    let existing = JSON.parse(raw);
+    if (!Array.isArray(existing)) existing = [existing];
+    const filtered = existing.filter((r) => r.ticketPda !== ticketPda);
+    if (filtered.length === 0) {
+      localStorage.removeItem(k);
+    } else {
+      localStorage.setItem(k, JSON.stringify(filtered));
+    }
+    console.log(`[Storage] Cleaned up rejected ticket: ${ticketPda}`);
+  } catch (e) {
+    console.error("Failed to delete local ticket", e);
+  }
+}
+function pruneOldReceipts(walletStr, currentRoundId) {
+  if (!walletStr || !currentRoundId) return;
+  const prefix = `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:`;
+  const KEEP_WINDOW = 500;
+  const cutoff = currentRoundId - KEEP_WINDOW;
+  if (cutoff <= 0) return;
+  try {
+    let pruned = 0;
+    const len = localStorage.length;
+    const keysToDelete = [];
+    for (let i = 0; i < len; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(prefix)) {
+        const parts = k.split(":round:");
+        if (parts.length === 2) {
+          const rid = Number(parts[1]);
+          if (rid < cutoff) {
+            keysToDelete.push(k);
+          }
+        }
+      }
+    }
+    for (const k of keysToDelete) {
+      localStorage.removeItem(k);
+      pruned++;
+    }
+    if (pruned > 0) console.log(`[Storage] Auto-pruned ${pruned} old round records.`);
+  } catch (e) {
+    console.warn("Pruning failed", e);
+  }
+}
+const storage = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  clearLocalState,
+  deleteLocalTicket,
+  loadAllLocalState,
+  loadAllWalletReceipts,
+  loadLocalState,
+  pruneOldReceipts,
+  saveLocalState
+}, Symbol.toStringTag, { value: "Module" }));
 function loadLocalReceipt(walletStr, roundId2) {
   return loadLocalState(walletStr, roundId2);
 }
@@ -45020,6 +45277,15 @@ function loadAllWalletReceiptsWrapper(walletStr) {
 }
 function saveLocalReceipt(walletStr, roundId2, receipt) {
   saveLocalState(walletStr, roundId2, receipt);
+}
+function deleteLocalReceiptWrapper(walletStr, roundId2, ticketPda) {
+  deleteLocalTicket(walletStr, roundId2, ticketPda);
+}
+function pruneOldReceiptsWrapper(walletStr, currentRoundId) {
+  __vitePreload(() => Promise.resolve().then(() => storage), true ? void 0 : void 0, import.meta.url).then((m) => {
+    if (m.pruneOldReceipts) m.pruneOldReceipts(walletStr, currentRoundId);
+  }).catch(() => {
+  });
 }
 function shortPk$1(pk) {
   const s = typeof pk === "string" ? pk : pk?.toBase58?.() ?? "";
@@ -46248,11 +46514,8 @@ function MyTickets({
   doClaimTicket,
   doRefundTicket,
   doSettleRound,
-  doCloseTicket,
-  loadingHistory,
-  // ✅ New
-  historyProgress
-  // ✅ New
+  doCloseTicket
+  // removed history props
 }) {
   const userPk = reactExports.useMemo(() => {
     if (!pubkey2) return null;
@@ -46263,6 +46526,7 @@ function MyTickets({
   const [selectedRound, setSelectedRound] = reactExports.useState(null);
   const [statusFilter, setStatusFilter] = reactExports.useState("ALL");
   function getComputedStatus(row, currentSlot2) {
+    if (row.revealing) return "REVEALING";
     const revealed = Boolean(row.revealed);
     const win = Boolean(row.win);
     const claimed = Boolean(row.claimed);
@@ -46572,18 +46836,6 @@ function MyTickets({
           " TICKETS / ",
           groupedRounds.length,
           " ROUNDS"
-        ] }),
-        loadingHistory && historyProgress?.total > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6, paddingLeft: 8, borderLeft: "1px solid #E5E7EB" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "relative", width: 14, height: 14 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { className: "spinner", viewBox: "0 0 50 50", style: { width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { className: "path", cx: "25", cy: "25", r: "20", fill: "none", strokeWidth: "5", stroke: "#3B82F6" }) }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 10, color: "#3B82F6", fontWeight: 700, letterSpacing: "0.02em" }, children: [
-            "SCANNING HISTORY ",
-            Math.round(historyProgress.current / (historyProgress.total || 1) * 100),
-            "% (",
-            historyProgress.current,
-            "/",
-            historyProgress.total,
-            ")"
-          ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 12 }, children: [
@@ -46628,12 +46880,17 @@ function MyTickets({
           const finalized = Boolean(round?.finalized);
           const pulseSet = Boolean(round?.pulseSet || round?.pulse_set);
           const tokenSettled = Boolean(round?.tokenSettled || round?.token_settled);
-          const sweepEligible = revealDl > 0n && claimGraceSlots ? revealDl + BigInt(claimGraceSlots) : 0n;
+          const isChainSyncing = cSlot < 1000n;
+          const effectiveGrace = claimGraceSlots ?? 2e3;
+          const sweepEligible = revealDl > 0n ? revealDl + BigInt(effectiveGrace) : 0n;
           const refundEligible = revealDl > 0n ? revealDl + 150n : 0n;
           let rStatus = "ARCHIVED";
           let headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "—" });
           if (round) {
-            if (finalized) {
+            if (isChainSyncing) {
+              rStatus = "SYNCING";
+              headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Syncing chain..." });
+            } else if (finalized) {
               if (sweepEligible > 0n && cSlot < sweepEligible) {
                 rStatus = "CLAIM WINDOW";
                 const diff = Number(sweepEligible - cSlot);
@@ -46969,7 +47226,9 @@ function MyTickets({
             tickets.map((t) => {
               const status = getComputedStatus(t, currentSlot);
               let iconColor = "#9CA3AF";
-              if (["WIN", "CLAIM PRIZE", "CLAIMED"].includes(status)) {
+              if (status === "REVEALING") {
+                iconColor = "#F59E0B";
+              } else if (["WIN", "CLAIM PRIZE", "CLAIMED"].includes(status)) {
                 iconColor = "#10B981";
               } else if (status === "SWEPT") {
                 if (t.win || t.revealed && t.guess === t.round?.result) {
@@ -47493,169 +47752,16 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
   }, [pubkey2, refreshNow, chainState?.round?.pulseSet, chainState?.round?.finalized]);
   return { chainState, statusLine, refreshNow };
 }
-function decodeInstruction(coder, ix) {
-  try {
-    const data = typeof ix.data === "string" ? bs58$3.decode(ix.data) : ix.data;
-    return coder.instruction.decode(data);
-  } catch (e) {
-    return null;
-  }
-}
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-function useHistoryReconstructor(connection, userPubkey, programPk, coder) {
-  const [historyRows, setHistoryRows] = reactExports.useState([]);
-  const [loadingHistory, setLoadingHistory] = reactExports.useState(false);
-  const [historyError, setHistoryError] = reactExports.useState(null);
-  const [historyProgress, setHistoryProgress] = reactExports.useState({ current: 0, total: 0 });
-  const fetchHistory = reactExports.useCallback(async () => {
-    if (!connection || !userPubkey || !programPk || !coder) return;
-    setLoadingHistory(true);
-    setHistoryError(null);
-    setHistoryProgress({ current: 0, total: 0 });
-    console.log("[History] === RECONSTRUCTOR V6 (STABLE + 500) ACTIVATED ===");
-    try {
-      const sigs = await connection.getSignaturesForAddress(userPubkey, { limit: 500 });
-      console.log(`[History] Signatures found: ${sigs.length}. Processing...`);
-      if (!sigs.length) {
-        setHistoryRows([]);
-        setLoadingHistory(false);
-        return;
-      }
-      const successfulSigs = sigs.filter((s) => !s.err).map((s) => s.signature);
-      setHistoryProgress({ current: 0, total: successfulSigs.length });
-      const BATCH_SIZE = 1;
-      const reconstructedByType = /* @__PURE__ */ new Map();
-      for (let i = 0; i < successfulSigs.length; i++) {
-        setHistoryProgress({ current: i + 1, total: successfulSigs.length });
-        const sig = successfulSigs[i];
-        try {
-          console.log(`[History] Tx ${i + 1}/${successfulSigs.length}...`);
-          const tx = await connection.getParsedTransaction(sig, {
-            commitment: "confirmed",
-            maxSupportedTransactionVersion: 0
-          });
-          const txs = tx ? [tx] : [];
-          txs.filter(Boolean).forEach((tx2) => {
-            if (!tx2?.transaction?.message?.instructions) return;
-            const ixs = tx2.transaction.message.instructions.filter(
-              (ix) => ix.programId.toString() === programPk.toBase58()
-            );
-            if (ixs.length === 0) {
-            }
-            ixs.forEach((ix) => {
-              const decoded = decodeInstruction(coder, ix);
-              if (!decoded) {
-                console.log("[History] Failed to decode instruction. Data:", ix.data);
-                return;
-              }
-              const args = decoded.data;
-              const name = decoded.name;
-              console.log("[History] Found Action:", name);
-              let rid = null;
-              if (args.roundId) rid = args.roundId.toNumber();
-              else if (args.round_id) rid = args.round_id.toNumber();
-              const processEntry = (r, n, status, txData) => {
-                if (n == null) return;
-                const key2 = `${r}-${n}`;
-                const existing = reconstructedByType.get(key2);
-                if (status === "COMMIT") {
-                  if (!existing) {
-                    reconstructedByType.set(key2, {
-                      roundId: r,
-                      nonce: n,
-                      status: "PENDING",
-                      createdSlot: txData.slot,
-                      tx: txData.transaction.signatures[0],
-                      timestamp: txData.blockTime * 1e3
-                    });
-                  }
-                } else if (status === "REVEAL") {
-                  if (existing) {
-                    existing.status = "REVEALED";
-                    existing.revealTx = txData.transaction.signatures[0];
-                    if (args.guess !== void 0) existing.guess = args.guess;
-                  }
-                } else if (status === "CLAIM") {
-                  if (existing) {
-                    existing.status = "CLAIMED";
-                    existing.claimTx = txData.transaction.signatures[0];
-                  } else {
-                    reconstructedByType.set(key2, {
-                      roundId: r,
-                      nonce: n,
-                      status: "CLAIMED",
-                      createdSlot: txData.slot,
-                      tx: "history",
-                      claimTx: txData.transaction.signatures[0],
-                      timestamp: txData.blockTime * 1e3
-                    });
-                  }
-                }
-              };
-              if (name === "commit_ticket" || name === "commitTicket") {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "COMMIT", tx2);
-              } else if (name.includes("commit_batch") || name.includes("commitBatch")) {
-                const entries = args.entries || [];
-                entries.forEach((e) => {
-                  const n = e.nonce ? typeof e.nonce.toNumber === "function" ? e.nonce.toNumber() : e.nonce : null;
-                  processEntry(rid, n, "COMMIT", tx2);
-                });
-              } else if (name.includes("reveal")) {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "REVEAL", tx2);
-              } else if (name.includes("claim_reward") || name.includes("claimReward")) {
-                processEntry(rid, args.nonce ? typeof args.nonce.toNumber === "function" ? args.nonce.toNumber() : args.nonce : null, "CLAIM", tx2);
-              }
-            });
-          });
-          const currentRows = Array.from(reconstructedByType.values()).map((r) => ({
-            ticketPk: PublicKey.default,
-            ticket: {
-              roundId: new BN(r.roundId),
-              nonce: new BN(r.nonce),
-              createdSlot: new BN(r.createdSlot),
-              guess: r.guess,
-              revealed: r.status === "REVEALED" || r.status === "CLAIMED",
-              claimed: r.status === "CLAIMED"
-            },
-            roundId: r.roundId,
-            createdSlot: r.createdSlot,
-            nonce: r.nonce,
-            receipt: {
-              guess: r.guess,
-              revealTx: r.revealTx,
-              claimTx: r.claimTx,
-              status: r.status
-            },
-            reconstructed: true
-          }));
-          setHistoryRows(currentRows);
-          if (i < successfulSigs.length - 1) await delay(300);
-        } catch (err) {
-          const msg = err.message || "";
-          if (msg.includes("429") || msg.includes("Too many requests")) {
-            console.warn("[History] 429 BLOCK. Waiting 5 seconds...");
-            await delay(5e3);
-            i--;
-          } else {
-            console.error("[History] Error batch:", err);
-          }
-        }
-      }
-      console.log("[History] Full scan completed.");
-    } catch (e) {
-      console.error("[History] Fatal error:", e);
-      setHistoryError(e.message);
-    } finally {
-      setLoadingHistory(false);
-      setHistoryProgress({ current: 0, total: 0 });
-    }
-  }, [connection, userPubkey, programPk, coder]);
-  return { historyRows, loadingHistory, historyError, fetchHistory, historyProgress };
-}
 const TICKET_DATA_SIZE = 122;
 const USER_MEMCMP_OFFSET = 16;
-const BASE_POLL_MS = 15e3;
-const MAX_BACKOFF_MS = 3e4;
+const BATCH_SIZE = 40;
+const BATCH_DELAY_MS = 150;
+const roundCache = /* @__PURE__ */ new Map();
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+const BASE_POLL_MS = 3e4;
+const MAX_BACKOFF_MS = 6e4;
 function bnToNumber(v, fallback = 0) {
   try {
     if (v == null) return fallback;
@@ -47718,14 +47824,7 @@ function useUserTickets({
   const backoffMsRef = reactExports.useRef(BASE_POLL_MS);
   const nextAllowedAtRef = reactExports.useRef(0);
   const retryTimerRef = reactExports.useRef(null);
-  const { historyRows, loadingHistory, fetchHistory, historyProgress } = useHistoryReconstructor(connection, userPubkey, programPk, coder);
-  const historyStartedRef = reactExports.useRef(false);
-  reactExports.useEffect(() => {
-    if (userPubkey && connection && !historyStartedRef.current) {
-      historyStartedRef.current = true;
-      fetchHistory();
-    }
-  }, [userPubkey, connection]);
+  const hasPrunedRef = reactExports.useRef(false);
   reactExports.useEffect(() => {
     const fn = () => {
       localStorage.clear();
@@ -47772,7 +47871,7 @@ function useUserTickets({
         }).filter(Boolean);
         const existingPks = new Set(rows2.map((r) => r.ticketPk.toBase58()));
         const allReceipts = loadAllWalletReceiptsWrapper(walletStr);
-        const ghostRows = allReceipts.filter((r) => (r.refunded || r.closed || r.claimTx || r.revealedAt) && !existingPks.has(r.ticketPda)).map((r) => ({
+        const ghostRows = allReceipts.filter((r) => !existingPks.has(r.ticketPda)).map((r) => ({
           ticketPk: new PublicKey(r.ticketPda),
           ticket: null,
           // Account is gone from Solana
@@ -47786,14 +47885,8 @@ function useUserTickets({
           // If it's a ghost, it must be effectively processed for rent recovery
           receipt: r
         }));
-        const uniqueHistory = historyRows.filter((h) => {
-          return !rows2.some((live) => live.roundId === h.roundId && live.nonce === h.nonce);
-        });
-        const uniqueGhosts = ghostRows.filter((g) => {
-          const inHistory = historyRows.some((h) => h.roundId === g.roundId && h.nonce === g.nonce);
-          return !inHistory;
-        });
-        const decoded = [...rows2, ...uniqueHistory, ...uniqueGhosts].sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0)).slice(0, Math.max(1, limit));
+        const uniqueGhosts = ghostRows.filter((g) => !existingPks.has(g.ticketPk.toBase58()));
+        const decoded = [...rows2, ...uniqueGhosts].sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0)).slice(0, Math.max(1, limit));
         const uniqRoundIds = Array.from(new Set(decoded.map((x) => Number(x.roundId)))).filter((x) => x != null);
         const roundMap = /* @__PURE__ */ new Map();
         const roundMintMap = /* @__PURE__ */ new Map();
@@ -47810,50 +47903,81 @@ function useUserTickets({
           } catch (e) {
             console.warn("Failed to fetch RoundRegistry limit", e);
           }
-          const infos = [];
-          const CHUNK_SIZE2 = 100;
-          for (let i = 0; i < roundPdas.length; i += CHUNK_SIZE2) {
-            const chunk = roundPdas.slice(i, i + CHUNK_SIZE2);
-            const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
-            infos.push(...chunkInfos);
+          if (!hasPrunedRef.current && registryLimit) {
+            hasPrunedRef.current = true;
+            setTimeout(() => {
+              pruneOldReceiptsWrapper(walletStr, registryLimit);
+            }, 5e3);
           }
-          const vaultPks = [];
-          const vaultToRound = [];
+          const missingIds = [];
+          const missingPdas = [];
           for (let i = 0; i < uniqRoundIds.length; i++) {
-            const info = infos[i];
-            if (!info?.data) continue;
-            try {
-              const rid = Number(uniqRoundIds[i]);
-              if (rid === 130) console.log(`[useUserTickets] Found Round 130 account on-chain. Data length: ${info.data.length}`);
-              const decodedRound = coder.decode("Round", Buffer$1.from(info.data));
-              roundMap.set(rid, decodedRound);
-              if (decodedRound.timlgVault || decodedRound.timlg_vault) {
-                vaultPks.push(new PublicKey(decodedRound.timlgVault || decodedRound.timlg_vault));
-                vaultToRound.push(rid);
-              }
-            } catch {
+            const rid = uniqRoundIds[i];
+            let cached = roundCache.get(rid);
+            if (cached && (cached.isFinal || Date.now() - cached.ts < 6e4)) {
+              roundMap.set(rid, cached.round);
+              if (cached.mint) roundMintMap.set(rid, cached.mint);
+            } else {
+              missingIds.push(rid);
+              missingPdas.push(roundPdas[i]);
             }
           }
-          if (vaultPks.length) {
-            console.log(`[useUserTickets] Fetching ${vaultPks.length} vaults for mint verification...`);
-            const vaultInfos = [];
-            for (let i = 0; i < vaultPks.length; i += CHUNK_SIZE2) {
-              const chunk = vaultPks.slice(i, i + CHUNK_SIZE2);
-              const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
-              vaultInfos.push(...chunkInfos);
-            }
-            for (let i = 0; i < vaultInfos.length; i++) {
-              const info = vaultInfos[i];
-              if (!info?.data) {
-                console.warn(`[useUserTickets] Vault info missing for round ${vaultToRound[i]}`);
-                continue;
-              }
+          if (missingIds.length > 0) {
+            const infos = [];
+            for (let i = 0; i < missingPdas.length; i += BATCH_SIZE) {
+              const chunk = missingPdas.slice(i, i + BATCH_SIZE);
               try {
-                const mintBytes = info.data.slice(0, 32);
-                const mintStr = new PublicKey(mintBytes).toBase58();
-                roundMintMap.set(vaultToRound[i], mintStr);
-              } catch (e) {
-                console.error(`[useUserTickets] Failed to parse vault for round ${vaultToRound[i]}`, e);
+                const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
+                infos.push(...chunkInfos);
+              } catch (err) {
+                console.warn("Round batch fetch failed", err);
+              }
+              if (i + BATCH_SIZE < missingPdas.length) await sleep(BATCH_DELAY_MS);
+            }
+            const vaultPks = [];
+            const vaultToRound = [];
+            for (let i = 0; i < missingIds.length; i++) {
+              const info = infos[i];
+              const rid = missingIds[i];
+              if (!info?.data) continue;
+              try {
+                const decodedRound = coder.decode("Round", Buffer$1.from(info.data));
+                const isFinal = Boolean(decodedRound.swept);
+                roundMap.set(rid, decodedRound);
+                roundCache.set(rid, { round: decodedRound, mint: null, ts: Date.now(), isFinal });
+                if (decodedRound.timlgVault || decodedRound.timlg_vault) {
+                  vaultPks.push(new PublicKey(decodedRound.timlgVault || decodedRound.timlg_vault));
+                  vaultToRound.push(rid);
+                }
+              } catch {
+              }
+            }
+            if (vaultPks.length) {
+              const vaultInfos = [];
+              for (let i = 0; i < vaultPks.length; i += BATCH_SIZE) {
+                const chunk = vaultPks.slice(i, i + BATCH_SIZE);
+                try {
+                  const chunkInfos = await connection.getMultipleAccountsInfo(chunk, "confirmed");
+                  vaultInfos.push(...chunkInfos);
+                } catch (e) {
+                }
+                if (i + BATCH_SIZE < vaultPks.length) await sleep(BATCH_DELAY_MS);
+              }
+              for (let i = 0; i < vaultInfos.length; i++) {
+                const info = vaultInfos[i];
+                const rid = vaultToRound[i];
+                if (!info?.data) continue;
+                try {
+                  const mintBytes = info.data.slice(0, 32);
+                  const mintStr = new PublicKey(mintBytes).toBase58();
+                  roundMintMap.set(rid, mintStr);
+                  const cached = roundCache.get(rid);
+                  if (cached) {
+                    cached.mint = mintStr;
+                    roundCache.set(rid, cached);
+                  }
+                } catch (e) {
+                }
               }
             }
           }
@@ -47882,7 +48006,9 @@ function useUserTickets({
           const revealed = Boolean(pick(row.ticket, ["revealed"], false)) || rcpConfirmedReveal;
           const claimed = Boolean(pick(row.ticket, ["claimed"], false)) || rcpConfirmedClaim;
           const guess = revealed && row.ticket ? onChainGuess : row.receipt?.guess ?? null;
-          const win = Boolean(pick(row.ticket, ["win"], false));
+          const onChainWin = Boolean(pick(row.ticket, ["win"], false));
+          const receiptWin = row.receipt?.outcome === "win" || Boolean(row.receipt?.win);
+          const win = onChainWin || receiptWin;
           const processed = Boolean(pick(row.ticket, ["processed"], false)) || row.ticket === null;
           const pulseSet = Boolean(pick(round, ["pulseSet", "pulse_set"], false));
           const swept = Boolean(pick(round, ["swept"], false));
@@ -47935,7 +48061,6 @@ function useUserTickets({
       }
     },
     [connection, programPk, userPubkey, coder, limit]
-    // removed historyRows/fetchHistory
   );
   reactExports.useEffect(() => {
     let timer = null;
@@ -47975,7 +48100,15 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save reveal receipt", e);
         }
-        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, revealed: true, receipt: { ...r.receipt, revealTx: sig, revealedAt: Date.now() } } : r));
+        setRows((prev) => prev.map(
+          (r) => r.ticketPk.equals(row.ticketPk) ? {
+            ...r,
+            revealed: true,
+            revealing: true,
+            // ✅ Flag to show "processing" state
+            receipt: { ...r.receipt, revealTx: sig, revealedAt: Date.now() }
+          } : r
+        ));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -47990,6 +48123,28 @@ function useUserTickets({
           }
           await refresh("action");
           return "already-processed";
+        }
+        if (msg.includes("AccountNotInitialized") || msg.includes("3012") || msg.includes("0xbc4")) {
+          appendLog?.(`Ticket already closed by operator (processed). Removing from view...`);
+          try {
+            const walletStr = userPubkey.toBase58();
+            const updated = {
+              ...row.receipt || {},
+              closed: true,
+              closedAt: Date.now(),
+              revealed: row.revealed,
+              win: row.win,
+              ticketPda: row.ticketPk.toBase58(),
+              roundId: row.roundId,
+              nonce: row.nonce
+            };
+            saveLocalReceipt(walletStr, row.roundId, updated);
+            appendLog?.(`Ticket marked as closed locally.`);
+          } catch (err) {
+            console.error("Failed to mark ticket as closed", err);
+          }
+          await refresh("action");
+          return "account-closed";
         }
         appendLog?.(`Reveal failed: ${msg}`);
         const logs = extractProgramLogs(e);
@@ -48047,9 +48202,21 @@ function useUserTickets({
         const msg = formatSolanaError(e);
         if (msg.includes("already processed") || msg.includes("0x0") || msg.toLowerCase().includes("transaction has already been processed")) {
           appendLog?.(`Claim success (already processed) ✅`);
-          if (row.receipt) {
-            const updated = { ...row.receipt, claimTx: "already-processed", claimedAt: Date.now() };
-            saveLocalReceipt(userPubkey.toBase58(), row.roundId, updated);
+          try {
+            const walletStr = userPubkey.toBase58();
+            const existingReceipt = row.receipt || {
+              ticketPda: row.ticketPk.toBase58(),
+              roundId: row.roundId,
+              nonce: row.nonce,
+              timestamp: Date.now(),
+              createdSlot: row.createdSlot,
+              guess: row.guess ?? 0
+              // Best effort
+            };
+            const updated = { ...existingReceipt, claimTx: "already-processed", claimedAt: Date.now() };
+            saveLocalReceipt(walletStr, row.roundId, updated);
+          } catch (e2) {
+            console.warn("Failed to save synthetic claim receipt", e2);
           }
           await refresh("action");
           return "already-processed";
@@ -48224,7 +48391,9 @@ function useUserTickets({
             closedTx: sig,
             closedAt: Date.now(),
             revealed: row.revealed,
-            win: row.win
+            win: row.win,
+            outcome: row.win ? "win" : "loss"
+            // ✅ Preserve outcome for icon color
           };
           saveLocalReceipt(walletStr, row.roundId, updated);
         } catch (e) {
@@ -48269,10 +48438,6 @@ function useUserTickets({
     lastUpdatedAt,
     retryInSec,
     forceRefresh: () => refresh("manual"),
-    loadingHistory,
-    // ✅ Expose loadingHistory
-    historyProgress,
-    // ✅ Expose historyProgress
     doRevealTicket,
     doClaimTicket,
     doRefundTicket,
@@ -48288,7 +48453,7 @@ function useUserTickets({
   };
 }
 clusterApiUrl("devnet");
-const RPC_URL = "https://api.devnet.solana.com";
+const RPC_URL = "https://devnet.helius-rpc.com/?api-key=bd37fed6-13d1-4959-9a54-7f736355b5f6";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
@@ -48402,9 +48567,7 @@ function App() {
     doSettleRound,
     doCloseTicket,
     // ✅ Fixed
-    injectOptimisticTicket,
-    loadingHistory,
-    historyProgress
+    injectOptimisticTicket
   } = useUserTickets({
     program,
     connection,
@@ -48790,6 +48953,7 @@ Domain: timlg.org`;
     if (forcedGuess !== void 0) setGuess(forcedGuess);
     setLoading2(true);
     setTxSig("");
+    let accounts2 = null;
     try {
       let finalGuess = forcedGuess;
       if (finalGuess == null || finalGuess === -1) {
@@ -48803,7 +48967,7 @@ Domain: timlg.org`;
       const nonce = passedNonce ?? Math.floor(Math.random() * 1e9);
       const salt = passedSalt ?? randomBytes32();
       const commitment = await commitHash(targetRoundId, pubkey2, nonce, finalGuess, salt);
-      const accounts2 = {
+      accounts2 = {
         config: chainState.configPda ?? pdaConfig(programPk),
         round: targetRoundPda,
         ticket: pdaTicket(programPk, targetRoundId, pubkey2, nonce),
@@ -48854,8 +49018,16 @@ Domain: timlg.org`;
         claimed: false,
         win: false,
         processed: false,
-        // Mock round to prevent "EXPIRED" default
-        round: { finalized: false, pulseSet: false },
+        // Mock round with proper deadlines to avoid "Pulse Delayed" / "Expired"
+        round: {
+          finalized: false,
+          pulseSet: false,
+          // ✅ Convert BigInt to Number before passing to anchor.BN
+          commitDeadlineSlot: new BN(Number(targetCommitDl || chainState?.currentSlot + 100)),
+          revealDeadlineSlot: new BN(Number(targetCommitDl || chainState?.currentSlot + 100) + 300),
+          // Approx +300 slots for window
+          pulseIndexTarget: new BN(targetPulseIndex || 0)
+        },
         uiStatus: "PENDING"
       });
       await refreshProtocolState?.();
@@ -48867,7 +49039,16 @@ Domain: timlg.org`;
         await refreshProtocolState?.();
         refreshTickets();
       } else {
+        if (accounts2?.ticket) {
+          try {
+            deleteLocalReceiptWrapper(pubkey2.toBase58(), targetRoundId, accounts2.ticket.toBase58());
+            appendLog(`Commit cleanup: removed pending receipt.`);
+          } catch (err) {
+            console.error("Cleanup failed", err);
+          }
+        }
         appendLog(`Commit failed: ${errState}`);
+        refreshTickets();
       }
       console.error("Commit error:", e);
     } finally {
@@ -49354,8 +49535,6 @@ Domain: timlg.org`;
           doRefundTicket,
           doSettleRound,
           doCloseTicket,
-          loadingHistory,
-          historyProgress,
           currentSlot: chainState?.currentSlot,
           claimGraceSlots: chainState?.config?.claimGraceSlots,
           activeRoundId: chainState?.roundId ?? null,
