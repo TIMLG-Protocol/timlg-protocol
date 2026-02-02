@@ -7,58 +7,79 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;"><a href="/beta/" class="md-button md-button--primary" style="margin: 0; display: flex; align-items: center; gap: 8px;">Try the Devnet Beta <span style="background: #ffeb3b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">New</span></a></div>
 
 !!! warning "Experimental Phase (Devnet)"
-    TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value.
+    TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value. **The protocol is cost-free**: all SOL used for rent deposits can be fully recovered by closing ticket accounts.
 
 ---
 
 ## Token Specifications
 
-<div style="background: #ffffff; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2em; display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+<div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; margin-bottom: 1.5em; font-size: 0.9em;">
 
-  <!-- Left: Identity -->
-  <div style="text-align: center; min-width: 140px; flex-shrink: 0;">
-    <img src="assets/icon_vector_logo.svg" width="100" height="100" style="display: block; margin: 0 auto 12px;">
-    <h3 style="margin: 0; font-size: 1.8em; line-height: 1;">TIMLG</h3>
-    <span style="color: #6b7280; font-weight: 600; font-size: 1.1em;">$TIMLG</span>
+  <!-- 1. Identity Header (Compact) -->
+  <div style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; background: #f8fafc;">
+      <img src="assets/icon_vector_logo.svg" width="56" height="56" style="background: #fff; border-radius: 50%; padding: 4px; border: 1px solid #e2e8f0;">
+      <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+         <h3 style="margin: 0; font-size: 1.1rem; color: #0f172a; line-height: 1;">TIMLG <span style="font-size: 0.85em; color: #64748b; font-weight: 500;">$TIMLG</span></h3>
+         <div style="display: flex; gap: 6px;">
+             <span style="background: #e0f2fe; color: #0284c7; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em; border: 1px solid #bae6fd;">SPL-2022</span>
+             <span style="background: #f0fdf4; color: #16a34a; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em; border: 1px solid #bbf7d0;">Devnet</span>
+         </div>
+      </div>
   </div>
 
-  <!-- Divider (Visual separation) -->
-  <div style="width: 1px; background: #e5e7eb; align-self: stretch; display: none;"></div>
-
-  <!-- Right: Specs Grid -->
-  <div style="flex-grow: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px;">
-    
-    <!-- Spec Item: Contract -->
-    <div>
-      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Mint Address</div>
-      <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; font-size: 1.2em; color: #3b82f6; text-decoration: none; font-weight: 700; background: #eff6ff; padding: 4px 8px; border-radius: 6px;">
-        7nJ9...8cEf ↗
-      </a>
-    </div>
-
-    <!-- Spec Item: Network -->
-    <div>
-      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Network</div>
-      <div style="font-weight: 600; font-size: 1.1em; color: #111;">Solana Devnet</div>
-    </div>
-
-    <!-- Spec Item: Type -->
-    <div>
-      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Token Standard</div>
-      <div style="font-weight: 600; font-size: 1.1em; color: #111;">SPL Token</div>
-    </div>
-
-    <!-- Spec Item: Decimals -->
-    <div>
-      <div style="font-size: 0.75em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600;">Decimals</div>
-      <div style="font-weight: 600; font-size: 1.1em; color: #111;">0 <span style="font-weight: 400; color: #9ca3af; font-size: 0.9em;">(Whole)</span></div>
-    </div>
-    
+  <!-- 2. Dashboard Grid (Dense) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      
+      <!-- Market Data -->
+      <div style="padding: 16px; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                  <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Price</div>
+                  <div style="font-size: 1.2rem; font-weight: 700; color: #0f172a;">$ -</div>
+              </div>
+              <div>
+                  <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Mkt Cap</div>
+                  <div style="font-size: 1.2rem; font-weight: 700; color: #cbd5e1;">-</div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Supply Stats -->
+      <div style="padding: 16px; border-bottom: 1px solid #f1f5f9; background: #fff;">
+          <div style="display: flex; justify-content: space-between; gap: 12px;">
+              <div>
+                  <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px;">Circulating</div>
+                  <div style="font-weight: 700; color: #0f172a;">Dynamic</div>
+                  <div style="font-size: 0.65rem; color: #64748b;">+1/-1 Mechanism</div>
+              </div>
+              <div style="text-align: right;">
+                 <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px;">Max Supply</div>
+                 <div style="font-weight: 700; color: #0f172a;">Elastic</div>
+                 <div style="font-size: 0.65rem; color: #64748b;">Self-Balancing</div>
+              </div>
+          </div>
+      </div>
   </div>
+
+   <!-- 3. Technical Specs (Row) -->
+   <div style="background: #f8fafc; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.8em; border-top: 1px solid #e2e8f0;">
+       <div style="display: flex; align-items: center; gap: 8px;">
+           <span style="color: #64748b; font-weight: 600;">Mint:</span>
+           <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: #2563eb; font-weight: 600; text-decoration: none;">7nJ9...8cEf ↗</a>
+       </div>
+       <div style="display: flex; align-items: center; gap: 8px;">
+           <span style="color: #64748b; font-weight: 600;">Decimals:</span>
+           <span style="font-family: monospace; color: #0f172a; font-weight: 600;">9</span>
+       </div>
+  </div>
+
 </div>
 
+!!! important "Token Supply — To Be Determined"
+    The total initial token supply **has not been defined yet** for the mainnet launch. The devnet version uses test parameters. Final tokenomics will be announced before mainnet deployment.
+
 !!! note "Decimals, base units, and ticket cleanup"
-    - The protocol accounts in **base units** (`u64`). Devnet may use a mint with `decimals = 0` for simple testing UX.
+    - The protocol accounts in **base units** (`u64`). The Token matches standard **SPL specifications** (9 decimals).
     - `claim_reward` pays **SPL tokens** only. To reclaim the ticket account’s **SOL rent deposit**, the user closes the ticket (`close_ticket`) after settlement (and after claim if you won).
 
 

@@ -45141,6 +45141,28 @@ function saveLocalState(walletStr, roundId2, receipt) {
     console.error("Failed to save local state", e);
   }
 }
+function roundKey(roundId2) {
+  return `timlg_play_v1:${PROGRAM_ID$1}:global_round:${roundId2}`;
+}
+function saveLocalRound(roundId2, roundData) {
+  if (!roundId2 || !roundData) return;
+  const k = roundKey(roundId2);
+  try {
+    localStorage.setItem(k, JSON.stringify({ ...roundData, _savedAt: Date.now() }));
+  } catch (e) {
+    console.warn("Failed to save round data", e);
+  }
+}
+function loadLocalRound(roundId2) {
+  const k = roundKey(roundId2);
+  try {
+    const raw = localStorage.getItem(k);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
 function loadAllWalletReceipts(walletStr) {
   if (!walletStr) return [];
   const prefix = `timlg_play_v1:${PROGRAM_ID$1}:${walletStr}:round:`;
@@ -45262,8 +45284,10 @@ const storage = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   deleteLocalTicket,
   loadAllLocalState,
   loadAllWalletReceipts,
+  loadLocalRound,
   loadLocalState,
   pruneOldReceipts,
+  saveLocalRound,
   saveLocalState
 }, Symbol.toStringTag, { value: "Module" }));
 function loadLocalReceipt(walletStr, roundId2) {
@@ -45278,6 +45302,9 @@ function loadAllWalletReceiptsWrapper(walletStr) {
 function saveLocalReceipt(walletStr, roundId2, receipt) {
   saveLocalState(walletStr, roundId2, receipt);
 }
+function clearLocalReceipt(walletStr, roundId2) {
+  clearLocalState(walletStr, roundId2);
+}
 function deleteLocalReceiptWrapper(walletStr, roundId2, ticketPda) {
   deleteLocalTicket(walletStr, roundId2, ticketPda);
 }
@@ -45287,6 +45314,24 @@ function pruneOldReceiptsWrapper(walletStr, currentRoundId) {
   }).catch(() => {
   });
 }
+function saveLocalRoundWrapper(roundId2, data) {
+  saveLocalRound(roundId2, data);
+}
+function loadLocalRoundWrapper(roundId2) {
+  return loadLocalRound(roundId2);
+}
+const local = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  clearLocalReceipt,
+  deleteLocalReceiptWrapper,
+  loadAllLocalReceipts,
+  loadAllWalletReceiptsWrapper,
+  loadLocalReceipt,
+  loadLocalRoundWrapper,
+  pruneOldReceiptsWrapper,
+  saveLocalReceipt,
+  saveLocalRoundWrapper
+}, Symbol.toStringTag, { value: "Module" }));
 function shortPk$1(pk) {
   const s = typeof pk === "string" ? pk : pk?.toBase58?.() ?? "";
   return s.length > 10 ? `${s.slice(0, 4)}…${s.slice(-4)}` : s;
@@ -45429,14 +45474,14 @@ const BearIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRu
   }
 ) });
 const RandomIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { display: "block" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-12 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm10 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5-5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z", fill: color }) });
-const TicketAuditIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 1024 1024", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+const TicketAuditIcon = ({ size = 15, color = "#6B7280" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 1024 1024", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
   "path",
   {
     fill: color,
     d: "M978.578286 900.461714l-108.617143-108.617143c30.134857-39.570286 48.274286-88.795429 48.274286-142.189714a235.739429 235.739429 0 0 0-235.52-235.373714 235.739429 235.739429 0 0 0-235.373715 235.373714 235.739429 235.739429 0 0 0 235.446857 235.52c53.467429 0 102.692571-18.139429 142.189715-48.274286l108.617143 108.544a31.524571 31.524571 0 0 0 44.836571 0 31.744 31.744 0 0 0 0.146286-44.982857zM510.902857 649.654857a172.105143 172.105143 0 0 1 171.885714-171.885714 171.885714 171.885714 0 0 1 0 343.771428 172.178286 172.178286 0 0 1-171.885714-171.885714z m270.262857-378.514286c0 17.554286-14.262857 31.744-31.817143 31.744H431.396571a31.744 31.744 0 0 1 0-63.488h317.952c17.554286 0 31.817143 14.189714 31.817143 31.744z m-609.426285 620.032h211.968a31.890286 31.890286 0 0 1 0 63.634286H171.739429c-58.368 0-106.057143-47.542857-106.057143-106.057143V283.062857c0-14.262857 5.12-28.086857 14.262857-39.058286L240.420571 53.101714a57.417143 57.417143 0 0 1 43.885715-20.48h517.997714c58.441143 0 106.057143 47.542857 106.057143-106.057143V366.445714a31.744 31.744 0 0 1-63.634286 0V138.605714a42.422857 42.422857 0 0 0-42.276571-42.349714H336.018286V280.137143a50.688 50.688 0 0 1-50.980572 50.176H129.389714v518.509714c0 23.332571 19.017143 42.349714 42.349715 42.349714zM272.457143 113.810286l-128.512 152.868571h128.512v-152.868571z m79.506286 476.16a31.744 31.744 0 0 0 0-63.634286H240.64a31.744 31.744 0 0 0 0 63.634286h111.323429z m0 146.066285a31.744 31.744 0 0 0 0-63.561142H240.64a31.744 31.744 0 0 0 0 63.561142h111.323429z m31.744-353.206857H240.64a31.744 31.744 0 0 0 0 63.561143h143.067429a31.744 31.744 0 0 0 0-63.561143z"
   }
 ) });
-const RoundInfoIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+const RoundInfoIcon = ({ size = 15, color = "#6B7280" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(
     "path",
     {
@@ -45458,13 +45503,7 @@ const RoundInfoIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */
     }
   )
 ] });
-const ExportIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 32 32", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-  "path",
-  {
-    d: "M27.624 20.955l-0.958 5.072h-21.332l-0.958-5.072h-2.385v8.062h28.018v-8.062h-2.385zM27.020 11.946h-7.022v-2.93h-7.994v2.93h-6.955l10.914 11.412 11.057-11.412zM19.997 3.982h-7.994v1.066h7.994v-1.066zM19.997 5.973h-7.994v2.038h7.994v-2.038z",
-    fill: color
-  }
-) });
+const BatchIcon = ({ size = 18, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 -2 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { "fill-rule": "evenodd", "clip-rule": "evenodd", d: "M0.00400637 5.91007C-0.0330611 5.49869 0.189111 5.09058 0.58643 4.90998L11.1724 0.09817C11.6983 -0.14085 12.3017 -0.14085 12.8276 0.09817L23.4136 4.90998C23.8109 5.09058 24.0331 5.49869 23.996 5.91007C24.0331 6.32145 23.8109 6.72956 23.4136 6.91016L12.8276 11.722C12.3017 11.961 11.6983 11.961 11.1724 11.722L0.58643 6.91016C0.189111 6.72956 -0.0330611 6.32145 0.00400637 5.91007zM3.21935 5.91007L12 9.9013L20.7807 5.91007L12 1.91887L3.21935 5.91007zM0.58643 10.9101C0.0836585 10.6816 -0.138656 10.0887 0.0898764 9.5859C0.318409 9.0832 0.911248 8.8609 1.41402 9.0894L12 13.9012L22.586 9.0894C23.0888 8.8609 23.6816 9.0832 23.9101 9.5859C24.1387 10.0887 23.9163 10.6816 23.4136 10.9101L12.8276 15.7219C12.3017 15.9609 11.6983 15.9609 11.1724 15.7219L0.58643 10.9101zM0.58643 14.91C0.0836585 14.6815 -0.138656 14.0886 0.0898764 13.5859C0.318409 13.0831 0.911248 12.8608 1.41402 13.0893L12 17.9011L22.586 13.0893C23.0888 12.8608 23.6816 13.0831 23.9101 13.5859C24.1387 14.0886 23.9163 14.6815 23.4136 14.91L12.8276 19.7218C12.3017 19.9608 11.6983 19.9608 11.1724 19.7218L0.58643 14.91z", fill: color }) });
 const CopyIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
   "path",
   {
@@ -45472,16 +45511,69 @@ const CopyIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxR
     fill: color
   }
 ) });
-const TimlgIcon = ({ size = 20, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 1024 1024", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M0,0 L38,0 L66,4 L99,12 L108,16 L119,21 L124,23 L127,26 L141,34 L154,43 L165,52 L177,63 L188,75 L191,78 L196,84 L198,85 L204,96 L211,106 L221,123 L227,139 L234,162 L239,186 L241,202 L242,219 L242,232 L239,260 L236,273 L231,289 L223,312 L212,333 L202,348 L194,358 L180,373 L169,384 L158,393 L154,397 L149,400 L141,406 L124,416 L103,426 L85,429 L59,437 L52,439 L35,440 L6,440 L-17,437 L-40,432 L-49,431 L-71,422 L-87,414 L-102,405 L-106,401 L-113,397 L-128,383 L-138,374 L-147,365 L-158,351 L-168,336 L-178,318 L-182,310 L-186,297 L-192,279 L-196,264 L-199,244 L-200,230 L-200,198 L-196,172 L-190,149 L-182,129 L-179,123 L-177,123 L-175,117 L-166,101 L-156,87 L-146,74 L-138,65 L-128,57 L-118,48 L-108,41 L-99,34 L-82,24 L-60,14 L-39,7 L-16,2 Z M-1,33 L-16,35 L-35,40 L-52,46 L-77,59 L-93,70 L-104,79 L-119,93 L-128,104 L-137,116 L-146,132 L-153,147 L-161,171 L-166,193 L-167,200 L-167,236 L-163,260 L-157,281 L-149,300 L-139,319 L-128,335 L-117,348 L-103,362 L-90,372 L-77,380 L-74,380 L-73,383 L-54,392 L-36,399 L-15,405 L5,408 L36,408 L56,405 L76,400 L96,392 L119,380 L131,372 L136,367 L147,359 L165,341 L175,328 L184,314 L192,299 L205,264 L208,250 L210,228 L209,203 L206,183 L201,163 L197,151 L194,150 L192,140 L182,121 L172,107 L163,96 L145,78 L129,66 L108,53 L92,45 L77,40 L56,35 L43,33 Z ", fill: color, transform: "translate(491,294)" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M0,0 L226,0 L229,5 L239,43 L239,48 L143,48 L144,213 L146,231 L152,253 L162,271 L162,274 L141,274 L126,271 L114,266 L105,259 L96,250 L88,237 L84,224 L84,48 L-13,48 L-11,35 L-4,11 L-2,2 Z ", fill: color, transform: "translate(399,402)" })
-] });
+const WalletIcon = ({ size = 20, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 64 64", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { fill: color, cx: "46", cy: "38", r: "2" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: color, d: "M62,32h-2V16c0-2.211-1.789-4-4-4V8c0-1.343-0.404-2.385-1.205-3.099c-1.186-1.058-2.736-0.91-2.896-0.896\n                c-0.072,0.007-1.484,0.152-3.789,0.39l-0.641-1.761c-0.756-2.078-3.049-3.147-5.127-2.391L24.131,6.871\n                C15.535,7.764,7.397,8.616,3.89,9.006C0.951,9.332,0.062,12.908,0,14.97c-0.004,0.134,0.021,0.263,0.065,0.38\n                C0.031,15.562,0,15.777,0,16v44c0,2.211,1.789,4,4,4h52c2.211,0,4-1.789,4-4V44h2c1.105,0,2-0.895,2-2v-8\n                C64,32.895,63.105,32,62,32z M55,18c0.553,0,1,0.447,1,1s-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1H55z M50,19\n                c0,0.553-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2C49.553,18,50,18.447,50,19z M7,58H5c-0.553,0-1-0.447-1-1s0.447-1,1-1\n                h2c0.553,0,1,0.447,1,1S7.553,58,7,58z M7,20H5c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S7.553,20,7,20z M13,58h-2\n                c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S13.553,58,13,58z M13,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S13.553,20,13,20z M19,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S19.553,58,19,58z M19,20\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S19.553,20,19,20z M25,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S25.553,58,25,58z M25,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S25.553,20,25,20z M31,58\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S31.553,58,31,58z M31,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S31.553,20,31,20z M31.35,12H15.885l27.141-9.878c1.039-0.378,2.186,0.157,2.564,1.195L48.75,12h-6.098\n                C41.826,9.672,39.611,8,37,8S32.174,9.672,31.35,12z M44,19c0,0.553-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                C43.553,18,44,18.447,44,19z M37,10c1.477,0,2.752,0.81,3.445,2h-6.891C34.248,10.81,35.523,10,37,10z M37,58h-2\n                c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S37.553,58,37,58z M37,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S37.553,20,37,20z M43,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S43.553,58,43,58z M49,58\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S49.553,58,49,58z M55,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S55.553,58,55,58z M62,41c0,0.553-0.447,1-1,1H43c-0.553,0-1-0.447-1-1v-6c0-0.553,0.447-1,1-1h18\n                c0.553,0,1,0.447,1,1V41z" })
+] }) });
+const TimlgIcon = ({
+  size = 20,
+  color = "currentColor",
+  crop = 0.4
+  // 40%
+}) => {
+  const base2 = 1024;
+  const keep = 1 - crop;
+  const w = base2 * keep;
+  const offset2 = (base2 - w) / 2;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "svg",
+    {
+      width: size,
+      height: size,
+      viewBox: `${offset2} ${offset2} ${w} ${w}`,
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "path",
+          {
+            d: "M0,0 L38,0 L66,4 L99,12 L108,16 L119,21 L124,23 L127,26 L141,34 L154,43 L165,52 L177,63 L188,75 L191,78 L196,84 L198,85 L204,96 L211,106 L221,123 L227,139 L234,162 L239,186 L241,202 L242,219 L242,232 L239,260 L236,273 L231,289 L223,312 L212,333 L202,348 L194,358 L180,373 L169,384 L158,393 L154,397 L149,400 L141,406 L124,416 L103,426 L85,429 L59,437 L52,439 L35,440 L6,440 L-17,437 L-40,432 L-49,431 L-71,422 L-87,414 L-102,405 L-106,401 L-113,397 L-128,383 L-138,374 L-147,365 L-158,351 L-168,336 L-178,318 L-182,310 L-186,297 L-192,279 L-196,264 L-199,244 L-200,230 L-200,198 L-196,172 L-190,149 L-182,129 L-179,123 L-177,123 L-175,117 L-166,101 L-156,87 L-146,74 L-138,65 L-128,57 L-118,48 L-108,41 L-99,34 L-82,24 L-60,14 L-39,7 L-16,2 Z M-1,33 L-16,35 L-35,40 L-52,46 L-77,59 L-93,70 L-104,79 L-119,93 L-128,104 L-137,116 L-146,132 L-153,147 L-161,171 L-166,193 L-167,200 L-167,236 L-163,260 L-157,281 L-149,300 L-139,319 L-128,335 L-117,348 L-103,362 L-90,372 L-77,380 L-74,380 L-73,383 L-54,392 L-36,399 L-15,405 L5,408 L36,408 L56,405 L76,400 L96,392 L119,380 L131,372 L136,367 L147,359 L165,341 L175,328 L184,314 L192,299 L205,264 L208,250 L210,228 L209,203 L206,183 L201,163 L197,151 L194,150 L192,140 L182,121 L172,107 L163,96 L145,78 L129,66 L108,53 L92,45 L77,40 L56,35 L43,33 Z ",
+            fill: color,
+            transform: "translate(491,294)"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "path",
+          {
+            d: "M0,0 L226,0 L229,5 L239,43 L239,48 L143,48 L144,213 L146,231 L152,253 L162,271 L162,274 L141,274 L126,271 L114,266 L105,259 L96,250 L88,237 L84,224 L84,48 L-13,48 L-11,35 L-4,11 L-2,2 Z ",
+            fill: color,
+            transform: "translate(399,402)"
+          }
+        )
+      ]
+    }
+  );
+};
+const RevealIcon = ({ size = 16, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m 8 2 c -3.648438 0.003906 -6.832031 2.476562 -7.738281 6.007812 c 0.914062 3.527344 4.097656 5.988282 7.738281 5.992188 c 3.648438 -0.003906 6.832031 -2.476562 7.738281 -6.011719 c -0.914062 -3.523437 -4.097656 -5.984375 -7.738281 -5.988281 z m 0 2 c 2.210938 0 4 1.789062 4 4 s -1.789062 4 -4 4 s -4 -1.789062 -4 -4 s 1.789062 -4 4 -4 z m 0 2 c -1.105469 0 -2 0.894531 -2 2 s 0.894531 2 2 2 s 2 -0.894531 2 -2 s -0.894531 -2 -2 -2 z m 0 0", fill: color }) });
+const SettleIcon = ({ size = 20, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "-2.5 0 19 19", xmlns: "http://www.w3.org/2000/svg", fill: color, ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M1.529 15.694a.554.554 0 0 1-.554-.555V3.46a.554.554 0 0 1 1.108 0v11.68a.554.554 0 0 1-.554.555zm11.496-6.007a1.032 1.032 0 0 1-.283.704l-.136.103a3.797 3.797 0 0 1-2.275.923c-1.723.003-2.832-1.728-4.703-1.728a3.96 3.96 0 0 0-1.916.555l-.167.092c-.193.122-.35.011-.35-.246V4.46a.821.821 0 0 1 .217-.61l.107-.063q.159-.094.311-.174a3.947 3.947 0 0 1 1.685-.489c1.932-.071 3.05 1.715 4.795 1.726a3.69 3.69 0 0 0 2.2-.852l.166-.122c.192-.158.35-.078.35.18z" }) });
 const SolanaIcon = ({ size = 20, color = "#000" }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 5.22265C7.17671 5.08355 7.33282 5 7.5 5H18.5C18.6844 5 18.8538 5.10149 18.9408 5.26407C19.0278 5.42665 19.0183 5.62392 18.916 5.77735L16.916 8.77735C16.8233 8.91645 16.6672 9 16.5 9H5.5C5.3156 9 5.14617 8.89851 5.05916 8.73593C4.97215 8.57335 4.98169 8.3761 5.08398 8.22265L7.08398 5.22265ZM7.76759 6L6.43426 8H16.2324L17.5657 6H7.76759Z", fill: color }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 15.2226C7.17671 15.0836 7.33282 15 7.5 15H18.5C18.6844 15 18.8538 15.1015 18.9408 15.2641C19.0278 15.4267 19.0183 15.6239 18.916 15.7774L16.916 18.7774C16.8233 18.9164 16.6672 19 16.5 19H5.5C5.3156 19 5.14617 18.8985 5.05916 18.7359C4.97215 18.5734 4.98169 18.3761 5.08398 18.2226L7.08398 15.2226ZM7.76759 16L6.43426 18H16.2324L17.5657 16H7.76759Z", fill: color }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M7.08398 13.7774C7.17671 13.9164 7.33282 14 7.5 14H18.5C18.6844 14 18.8538 13.8985 18.9408 13.7359C19.0278 13.5733 19.0183 13.3761 18.916 13.2226L16.916 10.2226C16.8233 10.0836 16.6672 10 16.5 10H5.5C5.3156 10 5.14617 10.1015 5.05916 10.2641C4.97215 10.4267 4.98169 10.6239 5.08398 10.7774L7.08398 13.7774ZM7.76759 13L6.43426 11H16.2324L17.5657 13H7.76759Z", fill: color })
 ] });
-const SaveIcon = ({ size = 15, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { fill: color, width: size, height: size, viewBox: "0 0 32 32", version: "1.1", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M30.48 13.243l-8.485 8.485-8.484-8.485 2.83-2.828 3.659 3.656v-6.071h-12v20h-4v-24h20v10.071l3.654-3.657 2.826 2.829z" }) });
+const TicketDownloadIcon = ({ size = 17, color = "#6B7280", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 4C4 3.44772 4.44772 3 5 3H14H14.5858C14.851 3 15.1054 3.10536 15.2929 3.29289L19.7071 7.70711C19.8946 7.89464 20 8.149 20 8.41421V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z", stroke: color, strokeWidth: "2", strokeLinecap: "round" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20 8H15V3", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 9L12 17", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M9 14L12 17L15 14", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" })
+] });
+const RoundDownloadIcon = ({ size = 17, color = "#6B7280", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M2 20V4C2 3.44772 2.44772 3 3 3H8.44792C8.79153 3 9.11108 3.17641 9.29416 3.46719L10.5947 5.53281C10.7778 5.82359 11.0974 6 11.441 6H21C21.5523 6 22 6.44772 22 7V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20Z", stroke: color, strokeWidth: "2" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M15 14L12 17L9 14", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 17L12 10", stroke: color, strokeWidth: "2", strokeLinecap: "round" })
+] });
+const RentLockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "-13.39 0 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.892,56.036h8.959v-1.075V37.117c0-10.205,4.177-19.484,10.898-26.207v-0.009 C29.473,4.177,38.754,0,48.966,0C59.17,0,68.449,4.177,75.173,10.901l0.01,0.009c6.721,6.723,10.898,16.002,10.898,26.207v17.844 v1.075h7.136c1.59,0,2.892,1.302,2.892,2.891v61.062c0,1.589-1.302,2.891-2.892,2.891H2.892c-1.59,0-2.892-1.302-2.892-2.891 V58.927C0,57.338,1.302,56.036,2.892,56.036L2.892,56.036z M26.271,56.036h45.387v-1.075V36.911c0-6.24-2.554-11.917-6.662-16.03 l-0.005,0.004c-4.111-4.114-9.787-6.669-16.025-6.669c-6.241,0-11.917,2.554-16.033,6.665c-4.109,4.113-6.662,9.79-6.662,16.03 v18.051V56.036L26.271,56.036z M49.149,89.448l4.581,21.139l-12.557,0.053l3.685-21.423c-3.431-1.1-5.918-4.315-5.918-8.111 c0-4.701,3.81-8.511,8.513-8.511c4.698,0,8.511,3.81,8.511,8.511C55.964,85.226,53.036,88.663,49.149,89.448L49.149,89.448z" }) });
+const RentUnlockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 -6.61 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.585,49.871H54.77V34.054v-0.011h0.009c0.002-9.368,3.828-17.878,9.989-24.042 c6.164-6.163,14.679-9.991,24.051-9.991V0h0.005l0,0h0.012v0.009c9.368,0.002,17.878,3.828,24.042,9.989 c6.164,6.164,9.991,14.679,9.991,24.051h0.012v0.004v15.96v2.403h-2.403h-9.811h-2.404v-2.403V33.868v-0.009h0.012 c-0.002-5.332-2.195-10.189-5.722-13.715c-3.528-3.531-8.388-5.721-13.724-5.724v0.009h-0.005l0,0h-0.011V14.42 c-5.334,0.002-10.191,2.19-13.72,5.717l0.005,0.005c-3.529,3.528-5.722,8.388-5.722,13.722h0.009v0.005v16.003h13.987 c1.422,0,2.585,1.164,2.585,2.585v54.613c0,1.422-1.163,2.583-2.585,2.583H2.585c-1.424,0-2.585-1.161-2.585-2.583V52.456 C0,51.035,1.161,49.871,2.585,49.871L2.585,49.871z M43.957,79.753l4.098,18.908l-11.232,0.045l3.297-19.162 c-3.068-0.981-5.295-3.857-5.295-7.252c0-4.202,3.411-7.613,7.614-7.613c4.202,0,7.613,3.411,7.613,7.613 C50.053,75.975,47.433,79.048,43.957,79.753L43.957,79.753z" }) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45724,7 +45816,7 @@ function PlayCard({
       boxSizing: "border-box"
     }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "12px" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "16px", fontWeight: "900", color: "#111" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "ROUND TRACKING" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "16px", fontWeight: "900", color: "#111" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "TRACKING" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
           background: canCommit ? "rgba(16, 185, 129, 0.1)" : "rgba(0, 0, 0, 0.05)",
           color: canCommit ? "#10B981" : "#888",
@@ -45966,8 +46058,11 @@ function PlayCard({
         {
           onClick: doReveal,
           disabled: loading,
-          style: { flex: 1, height: "46px", borderRadius: "4px", background: "#f39c12", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(243, 156, 18, 0.2)" },
-          children: loading ? "..." : "UNLOCK (REVEAL) TICKET"
+          style: { flex: 1, height: "46px", borderRadius: "4px", background: "#f39c12", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(243, 156, 18, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" },
+          children: loading ? "..." : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: "#fff" }),
+            " UNLOCK (REVEAL) TICKET"
+          ] })
         }
       ),
       canClaim && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46004,6 +46099,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const [loadingSigs, setLoadingSigs] = reactExports.useState(false);
   const [pulseTx, setPulseTx] = reactExports.useState(null);
   const [showTrace, setShowTrace] = reactExports.useState(false);
+  const [computedHash, setComputedHash] = reactExports.useState(null);
   const {
     roundId: roundId2,
     ticketPk,
@@ -46012,6 +46108,29 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     round
     // round object from hook
   } = ticket || {};
+  reactExports.useEffect(() => {
+    const commitment = onChainTicket?.commitment || receipt?.commitment;
+    if (!commitment) {
+      const g = onChainTicket?.guess ?? receipt?.guess;
+      const s = receipt?.saltHex || receipt?.salt;
+      if (g !== void 0 && g !== null && s) {
+        try {
+          const guessBuf = Buffer.from([g]);
+          let saltBuf;
+          if (typeof s === "string") saltBuf = Buffer.from(s, "hex");
+          else if (Array.isArray(s)) saltBuf = Buffer.from(s);
+          else if (s?.type === "Buffer") saltBuf = Buffer.from(s.data);
+          if (saltBuf) {
+            crypto.subtle.digest("SHA-256", Buffer.concat([guessBuf, saltBuf])).then((buf) => {
+              setComputedHash(Buffer.from(buf).toString("hex"));
+            });
+          }
+        } catch (e) {
+          console.warn("Hash compute error", e);
+        }
+      }
+    }
+  }, [onChainTicket, receipt]);
   reactExports.useEffect(() => {
     if (!ticketPk || !connection) return;
     setLoadingSigs(true);
@@ -46044,9 +46163,13 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     if (receipt?.refunded === true) return "REFUNDED";
     const revealed = Boolean(onChainTicket?.revealed);
     const win = Boolean(onChainTicket?.win);
-    const claimed = Boolean(onChainTicket?.claimed);
+    Boolean(onChainTicket?.claimed);
     const tokenSettled = Boolean(onChainTicket?.processed || onChainTicket?.tokenSettled);
-    if (claimed) return "CLAIMED";
+    if (receipt) {
+      if (receipt.claimed || receipt.claimTx || receipt.claimedAt) return "CLAIMED";
+      if (receipt.refunded || receipt.refundedTx) return "REFUNDED";
+      if (receipt.swept || receipt.sweepTx) return "SWEPT";
+    }
     if (win) {
       if (tokenSettled) {
         if (currentSlot && round && claimGraceSlots != null) {
@@ -46110,7 +46233,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const rPda = programPk && roundId2 != null ? pdaRound(programPk, Number(roundId2)) : null;
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal", onClick: (e) => e.stopPropagation(), children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", style: { alignItems: "flex-start", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative", overflow: "hidden", minHeight: "80px" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", opacity: 0.06, zIndex: 0 }, children: isBull ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 120, color: statusColor }) : isBear ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 120, color: statusColor }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 120, color: statusColor }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", opacity: 0.08, zIndex: 0 }, children: isBull ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 70, color: statusColor }) : isBear ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 70, color: statusColor }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 70, color: statusColor }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", zIndex: 1 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "beta-modal__title", style: { marginBottom: 4, lineHeight: 1 }, children: "Ticket Details" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
@@ -46122,7 +46245,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
               target: "_blank",
               rel: "noreferrer",
               className: "beta-link",
-              style: { fontSize: 11, fontFamily: "monospace" },
+              style: { fontSize: 11, fontFamily: "monospace", color: "#60A5FA" },
               children: [
                 shortPk(ticketPk, 6),
                 " ↗"
@@ -46147,7 +46270,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-grid", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Round ID" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: rPda ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/address/${rPda.toString()}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: rPda ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/address/${rPda.toString()}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", style: { color: "#60A5FA" }, children: [
             "#",
             String(roundId2),
             " ↗"
@@ -46155,11 +46278,15 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Target Pulse" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: pulseIndex ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: pulseUrl, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: pulseIndex ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: pulseUrl, target: "_blank", rel: "noreferrer", className: "beta-link", style: { color: "#60A5FA" }, children: [
             "#",
             String(pulseIndex),
             " ↗"
           ] }) : "—" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Bit Index" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? receipt?.bitIndex ?? "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Prediction" }),
@@ -46180,44 +46307,40 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 20, marginBottom: 8, fontSize: 11, fontWeight: "bold", opacity: 0.5 }, children: "ON-CHAIN TRANSACTIONS" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Commit (Buy)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", style: { color: "#60A5FA" }, children: [
             shortPk(createdTxSig),
             " ↗"
           ] }) : loadingSigs ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Searching..." }) : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Reveal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: revealedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${revealedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: revealedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${revealedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", style: { color: "#60A5FA" }, children: [
             shortPk(revealedTxSig),
             " ↗"
           ] }) : loadingSigs ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Searching..." }) : onChainTicket?.revealed ? "—" : "Pending" })
         ] }),
-        onChainTicket?.win && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
+        (claimedTxSig || status === "CLAIMED" || onChainTicket?.win) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Claim Reward" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: claimedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${claimedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: claimedTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${claimedTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", style: { color: "#60A5FA" }, children: [
             shortPk(claimedTxSig),
             " ↗"
-          ] }) : onChainTicket?.claimed ? "—" : "Unclaimed" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Refund txn" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value beta-detail-value--long", children: receipt?.refunded ? receipt.refundedTx ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${receipt.refundedTx}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", children: [
-            shortPk(receipt.refundedTx, 8),
-            " ↗"
-          ] }) : "Refunded (Local Record)" : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "—" }) })
+          ] }) : status === "CLAIMED" || onChainTicket?.claimed ? "Claimed (Local Record)" : "Unclaimed" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Commitment Hash" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: onChainTicket?.commitment ? createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", title: Buffer.from(onChainTicket.commitment).toString("hex"), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value", children: onChainTicket?.commitment ? createdTxSig ? /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `${EXPLORER_BASE}/tx/${createdTxSig}${CLUSTER}`, target: "_blank", rel: "noreferrer", className: "beta-link", title: Buffer.from(onChainTicket.commitment).toString("hex"), style: { color: "#60A5FA" }, children: [
             shortPk(Buffer.from(onChainTicket.commitment).toString("hex"), 10),
             " ↗"
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: Buffer.from(onChainTicket.commitment).toString("hex"), children: shortPk(Buffer.from(onChainTicket.commitment).toString("hex"), 10) }) : receipt?.commitment ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: receipt.commitment, children: shortPk(receipt.commitment, 10) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pending / Not Found" }) })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: Buffer.from(onChainTicket.commitment).toString("hex"), children: shortPk(Buffer.from(onChainTicket.commitment).toString("hex"), 10) }) : receipt?.commitment ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { title: receipt.commitment, children: shortPk(receipt.commitment, 10) }) : computedHash ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { title: computedHash, children: [
+            shortPk(computedHash, 10),
+            " (Restored)"
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pending / Not Found" }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-detail-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-label", children: "Revealed Data" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value beta-detail-value--long", children: onChainTicket?.revealed ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 4, textAlign: "right" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "beta-detail-value beta-detail-value--long", children: onChainTicket?.revealed || receipt?.revealed || receipt?.revealTx || status === "CLAIMED" || status === "WIN" || status === "LOSS" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 4, textAlign: "right" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             "Guess: ",
-            onChainTicket.guess
+            onChainTicket?.guess ?? (ticket.guess !== void 0 ? ticket.guess : receipt?.guess)
           ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Not Revealed" }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24, textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46247,51 +46370,59 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   ] }) });
 };
 function formatSlot(s) {
-  if (!s) return null;
-  const str = s.toString();
-  return str === "0" ? null : str;
+  if (s === null || s === void 0) return null;
+  try {
+    let bi;
+    if (typeof s === "bigint") bi = s;
+    else if (typeof s === "number") bi = BigInt(Math.floor(s));
+    else if (typeof s === "string") {
+      if (s.match(/^[0-9]+$/)) bi = BigInt(s);
+      else bi = BigInt("0x" + s.replace(/^0x/, ""));
+    } else if (s?.toString) bi = BigInt(s.toString());
+    return bi === 0n ? null : bi.toString();
+  } catch (e) {
+    return null;
+  }
 }
 const toHex$1 = (u82) => {
-  if (!u82) return "";
-  return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  if (!u82) return null;
+  const arr = Array.from(new Uint8Array(u82));
+  if (arr.every((b) => b === 0)) return null;
+  return arr.map((b) => b.toString(16).padStart(2, "0")).join("");
 };
 function generateTicketExportJSON(ticketData) {
   const {
     ticketPk,
-    roundId: roundId2,
     onChainTicket,
     receipt,
     status,
-    currentSlot,
     createdTx,
     revealedTx,
     claimedTx
   } = ticketData;
   const isBull = onChainTicket?.guess === 1 || receipt?.guess === 1;
   const isBear = onChainTicket?.guess === 0 || receipt?.guess === 0;
+  const cleanReceipt = receipt ? { ...receipt } : null;
+  if (cleanReceipt) {
+    Object.keys(cleanReceipt).forEach((key2) => {
+      if (key2.endsWith("At") || key2.endsWith("Tx")) {
+        delete cleanReceipt[key2];
+      }
+    });
+  }
   const data = {
-    snapshot: {
-      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
-      slot: formatSlot(currentSlot)
-    },
     address: ticketPk ? ticketPk.toString() : "unknown",
-    roundId: Number(roundId2),
     nonce: Number(onChainTicket?.nonce ?? receipt?.nonce ?? 0),
-    bitIndex: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? null,
+    bitIndex: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? receipt?.bitIndex ?? null,
     status,
     prediction: isBull ? "Bull" : isBear ? "Bear" : "Unknown",
-    outcome: onChainTicket?.win ? "Win" : onChainTicket?.revealed ? "Loss" : status === "REFUND AVAILABLE" ? "Refundable" : status === "SWEPT" ? "Swept" : status === "EXPIRED" ? "Expired" : status === "REFUNDED" ? "Refunded" : "Pending",
-    cryptography: {
-      commitmentHash: onChainTicket?.commitment ? toHex$1(onChainTicket.commitment) : receipt?.commitment || null,
-      localSalt: receipt?.saltHex || (receipt?.salt ? Array.isArray(receipt.salt) ? toHex$1(receipt.salt) : receipt.salt : null),
-      isValid: true
-    },
+    commitment: toHex$1(onChainTicket?.commitment) ?? receipt?.commitment ?? null,
     transactions: {
-      commit: createdTx ? createdTx.signature : null,
-      reveal: revealedTx ? revealedTx.signature : null,
-      claim: claimedTx ? claimedTx.signature : null,
-      refund: receipt?.refundedTx || null,
-      treasury: receipt?.sweepTx || null
+      commit: createdTx?.signature || receipt?.commitTx ? { signature: createdTx?.signature || receipt?.commitTx, slot: formatSlot(onChainTicket?.createdSlot ?? receipt?.createdSlot) } : null,
+      reveal: revealedTx?.signature || receipt?.revealTx ? { signature: revealedTx?.signature || receipt?.revealTx, slot: formatSlot(onChainTicket?.revealedSlot ?? receipt?.revealedSlot) } : null,
+      claim: claimedTx?.signature || receipt?.claimTx ? { signature: claimedTx?.signature || receipt?.claimTx, slot: formatSlot(onChainTicket?.claimedSlot ?? receipt?.claimedSlot) } : null,
+      refund: receipt?.refundedTx ? { signature: receipt.refundedTx, slot: formatSlot(receipt.refundedSlot) } : null,
+      sweep: receipt?.sweepTx ? { signature: receipt.sweepTx, slot: formatSlot(receipt.sweptSlot) } : null
     }
   };
   return data;
@@ -46312,11 +46443,15 @@ function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticket
         commitOpen: formatSlot(rData?.createdSlot || rData?.created_slot),
         commitClose: formatSlot(rData?.commitDeadlineSlot || rData?.commit_deadline_slot),
         pulse: formatSlot(rData?.pulseSetSlot || rData?.pulse_set_slot),
+        // This is "Pulse Set At Slot"
         revealDeadline: formatSlot(rData?.revealDeadlineSlot || rData?.reveal_deadline_slot),
+        swept: formatSlot(rData?.sweptSlot),
         settled: formatSlot(rData?.tokenSettledSlot || rData?.token_settled_slot)
       },
       oracle: {
-        pulseHash: rData?.pulse ? toHex$1(rData.pulse) : null
+        pulseHash: toHex$1(rData?.pulse),
+        pulseId: formatSlot(rData?.pulseIndexTarget ?? rData?.pulse_index_target)
+        // Raw Pulse ID
       }
     },
     tickets: ticketsData
@@ -46378,7 +46513,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
         "Round Details #",
         roundId2
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn-close", onClick: onClose, style: { color: "white" }, children: "×" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn-close", onClick: onClose, style: { background: "transparent", border: "none", color: "#999", fontSize: "28px", lineHeight: "1", cursor: "pointer", padding: "0 4px", transition: "color 0.2s" }, onMouseEnter: (e) => e.target.style.color = "#fff", onMouseLeave: (e) => e.target.style.color = "#999", children: "×" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__body", children: [
       accountStatus === "closed" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(239, 68, 68, 0.1)", color: "#ef4444", padding: "8px 12px", borderRadius: 6, fontSize: 12, marginBottom: 16, border: "1px solid rgba(239, 68, 68, 0.2)" }, children: [
@@ -46416,7 +46551,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 8, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr auto", rowGap: 6, fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: "bold", color: "#2D68EA" }, children: safeStr(currentSlot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: "bold", color: "#60A5FA" }, children: safeStr(currentSlot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: 1, background: "rgba(0,0,0,0.1)", gridColumn: "1/-1", margin: "4px 0" } }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.createdSlot || round?.created_slot) }),
@@ -46621,7 +46756,13 @@ function MyTickets({
     if (statusFilter === "ALL") return indexedRows;
     return indexedRows.filter((row) => {
       const status = getComputedStatus(row, currentSlot);
-      if (statusFilter === "ACTION") return ["REVEAL NOW", "CLAIM PRIZE", "REFUND AVAILABLE", "REFUND RENT", "LOSS", "SWEPT"].includes(status);
+      if (statusFilter === "ACTION") {
+        if (["REVEAL NOW", "CLAIM PRIZE", "REFUND AVAILABLE", "REFUND RENT"].includes(status)) return true;
+        if (["LOSS", "SWEPT", "EXPIRED", "REFUNDED"].includes(status)) {
+          return !row.receipt?.closed;
+        }
+        return false;
+      }
       if (statusFilter === "CLAIMED") return status === "CLAIMED" || status === "CLOSED";
       if (statusFilter === "WIN") return status === "CLAIM PRIZE" || status === "WIN";
       return status === statusFilter;
@@ -46692,9 +46833,39 @@ function MyTickets({
     }
     return treasurySig;
   };
+  reactExports.useEffect(() => {
+    if (safeRows.length > 0) {
+      safeRows.forEach((row) => {
+        if (row.roundId && row.round && !row.receipt?.closed) {
+          __vitePreload(() => Promise.resolve().then(() => local), true ? void 0 : void 0, import.meta.url).then((m) => m.saveLocalRoundWrapper(row.roundId, row.round));
+        }
+      });
+    }
+  }, [safeRows]);
   const handleDownloadBatch = async (roundId2, tickets, roundData) => {
     try {
       console.log("Downloading batch for round", roundId2);
+      if (!roundData || !roundData.revealDeadlineSlot) {
+        const { loadLocalRoundWrapper: loadLocalRoundWrapper2 } = await __vitePreload(async () => {
+          const { loadLocalRoundWrapper: loadLocalRoundWrapper3 } = await Promise.resolve().then(() => local);
+          return { loadLocalRoundWrapper: loadLocalRoundWrapper3 };
+        }, true ? void 0 : void 0, import.meta.url);
+        const cached = loadLocalRoundWrapper2(roundId2);
+        if (cached) {
+          console.log("Restored round data from local cache", cached);
+          roundData = { ...roundData || {}, ...cached };
+        }
+      }
+      const revealDeadline = roundData?.revealDeadlineSlot ?? roundData?.reveal_deadline_slot;
+      if (revealDeadline && claimGraceSlots) {
+        let rdBn;
+        try {
+          rdBn = BigInt(revealDeadline);
+        } catch {
+          rdBn = BigInt("0x" + revealDeadline);
+        }
+        roundData = { ...roundData, sweptSlot: rdBn + BigInt(claimGraceSlots) };
+      }
       const walletAddr = userPk?.toString() || tickets[0]?.ticket?.user?.toString() || "unknown";
       const rPda = await pdaRound(programPk, Number(roundId2));
       const ticketsData = [];
@@ -46710,31 +46881,24 @@ function MyTickets({
           const refundSig = t.receipt?.refundedTx || null;
           const cleanReceipt = t.receipt ? { ...t.receipt } : {};
           if (cleanReceipt) {
-            delete cleanReceipt.commitTx;
-            delete cleanReceipt.revealTx;
-            delete cleanReceipt.claimTx;
-            delete cleanReceipt.sweepTx;
-            delete cleanReceipt.refundedTx;
-            cleanReceipt.committedAt = cleanReceipt.committedAt || null;
-            cleanReceipt.revealedAt = cleanReceipt.revealedAt || null;
-            cleanReceipt.claimedAt = cleanReceipt.claimedAt || null;
-            cleanReceipt.refundedAt = cleanReceipt.refundedAt || null;
-            cleanReceipt.sweptAt = cleanReceipt.sweptAt || cleanReceipt.treasuryAt || null;
-            delete cleanReceipt.treasuryAt;
+            Object.keys(cleanReceipt).forEach((key2) => {
+              if (key2.endsWith("At") || key2.endsWith("Tx")) {
+                delete cleanReceipt[key2];
+              }
+            });
           }
           return {
             address: t.ticketPk?.toString(),
             nonce: Number(t.nonce ?? t.ticket?.nonce ?? 0),
-            bitIndex: t.ticket?.bitIndex ?? t.ticket?.bit_index ?? null,
+            bitIndex: t.ticket?.bitIndex ?? t.ticket?.bit_index ?? t.receipt?.bitIndex ?? null,
             status,
             prediction: t.guess === 1 ? "Bull" : "Bear",
-            receipt: cleanReceipt,
             transactions: {
-              commit: commitSig,
-              reveal: revealSig,
-              claim: claimSig,
-              refund: refundSig,
-              treasury: treasurySig
+              commit: commitSig ? { signature: commitSig, slot: formatSlot(t.ticket?.createdSlot ?? t.receipt?.createdSlot) } : null,
+              reveal: revealSig ? { signature: revealSig, slot: formatSlot(t.ticket?.revealedSlot ?? t.receipt?.revealedSlot) } : null,
+              claim: claimSig ? { signature: claimSig, slot: formatSlot(t.ticket?.claimedSlot ?? t.receipt?.claimedSlot) } : null,
+              refund: refundSig ? { signature: refundSig, slot: formatSlot(t.receipt?.refundedSlot) } : null,
+              sweep: treasurySig ? { signature: treasurySig, slot: formatSlot(t.receipt?.sweptSlot) } : null
             }
           };
         }));
@@ -46755,11 +46919,11 @@ function MyTickets({
     const treasurySig = await ensureSweepTx(ticket, roundId2);
     const data = {
       ticketPk: ticket.ticketPk,
-      roundId: roundId2,
       onChainTicket: ticket.ticket,
       receipt: ticket.receipt,
+      round: ticket.round,
+      // ✅ Pass round for pulseIndexTarget
       status,
-      currentSlot,
       createdTx: commitSig ? { signature: commitSig } : null,
       revealedTx: revealSig ? { signature: revealSig } : null,
       claimedTx: claimSig ? { signature: claimSig } : null
@@ -46969,7 +47133,7 @@ function MyTickets({
             }
           }
           const ticketsToReveal = tickets.filter((t) => getComputedStatus(t, currentSlot) === "REVEAL NOW" && !t.revealed);
-          const ticketsToClaim = tickets.filter((t) => getComputedStatus(t, currentSlot) === "CLAIM PRIZE" && !t.claimed);
+          const ticketsToClaimPrize = tickets.filter((t) => getComputedStatus(t, currentSlot) === "CLAIM PRIZE" && !t.claimed);
           const ticketsToRefund = tickets.filter((t) => {
             const s = getComputedStatus(t, currentSlot);
             return (s === "REFUND AVAILABLE" || s === "REFUND RENT") && !t.receipt?.refunded;
@@ -46979,15 +47143,39 @@ function MyTickets({
             const isProcessed = t.processed || !t.round;
             return (s === "LOSS" || s === "SWEPT" || s === "PENDING" || s === "EXPIRED") && !t.receipt?.closed && isProcessed && (!t.round || finalized);
           });
+          const allProccesableClaim = [...ticketsToClaimPrize, ...ticketsToRefund, ...ticketsToReclaim];
+          [...ticketsToClaimPrize, ...ticketsToRefund];
           const canSettle = round && !finalized && revealDl > 0n && cSlot > revealDl && pulseSet && !tokenSettled;
           let rBg = "#f5f5f5";
-          if (rStatus === "OPEN") rBg = "#e8f5e9";
-          if (rStatus === "WAITING PULSE") rBg = "#fff9c4";
-          if (rStatus === "REVEAL OPEN") rBg = "#e3f2fd";
-          if (rStatus === "AWAITING SETTLE") rBg = "#f3e5f5";
-          if (rStatus === "REFUND MODE") rBg = "#ffebee";
-          if (rStatus === "REFUNDED") rBg = "#f0f0f0";
-          if (rStatus === "CLAIM WINDOW") rBg = "#e0f2f1";
+          let rThemeColor = "#666";
+          if (rStatus === "OPEN") {
+            rBg = "#D1FAE5";
+            rThemeColor = "#065F46";
+          }
+          if (rStatus === "WAITING PULSE") {
+            rBg = "#FEF3C7";
+            rThemeColor = "#92400E";
+          }
+          if (rStatus === "REVEAL OPEN") {
+            rBg = "#DBEAFE";
+            rThemeColor = "#1E40AF";
+          }
+          if (rStatus === "AWAITING SETTLE") {
+            rBg = "#F3E8FF";
+            rThemeColor = "#6B21A8";
+          }
+          if (rStatus === "REFUND MODE") {
+            rBg = "#FEE2E2";
+            rThemeColor = "#991B1B";
+          }
+          if (rStatus === "REFUNDED") {
+            rBg = "#F3F4F6";
+            rThemeColor = "#4B5563";
+          }
+          if (rStatus === "CLAIM WINDOW") {
+            rBg = "#CCFBF1";
+            rThemeColor = "#115E59";
+          }
           return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { background: rBg }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { paddingLeft: 24, borderBottom: "1px solid rgba(0,0,0,0.05)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }, children: [
@@ -46998,8 +47186,8 @@ function MyTickets({
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: headerTimer })
               ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { whiteSpace: "nowrap", fontWeight: 600, fontSize: 13, opacity: 0.8 }, children: rStatus }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId: roundId2, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 17 }) }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId2, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId: roundId2, currentSlot }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 19 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId2, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundDownloadIcon, { size: 19 }) }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: ticketsToReveal.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
@@ -47015,17 +47203,19 @@ function MyTickets({
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     fontWeight: "bold",
-                    fontSize: "13px"
+                    fontSize: "13px",
+                    whiteSpace: "nowrap"
                   },
                   onClick: () => ticketsToReveal.forEach((t) => doRevealTicket(t)),
                   disabled: globalLoading,
                   children: [
-                    "Reveal All (",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
+                    " Reveal All (",
                     ticketsToReveal.length,
                     ")"
                   ]
                 }
-              ) : ticketsToClaim.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              ) : allProccesableClaim.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
@@ -47040,43 +47230,23 @@ function MyTickets({
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     fontWeight: "bold",
-                    fontSize: "13px"
-                  },
-                  onClick: () => ticketsToClaim.forEach((t) => doClaimTicket(t)),
-                  disabled: globalLoading,
-                  children: [
-                    "Claim All (",
-                    ticketsToClaim.length,
-                    ")"
-                  ]
-                }
-              ) : ticketsToRefund.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  className: "beta-btn beta-btn--sm",
-                  style: {
-                    background: globalLoading ? "#f9f9f9" : "#eee",
-                    color: globalLoading ? "#aaa" : "#444",
-                    height: "36px",
-                    padding: "0 14px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                    fontSize: "13px"
+                    fontSize: "13px",
+                    whiteSpace: "nowrap"
                   },
                   onClick: async () => {
                     if (globalLoading) return;
-                    for (const t of ticketsToRefund) {
-                      await doRefundTicket(t);
+                    for (const t of allProccesableClaim) {
+                      const s = getComputedStatus(t, currentSlot);
+                      if (s === "CLAIM PRIZE") await doClaimTicket(t);
+                      else if (s === "REFUND AVAILABLE" || s === "REFUND RENT") await doRefundTicket(t);
+                      else await doCloseTicket(t);
                     }
                   },
                   disabled: globalLoading,
                   children: [
-                    "Refund All (",
-                    ticketsToRefund.length,
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
+                    " Claim All (",
+                    allProccesableClaim.length,
                     ")"
                   ]
                 }
@@ -47095,7 +47265,8 @@ function MyTickets({
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     fontWeight: "bold",
-                    fontSize: "13px"
+                    fontSize: "13px",
+                    whiteSpace: "nowrap"
                   },
                   onClick: async () => {
                     if (globalLoading) return;
@@ -47107,7 +47278,8 @@ function MyTickets({
                   },
                   disabled: globalLoading,
                   children: [
-                    "Reclaim All (",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
+                    " Reclaim All (",
                     ticketsToReclaim.length,
                     ")"
                   ]
@@ -47200,7 +47372,7 @@ function MyTickets({
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 22 })
                   }
                 )
-              ] }) : canSettle ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ] }) : canSettle ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
@@ -47219,27 +47391,39 @@ function MyTickets({
                   },
                   onClick: () => doSettleRound({ roundId: roundId2 }),
                   disabled: globalLoading,
-                  children: "Manual Settle"
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SettleIcon, { size: 16, style: { marginRight: 6 } }),
+                    " Manual Settle"
+                  ]
                 }
               ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3, fontSize: 12 }, children: "—" }) })
             ] }, `round-${roundId2}`),
             tickets.map((t) => {
               const status = getComputedStatus(t, currentSlot);
-              let iconColor = "#9CA3AF";
-              if (status === "REVEALING") {
-                iconColor = "#F59E0B";
-              } else if (["WIN", "CLAIM PRIZE", "CLAIMED"].includes(status)) {
-                iconColor = "#10B981";
-              } else if (status === "SWEPT") {
-                if (t.win || t.revealed && t.guess === t.round?.result) {
-                  iconColor = "#10B981";
+              const COLOR_WIN = "#66BB6A";
+              const COLOR_LOSS = "#EF5350";
+              const COLOR_PENDING = "#9CA3AF";
+              const COLOR_PROCESSING = "#F59E0B";
+              let iconColor = COLOR_PENDING;
+              if (status === "WIN" || status === "CLAIM PRIZE" || status.includes("SWEPT") && t.win) {
+                iconColor = COLOR_WIN;
+              } else if (status === "LOSS" || status.includes("SWEPT") && !t.win && t.revealed) {
+                iconColor = COLOR_LOSS;
+              } else if (t.revealed) {
+                if (status === "REVEALING") {
+                  iconColor = COLOR_PROCESSING;
                 } else {
-                  iconColor = "#EF4444";
+                  const round2 = t.round;
+                  const isSettled = round2 && (round2.pulseSet || round2.pulse_set || round2.finalized);
+                  const isHit = t.win || isSettled && round2.result === t.guess;
+                  if (isHit) {
+                    iconColor = COLOR_WIN;
+                  } else if (isSettled) {
+                    iconColor = COLOR_LOSS;
+                  } else {
+                    iconColor = COLOR_PENDING;
+                  }
                 }
-              } else if (["LOSS", "EXPIRED"].includes(status)) {
-                if (status === "LOSS") iconColor = "#EF4444";
-                if (status === "EXPIRED") iconColor = "#EF4444";
-                if (!t.revealed) iconColor = "#9CA3AF";
               }
               const guessIcon = t.guess === 1 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { color: iconColor, size: 20 }) : t.guess === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { color: iconColor, size: 20 }) : "—";
               let actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.2 }, children: "—" });
@@ -47250,6 +47434,7 @@ function MyTickets({
                 // Slightly smaller for children to keep hierarchy
                 padding: "0 10px",
                 display: "inline-flex",
+                whiteSpace: "nowrap",
                 alignItems: "center",
                 justifyContent: "center",
                 border: "1px solid #ccc",
@@ -47259,15 +47444,34 @@ function MyTickets({
                 cursor: globalLoading ? "default" : "pointer"
               };
               if (!t.receipt?.closed) {
-                if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: "⬇️ Reveal" });
-                if (status === "CLAIM PRIZE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: "💰 Claim" });
-                if (status === "REFUND AVAILABLE") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: "↩️ Refund" });
+                if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: rThemeColor, style: { marginRight: 6 } }),
+                  " Reveal"
+                ] });
+                if (status === "CLAIM PRIZE") {
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -4 }, children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, color: rThemeColor }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 20, style: { marginLeft: -4 }, color: rThemeColor })
+                    ] }),
+                    "Claim"
+                  ] }) });
+                }
+                if (status === "REFUND AVAILABLE") {
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -4 }, children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, color: rThemeColor }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 20, style: { marginLeft: -4 }, color: rThemeColor })
+                    ] }),
+                    "Claim"
+                  ] }) });
+                }
                 const roundArchived = !t.round;
                 const isProcessed = t.processed || roundArchived;
                 if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(SaveIcon, { size: 13, style: { marginRight: 6 } }),
-                    " Reclaim SOL"
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, style: { marginRight: 6 }, color: rThemeColor }),
+                    " Claim"
                   ] });
                 }
               }
@@ -47280,13 +47484,13 @@ function MyTickets({
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4, position: "relative" }, children: [
                     guessIcon,
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(SaveIcon, { size: 14, color: t.claimed || t.receipt?.closed ? "#10B981" : "#D1D5DB" }),
+                    t.receipt?.closed || t.receipt?.refunded || t.claimed ? /* @__PURE__ */ jsxRuntimeExports.jsx(RentUnlockIcon, { size: 16, color: "#9CA3AF" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(RentLockIcon, { size: 16, color: "#9CA3AF" }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { whiteSpace: "nowrap", fontSize: 11, opacity: 0.6, textTransform: "uppercase" }, children: t.guess === 1 ? "Bull" : "Bear" })
                   ] })
                 ] }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "SWEPT" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 17 }) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportIcon, { size: 17 }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 19 }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketDownloadIcon, { size: 19 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: actionBtn })
               ] }, t.ticketPk?.toString());
             })
@@ -48006,6 +48210,9 @@ function useUserTickets({
           const revealed = Boolean(pick(row.ticket, ["revealed"], false)) || rcpConfirmedReveal;
           const claimed = Boolean(pick(row.ticket, ["claimed"], false)) || rcpConfirmedClaim;
           const guess = revealed && row.ticket ? onChainGuess : row.receipt?.guess ?? null;
+          if (!revealed && row.receipt) {
+            console.log(`[DEBUG] Ticket ${row.ticketPk.toBase58().slice(0, 8)}: revealed=${revealed}, onChainGuess=${onChainGuess}, receipt.guess=${row.receipt.guess}, final guess=${guess}`);
+          }
           const onChainWin = Boolean(pick(row.ticket, ["win"], false));
           const receiptWin = row.receipt?.outcome === "win" || Boolean(row.receipt?.win);
           const win = onChainWin || receiptWin;
@@ -48022,6 +48229,16 @@ function useUserTickets({
               saveLocalReceipt(userPubkey.toBase58(), round ? roundId : row.roundId, updated);
               console.log("[Resilience] Saved WIN outcome for ticket", rid, row.nonce);
             } catch (err) {
+            }
+          }
+          const onChainBitIndex = pick(row.ticket, ["bitIndex", "bit_index"], null);
+          if (onChainBitIndex != null && row.receipt && row.receipt.bitIndex == null) {
+            try {
+              row.receipt.bitIndex = onChainBitIndex;
+              const updated = { ...row.receipt, bitIndex: onChainBitIndex };
+              saveLocalReceipt(userPubkey.toBase58(), round ? roundId : row.roundId, updated);
+              console.log("[Resilience] Saved bitIndex for ticket", rid, row.nonce, onChainBitIndex);
+            } catch (e) {
             }
           }
           const finalStatus = claimed ? "CLAIMED" : uiStatus;
@@ -48094,7 +48311,15 @@ function useUserTickets({
         appendLog?.(`Reveal OK ✅ tx=${sig}`);
         try {
           if (row.receipt) {
+            let revealedSlot = 0;
+            try {
+              const tx = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
+              if (tx && tx.slot) revealedSlot = tx.slot;
+            } catch (e) {
+              console.log("Slot fetch warn", e);
+            }
             const updated = { ...row.receipt, revealTx: sig, revealedAt: Date.now() };
+            if (revealedSlot > 0) updated.revealedSlot = revealedSlot;
             saveLocalReceipt(userPubkey.toBase58(), row.roundId, updated);
           }
         } catch (e) {
@@ -48187,7 +48412,15 @@ function useUserTickets({
         appendLog?.(`Claim OK ✅ tx=${sig}`);
         try {
           if (row.receipt) {
+            let claimedSlot = 0;
+            try {
+              const tx = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
+              if (tx && tx.slot) claimedSlot = tx.slot;
+            } catch (e) {
+              console.log("Slot fetch warn", e);
+            }
             const updated = { ...row.receipt, claimTx: sig, claimedAt: Date.now() };
+            if (claimedSlot > 0) updated.claimedSlot = claimedSlot;
             saveLocalReceipt(userPubkey.toBase58(), row.roundId, updated);
           }
         } catch (e) {
@@ -48265,11 +48498,18 @@ function useUserTickets({
               createdSlot: row.createdSlot,
               // Save original slot
               refunded: true,
-              refundedTx: sig
+              refundedTx: sig,
+              closed: true,
+              // ✅ Mark as closed
+              closedTx: sig,
+              closedAt: Date.now()
             };
           } else {
             receipt.refunded = true;
             receipt.refundedTx = sig;
+            receipt.closed = true;
+            receipt.closedTx = sig;
+            receipt.closedAt = Date.now();
             if (row.createdSlot) receipt.createdSlot = row.createdSlot;
           }
           saveLocalReceipt(walletStr, row.roundId, receipt);
@@ -48277,7 +48517,7 @@ function useUserTickets({
           console.error("Failed to update receipt for refund:", err);
         }
         console.log("Receipt saved/updated successfully for", row.ticketPk.toBase58());
-        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig } } : r));
+        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48323,8 +48563,7 @@ function useUserTickets({
         }
       }
       if (ticketsToSettle.length === 0) {
-        appendLog?.(`Settle: No unprocessed tickets found.`);
-        return null;
+        appendLog?.(`Settle: No unprocessed tickets found, but proceeding to finalize round.`);
       }
       appendLog?.(`Settle: found ${ticketsToSettle.length} tickets to process.`);
       try {
@@ -48359,6 +48598,18 @@ function useUserTickets({
         } catch (err) {
           console.error("Failed to save settle receipts", err);
         }
+        setRows((prev) => prev.map((r) => {
+          if (r.roundId == row.roundId) {
+            const updatedRound = {
+              ...r.round || {},
+              tokenSettled: true,
+              token_settled: true,
+              finalized: true
+            };
+            return { ...r, round: updatedRound };
+          }
+          return r;
+        }));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -48552,11 +48803,65 @@ function App() {
     }
     checkProgramStatus();
   }, [PROGRAM_ID]);
+  const refreshSol = reactExports.useCallback(
+    async (pk) => {
+      try {
+        const bal = await connection.getBalance(pk, "confirmed");
+        const s = bal / LAMPORTS_PER_SOL;
+        setSol(s);
+        return s;
+      } catch {
+        setSol(null);
+        return null;
+      }
+    },
+    [connection]
+  );
+  const refreshTIMLG = reactExports.useCallback(
+    async (pk) => {
+      try {
+        const ata = await connection.getParsedTokenAccountsByOwner(pk, { mint: mintPk }, "confirmed");
+        const amt = ata?.value?.[0]?.account?.data?.parsed?.info?.tokenAmount?.uiAmount ?? 0;
+        setTIMLG(amt);
+        return amt;
+      } catch {
+        setTIMLG(null);
+        return null;
+      }
+    },
+    [connection, mintPk]
+  );
   const refreshTickets = reactExports.useCallback(() => {
     setTicketVersion((v) => v + 1);
-    setTimeout(() => setTicketVersion((v) => v + 1), 1e3);
-    setTimeout(() => setTicketVersion((v) => v + 1), 3e3);
-  }, []);
+    if (pubkey2) {
+      refreshSol(pubkey2);
+      refreshTIMLG(pubkey2);
+    }
+    setTimeout(() => {
+      setTicketVersion((v) => v + 1);
+      if (pubkey2) {
+        refreshSol(pubkey2);
+        refreshTIMLG(pubkey2);
+      }
+    }, 1e3);
+    setTimeout(() => {
+      setTicketVersion((v) => v + 1);
+      if (pubkey2) {
+        refreshSol(pubkey2);
+        refreshTIMLG(pubkey2);
+      }
+    }, 3e3);
+  }, [pubkey2, refreshSol, refreshTIMLG]);
+  const refreshAll = reactExports.useCallback(async () => {
+    if (!pubkey2) return;
+    await Promise.all([
+      refreshSol(pubkey2),
+      refreshTIMLG(pubkey2),
+      refreshProtocolState()
+      // ✅ Refresh protocol state when user clicks Refresh
+    ]);
+    refreshTickets();
+  }, [pubkey2, refreshSol, refreshTIMLG, refreshProtocolState, refreshTickets]);
   const {
     rows: ticketRows = [],
     loading: ticketsLoading,
@@ -48575,7 +48880,7 @@ function App() {
     userPubkey: isDemo ? null : pubkey2,
     mintPk,
     appendLog,
-    onAfterAction: refreshTickets,
+    onAfterAction: refreshAll,
     setLastTx,
     refreshNonce: ticketVersion,
     limit: 1e3
@@ -48717,56 +49022,6 @@ function App() {
     }
     return { total, revealed, pending, wins, winRate, netProfit, efficiency, countable, breakdown, streak: maxStreak };
   }, [ticketRows, chainState?.config?.stakeAmount, chainState?.rewardFeeBps, chainState?.currentSlot]);
-  reactExports.useEffect(() => {
-    if (!pubkey2 || !stats || !stats.breakdown) return;
-    const b = stats.breakdown;
-    const played = stats.total - b.REFUNDED;
-    appendLog("--- PERFORMANCE AUDIT REPORT ---");
-    appendLog(`TOTAL TICKETS: ${stats.total} [REFUNDED: ${b.REFUNDED} | PLAYED: ${played}]`);
-    appendLog(`LIFECYCLE: REVEALED: ${stats.revealed} | EXPIRED: ${b.EXPIRED} | PENDING: ${b.PENDING}`);
-    appendLog(`OUTCOMES: WINS: ${b.WIN} | LOSSES: ${b.LOSS} (Win Rate: ${stats.winRate.toFixed(1)}%)`);
-    appendLog(`WIN SETTLEMENT: CLAIMED: ${b.CLAIMED} | SWEPT/LOST: ${b.SWEPT} | UNCLAIMED: ${b.WIN - b.CLAIMED - b.SWEPT}`);
-    appendLog(`NET P&L (MINT - BURN): ${stats.netProfit >= 0 ? "+" : ""}${stats.netProfit.toFixed(0)} T`);
-    appendLog("--------------------------------");
-  }, [stats?.wins, stats?.countable, appendLog]);
-  const refreshSol = reactExports.useCallback(
-    async (pk) => {
-      try {
-        const bal = await connection.getBalance(pk, "confirmed");
-        const s = bal / LAMPORTS_PER_SOL;
-        setSol(s);
-        return s;
-      } catch {
-        setSol(null);
-        return null;
-      }
-    },
-    [connection]
-  );
-  const refreshTIMLG = reactExports.useCallback(
-    async (pk) => {
-      try {
-        const ata = await connection.getParsedTokenAccountsByOwner(pk, { mint: mintPk }, "confirmed");
-        const amt = ata?.value?.[0]?.account?.data?.parsed?.info?.tokenAmount?.uiAmount ?? 0;
-        setTIMLG(amt);
-        return amt;
-      } catch {
-        setTIMLG(null);
-        return null;
-      }
-    },
-    [connection, mintPk]
-  );
-  const refreshAll = reactExports.useCallback(async () => {
-    if (!pubkey2) return;
-    await Promise.all([
-      refreshSol(pubkey2),
-      refreshTIMLG(pubkey2),
-      refreshProtocolState()
-      // ✅ Refresh protocol state when user clicks Refresh
-    ]);
-    refreshTickets();
-  }, [pubkey2, refreshSol, refreshTIMLG, refreshProtocolState, refreshTickets]);
   reactExports.useEffect(() => {
     if (pubkey2 && !isDemo) {
       refreshAll();
@@ -48988,6 +49243,8 @@ Domain: timlg.org`;
         commitmentHex: bytesToHex(commitment),
         ticketPda: accounts2.ticket.toBase58(),
         committedAt: Date.now(),
+        createdSlot: curSlot || 0,
+        // ✅ Save slot for export
         commitTx: "pending"
       };
       saveLocalReceipt(pubkey2.toBase58(), targetRoundId, receipt);
@@ -49008,6 +49265,8 @@ Domain: timlg.org`;
           processed: false,
           createdSlot: new BN(chainState?.currentSlot || 0)
         },
+        guess: finalGuess,
+        // ✅ Ensure MyTickets sees the guess (needed for "Bull/Bear" icon)
         roundId: targetRoundId,
         createdSlot: chainState?.currentSlot || 0,
         // Fallback
@@ -49100,7 +49359,10 @@ Domain: timlg.org`;
     /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-walletbar__title", children: "Wallet" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__title", style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(WalletIcon, { size: 18, color: "#111" }),
+            "Wallet"
+          ] }),
           walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
             background: "rgba(16, 185, 129, 0.1)",
             color: "#10B981",

@@ -21,7 +21,7 @@
 }
 
 .md-typeset .donation-qr {
-  max-width: 260px;
+  max-width: 400px;
   width: 100%;
   height: auto;
   border-radius: 0.6rem;
@@ -40,7 +40,7 @@
   left: 50%;
   bottom: 22px;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   color: #fff;
   padding: 0.45rem 0.7rem;
   border-radius: 0.6rem;
