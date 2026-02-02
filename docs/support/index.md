@@ -12,6 +12,7 @@ If you’d like to support development, you can make an **optional donation** on
 ## Solana donation address
 
 <div class="donation-card" markdown="1">
+<img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" />
 
 **Address (click to open Explorer):**  
 <div style="display: flex; align-items: center; gap: 10px;">
