@@ -89,13 +89,48 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 The protocol operates in continuous, overlapping rounds. Users participate via the interface:
 
-1.  **Commit**: Choose a bit (Bear/Bull) and stake 1 TIMLG.
-2.  **Wait**: The commit window closes, and the protocol waits for the Oracle Pulse.
-3.  **Reveal**: Once the pulse is published, you reveal your encrypted guess.
-4.  **Settle**: Winners claim rewards; losers' stakes are burned.
+1.  **Commit**: Choose a bit (Bear/Bull) and stake 1 TIMLG. Prediction is hashed and salted (Nonce) for privacy.
+2.  **Wait**: The commit window closes. The protocol waits for the target pulse (e.g., NIST Beacon).
+3.  **Reveal**: Once published, you reveal your guess. The protocol verifies it against your original hash.
+4.  **Settle**: Winners claim rewards (stake + 1 unit); losers' stakes are burned.
 5.  **Cleanup (SOL rent)**: Close your finished ticket to recover the ticket account’s SOL rent deposit.
 
-![TIMLG Play Card Interface](assets/start_guide/4-playcard.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
+### Round Timeline (Slot-Bound Windows)
+
+The protocol uses strict slot-based timing to ensure the "Hawking Wall" (unpredictability).
+
+```mermaid
+gantt
+    title Round Timeline (Slots)
+    dateFormat  X
+    axisFormat  %s
+
+    section PHASE 1<br/>Commit
+    Commit window                 : c, 0, 919
+    Commit (user)                 : done, milestone, mCommit, 460, 460
+
+    section Pulse<br/>(NIST + oracle)
+    Pulse-set lag                 : lag, 919, 1414
+    Pulse set on-chain            : active, milestone, mPulse, 1414, 1414
+
+    section PHASE 3<br/>Reveal
+    Reveal window                 : r, 919, 1919
+    Reveal (user)                 : done, milestone, mReveal, 1500, 1500
+
+    section PHASE 4<br/>Finalize / Settle
+    Settle (observed)             : crit, milestone, mSettle, 1959, 1959
+
+    section PHASE 5<br/>Claim / Sweep
+    Claim grace window            : g, 1919, 2819
+    Claim (user)                  : done, milestone, mClaim, 2300, 2300
+    Sweep (action)                : crit, milestone, mSweep, 2819, 2819
+```
+
+### The Interface: Transparency in Action
+
+The **Play Card** reveals all technical details (Assigned Bit, Nonce, Commitment Hash) to ensure every prediction is verifiable and auditable in real-time.
+
+![TIMLG Play Card Interface](assets/start_guide/6-PlayCard.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
 
 ---
 
@@ -107,12 +142,86 @@ Many systems rely on "randomness" provided by an oracle. TIMLG turns that into a
 ### 2) Measure "predictability under constraints"
 If a strategy claims an edge, it must survive commit–reveal timing and deterministic settlement.
 
-### 3) Visual Evidence (Sankey Audit)
-Every token is accounted for. The protocol provides radical transparency on where funds go: claimed, burned (loss), or swept (unclaimed wins).
-
-![Flow Analysis - Sankey Diagram](assets/start_guide/15-walletoverview-analitics&flowchart.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
-
 ---
+
+## Radical Transparency (Visual Audit)
+
+Every ticket follows a pre-defined on-chain state machine. You can audit the entire flow through the system.
+
+### Ticket Lifecycle Flow
+```mermaid
+flowchart 
+  Start((COMMIT\nTicket created))
+
+  subgraph WAIT[WAIT PHASE]
+    direction TB
+    PENDING[PENDING\nStake paid - waiting for NIST pulse]
+  end
+
+  subgraph REVEAL[REVEAL PHASE]
+    direction TB
+    REVEAL_NOW[REVEAL NOW\nPulse published - reveal window open]
+  end
+
+  subgraph RESULT[RESULT]
+    direction TB
+    REVEALED[REVEALED\nReveal submitted]
+    WIN[WIN\nPrediction correct]
+    BURN_LOSS[BURN LOSS\nStake burned]
+    CLAIM_PRIZE[CLAIM PRIZE\nFunds available after settlement]
+    CLAIMED[CLAIMED\nPayout received]
+    SWEPT[SWEPT\nGrace period expired\nSweep executed]
+    BURN_EXPIRED[BURN EXPIRED\nStake burned]
+  end
+
+  subgraph RECOVERY[RECOVERY - TIMEOUT]
+    direction TB
+    REFUND_TIMEOUT[REFUND TIMEOUT\nNo pulse within REFUND_TIMEOUT_SLOTS]
+    REFUNDED[REFUNDED\nStake returned]
+  end
+
+  End((END))
+
+  Start --> PENDING
+
+  PENDING -->|Oracle publishes pulse - on time| REVEAL_NOW
+  PENDING -->|No pulse - timeout| REFUND_TIMEOUT
+
+  REVEAL_NOW -->|User reveals - in time| REVEALED
+  REVEAL_NOW -->|Missed reveal window| BURN_EXPIRED
+
+  REVEALED -->|Correct| WIN
+  REVEALED -->|Incorrect| BURN_LOSS
+
+  WIN -->|Round settled| CLAIM_PRIZE
+  CLAIM_PRIZE -->|User claims| CLAIMED
+  CLAIM_PRIZE -->|No claim - grace expired| SWEPT
+
+  REFUND_TIMEOUT -->|User refunds stake| REFUNDED
+
+  BURN_LOSS --> End
+  BURN_EXPIRED --> End
+  CLAIMED --> End
+  SWEPT --> End
+  REFUNDED --> End
+
+  classDef phase fill:#F6F1FF,stroke:#6B5BD2,stroke-width:1px,color:#111;
+  classDef neutral fill:#FFFFFF,stroke:#8A8A8A,stroke-width:1px,color:#111;
+  classDef good fill:#DFF7E6,stroke:#2E7D32,stroke-width:1px,color:#111;
+  classDef warn fill:#FFF4CC,stroke:#B08900,stroke-width:1px,color:#111;
+  classDef bad fill:#FFE1E1,stroke:#B3261E,stroke-width:1px,color:#111;
+
+  class WAIT,REVEAL,RESULT,RECOVERY phase;
+  class PENDING,REVEAL_NOW,REVEALED,CLAIM_PRIZE,REFUND_TIMEOUT,REFUNDED neutral;
+  class WIN,CLAIMED good;
+  class SWEPT warn;
+  class BURN_LOSS,BURN_EXPIRED bad;
+```
+
+### Participation Volume Flow (Sankey Audit)
+The protocol provides categorical proof of where every token ends up: claimed, burned (loss/expired), or swept.
+
+![Flow Analysis - Sankey Diagram](assets/start_guide/19-WalletFinal&FlowAnalysis.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
 
 ## Economics per ticket (MVP)
 

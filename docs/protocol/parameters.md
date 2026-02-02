@@ -116,6 +116,9 @@ These values reflect **how Devnet is running right now** using the standard NIST
 | Late pulse safety buffer | `50 slots` | On-chain constant `LATE_PULSE_SAFETY_BUFFER_SLOTS = 50` (pulse rejected if too close to reveal deadline). |
 | Operator tick | `5 sec` | Supervisor loop frequency (`OPERATOR_TICK_SEC`). |
 
+> [!TIP]
+> Technical constants and safety buffers are defined in the on-chain [constants.rs](https://github.com/richarddmm/timlg-protocol/blob/main/programs/timlg_protocol/src/constants.rs) file.
+
 ### Economics (Devnet MVP)
 
 | Parameter | Devnet value | Notes |

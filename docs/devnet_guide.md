@@ -9,237 +9,176 @@ Welcome to the **TIMLG Protocol Devnet Beta**. This guide walks you through the 
 
 ## 1. Getting Started
 
-### 1.1 Connect your wallet
-Use the **Connect Wallet** button in the header to connect (Phantom / Solflare).
+### 1.1 Configure Phantom for Devnet
+Before connecting, ensure your Phantom wallet is set to **Testnet mode**. This allows you to interact with the Solana Devnet.
 
-![Connect Wallet](assets/start_guide/1-connect_wallet.png)
-
-**What to check**
-- **Wallet chip**: shows your connected address (shortened).
-- **Network**: must be **Solana Devnet** (recommended to show a Devnet badge in the header UI).
+| 1. Activate Testnet Mode | 2. Devnet View Active |
+|:---:|:---:|
+| ![Activate Testnet](assets/start_guide/1-PhantoSetTestnet.png) | ![Phantom Devnet](assets/start_guide/2-PhantomView.png) |
 
 ---
 
-### 1.2 Get Devnet funds (Faucet)
-New wallets will show empty balances.
+### 1.2 Connect your wallet
+Use the **Connect Wallet** button in the header. If you haven't connected before, the UI will reflect the disconnected state.
 
-![Empty wallet connected](assets/start_guide/2-empty_wallet_connected.png)
-
-Use the Faucet actions:
-1. **Airdrop SOL** — pays transaction fees.
-2. **Get TIMLG** — the protocol token used for tickets/stake.
-
-After funding:
-
-![Wallet funded (example)](assets/start_guide/3-wallet_1_sol_10_timlg.png)
-
-**Your Assets panel**
-- **Solana Native (SOL)**: used for fees.
-- **Protocol Token (TIMLG)**: used to play (each ticket stakes TIMLG).
-
-**Actions**
-- Airdrop and Get TIMLG are *Devnet-only* utilities.
+![Disconnected Wallet](assets/start_guide/3-DisconectedWallet.png)
 
 ---
 
-## 2. Play a Round (Commit Phase)
+### 1.3 Get Devnet funds (Faucet)
+New wallets will show empty balances. You need **SOL** for transaction fees and **TIMLG** to play.
 
-The **Play Card** is the tactical center of the game. Here you analyze the timeline and place your predictions.
+![Empty Wallet](assets/start_guide/4-EmptyWallet.png)
 
-![Play Card](assets/start_guide/4-playcard.png)
+Use the Faucet actions to fund your wallet. After a few seconds, your balances will update.
 
-### 2.1 Understanding the Interface
-
-The interface is divided into three clear zones (Header, Left, Right) to give you full control:
-
-**Zone 1: The Header (Timeline)**
-Located at the very top of the card.
-
-- **Round Status & ID**: Shows which Round you are viewing (e.g. **ROUND #6867**) and its status (**OPEN**).
-- **Current Pulse**: Displays the *current* network pulse (the "now").
-- **Timer**: In the top right, a countdown shows exactly how much time remains before this round closes.
-
-**Zone 2: Left Panel (Information)**
-This area confirms *what* you are betting on.
-
-- **Target Pulse**: The large number indicates the exact pulse this round is targeting.
-- **Ticket Preview**: Below the target, you see the details of the ticket you are creating:
-    - **Assigned Bit**: The specific bit index you are predicting.
-    - **Stake**: The cost (e.g., 1.00 TIMLG).
-    - **Technical Data**: Nonce, Commitment Hash, and Ticket PDA (for transparency).
-
-**Zone 3: Right Panel (The Controls)**
-This is the interactive "Button Panel" where you make your strategic choices.
-
-- **Pulse Offset (Top Row)**: Selects *which* future round you want to target.
-    - **Concept**: Each button (+1, +2, +3...) points to a specific round relative to the *current* pulse.
-    - **+1**: Targets the very next pulse.
-    - **+5**: Targets a pulse further in the future.
-    - *Example:* If you select **+3**, the "Target Pulse" on the left will update to show Current Pulse + 3.
-- **Commit Prediction (Bottom Row)**: These are the **Action Buttons**. Clicking one will immediately initiate the commit transaction for the selected outcome:
-    - **BEAR (0)**
-    - **BULL (1)**
-    - **RAND** (Random)
-
-**Footer: Protocol Terminal**
-At the bottom, a collapsible blue bar (**Protocol Terminal**) logs all your actions and transaction signatures in real-time.
-
-### 2.2 Committing Your Ticket
-Playing is simple and fast. Follow these steps:
-
-1.  **Select Round**: Choose your target by clicking a **Pulse Offset** button (e.g., +1).
-2.  **Verify**: Check the **Ticket Preview** (left panel) to ensure the summary is correct.
-3.  **Commit**: Click **BEAR**, **BULL**, or **RAND** to place your prediction.
-4.  **Sign**: Approve the transaction in your connected wallet.
-
-Only after signing is your ticket sent to the blockchain.
+![Funded Wallet](assets/start_guide/5-FoundedWallet.png)
 
 ---
 
-## 3. Order History: Following Round #6883
+## 2. Play a Round (The Play Card)
 
-Once you commit a ticket, it appears in your **Order History**. This timeline groups your tickets by Round, allowing you to track the exact lifecycle of your bets.
+The **Play Card** is your main interface for analyzing the timeline and submitting predictions. It is divided into four key sections:
 
-Below, we follow **Round #6883** from start to finish to demonstrate the complete game flow.
+![Play Card Details](assets/start_guide/6-PlayCard.png)
 
-### Step 1: The Commit Window (Open)
-At this stage, the round is **OPEN**. You can place multiple tickets on the same round.
-In this example, we have committed **6 tickets** to Round #6883. All of them are **PENDING**, meaning the prediction is recorded on-chain but encrypted.
+### 2.1 Interface Breakdown
 
-*Tip: Once you have at least one open ticket, you will see **COMMIT** buttons (Bear/Bull) in the **Action** column, allowing you to quickly place more bets on this specific round directly from this list.*
+#### A. Top Bar (Round & Timing)
+- **Round ID**: The active round identifier (e.g., `ROUND #1729`).
+- **Status**: Visual indicator showing if the commitment window is **OPEN**.
+- **Current Pulse**: The latest 512-bit randomness pulse published on-chain.
+- **Timer**: Real-time countdown to the end of the commitment phase.  
+  *(For technical details on phase durations and slot-bound rules, see the [Timing Windows](protocol/timing_windows.md) specification).*
 
-![Commit Window](assets/start_guide/5-orderhistory-commitwindow1round6tickets.png)
+---
+
+#### B. Left Panel (Ticket Details)
+- **Target Pulse**: The specific pulse height this ticket is targeting.
+- **Assigned Bit**: Your unique bit index within the 512-bit pulse result.
+- **Stake**: Amount of **TIMLG** tokens required for this prediction.
+- **Technical Stats**:
+    - **Nonce**: Security salt for your prediction hash.
+    - **Commitment**: The on-chain SHA-256 hash of your hidden guess.
+    - **Ticket Address (PDA)**: The unique on-chain account address for this ticket.
+
+---
+
+#### C. Right Panel (Controls & Actions)
+- **Pulse Offset**: Buttons to select *which* future round to target (**+1** to **+5**).
+- **Commit Buttons**: Your tactical action center.
+    - **BEAR**: Predicts a **0** (down).
+    - **BULL**: Predicts a **1** (up).
+    - **RAND**: Auto-generates a prediction for you.
+
+---
+
+#### D. Bottom Bar (Transaction Log)
+- **Log Monitor**: A live console showing your protocol interactions in real-time.
+
+---
+
+## 3. Order History: Following the Lifecycle
+
+Once you commit tickets, they appear in your **Order History**. Here is how a round evolves:
+
+### Step 1: Tickets Committed
+In this example, we have committed **7 tickets** to the round. They are currently in the **PENDING** state.
+
+![7 Tickets Committed](assets/start_guide/7-OrderHistory7TicketsCommited.png)
 
 ---
 
 ### Step 2: Waiting for Pulse
-Once the timer hits zero, the Commit Window closes. The status changes to **WAITING PULSE**.
-No more tickets can be added. The protocol is now waiting for the Oracle to publish the verifiable random number for this specific round.
+Once the commit window closes, the status changes to **WAITING PULSE**. The protocol is waiting for the Oracle to publish the result.
 
-![Waiting Pulse](assets/start_guide/6-orderhistory-waitingpulse1round6tickets.png)
+![Waiting Pulse](assets/start_guide/8-OrderHistory-WaitingPulse.png)
 
 ---
 
 ### Step 3: Reveal Window Opens
-The Oracle publishes the pulse! The round immediately shifts to **REVEAL OPEN**.
-You initiate the reveal process to prove your predictions match. Notice the orange **REVEAL ALL (6)** button header, allowing you to reveal all 6 tickets (initiating one transaction per ticket).
+When the pulse is published, the **REVEAL WINDOW** opens. You must reveal your tickets to prove your predictions.
 
-![Reveal Window Open](assets/start_guide/7-orderhistory-revealwindow1round6tickets.png)
+![Reveal Window](assets/start_guide/9-OrderHistory-RevealWindow.png)
 
 ---
 
 ### Step 4: Outcomes Revealed
-As you reveal tickets, their results appear instantly.
-In our example, of the 6 tickets:
-- **3 Tickets** matched the pulse (**WIN**).
-- **2 Tickets** did not match (**LOSS**).
-- **1 Ticket** has not been revealed yet (**REVEAL NOW** is still active).
+After revealing, you can see which tickets won and which lost.
+*   **Winners**: Matched the pulse.
+*   **Loss**: Did not match.
+*   **Unrevealed**: If you don't reveal in time, the ticket will expire.
 
-![Revealed Outcomes](assets/start_guide/8-orderhistory-revealwindow5revealed3won2lose1unrevealed.png)
-
-!!! danger "Don't Forget!"
-    If you leave a ticket unrevealed (like the last one here) until the window closes, it becomes **EXPIRED (Loss)**.
+![Outcomes Revealed](assets/start_guide/10-OrderHistory-5Winners1Loss1Unrevealed.png)
 
 ---
 
 ### Step 5: Awaiting Settlement
-After the reveal window closes, the round briefly updates to **AWAITING SETTLE**.
-The protocol verifies the results on-chain:
-- **Losers' stakes** and **EXPIRED (Unrevealed)** tickets are **burned** (removed from circulation).
-- **Winners** are authorized to claim their original stake plus the **minted reward**.
+After the reveal window closes, the protocol processes the results.
 
-![Awaiting Settle](assets/start_guide/9-orderhistory-awatingsettle-3winners2loses1experied.png)
+![Settlement](assets/start_guide/11-OrderHistory-Settle.png)
 
 ---
 
 ### Step 6: Claiming Prizes
-Settlement is complete. The status becomes **CLAIM WINDOW**.
-Our **3 Winning Tickets** are now marked **READY TO CLAIM**. You can click **CLAIM ALL (3)** to withdraw all winnings via sequential transactions (one per winning ticket).
+Once settled, winning tickets move to the **CLAIM WINDOW**. You can now claim your winnings.
 
-![Claim Window](assets/start_guide/10-orderhistory-claimwindow3readytoclaim.png)
-
----
-
-### Step 7: Partial Claims
-In this view, we checked back after claiming some rewards.
-- **2 Tickets** are marked **CLAIMED** (Green badge). The funds are safe in the wallet.
-- **1 Ticket** is still **READY TO CLAIM**.
-
-![Partial Claims](assets/start_guide/11-orderhistory-claimwindow2claims1no.png)
+![Claim Window](assets/start_guide/12-OrderHistory-ClaimWindow.png)
 
 ---
 
-### Step 8: Final State (Archived)
-The round is finished.
-- **CLAIMED** tickets are finalized.
-- **LOSS** and **EXPIRED** tickets remain as history.
-- **SWEPT**: The one winning ticket we *didn't* claim in time has been "Swept" to the Treasury. It is no longer claimable.
+### Step 7: Finalizing Claims
+As you claim, the tickets are marked as **CLAIMED**. Any ticket not claimed before the round is swept will be lost.
 
-![Archived State](assets/start_guide/12-orderhistory-archived2claimed1swept2lose1experied.png)
+![Claims Processed](assets/start_guide/13-OrderHistory-6Claimed1Unclaimed.png)
 
 ---
 
-## 4. Edge Cases & Safety: Refund Mode (Escape Hatch)
+### Step 8: Swept Round
+If a winner fails to claim their prize within the required timeframe, the funds are **SWEPT** to the protocol treasury.
 
-If the oracle/pulse pipeline fails, the protocol protects users by entering **REFUND MODE**.
-
-### 4.1 Refund available
-![REFUND MODE — Refund available](assets/start_guide/13-orderhistory-1round1ticket-refoundavailable.png)
-
-- Round status: **REFUND MODE**
-- Note: **Escape Hatch Active**
-- Ticket status: **REFUND AVAILABLE**
-- Action: **Refund** or **Refund All (N)**
-
-### 4.2 Refunded
-![REFUND MODE — Refunded](assets/start_guide/14-orderhistory-1round1ticket-refounded.png)
-
-- Ticket status: **REFUNDED**
-- Stake returned to your wallet.
+![Swept Round](assets/start_guide/14-OrderHistory-SweptRound.png)
 
 ---
 
-## 5. Analytics & Verification (Performance + Flow Analysis)
+## 4. Safety: Refund Mode (Escape Hatch)
 
-The wallet screen includes a **Performance Audit** and a **Participation Volume Flow** chart that lets you audit where your tickets ended up.
+If the oracle fails to provide a pulse, the protocol enters **REFUND MODE**. This allows you to recover your stake.
 
-![Wallet overview — Performance + Flow analysis](assets/start_guide/15-walletoverview-analitics&flowchart.png)
+### 4.1 Waiting for Refund Window
+The protocol ensures a safe window for all users to request refunds.
 
-### 5.1 Performance Audit cards
-Typical metrics:
-- **Net Profit (TIMLG)**: realized P&L based on claimed wins minus losses (Devnet numbers only).
-- **Win Rate**: your win percentage.
-- **Best Streak**: longest win streak.
-- **Volume**: number of tickets played.
+![Waiting for Refund](assets/start_guide/16-OrderHistory-WaitingForRefundWIndows.png)
 
-### 5.2 Sankey Flow (Participation Volume Flow)
-The Sankey summarizes your lifecycle funnel:
-- **Total** → **Played** → **Revealed** → splits into **Win / Loss**
-- Win splits into **Claimed / Swept**
-- Additional branches can include **Expired** and **Refunded**
+### 4.2 Claiming Refund
+Once the window is ready, you can withdraw your original stake.
 
-**How to read key outcomes**
-- **Expired**: committed but not revealed in time.
-- **Swept**: won but not claimed in time.
-- **Refunded**: safety mode triggered, stake returned.
+![Claim Refund](assets/start_guide/17-OrderHistory-ClaimRefoundTicket.png)
 
 ---
 
-## 6. Quick Status Glossary (User-facing definitions)
+## 5. Analytics & Verification
 
-- **OPEN**: you can still commit tickets.
-- **PENDING**: committed; reveal not done yet.
-- **WAITING PULSE**: waiting for oracle pulse.
-- **REVEAL OPEN**: reveal window open; reveal required.
-- **REVEAL NOW**: action needed; reveal this ticket.
-- **WIN / LOSS**: outcome known after reveal.
-- **EXPIRED**: not revealed in time.
-- **AWAITING SETTLE**: settlement in progress.
-- **CLAIM WINDOW**: winners can claim now.
-- **READY TO CLAIM**: prize available.
-- **CLAIMED**: prize claimed successfully.
-- **SWEPT**: prize not claimed in time.
-- **REFUND MODE**: escape hatch active (protocol safety).
-- **REFUND AVAILABLE**: you can withdraw your stake.
-- **REFUNDED**: stake returned.
-- **ARCHIVED**: round finalized; no actions remain.
+### 5.1 Final Order History
+View your completed rounds in the archives to see the final tally of your performance.
+
+![Final History](assets/start_guide/18-OrderHistory-Final.png)
+
+### 5.2 Flow Analysis (Sankey)
+The **Flow Analysis** chart provides a visual breakdown of your ticket lifecycle—from played to claimed, lost, or swept.
+
+![Wallet Flow Analysis](assets/start_guide/19-WalletFinal&FlowAnalysis.png)
+
+---
+
+## 6. Status Glossary
+
+- **OPEN**: Commit window is active.
+- **PENDING**: Prediction recorded, waiting for pulse.
+- **WAITING PULSE**: Oracle is generating the result.
+- **REVEAL OPEN**: You can now reveal your prediction.
+- **WIN / LOSS**: Final outcome of a revealed ticket.
+- **CLAIM WINDOW**: Winners can collect prizes.
+- **SWEPT**: Prize was not claimed in time.
+- **REFUND MODE**: Safety protocol active; stakes can be recovered.
+- **ARCHIVED**: Round is fully finalized.

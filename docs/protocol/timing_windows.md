@@ -19,6 +19,9 @@ A round is created with parameters that define its timing and target:
 | `reveal_deadline_slot` | u64 | Last slot where reveals are accepted |
 | `claim_grace_slots` | u64 | Grace period after reveal deadline before sweep closes claims |
 
+> [!TIP]
+> These protocol constants are defined in the on-chain program's [constants.rs](https://github.com/richarddmm/timlg-protocol/blob/main/programs/timlg_protocol/src/constants.rs) source file.
+
 Notes:
 
 - **Slots** are the source of truth for enforcement. Wall-clock displays are approximate.
