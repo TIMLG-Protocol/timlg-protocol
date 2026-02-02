@@ -17,12 +17,12 @@ If you’d like to support development, you can make an **optional donation** on
 <a class="donation-address" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL</a>
 
 <div class="donation-actions">
-  <button class="md-button md-button--primary" type="button" onclick="timlgCopyDonationAddress()">
+  <button class="md-button md-button--primary" type="button" onclick="timlgCopyDonationAddress()" title="Copy to clipboard">
+    <span class="twemoji">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1z"/></svg>
+    </span>
     Copy address
   </button>
-  <a class="md-button" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">
-    Open in Solana Explorer
-  </a>
 </div>
 
 <!-- <img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" /> -->
