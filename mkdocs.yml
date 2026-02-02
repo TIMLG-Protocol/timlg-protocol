@@ -64,6 +64,7 @@ nav:
   - Devnet Beta:
       - App: beta.md
       - Guide: devnet_guide.md
+      - Runbook (Technical): runbook-devnet.md
   - Whitepaper:
       - Overview: whitepaper/index.md
       - Changelog: whitepaper/changelog.md
