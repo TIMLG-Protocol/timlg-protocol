@@ -47964,7 +47964,7 @@ const roundCache = /* @__PURE__ */ new Map();
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
-const BASE_POLL_MS = 3e4;
+const BASE_POLL_MS = 15e3;
 const MAX_BACKOFF_MS = 6e4;
 function bnToNumber(v, fallback = 0) {
   try {
@@ -48118,7 +48118,7 @@ function useUserTickets({
           for (let i = 0; i < uniqRoundIds.length; i++) {
             const rid = uniqRoundIds[i];
             let cached = roundCache.get(rid);
-            if (cached && (cached.isFinal || Date.now() - cached.ts < 6e4)) {
+            if (cached && (cached.isFinal || Date.now() - cached.ts < 1e4)) {
               roundMap.set(rid, cached.round);
               if (cached.mint) roundMintMap.set(rid, cached.mint);
             } else {
