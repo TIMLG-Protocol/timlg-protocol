@@ -14,21 +14,17 @@ If you’d like to support development, you can make an **optional donation** on
 <div class="donation-card" markdown="1">
 
 **Address (click to open Explorer):**  
-<a class="donation-address" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL</a>
-
-<div class="donation-actions">
-  <button class="md-button md-button--primary" type="button" onclick="timlgCopyDonationAddress()" title="Copy to clipboard">
-    <span class="twemoji">
+<div style="display: flex; align-items: center; gap: 10px;">
+  <a class="donation-address" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL</a>
+  <button style="background:none; border:none; cursor:pointer; padding:4px; opacity:0.7;" onclick="timlgCopyDonationAddress()" title="Copy address">
+    <span class="twemoji" style="font-size: 1.2em;">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1z"/></svg>
     </span>
-    Copy address
   </button>
 </div>
 
-<!-- <img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" /> -->
-
 <small class="donation-hint">
-Scan the QR code in your wallet, or copy the address. Always verify the address before sending.
+Verify the address carefully before sending.
 </small>
 
 </div>
