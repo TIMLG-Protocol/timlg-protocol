@@ -73,7 +73,7 @@ For indexing purposes, a **useful minimal record** (aligned with on-chain `Ticke
 
 !!! note "Decimals and base units"
     The protocol accounts in **base units** (`u64`). The TIMLG mint may use different `decimals` across deployments.
-    Devnet may use `decimals = 0` for easier testing, but indexers and tooling should treat `stake_amount` as base units.
+    TIMLG uses **`decimals = 9`**. Indexers and tooling should treat `stake_amount` as base units.
 
 ---
 

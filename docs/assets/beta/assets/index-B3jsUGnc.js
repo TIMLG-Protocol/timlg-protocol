@@ -46719,7 +46719,7 @@ function MyTickets({
           if (BigInt(currentSlot2) > sweepSlot) return "SWEPT";
         }
       }
-      if (tokenSettled) return "CLAIM PRIZE";
+      if (tokenSettled || row.round.finalized) return "READY TO CLAIM";
       return "WIN";
     }
     if (revealed && !win && row.round && !row.round.pulse_set && !row.round.pulseSet) {
@@ -46757,14 +46757,14 @@ function MyTickets({
     return indexedRows.filter((row) => {
       const status = getComputedStatus(row, currentSlot);
       if (statusFilter === "ACTION") {
-        if (["REVEAL NOW", "CLAIM PRIZE", "REFUND AVAILABLE", "REFUND RENT"].includes(status)) return true;
+        if (["REVEAL NOW", "READY TO CLAIM", "REFUND AVAILABLE", "REFUND RENT"].includes(status)) return true;
         if (["LOSS", "SWEPT", "EXPIRED", "REFUNDED"].includes(status)) {
           return !row.receipt?.closed;
         }
         return false;
       }
       if (statusFilter === "CLAIMED") return status === "CLAIMED" || status === "CLOSED";
-      if (statusFilter === "WIN") return status === "CLAIM PRIZE" || status === "WIN";
+      if (statusFilter === "WIN") return status === "READY TO CLAIM" || status === "WIN";
       return status === statusFilter;
     });
   }, [safeRows, statusFilter, currentSlot, claimGraceSlots]);
@@ -46793,9 +46793,10 @@ function MyTickets({
   }, [totalPages, page]);
   const visibleRounds = groupedRounds.slice((page - 1) * pageSize, page * pageSize);
   const friendlyStatus = (status) => {
-    if (status === "WIN") return "WINNER";
+    if (status === "READY TO CLAIM") return "READY TO CLAIM";
+    if (status === "WIN") return "WIN";
     if (status === "LOSE" || status === "LOSS") return "LOSS";
-    if (status === "CLAIM" || status === "CLAIM PRIZE") return "READY TO CLAIM";
+    if (status === "CLAIM" || status === "READY TO CLAIM") return "READY TO CLAIM";
     if (status === "NO RECEIPT") return "LOST KEY";
     if (status === "REFUND RENT") return "RECOVER RENT";
     if (status === "SYNCING") return "SYNCING...";
@@ -47133,15 +47134,16 @@ function MyTickets({
             }
           }
           const ticketsToReveal = tickets.filter((t) => getComputedStatus(t, currentSlot) === "REVEAL NOW" && !t.revealed);
-          const ticketsToClaimPrize = tickets.filter((t) => getComputedStatus(t, currentSlot) === "CLAIM PRIZE" && !t.claimed);
+          const ticketsToClaimPrize = tickets.filter((t) => getComputedStatus(t, currentSlot) === "READY TO CLAIM" && !t.claimed);
           const ticketsToRefund = tickets.filter((t) => {
             const s = getComputedStatus(t, currentSlot);
             return (s === "REFUND AVAILABLE" || s === "REFUND RENT") && !t.receipt?.refunded;
           });
           const ticketsToReclaim = tickets.filter((t) => {
             const s = getComputedStatus(t, currentSlot);
-            const isProcessed = t.processed || !t.round;
-            return (s === "LOSS" || s === "SWEPT" || s === "PENDING" || s === "EXPIRED") && !t.receipt?.closed && isProcessed && (!t.round || finalized);
+            const roundArchived = !t.round;
+            const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
+            return (s === "LOSS" || s === "SWEPT" || s === "EXPIRED" || s === "REFUNDED" || s === "REFUND RENT" || s === "PENDING" && roundArchived) && !t.receipt?.closed && isProcessed && (!t.round || finalized);
           });
           const allProccesableClaim = [...ticketsToClaimPrize, ...ticketsToRefund, ...ticketsToReclaim];
           [...ticketsToClaimPrize, ...ticketsToRefund];
@@ -47237,7 +47239,7 @@ function MyTickets({
                     if (globalLoading) return;
                     for (const t of allProccesableClaim) {
                       const s = getComputedStatus(t, currentSlot);
-                      if (s === "CLAIM PRIZE") await doClaimTicket(t);
+                      if (s === "READY TO CLAIM") await doClaimTicket(t);
                       else if (s === "REFUND AVAILABLE" || s === "REFUND RENT") await doRefundTicket(t);
                       else await doCloseTicket(t);
                     }
@@ -47372,7 +47374,7 @@ function MyTickets({
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 22 })
                   }
                 )
-              ] }) : canSettle ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              ] }) : canSettle && rStatus !== "ARCHIVED" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   className: "beta-btn beta-btn--sm",
@@ -47405,7 +47407,7 @@ function MyTickets({
               const COLOR_PENDING = "#9CA3AF";
               const COLOR_PROCESSING = "#F59E0B";
               let iconColor = COLOR_PENDING;
-              if (status === "WIN" || status === "CLAIM PRIZE" || status.includes("SWEPT") && t.win) {
+              if (status === "WIN" || status === "READY TO CLAIM" || status.includes("SWEPT") && t.win) {
                 iconColor = COLOR_WIN;
               } else if (status === "LOSS" || status.includes("SWEPT") && !t.win && t.revealed) {
                 iconColor = COLOR_LOSS;
@@ -47448,7 +47450,7 @@ function MyTickets({
                   /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: rThemeColor, style: { marginRight: 6 } }),
                   " Reveal"
                 ] });
-                if (status === "CLAIM PRIZE") {
+                if (status === "READY TO CLAIM") {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -4 }, children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, color: rThemeColor }),
@@ -47467,7 +47469,7 @@ function MyTickets({
                   ] }) });
                 }
                 const roundArchived = !t.round;
-                const isProcessed = t.processed || roundArchived;
+                const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
                 if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, style: { marginRight: 6 }, color: rThemeColor }),

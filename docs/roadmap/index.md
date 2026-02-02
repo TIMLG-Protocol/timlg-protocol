@@ -1,8 +1,9 @@
 # Roadmap
 
-The TIMLG roadmap outlines a rigorous path from cryptographic foundation to mainnet-scale production. Over 85% of the core protocol and infrastructure is already functional on Devnet.
+The TIMLG roadmap outlines a rigorous path from cryptographic foundation to mainnet-scale production. Over 85% of the core protocol and infrastructure is already functional on Devnet. 
+Devnet is live; ongoing hardening focuses on RPC rate-limits (HTTP/WebSocket 429) and late pulse handling (PulseTooLate).
 
-**Last updated:** January 2026
+**Last updated:** 2026-02-02
 
 ---
 
@@ -47,7 +48,7 @@ Removing manual intervention from the protocol's daily operations.
 
 Aligning incentives and ensuring the protocol's economic security.
 - **Focus**: Deflationary burn for losses and unrevealed stakes, with transparent fee routing.
-- **Status**: Finalized and deployed.
+- **Status**: Deployed on Devnet; parameters subject to tuning.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
@@ -59,19 +60,19 @@ A world-class interface for the TIMLG experiment.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>🟡 <strong>Stage 7: Resource Recycling & SOL Sustainability</strong></summary>
+<summary>✅ <strong>Stage 7: Resource Recycling & SOL Sustainability</strong></summary>
 
 Optimizing the protocol's on-chain storage footprint.
 - **Focus**: Automated `close_round` mechanics to reclaim rent and cycle lamports back to the treasury.
-- **Status**: Core logic done; automated supervisor integration in progress.
+- **Status**: Integrated and operational on Devnet.
 </details>
 
-<details class="roadmap-stage" markdown="1">
+<details class="roadmap-stage" markdown="1" open>
 <summary>🟡 <strong>Stage 8: Public Relayer & Scale Testing</strong></summary>
 
 Opening the protocol to users without SOL balances.
 - **Focus**: Decentralized relayer infrastructure to submit user-signed envelopes on-chain.
-- **Status**: Research and API development stage.
+- **Status**: Research and API development stage (Stage 8).
 </details>
 
 <details class="roadmap-stage" markdown="1">

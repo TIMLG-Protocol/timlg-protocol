@@ -7,7 +7,8 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;"><a href="/beta/" class="md-button md-button--primary" style="margin: 0; display: flex; align-items: center; gap: 8px;">Try the Devnet Beta <span style="background: #ffeb3b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">New</span></a></div>
 
 !!! warning "Experimental Phase (Devnet)"
-    TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value. **The protocol is cost-free**: all SOL used for rent deposits can be fully recovered by closing ticket accounts.
+    TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value.
+
 
 ---
 
@@ -75,12 +76,16 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 </div>
 
-!!! important "Token Supply — To Be Determined"
-    The total initial token supply **has not been defined yet** for the mainnet launch. The devnet version uses test parameters. Final tokenomics will be announced before mainnet deployment.
+### Cost model (current vs target)
+
+- **Current (Devnet / MVP):** users may need a small amount of SOL for **transaction fees** to interact with the program.
+- **Target design:** the protocol is intended to run **via a relayer**, making participation **cost-free for users** (fees sponsored by the relayer).
+- **Rent deposits:** SOL used for rent deposits can be **recovered** by closing ticket accounts after settlement.
 
 !!! note "Decimals, base units, and ticket cleanup"
-    - The protocol accounts in **base units** (`u64`). The Token matches standard **SPL specifications** (9 decimals).
+    - Amounts are stored in **base units** (`u64`). With `decimals = 9`, **1 TIMLG = 1_000_000_000 base units**.
     - `claim_reward` pays **SPL tokens** only. To reclaim the ticket account’s **SOL rent deposit**, the user closes the ticket (`close_ticket`) after settlement (and after claim if you won).
+
 
 
 ---

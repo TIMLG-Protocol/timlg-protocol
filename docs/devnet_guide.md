@@ -26,7 +26,10 @@ Use the **Connect Wallet** button in the header. If you haven't connected before
 ---
 
 ### 1.3 Get Devnet funds (Faucet)
-New wallets will show empty balances. You need **SOL** for transaction fees and **TIMLG** to play.
+New wallets will show empty balances. You need a small amount of **SOL** for **transaction fees** to interact with the protocol on Devnet. You also need **TIMLG** to play.
+
+> [!NOTE]
+> **Planned:** the protocol is intended to support a **relayer** in the future so users can participate **cost-free** (fees sponsored by the relayer).
 
 ![Empty Wallet](assets/start_guide/4-EmptyWallet.png)
 

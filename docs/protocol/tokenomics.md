@@ -14,9 +14,9 @@ allocations, and vesting.
 ## What exists today (MVP-aligned)
 
 ### Economic unit (base units)
-- Each ticket escrows a fixed stake of the **protocol token**.
 - The protocol accounts in **base units** (`u64`).
-- Devnet may use a TIMLG mint with `decimals = 0` for easier UX during testing. Mainnet deployments may choose a different `decimals` value; `stake_amount` remains base units.
+- TIMLG uses **`decimals = 9`**, meaning **1 TIMLG = 1_000_000_000 base units**.
+- This decimal configuration is consistent across all environments (Devnet and Mainnet).
 
 !!! note "Implementation note"
     The on-chain program does not enforce mint decimals; `stake_amount` should be interpreted as **base units** of the configured mint.
@@ -90,9 +90,9 @@ TIMLG addresses this by:
 
 Per ticket, the token supply changes like this:
 
-- **WIN:** supply **+1** (reward is minted on claim)
-- **LOSE:** supply **−1** (stake is burned during settlement)
-- **NO-REVEAL:** supply **-1** (stake is burned during settlement)
+- **WIN:** supply **+1,000,000,000** base units (reward is minted on claim)
+- **LOSE:** supply **−1,000,000,000** base units (stake is burned during settlement)
+- **NO-REVEAL:** supply **-1,000,000,000** base units (stake is burned during settlement)
 
 If the experiment is truly unbiased for a single bit (p ≈ 0.5) and participants are not advantaged,
 then in expectation:
@@ -124,7 +124,7 @@ sankey-beta
 ## Fees (Implemented)
 
 The system includes a configurable fee on rewards:
-- `reward_fee_bps`: Basis points charged on the minted reward (100 = 1%).
+- `reward_fee_bps`: Basis points charged on the minted reward (0 = 0%).
 - Fees are routed to a dedicated **Reward Fee Pool** (SPL TokenAccount).
 - These parameters are initialized via `initialize_tokenomics` and stored in the `Tokenomics` account.
 

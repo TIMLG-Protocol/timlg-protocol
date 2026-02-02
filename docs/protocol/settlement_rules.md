@@ -10,9 +10,8 @@ It is written to be **accurate and auditable** without exposing operational secr
 
 Each ticket escrows a fixed stake at commit time.
 
-!!! info "Whole-token unit (no decimals)"
-    TIMLG is designed as a **whole-unit token (decimals = 0)**. The on-chain `stake_amount` is an integer, and deployments are expected
-    to use a TIMLG mint with `decimals = 0` so that **`stake_amount = 1` means “stake 1 TIMLG.”**
+!!! info "TIMLG Decimals and Units"
+    TIMLG is an SPL token with **`decimals = 9`**. Amounts are stored in **base units** (`u64`), where **1 TIMLG = 1_000_000_000 base units**. The on-chain `stake_amount` is an integer expressed in these base units.
 
 After the oracle publishes the pulse and the reveal window closes, each ticket is classified as:
 
@@ -107,8 +106,8 @@ If the round account has been closed/archived (“round dead”, detected via `r
 The payout rule is:
 
 - **WIN payout total = 2 × stake_amount**
-  - 1× is a **refund** from the round token vault
-  - 1× is a **minted reward** (mint authority = config PDA)
+  - 1× is a **refund** of the escrowed base units
+  - 1× is a **minted reward** in base units
 
 So the MVP does **not** require a pre-funded “reward vault” for rewards:
 - stake refunds come from the round token vault

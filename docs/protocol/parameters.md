@@ -84,8 +84,6 @@ gantt
 
 ## Devnet operator entrypoints (timing)
 
-## Devnet operator entrypoints (timing)
-
 The Devnet environment runs a standard **Oracle Operator** configuration which you can replicate using the provided infrastructure.
 
 - **Standard Oracle Mode (NIST):**
@@ -123,8 +121,8 @@ These values reflect **how Devnet is running right now** using the standard NIST
 
 | Parameter | Devnet value | Notes |
 |---|---:|---|
-| Stake per ticket | `stake_amount` (u64) | Stake is stored in **base units**. Devnet UI typically uses `stake_amount = 1` with a mint that may have `decimals = 0`, but decimals are a deployment choice. |
-| Reward fee | `reward_fee_bps` (default 100 = 1%) | Fee applies to minted reward; routed to Reward Fee Pool. |
+| Stake per ticket | `stake_amount = 1_000_000_000` | Stake is stored in **base units** (`u64`). With `decimals = 9`, this example represents **1 TIMLG**. |
+| Reward fee | `reward_fee_bps` (default 0 = 0%) | Fee applies to minted reward; routed to Reward Fee Pool. |
 
 !!! note "Wall-clock time vs slots"
     Slots vary with cluster conditions. The supervisor uses a fixed approximation (~0.40s/slot) to compute deadlines in NIST mode,
