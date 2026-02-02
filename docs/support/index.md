@@ -14,18 +14,18 @@ If you’d like to support development, you can make an **optional donation** on
 <div class="donation-card" markdown="1">
 
 **Address (click to open Explorer):**  
-<a class="donation-address" href="https://explorer.solana.com/address/4pVWvN8kwzqiZqh8f9KBkTPd1Jo3gbJ7mSHvPfbZJjA6" target="_blank" rel="noopener noreferrer">4pVWvN8kwzqiZqh8f9KBkTPd1Jo3gbJ7mSHvPfbZJjA6</a>
+<a class="donation-address" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL</a>
 
 <div class="donation-actions">
   <button class="md-button md-button--primary" type="button" onclick="timlgCopyDonationAddress()">
     Copy address
   </button>
-  <a class="md-button" href="https://explorer.solana.com/address/4pVWvN8kwzqiZqh8f9KBkTPd1Jo3gbJ7mSHvPfbZJjA6" target="_blank" rel="noopener noreferrer">
+  <a class="md-button" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">
     Open in Solana Explorer
   </a>
 </div>
 
-<img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" />
+<!-- <img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" /> -->
 
 <small class="donation-hint">
 Scan the QR code in your wallet, or copy the address. Always verify the address before sending.

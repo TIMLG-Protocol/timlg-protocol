@@ -1,6 +1,6 @@
 // TIMLG donation helpers
 function timlgCopyDonationAddress() {
-  const address = "4pVWvN8kwzqiZqh8f9KBkTPd1Jo3gbJ7mSHvPfbZJjA6";
+  const address = "5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL";
   if (!navigator.clipboard) {
     // Fallback
     const el = document.createElement("textarea");
