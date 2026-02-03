@@ -47452,27 +47452,27 @@ function MyTickets({
                 ] });
                 if (status === "READY TO CLAIM") {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -4 }, children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, color: rThemeColor }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 20, style: { marginLeft: -4 }, color: rThemeColor })
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -6 }, children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: rThemeColor }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: rThemeColor })
                     ] }),
-                    "Claim"
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: 2 }, children: "Claim" })
                   ] }) });
                 }
                 if (status === "REFUND AVAILABLE") {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -4 }, children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, color: rThemeColor }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 20, style: { marginLeft: -4 }, color: rThemeColor })
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -6 }, children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: rThemeColor }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: rThemeColor })
                     ] }),
-                    "Claim"
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: 2 }, children: "Claim" })
                   ] }) });
                 }
                 const roundArchived = !t.round;
                 const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
                 if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 20, style: { marginRight: 6 }, color: rThemeColor }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, style: { marginRight: 8 }, color: rThemeColor }),
                     " Claim"
                   ] });
                 }
