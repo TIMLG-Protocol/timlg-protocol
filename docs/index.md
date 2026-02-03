@@ -175,7 +175,6 @@ flowchart
     BURN_LOSS[BURN LOSS\nStake burned]
     CLAIM_PRIZE[CLAIM PRIZE\nFunds available after settlement]
     CLAIMED[CLAIMED\nPayout received]
-    SWEPT[SWEPT\nGrace period expired\nSweep executed]
     BURN_EXPIRED[BURN EXPIRED\nStake burned]
   end
 
@@ -200,14 +199,12 @@ flowchart
 
   WIN -->|Round settled| CLAIM_PRIZE
   CLAIM_PRIZE -->|User claims| CLAIMED
-  CLAIM_PRIZE -->|No claim - grace expired| SWEPT
 
   REFUND_TIMEOUT -->|User refunds stake| REFUNDED
 
   BURN_LOSS --> End
   BURN_EXPIRED --> End
   CLAIMED --> End
-  SWEPT --> End
   REFUNDED --> End
 
   classDef phase fill:#F6F1FF,stroke:#6B5BD2,stroke-width:1px,color:#111;
@@ -219,7 +216,6 @@ flowchart
   class WAIT,REVEAL,RESULT,RECOVERY phase;
   class PENDING,REVEAL_NOW,REVEALED,CLAIM_PRIZE,REFUND_TIMEOUT,REFUNDED neutral;
   class WIN,CLAIMED good;
-  class SWEPT warn;
   class BURN_LOSS,BURN_EXPIRED bad;
 ```
 
