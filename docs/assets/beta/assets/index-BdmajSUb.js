@@ -49505,8 +49505,7 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "VERSION:" }),
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "0.1.3-verifiable" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { wordBreak: "break-all", opacity: 0.4, fontSize: "8px", marginTop: "4px" }, children: RPC_URL })
+              ] })
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
