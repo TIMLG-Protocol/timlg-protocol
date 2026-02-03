@@ -46476,7 +46476,6 @@ function triggerDownload(fileName, dataObj) {
     alert("Error preparing download: " + e.message);
   }
 }
-const safeStr = (v) => v != null && v.toString() !== "0" && v.toString() !== "null" ? v.toString() : "null";
 const toHex = (u82) => {
   if (!u82) return "";
   return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -46564,22 +46563,22 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 8, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr auto", rowGap: 6, fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: "bold", color: "#60A5FA" }, children: safeStr(currentSlot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(currentSlot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: 1, background: "rgba(0,0,0,0.1)", gridColumn: "1/-1", margin: "4px 0" } }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.createdSlot || activeRound?.created_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.createdSlot || activeRound?.created_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Commit Deadline:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.commitDeadlineSlot || activeRound?.commit_deadline_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.commitDeadlineSlot || activeRound?.commit_deadline_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Pulse Set at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.pulseSetSlot || activeRound?.pulse_set_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.pulseSetSlot || activeRound?.pulse_set_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reveal Deadline:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Finalized at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.finalizedSlot || activeRound?.finalized_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.finalizedSlot || activeRound?.finalized_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Settled at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) || "—" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reclaimed at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.sweptSlot || activeRound?.swept_slot || ((activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) && claimGraceSlots ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null)) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.sweptSlot || activeRound?.swept_slot || ((activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) && claimGraceSlots ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null)) || "—" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 16 }, children: [
