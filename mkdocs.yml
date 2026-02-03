@@ -64,7 +64,6 @@ nav:
   - Devnet Beta:
       - App: beta.md
       - Guide: devnet_guide.md
-      - Runbook (Technical): runbook-devnet.md
   - Whitepaper:
       - Overview: whitepaper/index.md
       - Changelog: whitepaper/changelog.md
@@ -77,6 +76,7 @@ nav:
       - Tokenomics: protocol/tokenomics.md
       - Treasury & BitIndex: protocol/treasury_bitindex.md
       - Automation: protocol/automation.md
+      - Operator Guide: runbook-devnet.md
 
   - Roadmap: roadmap/index.md
   - Security & Control:
