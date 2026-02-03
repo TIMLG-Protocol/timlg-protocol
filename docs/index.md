@@ -1,4 +1,4 @@
-# <img src="assets/icon_vector_logo.svg" width="40" style="vertical-align: bottom; margin-right: 10px;"> TIMLG Protocol
+# <img src="assets/icon_vector_logo.svg" width="56" style="vertical-align: bottom; margin-right: 12px;"> TIMLG Protocol
 
 TIMLG is a **public, auditable experiment protocol** built on Solana.
 
