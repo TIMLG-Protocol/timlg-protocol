@@ -66,7 +66,7 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
    <div style="background: #f8fafc; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.8em; border-top: 1px solid #e2e8f0;">
        <div style="display: flex; align-items: center; gap: 8px;">
            <span style="color: #64748b; font-weight: 600;">Mint:</span>
-           <a href="https://explorer.solana.com/address/7nJ9vaCpjo3zDY1fzZv1KicjoZ6yPpzHFcKq3HDh8cEf/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: #2563eb; font-weight: 600; text-decoration: none;">7nJ9...8cEf ↗</a>
+           <a href="https://explorer.solana.com/address/7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: #2563eb; font-weight: 600; text-decoration: none;">7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy ↗</a>
        </div>
        <div style="display: flex; align-items: center; gap: 8px;">
            <span style="color: #64748b; font-weight: 600;">Decimals:</span>
