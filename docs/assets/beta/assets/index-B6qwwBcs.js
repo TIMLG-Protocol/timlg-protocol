@@ -48705,8 +48705,7 @@ function useUserTickets({
     }
   };
 }
-clusterApiUrl("devnet");
-const RPC_URL = "https://devnet.helius-rpc.com/?api-key=bd37fed6-13d1-4959-9a54-7f736355b5f6";
+const PUBLIC_RPC = "https://api.devnet.solana.com";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
@@ -48730,6 +48729,8 @@ function App() {
   const [pubkey2, setPubkey] = reactExports.useState(null);
   const [sol, setSol] = reactExports.useState(null);
   const [timlg, setTIMLG] = reactExports.useState(null);
+  const [userRpc, setUserRpc] = reactExports.useState(() => localStorage.getItem("TIMLG_USER_RPC") || "");
+  const RPC_URL = reactExports.useMemo(() => userRpc || PUBLIC_RPC, [userRpc]);
   const [invite, setInvite] = reactExports.useState(DEFAULT_INVITE);
   const [status, setStatus] = reactExports.useState("");
   const [txSig, setTxSig] = reactExports.useState("");
@@ -49505,6 +49506,36 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "VERSION:" }),
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "0.1.3-verifiable" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "8px", borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "4px", fontSize: "9px" }, children: "CUSTOM RPC (PRIVATE)" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    style: {
+                      width: "100%",
+                      background: "rgba(0,0,0,0.05)",
+                      border: "1px solid rgba(0,0,0,0.1)",
+                      borderRadius: "6px",
+                      padding: "4px 8px",
+                      fontSize: "9px",
+                      color: "#111",
+                      outline: "none",
+                      fontFamily: "monospace"
+                    },
+                    placeholder: PUBLIC_RPC,
+                    value: userRpc,
+                    onChange: (e) => {
+                      const val = e.target.value;
+                      setUserRpc(val);
+                      localStorage.setItem("TIMLG_USER_RPC", val);
+                    }
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { opacity: 0.3, fontSize: "7px", marginTop: "4px" }, children: [
+                  "Currently using: ",
+                  RPC_URL
+                ] })
               ] })
             ] })
           ] }),
