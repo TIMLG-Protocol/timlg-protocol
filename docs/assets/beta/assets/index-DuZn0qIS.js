@@ -46422,7 +46422,8 @@ function generateTicketExportJSON(ticketData) {
       reveal: revealedTx?.signature || receipt?.revealTx ? { signature: revealedTx?.signature || receipt?.revealTx, slot: formatSlot(onChainTicket?.revealedSlot ?? receipt?.revealedSlot) } : null,
       claim: claimedTx?.signature || receipt?.claimTx ? { signature: claimedTx?.signature || receipt?.claimTx, slot: formatSlot(onChainTicket?.claimedSlot ?? receipt?.claimedSlot) } : null,
       refund: receipt?.refundedTx ? { signature: receipt.refundedTx, slot: formatSlot(receipt.refundedSlot) } : null,
-      sweep: receipt?.sweepTx ? { signature: receipt.sweepTx, slot: formatSlot(receipt.sweptSlot) } : null
+      sweep: receipt?.sweepTx ? { signature: receipt.sweepTx, slot: formatSlot(receipt.sweptSlot) } : null,
+      treasury: receipt?.sweepTx ? { signature: receipt.sweepTx, slot: formatSlot(receipt.sweptSlot) } : null
     }
   };
   return data;
@@ -46446,7 +46447,7 @@ function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticket
         // This is "Pulse Set At Slot"
         revealDeadline: formatSlot(rData?.revealDeadlineSlot || rData?.reveal_deadline_slot),
         finalized: formatSlot(rData?.finalizedSlot || rData?.finalized_slot),
-        swept: formatSlot(rData?.sweptSlot || rData?.swept_slot),
+        reclaimed: formatSlot(rData?.sweptSlot || rData?.swept_slot),
         settled: formatSlot(rData?.tokenSettledSlot || rData?.token_settled_slot)
       },
       oracle: {
@@ -46577,7 +46578,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.finalizedSlot || activeRound?.finalized_slot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Settled at:" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Swept at:" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reclaimed at:" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.sweptSlot || activeRound?.swept_slot || ((activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) && claimGraceSlots ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null)) })
         ] })
       ] }),
@@ -46699,8 +46700,8 @@ function MyTickets({
     if (!row.receipt) {
       if (row.revealed) {
         if (row.win) {
-          if (row.swept) return "SWEPT";
-          if (row.round && row.round.finalized) return "SWEPT";
+          if (row.swept) return "RECLAIMED";
+          if (row.round && row.round.finalized) return "RECLAIMED";
           return "WIN";
         } else {
           if (row.processed) return "LOSS";
@@ -46719,18 +46720,18 @@ function MyTickets({
     if (row.receipt?.refunded === true) return "REFUNDED";
     if (row.receipt?.closed) {
       if (row.receipt.outcome === "win" || row.receipt.sweepTx || row.receipt.sweptAt) {
-        return "SWEPT";
+        return "RECLAIMED";
       }
     }
     if (claimed) return "CLAIMED";
     if (win) {
-      if (!row.round) return "SWEPT";
-      if (row.swept) return "SWEPT";
+      if (!row.round) return "RECLAIMED";
+      if (row.swept) return "RECLAIMED";
       if (currentSlot2 && row.round && claimGraceSlots != null) {
         const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
         if (revealDl) {
           const sweepSlot = revealDl + BigInt(claimGraceSlots);
-          if (BigInt(currentSlot2) > sweepSlot) return "SWEPT";
+          if (BigInt(currentSlot2) > sweepSlot) return "RECLAIMED";
         }
       }
       if (tokenSettled || row.round.finalized) return "READY TO CLAIM";
@@ -47032,7 +47033,7 @@ function MyTickets({
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "LOSS", children: "Loss" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "CLAIMED", children: "Claimed" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "REFUNDED", children: "Refunded" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SWEPT", children: "Swept" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "RECLAIMED", children: "Reclaimed" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "EXPIRED", children: "Expired" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "PENDING", children: "Pending" })
         ] }),
@@ -47081,7 +47082,7 @@ function MyTickets({
                 rStatus = "CLAIM WINDOW";
                 const diff = Number(sweepEligible - cSlot);
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Sweep risk in: ",
+                  "Reclaim deadline in: ",
                   /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
                 ] });
               } else {
@@ -47164,7 +47165,7 @@ function MyTickets({
             const s = getComputedStatus(t, currentSlot);
             const roundArchived = !t.round;
             const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
-            return (s === "LOSS" || s === "SWEPT" || s === "EXPIRED" || s === "REFUNDED" || s === "REFUND RENT" || s === "PENDING" && roundArchived) && !t.receipt?.closed && isProcessed && (!t.round || finalized);
+            return (s === "LOSS" || s === "RECLAIMED" || s === "EXPIRED" || s === "REFUNDED" || s === "REFUND RENT" || s === "PENDING" && roundArchived) && !t.receipt?.closed && isProcessed && (!t.round || finalized);
           });
           const allProccesableClaim = [...ticketsToClaimPrize, ...ticketsToRefund, ...ticketsToReclaim];
           [...ticketsToClaimPrize, ...ticketsToRefund];
@@ -47428,9 +47429,11 @@ function MyTickets({
               const COLOR_PENDING = "#9CA3AF";
               const COLOR_PROCESSING = "#F59E0B";
               let iconColor = COLOR_PENDING;
-              if (status === "WIN" || status === "READY TO CLAIM" || status.includes("SWEPT") && t.win) {
+              if (status === "WIN" || status === "READY TO CLAIM" || status.includes("RECLAIMED") && t.win) {
+                rThemeColor = COLOR_WIN;
                 iconColor = COLOR_WIN;
-              } else if (status === "LOSS" || status.includes("SWEPT") && !t.win && t.revealed) {
+              } else if (status === "LOSS" || status.includes("RECLAIMED") && !t.win && t.revealed) {
+                rThemeColor = COLOR_LOSS;
                 iconColor = COLOR_LOSS;
               } else if (t.revealed) {
                 if (status === "REVEALING") {
@@ -47491,7 +47494,7 @@ function MyTickets({
                 }
                 const roundArchived = !t.round;
                 const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
-                if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
+                if (isProcessed && (status === "LOSS" || status === "RECLAIMED" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
                   actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, style: { marginRight: 8 }, color: rThemeColor }),
                     " Claim"
@@ -47511,7 +47514,7 @@ function MyTickets({
                     /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { whiteSpace: "nowrap", fontSize: 11, opacity: 0.6, textTransform: "uppercase" }, children: t.guess === 1 ? "Bull" : "Bear" })
                   ] })
                 ] }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "SWEPT" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "RECLAIMED" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 19 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketDownloadIcon, { size: 19 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: actionBtn })
