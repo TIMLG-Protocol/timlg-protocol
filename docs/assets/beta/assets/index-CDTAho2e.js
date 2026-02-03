@@ -49507,79 +49507,79 @@ Domain: timlg.org`;
         ] })
       ] }),
       !isCompact && showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
-        marginTop: 8,
-        marginBottom: 12,
-        fontSize: "10px",
+        marginTop: 10,
+        marginBottom: 16,
+        fontSize: "12px",
         background: "rgba(255,255,255,0.4)",
-        padding: "12px",
-        borderRadius: "12px",
-        border: "1px solid rgba(0,0,0,0.05)"
+        padding: "16px",
+        borderRadius: "14px",
+        border: "1px solid rgba(0,0,0,0.06)"
       }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "ENVIRONMENT" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "ENVIRONMENT" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "RPC:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "RPC:" }),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "Devnet" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "Devnet" })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "VERSION:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERSION:" }),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "0.1.3-verifiable" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "0.1.3-verifiable" })
               ] })
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "TRUST & SECURITY" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "TRUST & SECURITY" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "VERIFICATION:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERIFICATION:" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/verified-build?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
                   background: programStatus.verified ? "rgba(45, 104, 234, 0.1)" : "rgba(0,0,0,0.05)",
                   color: programStatus.verified ? "#2D68EA" : "#555",
-                  padding: "2px 6px",
-                  borderRadius: "4px",
+                  padding: "3px 8px",
+                  borderRadius: "5px",
                   fontWeight: "800",
                   border: "1px solid",
-                  borderColor: programStatus.verified ? "#2D68EA" : "#ccc",
-                  fontSize: "9px"
+                  borderColor: programStatus.verified ? "#2D68EA" : "#bbb",
+                  fontSize: "10px"
                 }, children: programStatus.verified ? "ON-CHAIN ✅" : "VERIFY ON EXPLORER ↗" }) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "SECURITY.TXT:" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "SECURITY.TXT:" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/security?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
                   background: programStatus.security ? "rgba(16, 185, 129, 0.1)" : "rgba(0,0,0,0.05)",
-                  color: programStatus.security ? "#10B981" : "#666",
-                  padding: "2px 6px",
-                  borderRadius: "4px",
+                  color: programStatus.security ? "#10B981" : "#555",
+                  padding: "3px 8px",
+                  borderRadius: "5px",
                   fontWeight: "800",
                   border: "1px solid",
-                  borderColor: programStatus.security ? "#10B981" : "#ccc",
-                  fontSize: "9px"
+                  borderColor: programStatus.security ? "#10B981" : "#bbb",
+                  fontSize: "10px"
                 }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
               ] })
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "16px", borderTop: "2px solid rgba(0,0,0,0.05)", paddingTop: "16px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "10px", fontSize: "11px", letterSpacing: "0.08em" }, children: "NETWORK CONFIGURATION (CUSTOM RPC)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px", alignItems: "stretch" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", borderTop: "2px solid rgba(0,0,0,0.05)", paddingTop: "18px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "12px", fontSize: "12px", letterSpacing: "0.1em" }, children: "NETWORK CONFIGURATION (CUSTOM RPC)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "12px", alignItems: "stretch" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
               {
                 style: {
                   flex: 1,
-                  background: "rgba(255,255,255,0.6)",
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  borderRadius: "8px",
-                  padding: "10px 14px",
-                  fontSize: "12px",
+                  background: "rgba(255,255,255,0.7)",
+                  border: "1px solid rgba(0,0,0,0.18)",
+                  borderRadius: "10px",
+                  padding: "12px 16px",
+                  fontSize: "13px",
                   color: "#000",
                   outline: "none",
                   fontFamily: "monospace",
-                  boxShadow: "inset 0 1px 3px rgba(0,0,0,0.05)"
+                  boxShadow: "inset 0 1px 4px rgba(0,0,0,0.06)"
                 },
                 placeholder: `Default: ${PUBLIC_RPC}`,
                 value: rpcInput,
@@ -49592,35 +49592,36 @@ Domain: timlg.org`;
                 onClick: testAndSaveRpc,
                 disabled: rpcTestStatus === "testing",
                 style: {
-                  padding: "0 20px",
+                  padding: "0 24px",
                   background: rpcTestStatus === "success" ? "#27ae60" : rpcTestStatus === "error" ? "#e74c3c" : "#111",
                   color: "#fff",
                   border: "none",
-                  borderRadius: "8px",
-                  fontSize: "11px",
-                  fontWeight: "bold",
+                  borderRadius: "10px",
+                  fontSize: "12px",
+                  fontWeight: "900",
                   cursor: "pointer",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                   opacity: rpcTestStatus === "testing" ? 0.6 : 1,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  minWidth: "125px"
+                  minWidth: "140px",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
                 },
                 children: rpcTestStatus === "testing" ? "TESTING..." : "SAVE & TEST"
               }
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-            marginTop: "8px",
-            fontSize: "11px",
-            color: rpcTestStatus === "error" ? "#e74c3c" : rpcTestStatus === "success" ? "#27ae60" : "#666",
-            fontWeight: rpcTestStatus ? "600" : "400",
+            marginTop: "10px",
+            fontSize: "12px",
+            color: rpcTestStatus === "error" ? "#e74c3c" : rpcTestStatus === "success" ? "#27ae60" : "#555",
+            fontWeight: rpcTestStatus ? "700" : "500",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center"
           }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: rpcTestMsg || `Status: All systems functional over ${userRpc ? "private" : "public"} link.` }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: rpcTestStatus ? 1 : 0.7 }, children: rpcTestMsg || `Status: All systems functional over ${userRpc ? "private" : "public"} link.` }),
             userRpc && /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
@@ -49629,27 +49630,27 @@ Domain: timlg.org`;
                   setUserRpc("");
                   localStorage.removeItem("TIMLG_USER_RPC");
                 },
-                style: { background: "none", border: "none", color: "#0066cc", fontSize: "10px", cursor: "pointer", textDecoration: "underline" },
-                children: "Reset to Default"
+                style: { background: "none", border: "none", color: "#2D68EA", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" },
+                children: "RESET TO DEFAULT"
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "8px", letterSpacing: "0.05em" }, children: "PROTOCOL ASSETS" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "100px 1fr", gap: "6px 12px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "PROGRAM ID" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "12px", letterSpacing: "0.08em", fontSize: "11px" }, children: "PROTOCOL ASSETS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "120px 1fr", gap: "10px 16px", fontSize: "12px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "PROGRAM ID" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
               PROGRAM_ID,
               " ↗"
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "TIMLG MINT" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "TIMLG MINT" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
               TIMLG_MINT,
               " ↗"
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6 }, children: "FAUCET API" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontStyle: "italic" }, children: FAUCET_URL })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "FAUCET API" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontStyle: "italic" }, children: FAUCET_URL })
           ] })
         ] })
       ] }),
