@@ -48730,7 +48730,29 @@ function App() {
   const [sol, setSol] = reactExports.useState(null);
   const [timlg, setTIMLG] = reactExports.useState(null);
   const [userRpc, setUserRpc] = reactExports.useState(() => localStorage.getItem("TIMLG_USER_RPC") || "");
+  const [rpcInput, setRpcInput] = reactExports.useState(userRpc);
+  const [rpcTestStatus, setRpcTestStatus] = reactExports.useState(null);
+  const [rpcTestMsg, setRpcTestMsg] = reactExports.useState("");
   const RPC_URL = reactExports.useMemo(() => userRpc || PUBLIC_RPC, [userRpc]);
+  const testAndSaveRpc = async () => {
+    setRpcTestStatus("testing");
+    setRpcTestMsg("Connecting...");
+    try {
+      const target = rpcInput?.trim() || PUBLIC_RPC;
+      const conn = new Connection(target, "confirmed");
+      const slot = await conn.getSlot();
+      setUserRpc(rpcInput?.trim());
+      localStorage.setItem("TIMLG_USER_RPC", rpcInput?.trim());
+      setRpcTestStatus("success");
+      setRpcTestMsg(`Connected! Slot: ${slot} ✅`);
+      appendLog(`RPC Change: Connected to ${target}`);
+      setTimeout(() => setRpcTestStatus(null), 3e3);
+    } catch (err) {
+      setRpcTestStatus("error");
+      setRpcTestMsg(err.message || "Connection failed ❌");
+      appendLog(`RPC Error: ${err.message}`);
+    }
+  };
   const [invite, setInvite] = reactExports.useState(DEFAULT_INVITE);
   const [status, setStatus] = reactExports.useState("");
   const [txSig, setTxSig] = reactExports.useState("");
@@ -49506,36 +49528,6 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "VERSION:" }),
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.8 }, children: "0.1.3-verifiable" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "8px", borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: "8px" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.4, fontWeight: "900", marginBottom: "4px", fontSize: "9px" }, children: "CUSTOM RPC (PRIVATE)" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    style: {
-                      width: "100%",
-                      background: "rgba(0,0,0,0.05)",
-                      border: "1px solid rgba(0,0,0,0.1)",
-                      borderRadius: "6px",
-                      padding: "4px 8px",
-                      fontSize: "9px",
-                      color: "#111",
-                      outline: "none",
-                      fontFamily: "monospace"
-                    },
-                    placeholder: PUBLIC_RPC,
-                    value: userRpc,
-                    onChange: (e) => {
-                      const val = e.target.value;
-                      setUserRpc(val);
-                      localStorage.setItem("TIMLG_USER_RPC", val);
-                    }
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { opacity: 0.3, fontSize: "7px", marginTop: "4px" }, children: [
-                  "Currently using: ",
-                  RPC_URL
-                ] })
               ] })
             ] })
           ] }),
@@ -49569,6 +49561,78 @@ Domain: timlg.org`;
                 }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
               ] })
             ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "16px", borderTop: "2px solid rgba(0,0,0,0.05)", paddingTop: "16px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "10px", fontSize: "11px", letterSpacing: "0.08em" }, children: "NETWORK CONFIGURATION (CUSTOM RPC)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px", alignItems: "stretch" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                style: {
+                  flex: 1,
+                  background: "rgba(255,255,255,0.6)",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  fontSize: "12px",
+                  color: "#000",
+                  outline: "none",
+                  fontFamily: "monospace",
+                  boxShadow: "inset 0 1px 3px rgba(0,0,0,0.05)"
+                },
+                placeholder: `Default: ${PUBLIC_RPC}`,
+                value: rpcInput,
+                onChange: (e) => setRpcInput(e.target.value)
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: testAndSaveRpc,
+                disabled: rpcTestStatus === "testing",
+                style: {
+                  padding: "0 20px",
+                  background: rpcTestStatus === "success" ? "#27ae60" : rpcTestStatus === "error" ? "#e74c3c" : "#111",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  opacity: rpcTestStatus === "testing" ? 0.6 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minWidth: "125px"
+                },
+                children: rpcTestStatus === "testing" ? "TESTING..." : "SAVE & TEST"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            marginTop: "8px",
+            fontSize: "11px",
+            color: rpcTestStatus === "error" ? "#e74c3c" : rpcTestStatus === "success" ? "#27ae60" : "#666",
+            fontWeight: rpcTestStatus ? "600" : "400",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: rpcTestMsg || `Status: All systems functional over ${userRpc ? "private" : "public"} link.` }),
+            userRpc && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  setRpcInput("");
+                  setUserRpc("");
+                  localStorage.removeItem("TIMLG_USER_RPC");
+                },
+                style: { background: "none", border: "none", color: "#0066cc", fontSize: "10px", cursor: "pointer", textDecoration: "underline" },
+                children: "Reset to Default"
+              }
+            )
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
