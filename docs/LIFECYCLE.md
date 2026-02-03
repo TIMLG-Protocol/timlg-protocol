@@ -23,7 +23,6 @@ flowchart
     BURN_LOSS[BURN LOSS\nStake burned]
     CLAIM_PRIZE[CLAIM PRIZE\nFunds available after settlement]
     CLAIMED[CLAIMED\nPayout received]
-    SWEPT[SWEPT\nGrace period expired\nSweep executed]
     BURN_EXPIRED[BURN EXPIRED\nStake burned]
   end
 
@@ -48,14 +47,12 @@ flowchart
 
   WIN -->|Round settled| CLAIM_PRIZE
   CLAIM_PRIZE -->|User claims| CLAIMED
-  CLAIM_PRIZE -->|No claim - grace expired| SWEPT
 
   REFUND_TIMEOUT -->|User refunds stake| REFUNDED
 
   BURN_LOSS --> End
   BURN_EXPIRED --> End
   CLAIMED --> End
-  SWEPT --> End
   REFUNDED --> End
 
   classDef phase fill:#F6F1FF,stroke:#6B5BD2,stroke-width:1px,color:#111;
@@ -67,13 +64,12 @@ flowchart
   class WAIT,REVEAL,RESULT,RECOVERY phase;
   class PENDING,REVEAL_NOW,REVEALED,CLAIM_PRIZE,REFUND_TIMEOUT,REFUNDED neutral;
   class WIN,CLAIMED good;
-  class SWEPT warn;
   class BURN_LOSS,BURN_EXPIRED bad;
 ```
 
 ### Participation Volume Flow
 
-The following Sankey diagram visualizes how tickets typically flow through the system by volume, highlighting the "leakage" points (Expired, Swept) and the final distribution of outcomes.
+The following Sankey diagram visualizes how tickets typically flow through the system by volume, highlighting the "leakage" point (Expired) and the final distribution of outcomes.
 
 ```mermaid
 sankey-beta
@@ -87,8 +83,7 @@ sankey-beta
     Revealed,Losses,425
     Revealed,Wins,425
 
-    Wins,Claimed,400
-    Wins,Swept,25
+    Wins,Claimed,425
 ```
 
 ### State Explanations (Updated)
@@ -99,7 +94,6 @@ sankey-beta
 4. **CLAIM PRIZE**: Prize funds are now available for claiming after the round has been settled.  
 5. **BURN LOSS**: The user revealed but was not correct. The *stake* is permanently **burned**.  
 6. **BURN EXPIRED**: The user **did not reveal on time**. The *stake* is **burned** in the same way as a loss.  
-7. **SWEPT**: The user won but **did not claim** within the grace period. The protocol executes a `sweep` to recover the SOL rent (unclaimed prizes remain in the vault until the round is closed).  
-8. **REFUND TIMEOUT**: A safety mechanism activated if the Oracle does not publish the pulse after a reasonable time (`REFUND_TIMEOUT_SLOTS`). Allows the user to recover their *stake*.  
-9. **CLAIMED**: Terminal state. The user successfully claimed the prize payout.  
-10. **REFUNDED**: Terminal state. The user recovered their *stake* after a timeout (no pulse published).  
+7. **REFUND TIMEOUT**: A safety mechanism activated if the Oracle does not publish the pulse after a reasonable time (`REFUND_TIMEOUT_SLOTS`). Allows the user to recover their *stake*.  
+8. **CLAIMED**: Terminal state. The user successfully claimed the prize payout.  
+9. **REFUNDED**: Terminal state. The user recovered their *stake* after a timeout (no pulse published).  
