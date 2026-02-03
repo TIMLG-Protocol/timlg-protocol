@@ -46445,7 +46445,8 @@ function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticket
         pulse: formatSlot(rData?.pulseSetSlot || rData?.pulse_set_slot),
         // This is "Pulse Set At Slot"
         revealDeadline: formatSlot(rData?.revealDeadlineSlot || rData?.reveal_deadline_slot),
-        swept: formatSlot(rData?.sweptSlot),
+        finalized: formatSlot(rData?.finalizedSlot || rData?.finalized_slot),
+        swept: formatSlot(rData?.sweptSlot || rData?.swept_slot),
         settled: formatSlot(rData?.tokenSettledSlot || rData?.token_settled_slot)
       },
       oracle: {
@@ -46474,7 +46475,7 @@ function triggerDownload(fileName, dataObj) {
     alert("Error preparing download: " + e.message);
   }
 }
-const safeStr = (v) => v != null && v.toString() !== "0" ? v.toString() : "null";
+const safeStr = (v) => v != null && v.toString() !== "0" && v.toString() !== "null" ? v.toString() : "null";
 const toHex = (u82) => {
   if (!u82) return "";
   return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -46495,9 +46496,20 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
       }
     }
   }, [rPda, programPk, roundId2]);
+  const [cachedRound, setCachedRound] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    if (!round && roundId2) {
+      const cached = loadLocalRoundWrapper(roundId2);
+      if (cached) {
+        console.log("Restored round data from local cache", cached);
+        setCachedRound(cached);
+      }
+    }
+  }, [round, roundId2]);
+  const activeRound = round || cachedRound;
   reactExports.useEffect(() => {
     const target = rPda || derivedPda;
-    if (!round && target && connection) {
+    if (!activeRound && target && connection) {
       setAccountStatus("checking");
       connection.getAccountInfo(target).then((info) => {
         setAccountStatus(info ? "exists" : "closed");
@@ -46506,7 +46518,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
         setAccountStatus("unknown");
       });
     }
-  }, [round, rPda, derivedPda, connection]);
+  }, [activeRound, rPda, derivedPda, connection]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal", onClick: (e) => e.stopPropagation(), style: { maxWidth: 500 }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__head", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal__title", children: [
@@ -46540,11 +46552,11 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5 }, children: "Target Pulse" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: round?.pulseIndexTarget || round?.pulse_index_target ? `#${round.pulseIndexTarget || round.pulse_index_target}` : "—" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `#${activeRound.pulseIndexTarget || activeRound.pulse_index_target}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5 }, children: "Finalized" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: round?.finalized || accountStatus === "closed" ? "YES" : "NO" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 12, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
@@ -46554,30 +46566,32 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: "bold", color: "#60A5FA" }, children: safeStr(currentSlot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: 1, background: "rgba(0,0,0,0.1)", gridColumn: "1/-1", margin: "4px 0" } }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.createdSlot || round?.created_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.createdSlot || activeRound?.created_slot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Commit Deadline:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.commitDeadlineSlot || round?.commit_deadline_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.commitDeadlineSlot || activeRound?.commit_deadline_slot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Pulse Set at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.pulseSetSlot || round?.pulse_set_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.pulseSetSlot || activeRound?.pulse_set_slot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reveal Deadline:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.revealDeadlineSlot || round?.reveal_deadline_slot) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Sweep at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr((round?.revealDeadlineSlot || round?.reveal_deadline_slot) && claimGraceSlots ? BigInt(round?.revealDeadlineSlot || round?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Finalized at:" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.finalizedSlot || activeRound?.finalized_slot) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Settled at:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(round?.tokenSettledSlot || round?.token_settled_slot) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Swept at:" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: safeStr(activeRound?.sweptSlot || activeRound?.swept_slot || ((activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) && claimGraceSlots ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null)) })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 16 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ORACLE PULSE HASH (SHA3-512)" }),
-        accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(0,0,0,0.03)", color: "#888", border: "1px solid rgba(0,0,0,0.05)", textAlign: "center" }, children: "🚫 Data cleared (Round Swept)" }) : !round?.pulse || Object.values(round.pulse).every((b) => b === 0) ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(234, 179, 8, 0.1)", color: "#ca8a04", border: "1px solid rgba(234, 179, 8, 0.2)", textAlign: "center" }, children: "⏳ Waiting for external oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 10, wordBreak: "break-all", background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        !activeRound?.pulse || Object.values(activeRound.pulse).every((b) => b === 0) ? accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(0,0,0,0.03)", color: "#888", border: "1px solid rgba(0,0,0,0.05)", textAlign: "center" }, children: "🚫 Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(234, 179, 8, 0.1)", color: "#ca8a04", border: "1px solid rgba(234, 179, 8, 0.2)", textAlign: "center" }, children: "⏳ Waiting for external oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 10, wordBreak: "break-all", background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "a",
           {
-            href: `https://explorer.solana.com/block/${round?.pulseSetSlot || round?.pulse_set_slot || 0}?cluster=devnet`,
+            href: `https://explorer.solana.com/block/${activeRound?.pulseSetSlot || activeRound?.pulse_set_slot || 0}?cluster=devnet`,
             target: "_blank",
             rel: "noopener noreferrer",
             style: { color: "inherit", textDecoration: "none" },
             children: [
-              toHex(round.pulse),
+              toHex(activeRound.pulse),
               " ↗"
             ]
           }
@@ -46858,7 +46872,7 @@ function MyTickets({
         }
       }
       const revealDeadline = roundData?.revealDeadlineSlot ?? roundData?.reveal_deadline_slot;
-      if (revealDeadline && claimGraceSlots) {
+      if (revealDeadline && claimGraceSlots && !roundData.sweptSlot && !roundData.swept_slot) {
         let rdBn;
         try {
           rdBn = BigInt(revealDeadline);
@@ -46918,12 +46932,19 @@ function MyTickets({
     const revealSig = ticket.revealedTx || ticket.receipt?.revealTx;
     const claimSig = ticket.claimedTx || ticket.receipt?.claimTx;
     const treasurySig = await ensureSweepTx(ticket, roundId2);
+    let roundData = ticket.round;
+    if (!roundData) {
+      const { loadLocalRoundWrapper: loadLocalRoundWrapper2 } = await __vitePreload(async () => {
+        const { loadLocalRoundWrapper: loadLocalRoundWrapper3 } = await Promise.resolve().then(() => local);
+        return { loadLocalRoundWrapper: loadLocalRoundWrapper3 };
+      }, true ? void 0 : void 0, import.meta.url);
+      roundData = loadLocalRoundWrapper2(roundId2);
+    }
     const data = {
       ticketPk: ticket.ticketPk,
       onChainTicket: ticket.ticket,
       receipt: ticket.receipt,
-      round: ticket.round,
-      // ✅ Pass round for pulseIndexTarget
+      // ✅ Pass restored round for metadata
       status,
       createdTx: commitSig ? { signature: commitSig } : null,
       revealedTx: revealSig ? { signature: revealSig } : null,
@@ -47894,7 +47915,10 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
           revealDeadlineSlot: toBigInt(pick$1(decoded, "revealDeadlineSlot", "reveal_deadline_slot")),
           pulseIndexTarget: toBigInt(pick$1(decoded, "pulseIndexTarget", "pulse_index_target")),
           pulse: pick$1(decoded, "pulse"),
-          pulseSetSlot: toBigInt(pick$1(decoded, "pulseSetSlot", "pulse_set_slot"))
+          pulseSetSlot: toBigInt(pick$1(decoded, "pulseSetSlot", "pulse_set_slot")),
+          tokenSettledSlot: toBigInt(pick$1(decoded, "tokenSettledSlot", "token_settled_slot")),
+          finalizedSlot: toBigInt(pick$1(decoded, "finalizedSlot", "finalized_slot")),
+          sweptSlot: toBigInt(pick$1(decoded, "sweptSlot", "swept_slot"))
         };
         const target2 = Number(rObj.pulseIndexTarget);
         activeRounds[target2.toString()] = rObj;
