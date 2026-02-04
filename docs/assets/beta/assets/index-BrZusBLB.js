@@ -46511,11 +46511,9 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const fn = getRel(activeRound?.finalizedSlot || activeRound?.finalized_slot);
     const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
     const relCurrentSlot2 = getRel(currentSlot);
-    const nominalGrace = Number(claimGraceSlots || 1e4);
-    let sw = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
-    if (sw === null && rd !== null) {
-      sw = rd + nominalGrace;
-    }
+    const realSweptSlot = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
+    const claimDeadline = rd !== null ? rd + Number(claimGraceSlots || 1e4) : null;
+    const sw = realSweptSlot !== null ? realSweptSlot : claimDeadline;
     const ticketEvents2 = [];
     if (tickets) {
       tickets.forEach((t) => {
@@ -46533,7 +46531,6 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         }
       });
     }
-    !!(activeRound?.sweptSlot || activeRound?.swept_slot);
     const totalSlots2 = Math.max(sw || 2500, relCurrentSlot2 || 0);
     const commitEnd = cd || 0;
     let pulseEnd = commitEnd;
@@ -46554,11 +46551,8 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       rd !== null && rd > 0 && { slot: rd, label: "Reveal Deadline", critical: true },
       fn !== null && fn > 0 && { slot: fn, label: "Finalized", critical: false },
       st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
-      sw !== null && sw > 0 && {
-        slot: sw,
-        label: activeRound?.sweptSlot || activeRound?.swept_slot ? "Vault Reclaimed" : "Reclaim Deadline",
-        critical: false
-      }
+      claimDeadline !== null && { slot: claimDeadline, label: "Claim Deadline", critical: true },
+      realSweptSlot !== null && { slot: realSweptSlot, label: "Vault Reclaimed", critical: false }
     ].filter(Boolean);
     return {
       totalSlots: totalSlots2,
