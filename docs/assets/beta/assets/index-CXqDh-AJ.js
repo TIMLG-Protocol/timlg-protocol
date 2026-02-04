@@ -46725,7 +46725,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Events" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: "#60A5FA", transform: "rotate(45deg)" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: "#22c55e", transform: "rotate(45deg)" } }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Buy Tickets" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
