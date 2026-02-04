@@ -46516,7 +46516,6 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     if (sw === null && rd !== null) {
       sw = rd + nominalGrace;
     }
-    const allSlots = [0, cd, ps, rd, fn, st, sw, relCurrentSlot2].filter((x) => x !== null && !isNaN(x));
     const ticketEvents2 = [];
     if (tickets) {
       tickets.forEach((t) => {
@@ -46524,39 +46523,29 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         const tr = getRel(t.ticket?.revealedSlot || t.receipt?.revealedSlot);
         const tcl = getRel(t.ticket?.claimedSlot || t.receipt?.claimedSlot);
         if (tc !== null) {
-          allSlots.push(tc);
           ticketEvents2.push({ slot: tc, type: "buy", ticket: t });
         }
         if (tr !== null) {
-          allSlots.push(tr);
           ticketEvents2.push({ slot: tr, type: "reveal", ticket: t });
         }
         if (tcl !== null) {
-          allSlots.push(tcl);
           ticketEvents2.push({ slot: tcl, type: "claim", ticket: t });
-          console.log("CLAIM ticket found:", { tcl, ticket: t });
         }
       });
     }
-    console.log("Total ticket events:", ticketEvents2.length, ticketEvents2.filter((e) => e.type === "claim").length, "claims");
-    const isSwept = !!(activeRound?.sweptSlot || activeRound?.swept_slot);
-    const relevantSlots = isSwept ? allSlots.filter((s) => s !== relCurrentSlot2) : allSlots;
-    const realMax = Math.max(...relevantSlots, 1e3);
-    const currentRel = relCurrentSlot2 || 0;
-    const autoExpandThreshold = rd !== null ? rd : 2e3;
-    let visualTotal;
-    if (isSwept || currentRel > autoExpandThreshold) {
-      visualTotal = Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
-    } else {
-      const focusEnd = rd !== null ? rd + 1e3 : 2500;
-      visualTotal = Math.max(focusEnd, Math.ceil(realMax / 500) * 500);
+    !!(activeRound?.sweptSlot || activeRound?.swept_slot);
+    const totalSlots2 = Math.max(sw || 2500, relCurrentSlot2 || 0);
+    const commitEnd = cd || 0;
+    let pulseEnd = commitEnd;
+    if (relCurrentSlot2 !== null && relCurrentSlot2 > commitEnd) {
+      pulseEnd = ps || Math.min(relCurrentSlot2, rd || totalSlots2);
     }
-    const totalSlots2 = visualTotal;
+    const revealEnd = Math.max(pulseEnd, rd || pulseEnd);
     const phases2 = [
-      { name: "COMMIT", start: 0, end: commitEnd, color: "rgba(134, 239, 172, 0.15)" },
-      { name: "PULSE", start: commitEnd, end: pulseEnd, color: "rgba(253, 224, 71, 0.15)" },
-      { name: "REVEAL", start: pulseEnd, end: revealEnd, color: "rgba(147, 197, 253, 0.15)" },
-      { name: "CLAIM", start: revealEnd, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
+      { name: "COMMIT", start: 0, end: commitEnd },
+      { name: "PULSE", start: commitEnd, end: pulseEnd },
+      { name: "REVEAL", start: pulseEnd, end: revealEnd },
+      { name: "CLAIM", start: revealEnd, end: sw || totalSlots2 }
     ].filter((p) => p.end > p.start);
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
