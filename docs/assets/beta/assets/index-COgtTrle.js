@@ -46570,13 +46570,14 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       phases: phases2,
       milestones: milestones2,
       ticketEvents: ticketEvents2,
-      currentSlot: relCurrentSlot2
+      currentSlot: relCurrentSlot2,
+      isSwept: isSwept2
     };
   }, [activeRound, tickets, claimGraceSlots, currentSlot]);
   if (!timelineData) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { padding: 20, textAlign: "center", opacity: 0.5, fontSize: 12 }, children: "No timeline data available" });
   }
-  const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot } = timelineData;
+  const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot, isSwept } = timelineData;
   const svgWidth = 700;
   const height = 220;
   const marginLeft = 0;
@@ -49328,15 +49329,15 @@ function App() {
             breakdown.CLAIMED++;
             netTokensRaw += mintedReward;
           } else {
-            let isSwept2 = r.swept;
-            if (!isSwept2 && !r.round) isSwept2 = true;
-            if (!isSwept2 && currentSlot && r.round && chainState?.config?.claimGraceSlots != null) {
+            let isSwept = r.swept;
+            if (!isSwept && !r.round) isSwept = true;
+            if (!isSwept && currentSlot && r.round && chainState?.config?.claimGraceSlots != null) {
               const revealDl2 = r.round?.revealDeadlineSlot || r.round?.reveal_deadline_slot ? BigInt(r.round.revealDeadlineSlot || r.round.reveal_deadline_slot) : 0n;
               const grace = BigInt(chainState.config.claimGraceSlots);
               const sweepSlot = revealDl2 + grace;
-              if (revealDl2 > 0n && currentSlot > sweepSlot) isSwept2 = true;
+              if (revealDl2 > 0n && currentSlot > sweepSlot) isSwept = true;
             }
-            if (isSwept2) {
+            if (isSwept) {
               breakdown.SWEPT++;
               netTokensRaw -= rawStake;
             } else {
