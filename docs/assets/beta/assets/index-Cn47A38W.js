@@ -46510,11 +46510,12 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const rd = getRel(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot);
     const fn = getRel(activeRound?.finalizedSlot || activeRound?.finalized_slot);
     const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
+    const relCurrentSlot2 = getRel(currentSlot);
     let sw = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
     if (sw === null && rd !== null && claimGraceSlots) {
       sw = rd + Number(claimGraceSlots);
     }
-    const allSlots = [0, cd, ps, rd, fn, st, sw].filter((x) => x !== null);
+    const allSlots = [0, cd, ps, rd, fn, st, sw, relCurrentSlot2].filter((x) => x !== null);
     const ticketEvents2 = [];
     if (tickets) {
       tickets.forEach((t) => {
@@ -46539,10 +46540,11 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     console.log("Total ticket events:", ticketEvents2.length, ticketEvents2.filter((e) => e.type === "claim").length, "claims");
     const realMax = Math.max(...allSlots, 1e3);
     const totalSlots2 = sw || Math.ceil(realMax / 500) * 500;
+    const pulseEnd = ps || relCurrentSlot2 || totalSlots2 * 0.5;
     const phases2 = [
       { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
-      { name: "PULSE", start: cd || totalSlots2 * 0.25, end: ps || totalSlots2 * 0.5, color: "rgba(253, 224, 71, 0.15)" },
-      { name: "REVEAL", start: ps || totalSlots2 * 0.5, end: rd || totalSlots2 * 0.75, color: "rgba(147, 197, 253, 0.15)" },
+      { name: "PULSE", start: cd || totalSlots2 * 0.25, end: pulseEnd, color: "rgba(253, 224, 71, 0.15)" },
+      { name: "REVEAL", start: pulseEnd, end: rd || totalSlots2 * 0.75, color: "rgba(147, 197, 253, 0.15)" },
       { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
     ];
     const milestones2 = [
@@ -46563,7 +46565,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       phases: phases2,
       milestones: milestones2,
       ticketEvents: ticketEvents2,
-      currentSlot: getRel(currentSlot)
+      currentSlot: relCurrentSlot2
     };
   }, [activeRound, tickets, claimGraceSlots, currentSlot]);
   if (!timelineData) {
