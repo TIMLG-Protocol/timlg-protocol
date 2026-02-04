@@ -49622,7 +49622,6 @@ Domain: timlg.org`;
         // ✅ Save slot for export
         commitTx: "pending"
       };
-      saveLocalReceipt(pubkey2.toBase58(), targetRoundId, receipt);
       let sig = await program.methods.commitTicket(new BN(targetRoundId), new BN(nonce), Array.from(commitment)).accounts(accounts2).rpc();
       setTxSig(sig);
       appendLog(`Commit OK ✅ tx=${sig}`);
@@ -49673,14 +49672,6 @@ Domain: timlg.org`;
         await refreshProtocolState?.();
         refreshTickets();
       } else {
-        if (accounts2?.ticket) {
-          try {
-            deleteLocalReceiptWrapper(pubkey2.toBase58(), targetRoundId, accounts2.ticket.toBase58());
-            appendLog(`Commit cleanup: removed pending receipt.`);
-          } catch (err) {
-            console.error("Cleanup failed", err);
-          }
-        }
         appendLog(`Commit failed: ${errState}`);
         refreshTickets();
       }
