@@ -46532,9 +46532,11 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         if (tcl !== null) {
           allSlots.push(tcl);
           ticketEvents2.push({ slot: tcl, type: "claim", ticket: t });
+          console.log("CLAIM ticket found:", { tcl, ticket: t });
         }
       });
     }
+    console.log("Total ticket events:", ticketEvents2.length, ticketEvents2.filter((e) => e.type === "claim").length, "claims");
     const realMax = Math.max(...allSlots, 1e3);
     const totalSlots2 = Math.ceil(realMax / 500) * 500;
     const phases2 = [
@@ -46678,7 +46680,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           const typeIndex = typeCounts[evt.type];
           typeCounts[evt.type]++;
           const y = baseHeights[evt.type] + staggerOffsets[typeIndex % staggerOffsets.length];
-          const size = 5;
+          const size = evt.type === "claim" ? 7 : 5;
           const colors = {
             buy: "#60A5FA",
             reveal: "#A78BFA",
@@ -46690,8 +46692,8 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
               d: `M ${x} ${y - size} L ${x + size} ${y} L ${x} ${y + size} L ${x - size} ${y} Z`,
               fill: colors[evt.type],
               stroke: colors[evt.type],
-              strokeWidth: "1",
-              opacity: "0.7"
+              strokeWidth: evt.type === "claim" ? "2" : "1",
+              opacity: evt.type === "claim" ? "1" : "0.7"
             }
           ) }, i);
         });
