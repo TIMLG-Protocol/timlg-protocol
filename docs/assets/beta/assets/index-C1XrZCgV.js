@@ -46793,7 +46793,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
         /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
         "This round has been settled and the rent reclaimed (swept). Most data is no longer available on the blockchain."
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 16 }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ROUND ADDRESS (PDA)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, wordBreak: "break-all" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "a",
@@ -46809,7 +46809,23 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           }
         ) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 12 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ORACLE PULSE HASH (SHA3-512)" }),
+        !activeRound?.pulse || Object.values(activeRound.pulse).every((b) => b === 0) ? accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(0,0,0,0.03)", color: "#888", border: "1px solid rgba(0,0,0,0.05)", textAlign: "center" }, children: "🚫 Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(234, 179, 8, 0.1)", color: "#ca8a04", border: "1px solid rgba(234, 179, 8, 0.2)", textAlign: "center" }, children: "⏳ Waiting for external oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 10, wordBreak: "break-all", background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: `https://explorer.solana.com/block/${activeRound?.pulseSetSlot || activeRound?.pulse_set_slot || 0}?cluster=devnet`,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            style: { color: "inherit", textDecoration: "underline", textUnderlineOffset: 2 },
+            children: [
+              toHex(Array.isArray(activeRound.pulse) ? activeRound.pulse : Object.values(activeRound.pulse || {})),
+              " ↗"
+            ]
+          }
+        ) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5 }, children: "Target Pulse" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `#${activeRound.pulseIndexTarget || activeRound.pulse_index_target}` : "—" })
@@ -46819,8 +46835,8 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 12, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 8, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 6, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px", fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(0,0,0,0.1)" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
