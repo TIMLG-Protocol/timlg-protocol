@@ -46511,9 +46511,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const fn = getRel(activeRound?.finalizedSlot || activeRound?.finalized_slot);
     const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
     const relCurrentSlot2 = getRel(currentSlot);
+    const nominalGrace = Number(claimGraceSlots || 1e4);
     let sw = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
-    if (sw === null && rd !== null && (claimGraceSlots !== void 0 && claimGraceSlots !== null)) {
-      sw = rd + Number(claimGraceSlots);
+    if (sw === null && rd !== null) {
+      sw = rd + nominalGrace;
     }
     const allSlots = [0, cd, ps, rd, fn, st, sw, relCurrentSlot2].filter((x) => x !== null && !isNaN(x));
     const ticketEvents2 = [];
@@ -46541,7 +46542,16 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const isSwept = !!(activeRound?.sweptSlot || activeRound?.swept_slot);
     const relevantSlots = isSwept ? allSlots.filter((s) => s !== relCurrentSlot2) : allSlots;
     const realMax = Math.max(...relevantSlots, 1e3);
-    const totalSlots2 = isSwept ? sw : Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
+    const currentRel = relCurrentSlot2 || 0;
+    const autoExpandThreshold = rd !== null ? rd : 2e3;
+    let visualTotal;
+    if (isSwept || currentRel > autoExpandThreshold) {
+      visualTotal = Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
+    } else {
+      const focusEnd = rd !== null ? rd + 1e3 : 2500;
+      visualTotal = Math.max(focusEnd, Math.ceil(realMax / 500) * 500);
+    }
+    const totalSlots2 = visualTotal;
     const pulseEnd = ps || relCurrentSlot2 || totalSlots2 * 0.5;
     const phases2 = [
       { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
@@ -46631,13 +46641,13 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         const x = slotToX(phase.start);
         const w = slotToX(phase.end) - x;
         const bgColors = [
-          "rgba(134, 239, 172, 0.08)",
+          "rgba(134, 239, 172, 0.12)",
           // Pale green background
-          "rgba(253, 224, 71, 0.08)",
+          "rgba(253, 224, 71, 0.12)",
           // Pale yellow background
-          "rgba(147, 197, 253, 0.08)",
+          "rgba(147, 197, 253, 0.12)",
           // Pale blue background
-          "rgba(103, 232, 249, 0.08)"
+          "rgba(103, 232, 249, 0.12)"
           // Pale teal background
         ];
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46683,7 +46693,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
               fontSize: "9",
               fill: "#fff",
               textAnchor: i === 0 ? "start" : i === milestones.length - 1 ? "end" : "middle",
-              style: { pointerEvents: "none" },
+              style: {
+                pointerEvents: "none",
+                filter: "drop-shadow(0px 1px 2px rgba(0,0,0,0.8))"
+              },
               children: m.label
             }
           )
@@ -46907,7 +46920,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: activeRound?.sweptSlot || activeRound?.swept_slot ? "Reclaimed at:" : "Reclaim Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: activeRound?.sweptSlot || activeRound?.swept_slot ? "bold" : "normal" }, children: formatSlot(activeRound?.sweptSlot || activeRound?.swept_slot || ((activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) && claimGraceSlots ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots) : null)) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: activeRound?.sweptSlot || activeRound?.swept_slot ? "bold" : "normal" }, children: formatSlot(activeRound?.sweptSlot || activeRound?.swept_slot || (activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots || 1e4) : null)) || "—" })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
