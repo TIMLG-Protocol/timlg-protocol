@@ -46579,10 +46579,14 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", width: "100%", height: 32, fontSize: 10, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }, children: phases.map((phase, i) => {
       const phaseWidth = (phase.end - phase.start) / totalSlots * 100;
       const colors = [
-        { bg: "rgba(96, 165, 250, 0.15)", border: "rgba(96, 165, 250, 0.4)", text: "#60A5FA" },
-        { bg: "rgba(167, 139, 250, 0.15)", border: "rgba(167, 139, 250, 0.4)", text: "#A78BFA" },
-        { bg: "rgba(248, 113, 113, 0.15)", border: "rgba(248, 113, 113, 0.4)", text: "#F87171" },
-        { bg: "rgba(52, 211, 153, 0.1)", border: "rgba(52, 211, 153, 0.4)", text: "#34D399" }
+        { bg: "rgba(134, 239, 172, 0.2)", border: "rgba(74, 222, 128, 0.5)", text: "#4ade80" },
+        // Pale green
+        { bg: "rgba(253, 224, 71, 0.2)", border: "rgba(250, 204, 21, 0.5)", text: "#facc15" },
+        // Pale yellow
+        { bg: "rgba(147, 197, 253, 0.2)", border: "rgba(96, 165, 250, 0.5)", text: "#60a5fa" },
+        // Pale blue
+        { bg: "rgba(103, 232, 249, 0.2)", border: "rgba(34, 211, 238, 0.5)", text: "#22d3ee" }
+        // Pale teal
       ];
       return /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
@@ -46608,10 +46612,14 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         const x = slotToX(phase.start);
         const w = slotToX(phase.end) - x;
         const bgColors = [
-          "rgba(96, 165, 250, 0.05)",
-          "rgba(167, 139, 250, 0.05)",
-          "rgba(248, 113, 113, 0.05)",
-          "rgba(52, 211, 153, 0.03)"
+          "rgba(134, 239, 172, 0.08)",
+          // Pale green background
+          "rgba(253, 224, 71, 0.08)",
+          // Pale yellow background
+          "rgba(147, 197, 253, 0.08)",
+          // Pale blue background
+          "rgba(103, 232, 249, 0.08)"
+          // Pale teal background
         ];
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "rect",
