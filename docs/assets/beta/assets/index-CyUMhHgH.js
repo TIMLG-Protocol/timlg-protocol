@@ -46572,10 +46572,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { padding: 20, textAlign: "center", opacity: 0.5, fontSize: 12 }, children: "No timeline data available" });
   }
   const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot } = timelineData;
-  const svgWidth = 750;
+  const svgWidth = 700;
   const height = 220;
-  const marginLeft = 40;
-  const marginRight = 80;
+  const marginLeft = 0;
+  const marginRight = 0;
   const chartWidth = svgWidth - marginLeft - marginRight;
   const slotToX = (slot) => marginLeft + slot / totalSlots * chartWidth;
   const getMilestoneY = (index2) => {
@@ -46586,8 +46586,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 10, background: "transparent", padding: 0, border: "none" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
       display: "flex",
-      paddingLeft: `${marginLeft / svgWidth * 100}%`,
-      paddingRight: `${marginRight / svgWidth * 100}%`,
+      width: "100%",
       height: 32,
       fontSize: 10,
       fontWeight: "bold",
@@ -46680,7 +46679,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
               y: y - 12,
               fontSize: "9",
               fill: "#fff",
-              textAnchor: "middle",
+              textAnchor: i === 0 ? "start" : i === milestones.length - 1 ? "end" : "middle",
               style: { pointerEvents: "none" },
               children: m.label
             }
