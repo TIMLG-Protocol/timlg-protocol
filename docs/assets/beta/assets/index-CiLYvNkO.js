@@ -46564,12 +46564,17 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { padding: 20, textAlign: "center", opacity: 0.5, fontSize: 12 }, children: "No timeline data available" });
   }
   const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot } = timelineData;
-  const width = 700;
-  const height = 200;
+  const svgWidth = 700;
+  const height = 220;
   const marginLeft = 10;
   const marginRight = 10;
-  const chartWidth = width - marginLeft - marginRight;
+  const chartWidth = svgWidth - marginLeft - marginRight;
   const slotToX = (slot) => marginLeft + slot / totalSlots * chartWidth;
+  const getMilestoneY = (index2) => {
+    const baseY = 70;
+    const levels = [0, 30, 15, 35, 10, 25, 20];
+    return baseY + levels[index2 % levels.length];
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 16, background: "rgba(0,0,0,0.02)", padding: 12, borderRadius: 8, border: "1px solid rgba(255,255,255,0.05)" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", width: "100%", height: 32, fontSize: 10, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }, children: phases.map((phase, i) => {
       const phaseWidth = (phase.end - phase.start) / totalSlots * 100;
@@ -46598,7 +46603,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         i
       );
     }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width, height, style: { display: "block" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: `0 0 ${svgWidth} ${height}`, width: "100%", height, style: { display: "block" }, children: [
       phases.map((phase, i) => {
         const x = slotToX(phase.start);
         const w = slotToX(phase.end) - x;
@@ -46620,7 +46625,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           i
         );
       }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: marginLeft, y1: height - 40, x2: width - marginRight, y2: height - 40, stroke: "rgba(255,255,255,0.2)", strokeWidth: "1" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: marginLeft, y1: height - 40, x2: svgWidth - marginRight, y2: height - 40, stroke: "rgba(255,255,255,0.2)", strokeWidth: "1" }),
       Array.from({ length: Math.floor(totalSlots / 500) + 1 }, (_, i) => i * 500).map((slot) => {
         const x = slotToX(slot);
         return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
@@ -46630,7 +46635,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       }),
       milestones.map((m, i) => {
         const x = slotToX(m.slot);
-        const y = 80;
+        const y = getMilestoneY(i);
         const size = 6;
         return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46658,7 +46663,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       }),
       ticketEvents.map((evt, i) => {
         const x = slotToX(evt.slot);
-        const y = evt.type === "buy" ? 120 : evt.type === "reveal" ? 135 : 150;
+        const y = evt.type === "buy" ? 135 : evt.type === "reveal" ? 150 : 165;
         const size = 5;
         const colors = {
           buy: "#60A5FA",
