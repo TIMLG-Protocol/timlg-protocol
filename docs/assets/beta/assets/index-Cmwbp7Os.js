@@ -46512,7 +46512,16 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
     const relCurrentSlot2 = getRel(currentSlot);
     const realSweptSlot = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
-    const claimDeadline = rd !== null ? rd + Number(claimGraceSlots || 1e4) : null;
+    let grace = 1e4;
+    try {
+      if (claimGraceSlots != null) {
+        const g = Number(claimGraceSlots);
+        if (!isNaN(g) && g > 0) grace = g;
+      }
+    } catch (e) {
+      console.warn("RoundTimeline: Failed to parse grace period", claimGraceSlots);
+    }
+    const claimDeadline = rd !== null ? rd + grace : null;
     const sw = realSweptSlot !== null ? realSweptSlot : claimDeadline;
     const ticketEvents2 = [];
     if (tickets) {
