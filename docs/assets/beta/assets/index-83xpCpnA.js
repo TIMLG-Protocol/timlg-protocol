@@ -46661,26 +46661,33 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           )
         ] }, i);
       }),
-      ticketEvents.map((evt, i) => {
-        const x = slotToX(evt.slot);
-        const y = evt.type === "buy" ? 135 : evt.type === "reveal" ? 150 : 165;
-        const size = 5;
-        const colors = {
-          buy: "#60A5FA",
-          reveal: "#A78BFA",
-          claim: "#34D399"
-        };
-        return /* @__PURE__ */ jsxRuntimeExports.jsx("g", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "path",
-          {
-            d: `M ${x} ${y - size} L ${x + size} ${y} L ${x} ${y + size} L ${x - size} ${y} Z`,
-            fill: colors[evt.type],
-            stroke: colors[evt.type],
-            strokeWidth: "1",
-            opacity: "0.7"
-          }
-        ) }, i);
-      }),
+      (() => {
+        const typeCounts = { buy: 0, reveal: 0, claim: 0 };
+        return ticketEvents.map((evt, i) => {
+          const x = slotToX(evt.slot);
+          const baseHeights = { buy: 135, reveal: 150, claim: 165 };
+          const staggerOffsets = [0, 8, 4, 10, 6];
+          const typeIndex = typeCounts[evt.type];
+          typeCounts[evt.type]++;
+          const y = baseHeights[evt.type] + staggerOffsets[typeIndex % staggerOffsets.length];
+          const size = 5;
+          const colors = {
+            buy: "#60A5FA",
+            reveal: "#A78BFA",
+            claim: "#34D399"
+          };
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("g", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "path",
+            {
+              d: `M ${x} ${y - size} L ${x + size} ${y} L ${x} ${y + size} L ${x - size} ${y} Z`,
+              fill: colors[evt.type],
+              stroke: colors[evt.type],
+              strokeWidth: "1",
+              opacity: "0.7"
+            }
+          ) }, i);
+        });
+      })(),
       relCurrentSlot !== null && relCurrentSlot >= 0 && relCurrentSlot <= totalSlots && /* @__PURE__ */ jsxRuntimeExports.jsx(
         "line",
         {
