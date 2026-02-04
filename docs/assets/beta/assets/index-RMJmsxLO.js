@@ -46550,7 +46550,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
     ];
     const milestones2 = [
-      { slot: 0, label: "_____  Start", critical: false },
+      { slot: 0, label: "Start", critical: false },
       cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
       ps !== null && ps > 0 && { slot: ps, label: "Pulse Published", critical: true },
       rd !== null && rd > 0 && { slot: rd, label: "Reveal Deadline", critical: true },
@@ -46679,6 +46679,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
             {
               x,
               y: y - 12,
+              dx: i === 0 ? 6 : i === milestones.length - 1 ? -6 : 0,
               fontSize: "9",
               fill: "#fff",
               textAnchor: i === 0 ? "start" : i === milestones.length - 1 ? "end" : "middle",
