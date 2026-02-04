@@ -46848,12 +46848,30 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5 }, children: "Target Pulse" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `#${activeRound.pulseIndexTarget || activeRound.pulse_index_target}` : "—" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5, marginBottom: 4 }, children: "Target Pulse" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+            display: "inline-block",
+            background: "#191a7a",
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "14px",
+            fontWeight: "bold",
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 0 10px rgba(25, 26, 122, 0.3)"
+          }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `#${activeRound.pulseIndexTarget || activeRound.pulse_index_target}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5 }, children: "Finalized" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "bold" }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5, marginBottom: 4 }, children: "Finalized" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: activeRound?.finalized || accountStatus === "closed" ? "#4ade80" : "#fbbf24",
+            display: "flex",
+            alignItems: "center",
+            height: "26px"
+            // match height of Target Pulse chip roughly
+          }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
