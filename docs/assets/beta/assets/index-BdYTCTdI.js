@@ -46540,10 +46540,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const realMax = Math.max(...allSlots, 1e3);
     const totalSlots2 = Math.ceil(realMax / 500) * 500;
     const phases2 = [
-      { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(96, 165, 250, 0.15)" },
-      { name: "PULSE", start: cd || totalSlots2 * 0.25, end: ps || totalSlots2 * 0.5, color: "rgba(167, 139, 250, 0.15)" },
-      { name: "REVEAL", start: ps || totalSlots2 * 0.5, end: rd || totalSlots2 * 0.75, color: "rgba(248, 113, 113, 0.15)" },
-      { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: totalSlots2, color: "rgba(52, 211, 153, 0.1)" }
+      { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
+      { name: "PULSE", start: cd || totalSlots2 * 0.25, end: ps || totalSlots2 * 0.5, color: "rgba(253, 224, 71, 0.15)" },
+      { name: "REVEAL", start: ps || totalSlots2 * 0.5, end: rd || totalSlots2 * 0.75, color: "rgba(147, 197, 253, 0.15)" },
+      { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
     ];
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
