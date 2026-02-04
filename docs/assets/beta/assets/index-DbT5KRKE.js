@@ -46545,12 +46545,12 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     ];
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
-      cd !== null && { slot: cd, label: "Commit Deadline", critical: true },
-      ps !== null && { slot: ps, label: "Pulse Published", critical: true },
-      rd !== null && { slot: rd, label: "Reveal Deadline", critical: true },
-      fn !== null && { slot: fn, label: "Finalized", critical: false },
-      st !== null && { slot: st, label: "Tokens Settled", critical: false },
-      sw !== null && { slot: sw, label: "Vault Reclaimed", critical: false }
+      cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
+      ps !== null && ps > 0 && { slot: ps, label: "Pulse Published", critical: true },
+      rd !== null && rd > 0 && { slot: rd, label: "Reveal Deadline", critical: true },
+      fn !== null && fn > 0 && { slot: fn, label: "Finalized", critical: false },
+      st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
+      sw !== null && sw > 0 && { slot: sw, label: "Vault Reclaimed", critical: false }
     ].filter(Boolean);
     return {
       totalSlots: totalSlots2,
