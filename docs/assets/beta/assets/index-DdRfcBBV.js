@@ -46853,13 +46853,13 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
             display: "inline-block",
             background: "#191a7a",
             color: "#fff",
-            padding: "4px 8px",
+            padding: "4px 10px",
             borderRadius: "4px",
             fontSize: "14px",
             fontWeight: "bold",
             border: "1px solid rgba(255,255,255,0.1)",
             boxShadow: "0 0 10px rgba(25, 26, 122, 0.3)"
-          }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `#${activeRound.pulseIndexTarget || activeRound.pulse_index_target}` : "—" })
+          }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `Index ${formatSlot(activeRound.pulseIndexTarget || activeRound.pulse_index_target)}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5, marginBottom: 4 }, children: "Finalized" }),
