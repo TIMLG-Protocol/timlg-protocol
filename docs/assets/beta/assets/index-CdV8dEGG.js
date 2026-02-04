@@ -46552,13 +46552,12 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       visualTotal = Math.max(focusEnd, Math.ceil(realMax / 500) * 500);
     }
     const totalSlots2 = visualTotal;
-    const pulseEnd = ps || relCurrentSlot2 || totalSlots2 * 0.5;
     const phases2 = [
-      { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
-      { name: "PULSE", start: cd || totalSlots2 * 0.25, end: pulseEnd, color: "rgba(253, 224, 71, 0.15)" },
-      { name: "REVEAL", start: pulseEnd, end: rd || totalSlots2 * 0.75, color: "rgba(147, 197, 253, 0.15)" },
-      { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
-    ];
+      { name: "COMMIT", start: 0, end: commitEnd, color: "rgba(134, 239, 172, 0.15)" },
+      { name: "PULSE", start: commitEnd, end: pulseEnd, color: "rgba(253, 224, 71, 0.15)" },
+      { name: "REVEAL", start: pulseEnd, end: revealEnd, color: "rgba(147, 197, 253, 0.15)" },
+      { name: "CLAIM", start: revealEnd, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
+    ].filter((p) => p.end > p.start);
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
       cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
@@ -46595,7 +46594,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const levels = [0, 30, 15, 35, 10, 25, 20];
     return baseY + levels[index2 % levels.length];
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 10, background: "transparent", padding: 0, border: "none" }, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", marginTop: 10, background: "transparent", padding: 0, border: "none" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
       display: "flex",
       width: "100%",
@@ -46604,32 +46603,30 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       fontWeight: "bold",
       textTransform: "uppercase",
       letterSpacing: 1,
-      marginBottom: 0
+      marginBottom: -2
+      // Overlap slightly to ensure zero gap
     }, children: phases.map((phase, i) => {
       const phaseWidth = (phase.end - phase.start) / totalSlots * 100;
-      const colors = [
-        { bg: "rgba(134, 239, 172, 0.2)", border: "rgba(74, 222, 128, 0.5)", text: "#4ade80" },
-        // Pale green
-        { bg: "rgba(253, 224, 71, 0.2)", border: "rgba(250, 204, 21, 0.5)", text: "#facc15" },
-        // Pale yellow
-        { bg: "rgba(147, 197, 253, 0.2)", border: "rgba(96, 165, 250, 0.5)", text: "#60a5fa" },
-        // Pale blue
-        { bg: "rgba(103, 232, 249, 0.2)", border: "rgba(34, 211, 238, 0.5)", text: "#22d3ee" }
-        // Pale teal
-      ];
+      const colors = {
+        COMMIT: { bg: "rgba(134, 239, 172, 0.25)", border: "rgba(74, 222, 128, 0.6)", text: "#4ade80" },
+        PULSE: { bg: "rgba(253, 224, 71, 0.25)", border: "rgba(250, 204, 21, 0.6)", text: "#facc15" },
+        REVEAL: { bg: "rgba(147, 197, 253, 0.25)", border: "rgba(96, 165, 250, 0.6)", text: "#60a5fa" },
+        CLAIM: { bg: "rgba(103, 232, 249, 0.25)", border: "rgba(34, 211, 238, 0.6)", text: "#22d3ee" }
+      };
+      const style = colors[phase.name];
       return /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
           style: {
             width: `${phaseWidth}%`,
-            background: colors[i].bg,
+            background: style.bg,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: colors[i].text,
-            borderBottom: `2px solid ${colors[i].border}`,
+            color: style.text,
+            borderBottom: `2px solid ${style.border}`,
             borderTopLeftRadius: i === 0 ? 8 : 0,
-            borderTopRightRadius: i === 3 ? 8 : 0
+            borderTopRightRadius: i === phases.length - 1 ? 8 : 0
           },
           children: phase.name
         },
@@ -46640,16 +46637,12 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       phases.map((phase, i) => {
         const x = slotToX(phase.start);
         const w = slotToX(phase.end) - x;
-        const bgColors = [
-          "rgba(134, 239, 172, 0.12)",
-          // Pale green background
-          "rgba(253, 224, 71, 0.12)",
-          // Pale yellow background
-          "rgba(147, 197, 253, 0.12)",
-          // Pale blue background
-          "rgba(103, 232, 249, 0.12)"
-          // Pale teal background
-        ];
+        const bgColors = {
+          COMMIT: "rgba(134, 239, 172, 0.15)",
+          PULSE: "rgba(253, 224, 71, 0.15)",
+          REVEAL: "rgba(147, 197, 253, 0.15)",
+          CLAIM: "rgba(103, 232, 249, 0.15)"
+        };
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "rect",
           {
@@ -46657,7 +46650,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
             y: 0,
             width: w,
             height,
-            fill: bgColors[i]
+            fill: bgColors[phase.name]
           },
           i
         );
