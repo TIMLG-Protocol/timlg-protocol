@@ -46811,13 +46811,13 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ORACLE PULSE HASH (SHA3-512)" }),
-        !activeRound?.pulse || Object.values(activeRound.pulse).every((b) => b === 0) ? accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(0,0,0,0.03)", color: "#888", border: "1px solid rgba(0,0,0,0.05)", textAlign: "center" }, children: "🚫 Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, background: "rgba(234, 179, 8, 0.1)", color: "#ca8a04", border: "1px solid rgba(234, 179, 8, 0.2)", textAlign: "center" }, children: "⏳ Waiting for external oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 10, wordBreak: "break-all", background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, wordBreak: "break-all" }, children: !activeRound?.pulse || Object.values(activeRound.pulse).every((b) => b === 0) ? accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Waiting for oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "a",
           {
             href: `https://explorer.solana.com/block/${activeRound?.pulseSetSlot || activeRound?.pulse_set_slot || 0}?cluster=devnet`,
             target: "_blank",
             rel: "noopener noreferrer",
-            style: { color: "inherit", textDecoration: "underline", textUnderlineOffset: 2 },
+            style: { color: "inherit", textDecoration: "underline", textUnderlineOffset: 3 },
             children: [
               toHex(Array.isArray(activeRound.pulse) ? activeRound.pulse : Object.values(activeRound.pulse || {})),
               " ↗"
