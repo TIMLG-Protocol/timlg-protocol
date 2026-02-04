@@ -46499,6 +46499,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       if (s == null) return null;
       try {
         const val = toBigInt2(s);
+        if (val === 0n) return null;
         const rel = Number(val - cSlot);
         return rel >= 0 ? rel : 0;
       } catch (e) {
@@ -46519,7 +46520,6 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         if (!isNaN(g) && g > 0) grace = g;
       }
     } catch (e) {
-      console.warn("RoundTimeline: Failed to parse grace period", claimGraceSlots);
     }
     const claimDeadline = rd !== null ? rd + grace : null;
     const sw = realSweptSlot !== null ? realSweptSlot : claimDeadline;
