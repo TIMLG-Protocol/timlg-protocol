@@ -46583,8 +46583,18 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const levels = [0, 30, 15, 35, 10, 25, 20];
     return baseY + levels[index2 % levels.length];
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 10, background: "rgba(0,0,0,0.02)", padding: 0, borderRadius: 8, border: "1px solid rgba(255,255,255,0.05)" }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", width: "100%", height: 32, fontSize: 10, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }, children: phases.map((phase, i) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 10, background: "transparent", padding: 0, border: "none" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      display: "flex",
+      paddingLeft: `${marginLeft / svgWidth * 100}%`,
+      paddingRight: `${marginRight / svgWidth * 100}%`,
+      height: 32,
+      fontSize: 10,
+      fontWeight: "bold",
+      textTransform: "uppercase",
+      letterSpacing: 1,
+      marginBottom: 0
+    }, children: phases.map((phase, i) => {
       const phaseWidth = (phase.end - phase.start) / totalSlots * 100;
       const colors = [
         { bg: "rgba(134, 239, 172, 0.2)", border: "rgba(74, 222, 128, 0.5)", text: "#4ade80" },
