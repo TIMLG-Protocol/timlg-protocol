@@ -46512,10 +46512,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
     const relCurrentSlot2 = getRel(currentSlot);
     let sw = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
-    if (sw === null && rd !== null && claimGraceSlots) {
+    if (sw === null && rd !== null && (claimGraceSlots !== void 0 && claimGraceSlots !== null)) {
       sw = rd + Number(claimGraceSlots);
     }
-    const allSlots = [0, cd, ps, rd, fn, st, sw, relCurrentSlot2].filter((x) => x !== null);
+    const allSlots = [0, cd, ps, rd, fn, st, sw, relCurrentSlot2].filter((x) => x !== null && !isNaN(x));
     const ticketEvents2 = [];
     if (tickets) {
       tickets.forEach((t) => {
@@ -46539,7 +46539,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     }
     console.log("Total ticket events:", ticketEvents2.length, ticketEvents2.filter((e) => e.type === "claim").length, "claims");
     const realMax = Math.max(...allSlots, 1e3);
-    const totalSlots2 = sw || Math.ceil(realMax / 500) * 500;
+    const totalSlots2 = Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
     const pulseEnd = ps || relCurrentSlot2 || totalSlots2 * 0.5;
     const phases2 = [
       { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
@@ -46572,10 +46572,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { padding: 20, textAlign: "center", opacity: 0.5, fontSize: 12 }, children: "No timeline data available" });
   }
   const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot } = timelineData;
-  const svgWidth = 700;
+  const svgWidth = 750;
   const height = 220;
-  const marginLeft = 0;
-  const marginRight = 0;
+  const marginLeft = 40;
+  const marginRight = 80;
   const chartWidth = svgWidth - marginLeft - marginRight;
   const slotToX = (slot) => marginLeft + slot / totalSlots * chartWidth;
   const getMilestoneY = (index2) => {
