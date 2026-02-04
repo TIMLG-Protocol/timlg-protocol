@@ -46680,11 +46680,14 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           const typeIndex = typeCounts[evt.type];
           typeCounts[evt.type]++;
           const y = baseHeights[evt.type] + staggerOffsets[typeIndex % staggerOffsets.length];
-          const size = evt.type === "claim" ? 7 : 5;
+          const size = 5;
           const colors = {
-            buy: "#60A5FA",
+            buy: "#22c55e",
+            // Strong green for buy/commit
             reveal: "#A78BFA",
+            // Keep purple for reveal
             claim: "#34D399"
+            // Keep teal for claim
           };
           return /* @__PURE__ */ jsxRuntimeExports.jsx("g", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "path",
@@ -46692,8 +46695,8 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
               d: `M ${x} ${y - size} L ${x + size} ${y} L ${x} ${y + size} L ${x - size} ${y} Z`,
               fill: colors[evt.type],
               stroke: colors[evt.type],
-              strokeWidth: evt.type === "claim" ? "2" : "1",
-              opacity: evt.type === "claim" ? "1" : "0.7"
+              strokeWidth: "1",
+              opacity: "0.7"
             }
           ) }, i);
         });
