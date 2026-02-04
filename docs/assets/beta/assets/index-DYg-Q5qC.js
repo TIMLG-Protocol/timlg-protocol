@@ -46540,7 +46540,9 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         }
       });
     }
-    const totalSlots2 = Math.max(sw || 2500, relCurrentSlot2 || 0);
+    const isSwept2 = realSweptSlot !== null;
+    const effectiveMax = isSwept2 ? realSweptSlot : Math.max(sw || 0, relCurrentSlot2 || 0);
+    const totalSlots2 = Math.max(effectiveMax, 2500);
     const commitEnd = cd || 0;
     let pulseEnd = commitEnd;
     if (relCurrentSlot2 !== null && relCurrentSlot2 > commitEnd) {
@@ -46717,7 +46719,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           ) }, i);
         });
       })(),
-      relCurrentSlot !== null && relCurrentSlot >= 0 && relCurrentSlot <= totalSlots && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      !isSwept && relCurrentSlot !== null && relCurrentSlot >= 0 && relCurrentSlot <= totalSlots && /* @__PURE__ */ jsxRuntimeExports.jsx(
         "line",
         {
           x1: slotToX(relCurrentSlot),
@@ -49326,15 +49328,15 @@ function App() {
             breakdown.CLAIMED++;
             netTokensRaw += mintedReward;
           } else {
-            let isSwept = r.swept;
-            if (!isSwept && !r.round) isSwept = true;
-            if (!isSwept && currentSlot && r.round && chainState?.config?.claimGraceSlots != null) {
+            let isSwept2 = r.swept;
+            if (!isSwept2 && !r.round) isSwept2 = true;
+            if (!isSwept2 && currentSlot && r.round && chainState?.config?.claimGraceSlots != null) {
               const revealDl2 = r.round?.revealDeadlineSlot || r.round?.reveal_deadline_slot ? BigInt(r.round.revealDeadlineSlot || r.round.reveal_deadline_slot) : 0n;
               const grace = BigInt(chainState.config.claimGraceSlots);
               const sweepSlot = revealDl2 + grace;
-              if (revealDl2 > 0n && currentSlot > sweepSlot) isSwept = true;
+              if (revealDl2 > 0n && currentSlot > sweepSlot) isSwept2 = true;
             }
-            if (isSwept) {
+            if (isSwept2) {
               breakdown.SWEPT++;
               netTokensRaw -= rawStake;
             } else {
