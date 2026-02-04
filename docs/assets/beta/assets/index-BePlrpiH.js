@@ -46538,14 +46538,16 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       });
     }
     console.log("Total ticket events:", ticketEvents2.length, ticketEvents2.filter((e) => e.type === "claim").length, "claims");
-    const realMax = Math.max(...allSlots, 1e3);
-    const totalSlots2 = Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
+    const isSwept = !!(activeRound?.sweptSlot || activeRound?.swept_slot);
+    const relevantSlots = isSwept ? allSlots.filter((s) => s !== relCurrentSlot2) : allSlots;
+    const realMax = Math.max(...relevantSlots, 1e3);
+    const totalSlots2 = isSwept ? sw : Math.max(sw || 0, Math.ceil(realMax / 500) * 500);
     const pulseEnd = ps || relCurrentSlot2 || totalSlots2 * 0.5;
     const phases2 = [
       { name: "COMMIT", start: 0, end: cd || totalSlots2 * 0.25, color: "rgba(134, 239, 172, 0.15)" },
       { name: "PULSE", start: cd || totalSlots2 * 0.25, end: pulseEnd, color: "rgba(253, 224, 71, 0.15)" },
       { name: "REVEAL", start: pulseEnd, end: rd || totalSlots2 * 0.75, color: "rgba(147, 197, 253, 0.15)" },
-      { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
+      { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: sw || totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
     ];
     const milestones2 = [
       { slot: 0, label: "_____  Start", critical: false },
@@ -46556,7 +46558,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
       sw !== null && sw > 0 && {
         slot: sw,
-        label: activeRound?.sweptSlot || activeRound?.swept_slot ? "Vault Reclaimed  _____________" : "Reclaim Deadline  _____________",
+        label: activeRound?.sweptSlot || activeRound?.swept_slot ? "Vault Reclaimed" : "Reclaim Deadline",
         critical: false
       }
     ].filter(Boolean);
