@@ -46546,13 +46546,13 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       { name: "CLAIM", start: rd || totalSlots2 * 0.75, end: totalSlots2, color: "rgba(103, 232, 249, 0.15)" }
     ];
     const milestones2 = [
-      { slot: 0, label: "Start", critical: false },
+      { slot: 0, label: "_____  Start", critical: false },
       cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
       ps !== null && ps > 0 && { slot: ps, label: "Pulse Published", critical: true },
       rd !== null && rd > 0 && { slot: rd, label: "Reveal Deadline", critical: true },
       fn !== null && fn > 0 && { slot: fn, label: "Finalized", critical: false },
       st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
-      sw !== null && sw > 0 && { slot: sw, label: "Vault Reclaimed", critical: false }
+      sw !== null && sw > 0 && { slot: sw, label: "Vault Reclaimed  _____________", critical: false }
     ].filter(Boolean);
     return {
       totalSlots: totalSlots2,
@@ -46568,8 +46568,8 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
   const { totalSlots, phases, milestones, ticketEvents, currentSlot: relCurrentSlot } = timelineData;
   const svgWidth = 700;
   const height = 220;
-  const marginLeft = 10;
-  const marginRight = 10;
+  const marginLeft = 0;
+  const marginRight = 0;
   const chartWidth = svgWidth - marginLeft - marginRight;
   const slotToX = (slot) => marginLeft + slot / totalSlots * chartWidth;
   const getMilestoneY = (index2) => {
@@ -46577,7 +46577,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const levels = [0, 30, 15, 35, 10, 25, 20];
     return baseY + levels[index2 % levels.length];
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 16, background: "rgba(0,0,0,0.02)", padding: 12, borderRadius: 8, border: "1px solid rgba(255,255,255,0.05)" }, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 10, background: "rgba(0,0,0,0.02)", padding: 0, borderRadius: 8, border: "1px solid rgba(255,255,255,0.05)" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", width: "100%", height: 32, fontSize: 10, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }, children: phases.map((phase, i) => {
       const phaseWidth = (phase.end - phase.start) / totalSlots * 100;
       const colors = [
