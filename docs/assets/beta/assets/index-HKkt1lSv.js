@@ -47365,7 +47365,7 @@ function MyTickets({
                 rStatus = "CLAIM WINDOW";
                 const diff = Number(sweepEligible - cSlot);
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Reclaim deadline in: ",
+                  "Claim ends: ",
                   /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
                 ] });
               } else {
