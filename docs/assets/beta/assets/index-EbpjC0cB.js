@@ -46482,15 +46482,16 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     const toBigInt2 = (v) => {
       if (v == null || v === "") return 0n;
       try {
+        if (typeof v === "bigint") return v;
+        if (typeof v === "number") return BigInt(v);
+        if (typeof v?.toString === "function") {
+          const s = v.toString();
+          if (s.match(/^[0-9]+$/)) return BigInt(s);
+          if (s.match(/^0x[0-9a-fA-F]+$/)) return BigInt(s);
+        }
         return BigInt(v);
       } catch (e) {
-        if (typeof v === "string") {
-          try {
-            return BigInt("0x" + v);
-          } catch (err) {
-          }
-        }
-        throw e;
+        return 0n;
       }
     };
     const cSlot = toBigInt2(activeRound?.createdSlot || activeRound?.created_slot || 0);
@@ -46549,16 +46550,28 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       pulseEnd = ps || Math.min(relCurrentSlot2, rd || totalSlots2);
     }
     const revealEnd = Math.max(pulseEnd, rd || pulseEnd);
+    let settleEnd = revealEnd;
+    if (relCurrentSlot2 !== null && relCurrentSlot2 > revealEnd) {
+      settleEnd = st || Math.min(relCurrentSlot2, claimDeadline || totalSlots2);
+    }
+    const claimEnd = Math.max(settleEnd, claimDeadline || settleEnd);
+    let reclaimEnd = claimEnd;
+    if (relCurrentSlot2 !== null && relCurrentSlot2 > claimEnd) {
+      reclaimEnd = realSweptSlot || relCurrentSlot2;
+    }
     const phases2 = [
       { name: "COMMIT", start: 0, end: commitEnd },
       { name: "PULSE", start: commitEnd, end: pulseEnd },
       { name: "REVEAL", start: pulseEnd, end: revealEnd },
-      { name: "CLAIM", start: revealEnd, end: sw || totalSlots2 }
+      { name: "SETTLE", start: revealEnd, end: settleEnd },
+      { name: "CLAIM", start: settleEnd, end: claimEnd },
+      { name: "SWEEP", start: claimEnd, end: reclaimEnd }
     ].filter((p) => p.end > p.start);
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
       cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
-      ps !== null && ps > 0 && { slot: ps, label: "Pulse Published", critical: true },
+      ps !== null && ps > 0 && { slot: ps, label: "Pulse Published", critical: false },
+      // Changed to normal event
       rd !== null && rd > 0 && { slot: rd, label: "Reveal Deadline", critical: true },
       fn !== null && fn > 0 && { slot: fn, label: "Finalized", critical: false },
       st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
@@ -46586,7 +46599,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
   const slotToX = (slot) => marginLeft + slot / totalSlots * chartWidth;
   const getMilestoneY = (index2) => {
     const baseY = 70;
-    const levels = [0, 30, 15, 35, 10, 25, 20];
+    const levels = [0, 45, 15, 60, 30, 75, 5, 25];
     return baseY + levels[index2 % levels.length];
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", marginTop: 10, background: "transparent", padding: 0, border: "none" }, children: [
@@ -46606,7 +46619,9 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         COMMIT: { bg: "rgba(134, 239, 172, 0.25)", border: "rgba(74, 222, 128, 0.6)", text: "#4ade80" },
         PULSE: { bg: "rgba(253, 224, 71, 0.25)", border: "rgba(250, 204, 21, 0.6)", text: "#facc15" },
         REVEAL: { bg: "rgba(147, 197, 253, 0.25)", border: "rgba(96, 165, 250, 0.6)", text: "#60a5fa" },
-        CLAIM: { bg: "rgba(103, 232, 249, 0.25)", border: "rgba(34, 211, 238, 0.6)", text: "#22d3ee" }
+        SETTLE: { bg: "rgba(244, 114, 182, 0.25)", border: "rgba(236, 72, 153, 0.6)", text: "#f472b6" },
+        CLAIM: { bg: "rgba(103, 232, 249, 0.25)", border: "rgba(34, 211, 238, 0.6)", text: "#22d3ee" },
+        SWEEP: { bg: "rgba(229, 231, 235, 0.15)", border: "rgba(156, 163, 175, 0.4)", text: "#e5e7eb" }
       };
       const style = colors[phase.name];
       return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46636,7 +46651,9 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           COMMIT: "rgba(134, 239, 172, 0.15)",
           PULSE: "rgba(253, 224, 71, 0.15)",
           REVEAL: "rgba(147, 197, 253, 0.15)",
-          CLAIM: "rgba(103, 232, 249, 0.15)"
+          SETTLE: "rgba(244, 114, 182, 0.15)",
+          CLAIM: "rgba(103, 232, 249, 0.15)",
+          SWEEP: "rgba(229, 231, 235, 0.08)"
         };
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "rect",
@@ -46762,6 +46779,21 @@ const toHex = (u82) => {
   if (!u82) return "";
   return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
 };
+const toBigInt$1 = (v) => {
+  if (v == null || v === "") return 0n;
+  try {
+    if (typeof v === "bigint") return v;
+    if (typeof v === "number") return BigInt(v);
+    if (typeof v?.toString === "function") {
+      const s = v.toString();
+      if (s.match(/^[0-9]+$/)) return BigInt(s);
+      if (s.match(/^0x[0-9a-fA-F]+$/)) return BigInt(s);
+    }
+    return BigInt(v);
+  } catch (e) {
+    return 0n;
+  }
+};
 function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection, tickets }) {
   console.log("RoundDetailModal mounted", { roundId: roundId2, programPk, rPda, hasRound: !!round });
   const [derivedPda, setDerivedPda] = reactExports.useState(null);
@@ -46852,14 +46884,9 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5, marginBottom: 4 }, children: "Target Pulse" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
             display: "inline-block",
-            background: "#191a7a",
             color: "#fff",
-            padding: "4px 10px",
-            borderRadius: "4px",
             fontSize: "14px",
-            fontWeight: "bold",
-            border: "1px solid rgba(255,255,255,0.1)",
-            boxShadow: "0 0 10px rgba(25, 26, 122, 0.3)"
+            fontWeight: "bold"
           }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `Index ${formatSlot(activeRound.pulseIndexTarget || activeRound.pulse_index_target)}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -46870,19 +46897,18 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
             color: activeRound?.finalized || accountStatus === "closed" ? "#4ade80" : "#fbbf24",
             display: "flex",
             alignItems: "center",
-            height: "26px"
-            // match height of Target Pulse chip roughly
+            height: "20px"
           }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 6, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px", fontSize: 12 }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(0,0,0,0.1)" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 12, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 10, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 24px", fontSize: 12 }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(currentSlot) || "—" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(0,0,0,0.1)" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.createdSlot || activeRound?.created_slot) || "—" })
           ] }),
@@ -46907,8 +46933,10 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: activeRound?.sweptSlot || activeRound?.swept_slot ? "Reclaimed at:" : "Reclaim Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: activeRound?.sweptSlot || activeRound?.swept_slot ? "bold" : "normal" }, children: formatSlot(activeRound?.sweptSlot || activeRound?.swept_slot || (activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot ? BigInt(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + BigInt(claimGraceSlots || 1e4) : null)) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Claim Deadline:" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right", fontWeight: toBigInt$1(activeRound?.sweptSlot || activeRound?.swept_slot) > 0n ? "bold" : "normal" }, children: formatSlot(
+              toBigInt$1(activeRound?.sweptSlot || activeRound?.swept_slot) || (toBigInt$1(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) > 0n ? toBigInt$1(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + toBigInt$1(claimGraceSlots || 1e4) : null)
+            ) || "—" })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -47859,20 +47887,23 @@ function MyTickets({
         currentSlot
       }
     ),
-    selectedRound && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      RoundDetailModal,
-      {
-        round: selectedRound.round,
-        roundId: selectedRound.roundId,
-        programPk,
-        rPda: null,
-        currentSlot,
-        claimGraceSlots,
-        connection,
-        tickets: selectedRound.tickets,
-        onClose: () => setSelectedRound(null)
-      }
-    )
+    selectedRound && (() => {
+      const liveRound = groupedRounds.find((r) => r.roundId === selectedRound.roundId);
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        RoundDetailModal,
+        {
+          round: liveRound?.round || selectedRound.round,
+          roundId: selectedRound.roundId,
+          programPk,
+          rPda: null,
+          currentSlot,
+          claimGraceSlots,
+          connection,
+          tickets: liveRound?.tickets || selectedRound.tickets,
+          onClose: () => setSelectedRound(null)
+        }
+      );
+    })()
   ] });
 }
 function WalletSankey({ stats, chainState }) {
