@@ -25163,10 +25163,10 @@ const _0x71n = BigInt(113);
 const SHA3_PI = [];
 const SHA3_ROTL = [];
 const _SHA3_IOTA = [];
-for (let round = 0, R = _1n$1, x = 1, y = 0; round < 24; round++) {
+for (let round2 = 0, R = _1n$1, x = 1, y = 0; round2 < 24; round2++) {
   [x, y] = [y, (2 * x + 3 * y) % 5];
   SHA3_PI.push(2 * (5 * y + x));
-  SHA3_ROTL.push((round + 1) * (round + 2) / 2 % 64);
+  SHA3_ROTL.push((round2 + 1) * (round2 + 2) / 2 % 64);
   let t = _0n$1;
   for (let j = 0; j < 7; j++) {
     R = (R << _1n$1 ^ (R >> _7n) * _0x71n) % _256n;
@@ -25182,7 +25182,7 @@ const rotlH = (h, l, s) => s > 32 ? rotlBH(h, l, s) : rotlSH(h, l, s);
 const rotlL = (h, l, s) => s > 32 ? rotlBL(h, l, s) : rotlSL(h, l, s);
 function keccakP(s, rounds = 24) {
   const B = new Uint32Array(5 * 2);
-  for (let round = 24 - rounds; round < 24; round++) {
+  for (let round2 = 24 - rounds; round2 < 24; round2++) {
     for (let x = 0; x < 10; x++)
       B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
     for (let x = 0; x < 10; x += 2) {
@@ -25215,8 +25215,8 @@ function keccakP(s, rounds = 24) {
       for (let x = 0; x < 10; x++)
         s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
     }
-    s[0] ^= SHA3_IOTA_H[round];
-    s[1] ^= SHA3_IOTA_L[round];
+    s[0] ^= SHA3_IOTA_H[round2];
+    s[1] ^= SHA3_IOTA_L[round2];
   }
   clean(B);
 }
@@ -45152,7 +45152,10 @@ function saveLocalRound(roundId2, roundData) {
   if (!roundId2 || !roundData) return;
   const k = roundKey(roundId2);
   try {
-    localStorage.setItem(k, JSON.stringify({ ...roundData, _savedAt: Date.now() }));
+    const raw = JSON.stringify({ ...roundData, _savedAt: Date.now() }, (key2, value) => {
+      return typeof value === "bigint" ? value.toString() : value;
+    });
+    localStorage.setItem(k, raw);
   } catch (e) {
     console.warn("Failed to save round data", e);
   }
@@ -45629,7 +45632,7 @@ function PlayCard({
   const targetPulseIndex = currentNistPulse + pulseOffset;
   const targetArrivalMs = apiPulseTime + (predictedPulses + pulseOffset) * 60 * 1e3;
   const selectedRound = chainState?.activeRounds?.[targetPulseIndex.toString()] || null;
-  const latestRoundTarget = chainState?.round?.pulseIndexTarget != null ? Number(chainState.round.pulseIndexTarget) : null;
+  const latestRoundTarget = chainState?.round?._logic?.pulseIndexTarget != null ? Number(chainState.round._logic.pulseIndexTarget) : null;
   const pulseDelta = latestRoundTarget != null ? targetPulseIndex - latestRoundTarget : 0;
   const inferredRoundId = chainState?.roundId != null ? chainState.roundId + pulseDelta : null;
   const currentRoundId = selectedRound ? selectedRound.roundId : inferredRoundId;
@@ -45674,7 +45677,7 @@ function PlayCard({
       targetPulseIndex,
       targetRoundPda: currentRoundPda,
       targetTIMLGVaultPda: currentTIMLGVaultPda,
-      targetCommitDl: selectedRound?.commitDeadlineSlot,
+      targetCommitDl: selectedRound?._logic?.commitClose,
       nonce: stableNonce,
       salt: stableSalt,
       forcedGuess: guessOverride
@@ -45760,9 +45763,9 @@ function PlayCard({
     }
   }
   const [secondsLeft, setSecondsLeft] = reactExports.useState(null);
-  const deadlineSlotStr = selectedRound?.commitDeadlineSlot?.toString();
+  const deadlineSlotStr = selectedRound?.commitClose;
   reactExports.useEffect(() => {
-    const cd = selectedRound?.commitDeadlineSlot;
+    const cd = selectedRound?._logic?.commitClose;
     const cs = chainState?.currentSlot;
     if (cd == null || cs == null) {
       setSecondsLeft(null);
@@ -45781,7 +45784,7 @@ function PlayCard({
     return () => clearInterval(timer);
   }, [deadlineSlotStr, targetPulseIndex]);
   reactExports.useEffect(() => {
-    const cd = selectedRound?.commitDeadlineSlot;
+    const cd = selectedRound?._logic?.commitClose;
     const cs = chainState?.currentSlot;
     if (cd == null || cs == null || secondsLeft == null || secondsLeft <= 0) return;
     const slotBasedEstimate = Math.max(0, Math.floor(Number(cd - 10n - BigInt(cs)) * 0.4));
@@ -45790,8 +45793,8 @@ function PlayCard({
     }
   }, [chainState?.currentSlot]);
   const curSlot = chainState?.currentSlot;
-  const commitDl = selectedRound?.commitDeadlineSlot;
-  const revealDl = selectedRound?.revealDeadlineSlot;
+  const commitDl = selectedRound?._logic?.commitClose;
+  const revealDl = selectedRound?._logic?.revealDeadline;
   const canCommit = Boolean(
     pubkey2 && selectedRound && curSlot != null && commitDl != null && BigInt(curSlot) < commitDl - 10n && !selectedRound.pulseSet
   );
@@ -46109,7 +46112,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     ticketPk,
     receipt,
     ticket: onChainTicket,
-    round
+    round: round2
     // round object from hook
   } = ticket || {};
   reactExports.useEffect(() => {
@@ -46141,8 +46144,8 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     connection.getSignaturesForAddress(ticketPk, { limit: 10 }).then((sigs) => setSignatures(sigs)).catch((err) => console.error("Err fetching sigs:", err)).finally(() => setLoadingSigs(false));
   }, [ticketPk, connection]);
   reactExports.useEffect(() => {
-    if (!round || !connection || !programPk || !roundId2) return;
-    const pSlot = round?.pulseSetSlot || round?.pulse_set_slot;
+    if (!round2 || !connection || !programPk || !roundId2) return;
+    const pSlot = round2?.pulse;
     if (!pSlot) return;
     const fetchPulseTx = async () => {
       try {
@@ -46158,7 +46161,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
       }
     };
     fetchPulseTx();
-  }, [round, connection, programPk, roundId2]);
+  }, [round2, connection, programPk, roundId2]);
   if (!ticket) return null;
   const guess = onChainTicket?.revealed ? onChainTicket.guess : receipt?.guess ?? onChainTicket?.guess;
   const isBull = guess === 1;
@@ -46176,9 +46179,9 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     }
     if (win) {
       if (tokenSettled) {
-        if (currentSlot && round && claimGraceSlots != null) {
+        if (currentSlot && round2 && claimGraceSlots != null) {
           try {
-            const revealDl = BigInt(round.revealDeadlineSlot || round.reveal_deadline_slot || 0);
+            const revealDl = round2?._logic?.revealDeadline;
             const grace = BigInt(claimGraceSlots);
             const cur = BigInt(currentSlot);
             if (revealDl > 0n && cur > revealDl + grace) {
@@ -46194,14 +46197,15 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     }
     if (revealed && !win) return "LOSS";
     if (!revealed && !win) {
-      if (!round || round.finalized) return "EXPIRED";
+      if (!round2 || round2.finalized) return "EXPIRED";
       const currentSlotNum = Number(currentSlot || 0);
-      const revealDl = round.revealDeadlineSlot || round.reveal_deadline_slot;
+      const revealDl = round2.revealDeadline;
+      const revealDlNum = Number(revealDl || 0);
       if (revealDl && currentSlotNum > 0) {
-        const dl = Number(revealDl);
+        const dl = revealDlNum;
         if (currentSlotNum > dl + 150) return "REFUND AVAILABLE";
         if (currentSlotNum > dl) return "EXPIRED";
-        const pulseSet = Boolean(round?.pulseSet || round?.pulse_set);
+        const pulseSet = round2?.pulseSet;
         if (pulseSet && currentSlotNum <= dl) return "REVEAL NOW";
       }
     }
@@ -46232,7 +46236,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
   const createdTxSig = findTxSig(onChainTicket?.createdSlot || onChainTicket?.created_slot, "commitTx");
   const revealedTxSig = findTxSig(onChainTicket?.revealedSlot || onChainTicket?.revealed_slot, "revealTx");
   const claimedTxSig = findTxSig(onChainTicket?.claimedSlot || onChainTicket?.claimed_slot, "claimTx");
-  const pulseIndex = round?.pulseIndexTarget ?? round?.pulse_index_target;
+  const pulseIndex = round2?.pulseId;
   const pulseUrl = pulseIndex ? `https://beacon.nist.gov/beacon/2.0/chain/1/pulse/${pulseIndex}` : "#";
   const rPda = programPk && roundId2 != null ? pdaRound(programPk, Number(roundId2)) : null;
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-modal", onClick: (e) => e.stopPropagation(), children: [
@@ -46388,7 +46392,7 @@ function formatSlot(s) {
     return null;
   }
 }
-const toHex$1 = (u82) => {
+const toHex = (u82) => {
   if (!u82) return null;
   const arr = Array.from(new Uint8Array(u82));
   if (arr.every((b) => b === 0)) return null;
@@ -46420,7 +46424,7 @@ function generateTicketExportJSON(ticketData) {
     bitIndex: onChainTicket?.bitIndex ?? onChainTicket?.bit_index ?? receipt?.bitIndex ?? null,
     status,
     prediction: isBull ? "Bull" : isBear ? "Bear" : "Unknown",
-    commitment: toHex$1(onChainTicket?.commitment) ?? receipt?.commitment ?? null,
+    commitment: toHex(onChainTicket?.commitment) ?? receipt?.commitment ?? null,
     transactions: {
       commit: createdTx?.signature || receipt?.commitTx ? { signature: createdTx?.signature || receipt?.commitTx, slot: formatSlot(onChainTicket?.createdSlot ?? receipt?.createdSlot) } : null,
       reveal: revealedTx?.signature || receipt?.revealTx ? { signature: revealedTx?.signature || receipt?.revealTx, slot: formatSlot(onChainTicket?.revealedSlot ?? receipt?.revealedSlot) } : null,
@@ -46445,19 +46449,17 @@ function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticket
       address: rPda?.toString() || null,
       status: roundStatusLabel,
       slots: {
-        commitOpen: formatSlot(rData?.createdSlot || rData?.created_slot),
-        commitClose: formatSlot(rData?.commitDeadlineSlot || rData?.commit_deadline_slot),
-        pulse: formatSlot(rData?.pulseSetSlot || rData?.pulse_set_slot),
-        // This is "Pulse Set At Slot"
-        revealDeadline: formatSlot(rData?.revealDeadlineSlot || rData?.reveal_deadline_slot),
-        finalized: formatSlot(rData?.finalizedSlot || rData?.finalized_slot),
-        reclaimed: formatSlot(rData?.sweptSlot || rData?.swept_slot),
-        settled: formatSlot(rData?.tokenSettledSlot || rData?.token_settled_slot)
+        commitOpen: rData?.commitOpen || null,
+        commitClose: rData?.commitClose || null,
+        pulse: rData?.pulse || null,
+        revealDeadline: rData?.revealDeadline || null,
+        finalized: rData?.finalized || null,
+        reclaimed: rData?.reclaimed || null,
+        settled: rData?.settled || null
       },
       oracle: {
-        pulseHash: toHex$1(rData?.pulse),
-        pulseId: formatSlot(rData?.pulseIndexTarget ?? rData?.pulse_index_target)
-        // Raw Pulse ID
+        pulseHash: rData?.pulseHash || null,
+        pulseId: rData?.pulseId || null
       }
     },
     tickets: ticketsData
@@ -46480,6 +46482,58 @@ function triggerDownload(fileName, dataObj) {
     alert("Error preparing download: " + e.message);
   }
 }
+function normalizeRound(r) {
+  if (!r) return null;
+  const toHex2 = (u82) => {
+    if (!u82) return null;
+    const arr = Array.from(new Uint8Array(u82));
+    if (arr.every((b) => b === 0)) return null;
+    return arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+  };
+  return {
+    // Metadata
+    roundId: r.roundId ?? r.round_id,
+    timlgVault: r.timlgVault || r.timlg_vault,
+    // Canonical slot strings (Export-ready)
+    commitOpen: formatSlot(r.createdSlot || r.created_slot),
+    commitClose: formatSlot(r.commitDeadlineSlot || r.commit_deadline_slot),
+    pulse: formatSlot(r.pulseSetSlot || r.pulse_set_slot),
+    revealDeadline: formatSlot(r.revealDeadlineSlot || r.reveal_deadline_slot),
+    finalized: formatSlot(r.finalizedSlot || r.finalized_slot),
+    settled: formatSlot(r.tokenSettledSlot || r.token_settled_slot),
+    reclaimed: formatSlot(r.sweptSlot || r.swept_slot),
+    // Oracle / Result data
+    pulseHash: toHex2(r.pulse),
+    pulseId: formatSlot(r.pulseIndexTarget ?? r.pulse_index_target),
+    // Boolean status (Safe for UI logic)
+    pulseSet: toBigInt$2(r.pulseSet ?? r.pulse_set ?? r.pulseSetSlot ?? r.pulse_set_slot) !== 0n,
+    tokenSettled: toBigInt$2(r.tokenSettled ?? r.token_settled ?? r.tokenSettledSlot ?? r.token_settled_slot) !== 0n,
+    isFinalized: toBigInt$2(r.finalized ?? r.finalizedSlot ?? r.finalized_slot) !== 0n,
+    isSwept: toBigInt$2(r.swept ?? r.sweptSlot ?? r.swept_slot) !== 0n,
+    // Raw BigInts for internal UI logic (so we don't have to keep casting strings)
+    _logic: {
+      commitClose: toBigInt$2(r.commitDeadlineSlot || r.commit_deadline_slot),
+      revealDeadline: toBigInt$2(r.revealDeadlineSlot || r.reveal_deadline_slot),
+      pulseIndexTarget: toBigInt$2(r.pulseIndexTarget || r.pulse_index_target)
+    },
+    // Original raw data preserved
+    _raw: r
+  };
+}
+function toBigInt$2(v) {
+  if (v == null || v === "") return 0n;
+  if (typeof v === "boolean") return v ? 1n : 0n;
+  try {
+    if (typeof v === "bigint") return v;
+    return BigInt(v.toString());
+  } catch (e) {
+    return 0n;
+  }
+}
+const round = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  normalizeRound
+}, Symbol.toStringTag, { value: "Module" }));
 function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
   const timelineData = reactExports.useMemo(() => {
     if (!activeRound) return null;
@@ -46497,7 +46551,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         throw e;
       }
     };
-    const cSlot = toBigInt2(activeRound?.createdSlot || activeRound?.created_slot || 0);
+    const cSlot = toBigInt2(activeRound?.commitOpen || 0);
     if (cSlot === 0n) return null;
     const getRel = (s) => {
       if (s == null) return null;
@@ -46510,13 +46564,13 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         return null;
       }
     };
-    const cd = getRel(activeRound?.commitDeadlineSlot || activeRound?.commit_deadline_slot);
-    const ps = getRel(activeRound?.pulseSetSlot || activeRound?.pulse_set_slot);
-    const rd = getRel(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot);
-    const fn = getRel(activeRound?.finalizedSlot || activeRound?.finalized_slot);
-    const st = getRel(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot);
+    const cd = getRel(activeRound?.commitClose);
+    const ps = getRel(activeRound?.pulse);
+    const rd = getRel(activeRound?.revealDeadline);
+    const fn = getRel(activeRound?.finalized);
+    const st = getRel(activeRound?.settled);
     const relCurrentSlot2 = getRel(currentSlot);
-    const realSweptSlot = getRel(activeRound?.sweptSlot || activeRound?.swept_slot);
+    const realSweptSlot = getRel(activeRound?.reclaimed);
     let grace = 1e4;
     try {
       if (claimGraceSlots != null) {
@@ -46526,7 +46580,6 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     } catch (e) {
     }
     const claimDeadline = rd !== null ? rd + grace : null;
-    const sw = realSweptSlot !== null ? realSweptSlot : claimDeadline;
     const ticketEvents2 = [];
     if (tickets) {
       tickets.forEach((t) => {
@@ -46545,32 +46598,36 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       });
     }
     const isSwept2 = realSweptSlot !== null;
-    const effectiveMax = isSwept2 ? realSweptSlot : Math.max(sw || 0, relCurrentSlot2 || 0);
-    const totalSlots2 = Math.max(effectiveMax, 2500);
-    const commitEnd = cd || 0;
-    let pulseEnd = commitEnd;
-    if (relCurrentSlot2 !== null && relCurrentSlot2 > commitEnd) {
-      pulseEnd = ps || Math.min(relCurrentSlot2, rd || totalSlots2);
+    const rawMax = Math.max(
+      cd || 0,
+      ps || 0,
+      rd || 0,
+      fn || 0,
+      st || 0,
+      claimDeadline || 0,
+      isSwept2 ? realSweptSlot : relCurrentSlot2 || 0
+    );
+    const totalSlots2 = Math.max(rawMax, 2500);
+    const clip = (v) => Math.min(Math.max(v || 0, 0), totalSlots2);
+    const p1_end = clip(cd);
+    let p2_end = Math.max(p1_end, clip(ps));
+    if (!ps && relCurrentSlot2 && relCurrentSlot2 > p1_end) {
+      p2_end = Math.min(relCurrentSlot2, clip(rd));
     }
-    const revealEnd = Math.max(pulseEnd, rd || pulseEnd);
-    let settleEnd = revealEnd;
-    if (st && st > revealEnd) {
-      settleEnd = st;
-    } else if (!st && relCurrentSlot2 > revealEnd) {
-      settleEnd = Math.max(revealEnd, relCurrentSlot2);
+    const p3_end = Math.max(p2_end, clip(rd));
+    let p4_end = Math.max(p3_end, clip(st));
+    if (!st && relCurrentSlot2 && relCurrentSlot2 > p3_end) {
+      p4_end = relCurrentSlot2;
     }
-    const graceSlotsNum = Number(claimGraceSlots || 1e4);
-    const claimDeadlineCalculated = revealEnd + graceSlotsNum;
-    const claimEnd = sw || claimDeadlineCalculated;
-    const sweepEnd = isSwept2 ? realSweptSlot : totalSlots2;
-    const sweepStart = claimDeadlineCalculated;
+    const p5_end = Math.max(p4_end, clip(claimDeadline));
+    const p6_end = totalSlots2;
     const phases2 = [
-      { name: "COMMIT", start: 0, end: commitEnd },
-      { name: "PULSE", start: commitEnd, end: pulseEnd },
-      { name: "REVEAL", start: pulseEnd, end: revealEnd },
-      { name: "SETTLE", start: revealEnd, end: settleEnd },
-      { name: "CLAIM", start: settleEnd, end: claimEnd },
-      { name: "SWEEP", start: sweepStart, end: sweepEnd }
+      { name: "COMMIT", start: 0, end: p1_end },
+      { name: "PULSE", start: p1_end, end: p2_end },
+      { name: "REVEAL", start: p2_end, end: p3_end },
+      { name: "SETTLE", start: p3_end, end: p4_end },
+      { name: "CLAIM", start: p4_end, end: p5_end },
+      { name: "SWEEP", start: p5_end, end: p6_end }
     ].filter((p) => p.end > p.start);
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
@@ -46657,7 +46714,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
           REVEAL: "rgba(147, 197, 253, 0.15)",
           CLAIM: "rgba(103, 232, 249, 0.15)",
           SETTLE: "rgba(244, 114, 182, 0.15)",
-          SWEEP: "rgba(229, 231, 235, 0.08)"
+          SWEEP: "rgba(229, 231, 235, 0.15)"
         };
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "rect",
@@ -46779,10 +46836,6 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     ] })
   ] });
 }
-const toHex = (u82) => {
-  if (!u82) return "";
-  return Array.from(new Uint8Array(u82)).map((b) => b.toString(16).padStart(2, "0")).join("");
-};
 const toBigInt$1 = (v) => {
   if (v == null || v === "") return 0n;
   try {
@@ -46797,8 +46850,10 @@ const toBigInt$1 = (v) => {
     throw e;
   }
 };
-function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection, tickets }) {
-  console.log("RoundDetailModal mounted", { roundId: roundId2, programPk, rPda, hasRound: !!round });
+const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection, tickets }) {
+  reactExports.useEffect(() => {
+    console.log("RoundDetailModal mounted", { roundId: roundId2, programPk, rPda, hasRound: !!round2 });
+  }, []);
   const [derivedPda, setDerivedPda] = reactExports.useState(null);
   const [accountStatus, setAccountStatus] = reactExports.useState(null);
   reactExports.useEffect(() => {
@@ -46815,15 +46870,16 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
   }, [rPda, programPk, roundId2]);
   const [cachedRound, setCachedRound] = reactExports.useState(null);
   reactExports.useEffect(() => {
-    if (!round && roundId2) {
+    if (!round2 && roundId2) {
       const cached = loadLocalRoundWrapper(roundId2);
       if (cached) {
-        console.log("Restored round data from local cache", cached);
-        setCachedRound(cached);
+        const normalized = normalizeRound(cached);
+        console.log("Restored round data from local cache (normalized)", normalized);
+        setCachedRound(normalized);
       }
     }
-  }, [round, roundId2]);
-  const activeRound = round || cachedRound;
+  }, [round2, roundId2]);
+  const activeRound = round2 || cachedRound;
   reactExports.useEffect(() => {
     const target = rPda || derivedPda;
     if (!activeRound && target && connection) {
@@ -46868,15 +46924,15 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ORACLE PULSE HASH (SHA3-512)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, wordBreak: "break-all" }, children: !activeRound?.pulse || Object.values(activeRound.pulse).every((b) => b === 0) ? accountStatus === "closed" ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Waiting for oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-code-block", style: { fontSize: 11, wordBreak: "break-all" }, children: !activeRound?.pulseHash ? accountStatus === "closed" || activeRound?.isSwept ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Data cleared (Round Swept)" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Waiting for oracle pulse..." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "a",
           {
-            href: `https://explorer.solana.com/block/${activeRound?.pulseSetSlot || activeRound?.pulse_set_slot || 0}?cluster=devnet`,
+            href: `https://explorer.solana.com/block/${activeRound?.pulse || 0}?cluster=devnet`,
             target: "_blank",
             rel: "noopener noreferrer",
             style: { color: "inherit", textDecoration: "underline", textUnderlineOffset: 3 },
             children: [
-              toHex(Array.isArray(activeRound.pulse) ? activeRound.pulse : Object.values(activeRound.pulse || {})),
+              activeRound.pulseHash,
               " ↗"
             ]
           }
@@ -46889,19 +46945,19 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
             display: "inline-block",
             fontSize: "14px",
             fontWeight: "bold"
-          }, children: activeRound?.pulseIndexTarget || activeRound?.pulse_index_target ? `Index ${formatSlot(activeRound.pulseIndexTarget || activeRound.pulse_index_target)}` : "—" })
+          }, children: activeRound?.pulseId ? `Index ${activeRound.pulseId}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, opacity: 0.5, marginBottom: 4 }, children: "Finalized" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
             fontSize: "14px",
             fontWeight: "bold",
-            color: activeRound?.finalized || accountStatus === "closed" ? "#4ade80" : "#fbbf24",
+            color: activeRound?.isFinalized || accountStatus === "closed" ? "#4ade80" : "#fbbf24",
             display: "flex",
             alignItems: "center",
             height: "26px"
             // match height of Target Pulse chip roughly
-          }, children: activeRound?.finalized || accountStatus === "closed" ? "YES" : "NO" })
+          }, children: activeRound?.isFinalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
@@ -46913,33 +46969,31 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.createdSlot || activeRound?.created_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.commitOpen || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Commit Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.commitDeadlineSlot || activeRound?.commit_deadline_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.commitClose || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Pulse Set at:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.pulseSetSlot || activeRound?.pulse_set_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.pulse || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reveal Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.revealDeadline || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Finalized at:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.finalizedSlot || activeRound?.finalized_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.finalized || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Settled at:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(activeRound?.tokenSettledSlot || activeRound?.token_settled_slot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.settled || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Claim Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: formatSlot(
-              activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot ? toBigInt$1(activeRound?.revealDeadlineSlot || activeRound?.reveal_deadline_slot) + toBigInt$1(claimGraceSlots || 1e4) : null
-            ) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.revealDeadline ? formatSlot(toBigInt$1(activeRound.revealDeadline) + toBigInt$1(claimGraceSlots || 1e4)) : "—" })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -46955,7 +47009,7 @@ function RoundDetailModal({ round, roundId: roundId2, rPda, onClose, currentSlot
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-modal__footer", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn beta-btn--soft", onClick: onClose, style: { width: "100%", color: "white", background: "rgba(255,255,255,0.1)" }, children: " Close " }) })
   ] }) });
-}
+});
 const address = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const metadata = { "name": "timlg_protocol", "version": "0.1.0", "spec": "0.1.0", "description": "Created with Anchor" };
 const instructions = /* @__PURE__ */ JSON.parse('[{"name":"add_oracle","discriminator":[185,165,165,167,208,207,55,35],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"claim_reward","discriminator":[149,95,181,242,94,90,158,162],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"user_timlg_ata","writable":true},{"name":"reward_fee_pool","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"close_config","discriminator":[145,9,72,157,95,125,61,85],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","writable":true,"signer":true}],"args":[]},{"name":"close_round","discriminator":[149,14,81,88,230,226,234,37],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"close_ticket","discriminator":[66,209,114,197,75,27,182,117],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","docs":["Address verification is secondary as Ticket PDA already enforces the round_id."]},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"commit_batch","discriminator":[27,234,100,224,134,31,168,142],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitEntry"}}}}]},{"name":"commit_batch_signed","discriminator":[114,249,180,103,248,14,43,173],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"payer","docs":["Relayer (paga fees)"],"writable":true,"signer":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user"},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"instructions"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitSignedEntry"}}}}]},{"name":"commit_ticket","discriminator":[15,97,55,56,38,249,88,220],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"commitment","type":{"array":["u8",32]}}]},{"name":"create_round","discriminator":[229,218,236,169,231,80,134,112],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"create_round_auto","discriminator":[203,214,64,8,185,82,116,71],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"deposit_escrow","discriminator":[226,112,158,176,178,118,153,128],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"finalize_round","discriminator":[239,160,254,11,254,144,53,148],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","signer":true}],"args":[{"name":"round_id","type":"u64"}]},{"name":"fund_vault","discriminator":[26,33,207,242,119,108,134,73],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"funder","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"amount","type":"u64"}]},{"name":"init_user_escrow","discriminator":[122,51,129,53,23,2,205,146],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[]},{"name":"initialize_config","discriminator":[208,127,21,1,194,190,196,70],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","docs":["Mint SPL del token TIMLG (ya creado off-chain en tests o en deploy script)"],"writable":true},{"name":"treasury_sol","docs":["✅ NUEVO: Treasury SOL (lamports) como system-owned PDA (igual que vault)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"treasury","docs":["Treasury SPL = TokenAccount PDA controlado por el programa (authority = config PDA)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"stake_amount","type":"u64"},{"name":"commit_window_slots","type":"u64"},{"name":"reveal_window_slots","type":"u64"}]},{"name":"initialize_oracle_set","discriminator":[130,190,220,106,237,202,154,216],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"threshold","type":"u8"},{"name":"initial_oracles","type":{"vec":"pubkey"}}]},{"name":"initialize_round_registry","discriminator":[168,224,102,212,197,199,124,55],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"start_round_id","type":"u64"}]},{"name":"initialize_tokenomics","discriminator":[212,84,141,244,21,193,39,208],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"reward_fee_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,119,97,114,100,95,102,101,101,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"replication_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,112,108,105,99,97,116,105,111,110,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"recover_funds","discriminator":[194,165,70,223,66,241,45,34],"accounts":[{"name":"config","writable":true},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"recover_funds_anyone","discriminator":[63,252,95,65,228,16,150,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"account","path":"ticket.nonce","account":"Ticket"}]}},{"name":"user","writable":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"cranker","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"remove_oracle","discriminator":[60,93,51,197,182,42,170,26],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"reveal_batch","discriminator":[42,176,196,168,123,47,195,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealEntry"}}}}]},{"name":"reveal_batch_signed","discriminator":[157,126,204,244,23,210,88,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"payer","docs":["Relayer paying tx fees (must sign tx)"],"signer":true},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealSignedEntry"}}}}]},{"name":"reveal_ticket","discriminator":[223,24,70,21,181,13,151,239],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"guess","type":"u8"},{"name":"salt","type":{"array":["u8",32]}}]},{"name":"set_claim_grace_slots","discriminator":[186,199,198,137,128,29,135,49],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"claim_grace_slots","type":"u64"}]},{"name":"set_oracle_pubkey","discriminator":[90,135,153,229,200,95,163,243],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle_pubkey","type":"pubkey"}]},{"name":"set_oracle_threshold","discriminator":[181,85,21,30,120,168,37,233],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"threshold","type":"u8"}]},{"name":"set_pause","discriminator":[63,32,154,2,56,103,79,45],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"paused","type":"bool"}]},{"name":"set_pulse_signed","discriminator":[50,221,54,125,25,40,123,89],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse","type":{"array":["u8",64]}}]},{"name":"settle_round_tokens","discriminator":[237,209,221,2,7,78,113,158],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"treasury","writable":true},{"name":"replication_pool","writable":true},{"name":"payer","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"sweep_unclaimed","discriminator":[64,168,221,224,42,216,138,144],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury_sol","docs":["✅ SOL destination"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"timlg_vault","docs":["✅ SPL vault per round"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury","docs":["✅ SPL destination (from config)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"timlg_mint"},{"name":"admin","signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"update_stake_amount","discriminator":[253,105,70,4,212,31,206,34],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"new_stake_amount","type":"u64"}]},{"name":"withdraw_escrow","discriminator":[81,84,226,128,245,47,96,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]}]');
@@ -46976,18 +47030,6 @@ function formatDuration(seconds) {
   const s = Math.floor(seconds % 60);
   if (m > 0) return `${m}m ${s}s`;
   return `${s}s`;
-}
-function bnToBigInt(v) {
-  try {
-    if (v == null) return null;
-    if (typeof v === "bigint") return v;
-    if (typeof v === "number") return BigInt(v);
-    if (typeof v === "string") return BigInt(v);
-    if (typeof v?.toString === "function") return BigInt(v.toString());
-    return null;
-  } catch {
-    return null;
-  }
 }
 function MyTickets({
   program,
@@ -47042,7 +47084,7 @@ function MyTickets({
       if (!pulseSet && !finalized) {
         if (row.receipt?.refunded === true) return "REFUNDED";
         if (currentSlot2) {
-          const revealDl = bnToBigInt(r.revealDeadlineSlot || r.reveal_deadline_slot);
+          const revealDl = r._logic?.revealDeadline;
           if (revealDl) {
             const cur = BigInt(currentSlot2);
             if (cur > revealDl + 150n) return "REFUND AVAILABLE";
@@ -47064,7 +47106,7 @@ function MyTickets({
       }
       if (row.processed) return "REFUND RENT";
       if (row.round) {
-        const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
+        const revealDl = row.round._logic?.revealDeadline;
         if (currentSlot2 && revealDl) {
           if (BigInt(currentSlot2) > revealDl + 150n) return "REFUND RENT";
         }
@@ -47082,7 +47124,7 @@ function MyTickets({
       if (!row.round) return "RECLAIMED";
       if (row.swept) return "RECLAIMED";
       if (currentSlot2 && row.round && claimGraceSlots != null) {
-        const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
+        const revealDl = row.round._logic?.revealDeadline;
         if (revealDl) {
           const sweepSlot = revealDl + BigInt(claimGraceSlots);
           if (BigInt(currentSlot2) > sweepSlot) return "RECLAIMED";
@@ -47101,14 +47143,14 @@ function MyTickets({
       return "LOSS";
     }
     if (!revealed && !win) {
-      if (!row.round || row.round.finalized) return "EXPIRED";
-      const revealDl = bnToBigInt(row.round.revealDeadlineSlot || row.round.reveal_deadline_slot);
-      const finalized = Boolean(row.round.finalized);
-      const pulseSet = Boolean(row.round.pulseSet || row.round.pulse_set);
+      if (!row.round || row.round.isFinalized) return "EXPIRED";
+      const revealDl = row.round._logic?.revealDeadline;
+      const finalized = row.round.isFinalized;
+      const pulseSet = row.round.pulseSet;
       if (revealDl && currentSlot2) {
         const cur = BigInt(currentSlot2);
         if (!finalized && cur > revealDl + 150n) return "REFUND AVAILABLE";
-        if (!finalized && !pulseSet && cur > revealDl) return "WAITING PULSE";
+        if (!finalized && !pulseSet && revealDl > 0n && cur > revealDl) return "WAITING PULSE";
         if (cur > revealDl) return "EXPIRED";
         if (pulseSet && cur <= revealDl) return "REVEAL NOW";
       }
@@ -47215,26 +47257,25 @@ function MyTickets({
   const handleDownloadBatch = async (roundId2, tickets, roundData) => {
     try {
       console.log("Downloading batch for round", roundId2);
-      if (!roundData || !roundData.revealDeadlineSlot) {
+      if (!roundData || !roundData.revealDeadline) {
         const { loadLocalRoundWrapper: loadLocalRoundWrapper2 } = await __vitePreload(async () => {
           const { loadLocalRoundWrapper: loadLocalRoundWrapper3 } = await Promise.resolve().then(() => local);
           return { loadLocalRoundWrapper: loadLocalRoundWrapper3 };
         }, true ? void 0 : void 0, import.meta.url);
+        const { normalizeRound: normalizeRound2 } = await __vitePreload(async () => {
+          const { normalizeRound: normalizeRound3 } = await Promise.resolve().then(() => round);
+          return { normalizeRound: normalizeRound3 };
+        }, true ? void 0 : void 0, import.meta.url);
         const cached = loadLocalRoundWrapper2(roundId2);
         if (cached) {
-          console.log("Restored round data from local cache", cached);
-          roundData = { ...roundData || {}, ...cached };
+          console.log("Restored round data from local cache (normalizing)", cached);
+          roundData = normalizeRound2(cached);
         }
       }
-      const revealDeadline = roundData?.revealDeadlineSlot ?? roundData?.reveal_deadline_slot;
-      if (revealDeadline && claimGraceSlots && !roundData.sweptSlot && !roundData.swept_slot) {
-        let rdBn;
-        try {
-          rdBn = BigInt(revealDeadline);
-        } catch {
-          rdBn = BigInt("0x" + revealDeadline);
-        }
-        roundData = { ...roundData, sweptSlot: rdBn + BigInt(claimGraceSlots) };
+      const revealDeadline = roundData?._logic?.revealDeadline;
+      if (revealDeadline && claimGraceSlots && !roundData.reclaimed) {
+        const rdBn = BigInt(revealDeadline);
+        roundData = { ...roundData, reclaimed: formatSlot(rdBn + BigInt(claimGraceSlots)) };
       }
       const walletAddr = userPk?.toString() || tickets[0]?.ticket?.user?.toString() || "unknown";
       const rPda = await pdaRound(programPk, Number(roundId2));
@@ -47410,24 +47451,23 @@ function MyTickets({
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { textAlign: "center", width: 85 }, children: "Export" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { textAlign: "right", paddingRight: 24, width: "22%" }, children: "Action" })
         ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: visibleRounds.map(({ roundId: roundId2, tickets, round }) => {
-          const valCommit = round?.commitDeadlineSlot ?? round?.commit_deadline_slot;
-          const valReveal = round?.revealDeadlineSlot ?? round?.reveal_deadline_slot;
-          const valPulse = round?.pulseIndexTarget ?? round?.pulse_index_target;
-          const commitDl = bnToBigInt(valCommit) ?? 0n;
-          const revealDl = bnToBigInt(valReveal) ?? 0n;
-          const pulseTarget = bnToBigInt(valPulse) ?? 0n;
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: visibleRounds.map(({ roundId: roundId2, tickets, round: round2 }) => {
+          const commitDl = round2?._logic?.commitClose ?? 0n;
+          const revealDl = round2?._logic?.revealDeadline ?? 0n;
+          const pulseTarget = round2?._logic?.pulseIndexTarget ?? 0n;
           const cSlot = currentSlot ? BigInt(currentSlot) : 0n;
-          const finalized = Boolean(round?.finalized);
-          const pulseSet = Boolean(round?.pulseSet || round?.pulse_set);
-          const tokenSettled = Boolean(round?.tokenSettled || round?.token_settled);
+          const finalized = Boolean(round2?.isFinalized);
+          const pulseSet = Boolean(round2?.pulseSet);
+          const tokenSettled = Boolean(round2?.tokenSettled);
           const isChainSyncing = cSlot < 1000n;
           const effectiveGrace = claimGraceSlots ?? 2e3;
+          const currentNistPulse = nist?.pulse?.pulseIndex != null ? BigInt(nist.pulse.pulseIndex) : 0n;
+          const isFutureRound = pulseTarget > 0n && currentNistPulse > 0n && pulseTarget > currentNistPulse;
           const sweepEligible = revealDl > 0n ? revealDl + BigInt(effectiveGrace) : 0n;
           const refundEligible = revealDl > 0n ? revealDl + 150n : 0n;
           let rStatus = "ARCHIVED";
           let headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "—" });
-          if (round) {
+          if (round2) {
             if (isChainSyncing) {
               rStatus = "SYNCING";
               headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Syncing chain..." });
@@ -47443,37 +47483,36 @@ function MyTickets({
                 rStatus = "ARCHIVED";
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Done" });
               }
-            } else if (commitDl > 0n && cSlot < commitDl) {
+            } else if (commitDl > 0n && cSlot < commitDl || commitDl === 0n && isFutureRound) {
               rStatus = "OPEN";
               const diff = Number(commitDl - cSlot);
-              headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                "Commit ends: ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-              ] });
+              if (commitDl > 0n && diff > 0) {
+                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
+                  "Commit ends: ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
+                ] });
+              } else {
+                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Window Open" });
+              }
             } else if (refundEligible > 0n && cSlot > refundEligible && !pulseSet) {
               rStatus = "REFUND MODE";
               headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "bold" }, children: "Escape Hatch Active" });
-            } else if (!pulseSet) {
+            } else if (!pulseSet && (revealDl > 0n || isFutureRound)) {
               rStatus = "WAITING PULSE";
-              if (cSlot > revealDl) {
+              if (revealDl > 0n && cSlot > revealDl) {
                 const diff = Number(refundEligible - cSlot);
-                if (diff > 0) {
-                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                    "Refunds in: ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-                  ] });
-                } else {
-                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pulse Delayed" });
-                }
+                headerTimer = diff > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
+                  "Refunds in: ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pulse Delayed" });
               } else {
                 let shown = false;
                 if (pulseTarget && nist?.pulse?.pulseIndex) {
-                  const currentIdx = Number(nist.pulse.pulseIndex);
-                  const targetIdx = Number(pulseTarget);
-                  if (targetIdx > currentIdx) {
+                  const curIdx = Number(nist.pulse.pulseIndex);
+                  const tarIdx = Number(pulseTarget);
+                  if (tarIdx > curIdx) {
                     const lastTs = new Date(nist.pulse.timeStamp).getTime();
-                    const rem = targetIdx - currentIdx;
-                    const targetTs = lastTs + rem * 6e4 + 12e4;
+                    const targetTs = lastTs + (tarIdx - curIdx) * 6e4 + 12e4;
                     const diffMs = targetTs - Date.now();
                     if (diffMs > 0) {
                       headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
@@ -47486,7 +47525,7 @@ function MyTickets({
                 }
                 if (!shown) headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Waiting for Pulse..." });
               }
-            } else {
+            } else if (revealDl > 0n) {
               if (cSlot <= revealDl) {
                 rStatus = "REVEAL OPEN";
                 const diff = Number(revealDl - cSlot);
@@ -47498,6 +47537,9 @@ function MyTickets({
                 rStatus = "AWAITING SETTLE";
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#888", fontWeight: 400 }, children: "Auto-Settling..." });
               }
+            } else {
+              rStatus = "SYNCING";
+              headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Fetching details..." });
             }
           } else {
             const anyRefunded = tickets.some((t) => getComputedStatus(t, currentSlot) === "REFUNDED");
@@ -47523,7 +47565,7 @@ function MyTickets({
           });
           const allProccesableClaim = [...ticketsToClaimPrize, ...ticketsToRefund, ...ticketsToReclaim];
           [...ticketsToClaimPrize, ...ticketsToRefund];
-          const canSettle = round && !finalized && revealDl > 0n && cSlot > revealDl && pulseSet && !tokenSettled;
+          const canSettle = round2 && !finalized && revealDl > 0n && cSlot > revealDl && pulseSet && !tokenSettled;
           let rBg = "#f5f5f5";
           let rThemeColor = "#666";
           if (rStatus === "OPEN") {
@@ -47564,8 +47606,8 @@ function MyTickets({
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: headerTimer })
               ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { whiteSpace: "nowrap", fontWeight: 600, fontSize: 13, opacity: 0.8 }, children: rStatus }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round, roundId: roundId2, currentSlot, tickets }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 19 }) }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId2, tickets, round), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundDownloadIcon, { size: 19 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", title: "Round Details", onClick: () => setSelectedRound({ round: round2, roundId: roundId2, currentSlot, tickets }), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundInfoIcon, { size: 19 }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", title: "Download Batch", onClick: () => handleDownloadBatch(roundId2, tickets, round2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(RoundDownloadIcon, { size: 19 }) }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: ticketsToReveal.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
@@ -47793,9 +47835,9 @@ function MyTickets({
                 if (status === "REVEALING") {
                   iconColor = COLOR_PROCESSING;
                 } else {
-                  const round2 = t.round;
-                  const isSettled = round2 && (round2.pulseSet || round2.pulse_set || round2.finalized);
-                  const isHit = t.win || isSettled && round2.result === t.guess;
+                  const round22 = t.round;
+                  const isSettled = round22 && (round22.pulseSet || round22.pulse_set || round22.finalized);
+                  const isHit = t.win || isSettled && round22.result === t.guess;
                   if (isHit) {
                     iconColor = COLOR_WIN;
                   } else if (isSettled) {
@@ -48207,6 +48249,8 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
   const coder = reactExports.useMemo(() => new BorshAccountsCoder(idl), []);
   const [chainState, setChainState] = reactExports.useState(null);
   const [statusLine, setStatusLine] = reactExports.useState("");
+  const activeRoundsRef = reactExports.useMemo(() => ({ current: {} }), []);
+  const latestRoundObjRef = reactExports.useMemo(() => ({ current: null }), []);
   const refreshNow = reactExports.useCallback(async () => {
     if (!pubkey2) {
       setChainState(null);
@@ -48258,29 +48302,17 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
       }
       const roundPdas = roundIdsToFetch.map((rid) => pdaRound(programId, rid));
       const roundsInfo = await connection.getMultipleAccountsInfo(roundPdas, "processed");
-      const activeRounds = {};
-      let latestRoundObj = null;
       roundsInfo.forEach((info, idx) => {
         if (!info?.data) return;
-        const rid = roundIdsToFetch[idx];
-        const decoded = coder.decode("Round", info.data);
-        const rObj = {
-          roundId: rid,
-          pulseSet: Boolean(pick$1(decoded, "pulseSet", "pulse_set")),
-          finalized: Boolean(pick$1(decoded, "finalized")),
-          tokenSettled: Boolean(pick$1(decoded, "tokenSettled", "token_settled")),
-          commitDeadlineSlot: toBigInt(pick$1(decoded, "commitDeadlineSlot", "commit_deadline_slot")),
-          revealDeadlineSlot: toBigInt(pick$1(decoded, "revealDeadlineSlot", "reveal_deadline_slot")),
-          pulseIndexTarget: toBigInt(pick$1(decoded, "pulseIndexTarget", "pulse_index_target")),
-          pulse: pick$1(decoded, "pulse"),
-          pulseSetSlot: toBigInt(pick$1(decoded, "pulseSetSlot", "pulse_set_slot")),
-          tokenSettledSlot: toBigInt(pick$1(decoded, "tokenSettledSlot", "token_settled_slot")),
-          finalizedSlot: toBigInt(pick$1(decoded, "finalizedSlot", "finalized_slot")),
-          sweptSlot: toBigInt(pick$1(decoded, "sweptSlot", "swept_slot"))
-        };
-        const target2 = Number(rObj.pulseIndexTarget);
-        activeRounds[target2.toString()] = rObj;
-        if (rid === latestRoundId) latestRoundObj = rObj;
+        try {
+          const rid = roundIdsToFetch[idx];
+          const decoded = coder.decode("Round", info.data);
+          const rObj = normalizeRound({ ...decoded, roundId: rid });
+          const target2 = Number(rObj._logic.pulseIndexTarget);
+          activeRoundsRef.current[target2.toString()] = rObj;
+          if (rid === latestRoundId) latestRoundObjRef.current = rObj;
+        } catch {
+        }
       });
       const tokenomicsPda = pdaTokenomics(programId, configPda);
       const tokenomicsInfo = await connection.getAccountInfo(tokenomicsPda, "processed");
@@ -48303,9 +48335,9 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
         roundPda: pdaRound(programId, latestRoundId),
         timlgVaultPda: pdaTIMLGVault(programId, latestRoundId),
         currentSlot,
-        round: latestRoundObj,
-        activeRounds,
-        // ✅ Export the map
+        round: latestRoundObjRef.current,
+        activeRounds: activeRoundsRef.current,
+        // ✅ Export persistent map
         tokenomicsPda,
         tokenomicsExists,
         rewardFeeBps,
@@ -48313,11 +48345,10 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
         rewardFeePoolPda,
         deriveTicketPda: (rid, userPk, nonce) => pdaTicket(programId, rid, userPk, nonce)
       });
-      const target = latestRoundObj?.pulseIndexTarget?.toString() ?? "N/A";
-      setStatusLine(`Pipeline: ${Object.keys(activeRounds).length} rounds. Latest Target: ${target}`);
+      const target = latestRoundObjRef.current?.pulseId ?? "N/A";
+      setStatusLine(`Pipeline: ${Object.keys(activeRoundsRef.current).length} rounds. Latest Target: ${target}`);
     } catch (e) {
-      setChainState(null);
-      setStatusLine("Play: could not load protocol state");
+      setStatusLine("Play: RPC Error (showing stale data)");
       console.error("useProtocolState refresh error:", e);
     }
   }, [coder, connection, programId, pubkey2]);
@@ -48328,16 +48359,16 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
       if (stopped) return;
       if (document.visibilityState === "visible") await refreshNow();
     };
-    const isCommitOpen = chainState?.round && chainState?.currentSlot != null && chainState.round.commitDeadlineSlot != null && BigInt(chainState.currentSlot) < chainState.round.commitDeadlineSlot;
-    const isActive = chainState?.round && (isCommitOpen || !chainState.round.pulseSet || !chainState.round.finalized);
-    const ms = isActive ? 2e3 : 8e3;
+    const isCommitOpen = chainState?.round && chainState?.currentSlot != null && chainState.round._logic.commitClose != null && BigInt(chainState.currentSlot) < chainState.round._logic.commitClose;
+    const isActive = chainState?.round && (isCommitOpen || !chainState.round.pulseSet || !chainState.round.isFinalized);
+    const ms = isActive ? 5e3 : 12e3;
     tick();
     const id = setInterval(tick, ms);
     return () => {
       stopped = true;
       clearInterval(id);
     };
-  }, [pubkey2, refreshNow, chainState?.round?.pulseSet, chainState?.round?.finalized]);
+  }, [pubkey2, refreshNow, chainState?.round?.pulseSet, chainState?.round?.isFinalized]);
   return { chainState, statusLine, refreshNow };
 }
 const TICKET_DATA_SIZE = 122;
@@ -48365,14 +48396,14 @@ function pick(obj, names, fallback = void 0) {
   for (const n of names) if (obj && obj[n] !== void 0) return obj[n];
   return fallback;
 }
-function computeUiStatus({ ticket, round }) {
+function computeUiStatus({ ticket, round: round2 }) {
   const revealed = Boolean(pick(ticket, ["revealed"], false));
   const win = Boolean(pick(ticket, ["win"], false));
   const claimed = Boolean(pick(ticket, ["claimed"], false));
   if (claimed) return "CLAIMED";
   if (!revealed) return "PENDING";
   if (!win) return "LOSE";
-  const tokenSettled = Boolean(pick(round, ["tokenSettled", "token_settled"], false));
+  const tokenSettled = round2?.settled || Boolean(pick(round2, ["tokenSettled", "token_settled"], false));
   return tokenSettled ? "CLAIM" : "WIN";
 }
 function is429(e) {
@@ -48502,10 +48533,12 @@ function useUserTickets({
           for (let i = 0; i < uniqRoundIds.length; i++) {
             const rid = uniqRoundIds[i];
             let cached = roundCache.get(rid);
-            if (cached && (cached.isFinal || Date.now() - cached.ts < 1e4)) {
+            if (cached) {
               roundMap.set(rid, cached.round);
               if (cached.mint) roundMintMap.set(rid, cached.mint);
-            } else {
+            }
+            const needsFetch = !cached || !cached.isFinal && Date.now() - cached.ts > 1e4;
+            if (needsFetch) {
               missingIds.push(rid);
               missingPdas.push(roundPdas[i]);
             }
@@ -48530,9 +48563,10 @@ function useUserTickets({
               if (!info?.data) continue;
               try {
                 const decodedRound = coder.decode("Round", Buffer$1.from(info.data));
-                const isFinal = Boolean(decodedRound.swept);
-                roundMap.set(rid, decodedRound);
-                roundCache.set(rid, { round: decodedRound, mint: null, ts: Date.now(), isFinal });
+                const normalized = normalizeRound(decodedRound);
+                const isFinal = normalized.isSwept;
+                roundMap.set(rid, normalized);
+                roundCache.set(rid, { round: normalized, mint: null, ts: Date.now(), isFinal });
                 if (decodedRound.timlgVault || decodedRound.timlg_vault) {
                   vaultPks.push(new PublicKey(decodedRound.timlgVault || decodedRound.timlg_vault));
                   vaultToRound.push(rid);
@@ -48572,7 +48606,7 @@ function useUserTickets({
         }
         const next = decoded.map((row) => {
           const rid = Number(row.roundId);
-          const round = roundMap.get(rid) || null;
+          const round2 = roundMap.get(rid) || null;
           const roundMint = roundMintMap.get(rid) || null;
           if (registryLimit !== null && rid >= registryLimit) {
             return null;
@@ -48584,8 +48618,8 @@ function useUserTickets({
               return null;
             }
           }
-          if (round && rid === 130) {
-            const roundCreated = bnToNumber(pick(round, ["createdSlot", "created_slot"], 0), 0);
+          if (round2 && rid === 130) {
+            const roundCreated = bnToNumber(pick(round2, ["createdSlot", "created_slot"], 0), 0);
             console.log(`[useUserTickets] Round 130 Stats: TicketSlot=${row.createdSlot}, RoundCreated=${roundCreated}`);
           }
           const onChainGuess = pick(row.ticket, ["guess"], null);
@@ -48594,23 +48628,20 @@ function useUserTickets({
           const revealed = Boolean(pick(row.ticket, ["revealed"], false)) || rcpConfirmedReveal;
           const claimed = Boolean(pick(row.ticket, ["claimed"], false)) || rcpConfirmedClaim;
           const guess = revealed && row.ticket ? onChainGuess : row.receipt?.guess ?? null;
-          if (!revealed && row.receipt) {
-            console.log(`[DEBUG] Ticket ${row.ticketPk.toBase58().slice(0, 8)}: revealed=${revealed}, onChainGuess=${onChainGuess}, receipt.guess=${row.receipt.guess}, final guess=${guess}`);
-          }
           const onChainWin = Boolean(pick(row.ticket, ["win"], false));
           const receiptWin = row.receipt?.outcome === "win" || Boolean(row.receipt?.win);
           const win = onChainWin || receiptWin;
           const processed = Boolean(pick(row.ticket, ["processed"], false)) || row.ticket === null;
-          const pulseSet = Boolean(pick(round, ["pulseSet", "pulse_set"], false));
-          const swept = Boolean(pick(round, ["swept"], false));
-          const tokenSettled = Boolean(pick(round, ["tokenSettled", "token_settled"], false));
+          const pulseSet = Boolean(pick(round2, ["pulseSet", "pulse_set"], false));
+          const swept = Boolean(pick(round2, ["swept"], false));
+          const tokenSettled = Boolean(pick(round2, ["tokenSettled", "token_settled"], false));
           const mergedTicket = { ...row.ticket || {}, revealed, claimed, win };
-          const uiStatus = computeUiStatus({ ticket: mergedTicket, round });
+          const uiStatus = computeUiStatus({ ticket: mergedTicket, round: round2 });
           if (win && row.receipt && !row.receipt.outcome) {
             try {
               row.receipt.outcome = "win";
               const updated = { ...row.receipt, outcome: "win" };
-              saveLocalReceipt(userPubkey.toBase58(), round ? roundId : row.roundId, updated);
+              saveLocalReceipt(userPubkey.toBase58(), round2 ? roundId : row.roundId, updated);
               console.log("[Resilience] Saved WIN outcome for ticket", rid, row.nonce);
             } catch (err) {
             }
@@ -48620,13 +48651,13 @@ function useUserTickets({
             try {
               row.receipt.bitIndex = onChainBitIndex;
               const updated = { ...row.receipt, bitIndex: onChainBitIndex };
-              saveLocalReceipt(userPubkey.toBase58(), round ? roundId : row.roundId, updated);
+              saveLocalReceipt(userPubkey.toBase58(), round2 ? roundId : row.roundId, updated);
               console.log("[Resilience] Saved bitIndex for ticket", rid, row.nonce, onChainBitIndex);
             } catch (e) {
             }
           }
           const finalStatus = claimed ? "CLAIMED" : uiStatus;
-          return { ...row, round, guess, win, revealed, claimed, processed, pulseSet, swept, tokenSettled, uiStatus: finalStatus };
+          return { ...row, round: round2, guess, win, revealed, claimed, processed, pulseSet, swept, tokenSettled, uiStatus: finalStatus };
         }).filter(Boolean);
         setRows(next);
         setLastUpdatedAt(Date.now());
@@ -49250,14 +49281,7 @@ function App() {
         refreshSol(pubkey2);
         refreshTIMLG(pubkey2);
       }
-    }, 1e3);
-    setTimeout(() => {
-      setTicketVersion((v) => v + 1);
-      if (pubkey2) {
-        refreshSol(pubkey2);
-        refreshTIMLG(pubkey2);
-      }
-    }, 3e3);
+    }, 1500);
   }, [pubkey2, refreshSol, refreshTIMLG]);
   const refreshAll = reactExports.useCallback(async () => {
     if (!pubkey2) return;
@@ -49404,14 +49428,14 @@ function App() {
     for (const rid of chronoRoundIds) {
       const tix = rounds.get(rid);
       const finished2 = tix.every((t) => {
-        const revealDl = t.round?.revealDeadlineSlot || t.round?.reveal_deadline_slot ? BigInt(t.round.revealDeadlineSlot || t.round.reveal_deadline_slot) : null;
+        const revealDl = t.round?._logic?.revealDeadline;
         const isExpired = !t.revealed && !t.win && revealDl && currentSlot && currentSlot > revealDl;
         return t.revealed || isExpired;
       });
       if (!finished2) continue;
       let roundPnLRaw = 0n;
       tix.forEach((t) => {
-        const revealDl = t.round?.revealDeadlineSlot || t.round?.reveal_deadline_slot ? BigInt(t.round.revealDeadlineSlot || t.round.reveal_deadline_slot) : null;
+        const revealDl = t.round?._logic?.revealDeadline;
         const isExpired = !t.revealed && !t.win && revealDl && currentSlot && currentSlot > revealDl;
         if (t.revealed && t.win) {
           const fee = rawStake * feeBps / 10000n;
