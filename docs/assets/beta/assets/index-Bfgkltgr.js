@@ -45518,10 +45518,6 @@ const CopyIcon = ({ size = 15, color = "currentColor" }) => /* @__PURE__ */ jsxR
     fill: color
   }
 ) });
-const WalletIcon = ({ size = 20, color = "currentColor", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 64 64", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { fill: color, cx: "46", cy: "38", r: "2" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: color, d: "M62,32h-2V16c0-2.211-1.789-4-4-4V8c0-1.343-0.404-2.385-1.205-3.099c-1.186-1.058-2.736-0.91-2.896-0.896\n                c-0.072,0.007-1.484,0.152-3.789,0.39l-0.641-1.761c-0.756-2.078-3.049-3.147-5.127-2.391L24.131,6.871\n                C15.535,7.764,7.397,8.616,3.89,9.006C0.951,9.332,0.062,12.908,0,14.97c-0.004,0.134,0.021,0.263,0.065,0.38\n                C0.031,15.562,0,15.777,0,16v44c0,2.211,1.789,4,4,4h52c2.211,0,4-1.789,4-4V44h2c1.105,0,2-0.895,2-2v-8\n                C64,32.895,63.105,32,62,32z M55,18c0.553,0,1,0.447,1,1s-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1H55z M50,19\n                c0,0.553-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2C49.553,18,50,18.447,50,19z M7,58H5c-0.553,0-1-0.447-1-1s0.447-1,1-1\n                h2c0.553,0,1,0.447,1,1S7.553,58,7,58z M7,20H5c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S7.553,20,7,20z M13,58h-2\n                c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S13.553,58,13,58z M13,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S13.553,20,13,20z M19,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S19.553,58,19,58z M19,20\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S19.553,20,19,20z M25,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S25.553,58,25,58z M25,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S25.553,20,25,20z M31,58\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S31.553,58,31,58z M31,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S31.553,20,31,20z M31.35,12H15.885l27.141-9.878c1.039-0.378,2.186,0.157,2.564,1.195L48.75,12h-6.098\n                C41.826,9.672,39.611,8,37,8S32.174,9.672,31.35,12z M44,19c0,0.553-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                C43.553,18,44,18.447,44,19z M37,10c1.477,0,2.752,0.81,3.445,2h-6.891C34.248,10.81,35.523,10,37,10z M37,58h-2\n                c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S37.553,58,37,58z M37,20h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S37.553,20,37,20z M43,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S43.553,58,43,58z M49,58\n                h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2c0.553,0,1,0.447,1,1S49.553,58,49,58z M55,58h-2c-0.553,0-1-0.447-1-1s0.447-1,1-1h2\n                c0.553,0,1,0.447,1,1S55.553,58,55,58z M62,41c0,0.553-0.447,1-1,1H43c-0.553,0-1-0.447-1-1v-6c0-0.553,0.447-1,1-1h18\n                c0.553,0,1,0.447,1,1V41z" })
-] }) });
 const TimlgIcon = ({
   size = 20,
   color = "currentColor",
@@ -45581,6 +45577,7 @@ const RoundDownloadIcon = ({ size = 17, color = "#6B7280", ...props }) => /* @__
 ] });
 const RentLockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "-13.39 0 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.892,56.036h8.959v-1.075V37.117c0-10.205,4.177-19.484,10.898-26.207v-0.009 C29.473,4.177,38.754,0,48.966,0C59.17,0,68.449,4.177,75.173,10.901l0.01,0.009c6.721,6.723,10.898,16.002,10.898,26.207v17.844 v1.075h7.136c1.59,0,2.892,1.302,2.892,2.891v61.062c0,1.589-1.302,2.891-2.892,2.891H2.892c-1.59,0-2.892-1.302-2.892-2.891 V58.927C0,57.338,1.302,56.036,2.892,56.036L2.892,56.036z M26.271,56.036h45.387v-1.075V36.911c0-6.24-2.554-11.917-6.662-16.03 l-0.005,0.004c-4.111-4.114-9.787-6.669-16.025-6.669c-6.241,0-11.917,2.554-16.033,6.665c-4.109,4.113-6.662,9.79-6.662,16.03 v18.051V56.036L26.271,56.036z M49.149,89.448l4.581,21.139l-12.557,0.053l3.685-21.423c-3.431-1.1-5.918-4.315-5.918-8.111 c0-4.701,3.81-8.511,8.513-8.511c4.698,0,8.511,3.81,8.511,8.511C55.964,85.226,53.036,88.663,49.149,89.448L49.149,89.448z" }) });
 const RentUnlockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 -6.61 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.585,49.871H54.77V34.054v-0.011h0.009c0.002-9.368,3.828-17.878,9.989-24.042 c6.164-6.163,14.679-9.991,24.051-9.991V0h0.005l0,0h0.012v0.009c9.368,0.002,17.878,3.828,24.042,9.989 c6.164,6.164,9.991,14.679,9.991,24.051h0.012v0.004v15.96v2.403h-2.403h-9.811h-2.404v-2.403V33.868v-0.009h0.012 c-0.002-5.332-2.195-10.189-5.722-13.715c-3.528-3.531-8.388-5.721-13.724-5.724v0.009h-0.005l0,0h-0.011V14.42 c-5.334,0.002-10.191,2.19-13.72,5.717l0.005,0.005c-3.529,3.528-5.722,8.388-5.722,13.722h0.009v0.005v16.003h13.987 c1.422,0,2.585,1.164,2.585,2.585v54.613c0,1.422-1.163,2.583-2.585,2.583H2.585c-1.424,0-2.585-1.161-2.585-2.583V52.456 C0,51.035,1.161,49.871,2.585,49.871L2.585,49.871z M43.957,79.753l4.098,18.908l-11.232,0.045l3.297-19.162 c-3.068-0.981-5.295-3.857-5.295-7.252c0-4.202,3.411-7.613,7.614-7.613c4.202,0,7.613,3.411,7.613,7.613 C50.053,75.975,47.433,79.048,43.957,79.753L43.957,79.753z" }) });
+const PhantomIcon = ({ size = 20, color = "#AB9FF2", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size * 493 / 593, viewBox: "0 0 593 493", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M70.0546 493C145.604 493 202.38 427.297 236.263 375.378C232.142 386.865 229.852 398.351 229.852 409.378C229.852 439.703 247.252 461.297 281.592 461.297C328.753 461.297 379.119 419.946 405.218 375.378C403.386 381.811 402.471 387.784 402.471 393.297C402.471 414.432 414.375 427.757 438.643 427.757C515.108 427.757 592.03 292.216 592.03 173.676C592.03 81.3243 545.327 0 428.112 0C222.069 0 0 251.784 0 414.432C0 478.297 34.3405 493 70.0546 493ZM357.141 163.568C357.141 140.595 369.962 124.514 388.734 124.514C407.049 124.514 419.87 140.595 419.87 163.568C419.87 186.541 407.049 203.081 388.734 203.081C369.962 203.081 357.141 186.541 357.141 163.568ZM455.126 163.568C455.126 140.595 467.947 124.514 486.719 124.514C505.034 124.514 517.855 140.595 517.855 163.568C517.855 186.541 505.034 203.081 486.719 203.081C467.947 203.081 455.126 186.541 455.126 163.568Z", fill: color }) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45814,35 +45811,39 @@ function PlayCard({
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
       background: "rgba(255, 255, 255, 0.6)",
       borderRadius: "14px",
-      padding: "16px",
+      padding: "0 16px",
       height: "58px",
       border: "1px solid rgba(0, 0, 0, 0.03)",
       display: "flex",
-      justifyContent: "space-between",
       alignItems: "center",
       boxSizing: "border-box"
     }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "12px" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "16px", fontWeight: "900", color: "#111" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "TRACKING" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px", flex: "1 0 0" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "15px", fontWeight: "900", color: "#111", whiteSpace: "nowrap" }, children: selectedRound ? `ROUND #${selectedRound.roundId}` : "TRACKING" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
           background: canCommit ? "rgba(16, 185, 129, 0.1)" : "rgba(0, 0, 0, 0.05)",
           color: canCommit ? "#10B981" : "#888",
-          padding: "2px 8px",
+          padding: "3px 8px",
           borderRadius: "20px",
           fontSize: "10px",
-          fontWeight: "900"
-        }, children: canCommit ? "● OPEN" : "● CLOSED" })
+          fontWeight: "900",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", lineHeight: "1" }, children: "•" }),
+          canCommit ? "OPEN" : "CLOSED"
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "baseline", gap: "6px" }, children: canCommit && secondsLeft != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "18px", fontWeight: "900", color: secondsLeft < 15 ? "#EF4444" : "#111", letterSpacing: "-0.02em" }, children: [
-          secondsLeft,
-          "s"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "REMAINING" })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: "12px", opacity: 0.6 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", letterSpacing: "0.05em" }, children: "CURRENT PULSE" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        justifyContent: "center",
+        flex: "2 0 0"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: "#666", letterSpacing: "0.02em" }, children: "CURRENT PULSE" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "a",
@@ -45850,36 +45851,56 @@ function PlayCard({
                 href: nist?.pulseUrl || `https://beacon.nist.gov/beacon/2.0/chain/2/pulse/${currentNistPulse}`,
                 target: "_blank",
                 rel: "noreferrer",
-                style: { fontSize: "12px", fontWeight: "800", color: "#444", textDecoration: "none", fontFamily: "monospace" },
+                style: { fontSize: "12px", fontWeight: "800", color: "#111", textDecoration: "none", fontFamily: "monospace" },
                 onMouseEnter: (e) => e.currentTarget.style.color = "#2D68EA",
-                onMouseLeave: (e) => e.currentTarget.style.color = "#444",
+                onMouseLeave: (e) => e.currentTarget.style.color = "#111",
                 children: [
                   "#",
                   currentNistPulse
                 ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", fontWeight: "700", opacity: 0.6 }, children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", fontWeight: "700", opacity: 0.5, fontFamily: "monospace" }, children: new Date(currentPulseAtMs).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "12px", background: "rgba(0,0,0,0.1)" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "14px", background: "rgba(0,0,0,0.06)" } }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", letterSpacing: "0.05em" }, children: "UTC" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: "#666", letterSpacing: "0.02em" }, children: "UTC" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: "#111" }, children: new Date(now).toLocaleTimeString([], { hour12: false, timeZone: "UTC" }) })
         ] })
-      ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        gap: "8px",
+        flex: "1 0 0",
+        textAlign: "right"
+      }, children: canCommit && secondsLeft != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: {
+          fontSize: "18px",
+          fontWeight: "900",
+          color: secondsLeft < 15 ? "#EF4444" : "#111",
+          letterSpacing: "-0.04em",
+          fontFamily: "monospace"
+        }, children: [
+          secondsLeft,
+          "s"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4, width: "50px", textAlign: "left" }, children: "REMAINING" })
+      ] }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        background: canCommit ? "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)" : "rgba(255, 255, 255, 0.4)",
+        background: selectedRound ? "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)" : "rgba(255, 255, 255, 0.4)",
         borderRadius: "14px",
         padding: "16px",
-        border: canCommit ? "1px solid rgba(76, 130, 251, 0.15)" : "1px solid rgba(0, 0, 0, 0.05)",
+        border: selectedRound ? "1px solid rgba(76, 130, 251, 0.15)" : "1px solid rgba(0, 0, 0, 0.05)",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
-        boxShadow: canCommit ? "0 4px 12px rgba(76, 130, 251, 0.05)" : "none",
-        filter: canCommit ? "none" : "grayscale(1)"
+        boxShadow: selectedRound ? "0 4px 12px rgba(76, 130, 251, 0.05)" : "none",
+        filter: selectedRound ? "none" : "grayscale(1)"
       }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", fontWeight: "900", color: "#4C82FB", opacity: 0.8, letterSpacing: "0.05em", marginBottom: "6px" }, children: "TARGET PULSE" }),
@@ -46025,7 +46046,7 @@ function PlayCard({
             { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
             { val: -1, label: "RAND", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 42, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
           ].map((tile) => {
-            const isSubmitting = loading && guess === tile.val;
+            loading && guess === tile.val;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
@@ -46049,7 +46070,7 @@ function PlayCard({
                   transition: "all 0.2s"
                 },
                 children: [
-                  isSubmitting ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: tile.color }, children: "..." }) : tile.icon,
+                  tile.icon,
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: guess === tile.val ? tile.color : "#666", marginTop: "2px" }, children: tile.label })
                 ]
               },
@@ -46066,7 +46087,7 @@ function PlayCard({
           onClick: doReveal,
           disabled: loading,
           style: { flex: 1, height: "46px", borderRadius: "4px", background: "#f39c12", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(243, 156, 18, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" },
-          children: loading ? "..." : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: "#fff" }),
             " UNLOCK (REVEAL) TICKET"
           ] })
@@ -46078,7 +46099,7 @@ function PlayCard({
           onClick: doClaim,
           disabled: loading,
           style: { flex: 1, height: "46px", borderRadius: "4px", background: "#10B981", color: "#fff", fontWeight: "900", border: "none", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)" },
-          children: loading ? "..." : "CLAIM PROTOCOL REWARD"
+          children: '"CLAIM PROTOCOL REWARD"'
         }
       )
     ] }),
@@ -46451,7 +46472,7 @@ function generateBatchExportJSON(roundId2, rPda, roundStatusLabel, rData, ticket
       slots: {
         commitOpen: rData?.commitOpen || null,
         commitClose: rData?.commitClose || null,
-        pulse: rData?.pulse || null,
+        pulse: rData?.pulseSlot || null,
         revealDeadline: rData?.revealDeadline || null,
         finalized: rData?.finalized || null,
         reclaimed: rData?.reclaimed || null,
@@ -46486,24 +46507,31 @@ function normalizeRound(r) {
   if (!r) return null;
   const toHex2 = (u82) => {
     if (!u82) return null;
-    const arr = Array.from(new Uint8Array(u82));
-    if (arr.every((b) => b === 0)) return null;
-    return arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (typeof u82 !== "object" || u82 === null) return null;
+    if (typeof u82.length !== "number" || typeof u82 === "string") return null;
+    try {
+      const arr = Array.from(new Uint8Array(u82));
+      if (arr.length === 0 || arr.length > 1024) return null;
+      if (arr.every((b) => b === 0)) return null;
+      return arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+    } catch (e) {
+      return null;
+    }
   };
   return {
     // Metadata
     roundId: r.roundId ?? r.round_id,
     timlgVault: r.timlgVault || r.timlg_vault,
     // Canonical slot strings (Export-ready)
-    commitOpen: formatSlot(r.createdSlot || r.created_slot),
-    commitClose: formatSlot(r.commitDeadlineSlot || r.commit_deadline_slot),
-    pulse: formatSlot(r.pulseSetSlot || r.pulse_set_slot),
-    revealDeadline: formatSlot(r.revealDeadlineSlot || r.reveal_deadline_slot),
-    finalized: formatSlot(r.finalizedSlot || r.finalized_slot),
-    settled: formatSlot(r.tokenSettledSlot || r.token_settled_slot),
-    reclaimed: formatSlot(r.sweptSlot || r.swept_slot),
+    commitOpen: formatSlot(r.createdSlot || r.created_slot || r.commitOpen),
+    commitClose: formatSlot(r.commitDeadlineSlot || r.commit_deadline_slot || r.commitClose),
+    pulseSlot: formatSlot(r.pulseSetSlot || r.pulse_set_slot || r.pulseSlot || r.pulse),
+    revealDeadline: formatSlot(r.revealDeadlineSlot || r.reveal_deadline_slot || r.revealDeadline),
+    finalized: formatSlot(r.finalizedSlot || r.finalized_slot || r.finalized),
+    settled: formatSlot(r.tokenSettledSlot || r.token_settled_slot || r.settled),
+    reclaimed: formatSlot(r.sweptSlot || r.swept_slot || r.reclaimed),
     // Oracle / Result data
-    pulseHash: toHex2(r.pulse),
+    pulseHash: r.pulseHash || toHex2(r.pulse),
     pulseId: formatSlot(r.pulseIndexTarget ?? r.pulse_index_target),
     // Boolean status (Safe for UI logic)
     pulseSet: toBigInt$2(r.pulseSet ?? r.pulse_set ?? r.pulseSetSlot ?? r.pulse_set_slot) !== 0n,
@@ -46565,7 +46593,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       }
     };
     const cd = getRel(activeRound?.commitClose);
-    const ps = getRel(activeRound?.pulse);
+    const ps = getRel(activeRound?.pulseSlot);
     const rd = getRel(activeRound?.revealDeadline);
     const fn = getRel(activeRound?.finalized);
     const st = getRel(activeRound?.settled);
@@ -46637,7 +46665,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       fn !== null && fn > 0 && { slot: fn, label: "Finalized", critical: false },
       st !== null && st > 0 && { slot: st, label: "Tokens Settled", critical: false },
       claimDeadline !== null && { slot: claimDeadline, label: "Claim Deadline", critical: true },
-      realSweptSlot !== null && { slot: realSweptSlot, label: "Vault Reclaimed", critical: false }
+      realSweptSlot !== null && { slot: realSweptSlot, label: "Vault Swept", critical: false }
     ].filter(Boolean);
     return {
       totalSlots: totalSlots2,
@@ -46729,13 +46757,23 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
         );
       }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: marginLeft, y1: height - 40, x2: svgWidth - marginRight, y2: height - 40, stroke: "rgba(255,255,255,0.2)", strokeWidth: "1" }),
-      Array.from({ length: Math.floor(totalSlots / 500) + 1 }, (_, i) => i * 500).map((slot) => {
-        const x = slotToX(slot);
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: x, y1: height - 40, x2: x, y2: height - 35, stroke: "rgba(255,255,255,0.3)", strokeWidth: "1" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x, y: height - 20, fontSize: "9", fill: "rgba(255,255,255,0.5)", textAnchor: "middle", children: slot })
-        ] }, slot);
-      }),
+      (() => {
+        if (!totalSlots || totalSlots <= 0 || isNaN(totalSlots) || !isFinite(totalSlots)) return null;
+        const idealStep = totalSlots / 15;
+        const magnitude = Math.pow(10, Math.floor(Math.log10(idealStep)));
+        let step = magnitude;
+        if (idealStep / magnitude > 5) step = magnitude * 5;
+        else if (idealStep / magnitude > 2) step = magnitude * 2;
+        const tickCount = Math.floor(totalSlots / step);
+        if (tickCount > 200) return null;
+        return Array.from({ length: tickCount + 1 }, (_, i) => i * step).map((slot) => {
+          const x = slotToX(slot);
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: x, y1: height - 40, x2: x, y2: height - 35, stroke: "rgba(255,255,255,0.3)", strokeWidth: "1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x, y: height - 20, fontSize: "8", fill: "rgba(255,255,255,0.5)", textAnchor: "middle", children: Math.floor(slot) })
+          ] }, slot);
+        });
+      })(),
       milestones.map((m, i) => {
         const x = slotToX(m.slot);
         const y = getMilestoneY(i);
@@ -46904,7 +46942,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
       accountStatus === "closed" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(239, 68, 68, 0.1)", color: "#ef4444", padding: "8px 12px", borderRadius: 6, fontSize: 12, marginBottom: 16, border: "1px solid rgba(239, 68, 68, 0.2)" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "⚠️ Round Closed On-Chain" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
-        "This round has been settled and the rent reclaimed (swept). Most data is no longer available on the blockchain."
+        "This round has been settled and the rent swept by the protocol. Most data is no longer available on the blockchain."
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: 12 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, opacity: 0.5, marginBottom: 4 }, children: "ROUND ADDRESS (PDA)" }),
@@ -46977,7 +47015,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Pulse Set at:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.pulse || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.pulseSlot || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Reveal Deadline:" }),
@@ -47060,8 +47098,8 @@ function MyTickets({
   doClaimTicket,
   doRefundTicket,
   doSettleRound,
-  doCloseTicket
-  // removed history props
+  doCloseTicket,
+  processingId = null
 }) {
   const userPk = reactExports.useMemo(() => {
     if (!pubkey2) return null;
@@ -47096,8 +47134,8 @@ function MyTickets({
     if (!row.receipt) {
       if (row.revealed) {
         if (row.win) {
-          if (row.swept) return "RECLAIMED";
-          if (row.round && row.round.finalized) return "RECLAIMED";
+          if (row.swept) return "SWEPT";
+          if (row.round && row.round.finalized) return "SWEPT";
           return "WIN";
         } else {
           if (row.processed) return "LOSS";
@@ -47116,18 +47154,18 @@ function MyTickets({
     if (row.receipt?.refunded === true) return "REFUNDED";
     if (row.receipt?.closed) {
       if (row.receipt.outcome === "win" || row.receipt.sweepTx || row.receipt.sweptAt) {
-        return "RECLAIMED";
+        return "SWEPT";
       }
     }
     if (claimed) return "CLAIMED";
     if (win) {
-      if (!row.round) return "RECLAIMED";
-      if (row.swept) return "RECLAIMED";
+      if (!row.round) return "SWEPT";
+      if (row.swept) return "SWEPT";
       if (currentSlot2 && row.round && claimGraceSlots != null) {
         const revealDl = row.round._logic?.revealDeadline;
         if (revealDl) {
           const sweepSlot = revealDl + BigInt(claimGraceSlots);
-          if (BigInt(currentSlot2) > sweepSlot) return "RECLAIMED";
+          if (BigInt(currentSlot2) > sweepSlot) return "SWEPT";
         }
       }
       if (tokenSettled || row.round.finalized) return "READY TO CLAIM";
@@ -47211,6 +47249,7 @@ function MyTickets({
     if (status === "NO RECEIPT") return "LOST KEY";
     if (status === "REFUND RENT") return "RECOVER RENT";
     if (status === "SYNCING") return "SYNCING...";
+    if (status === "SWEPT") return "SWEPT";
     return status;
   };
   const ensureSweepTx = async (ticket, rId) => {
@@ -47428,7 +47467,7 @@ function MyTickets({
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "LOSS", children: "Loss" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "CLAIMED", children: "Claimed" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "REFUNDED", children: "Refunded" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "RECLAIMED", children: "Reclaimed" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SWEPT", children: "Swept" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "EXPIRED", children: "Expired" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "PENDING", children: "Pending" })
         ] }),
@@ -47561,40 +47600,32 @@ function MyTickets({
             const s = getComputedStatus(t, currentSlot);
             const roundArchived = !t.round;
             const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
-            return (s === "LOSS" || s === "RECLAIMED" || s === "EXPIRED" || s === "REFUNDED" || s === "REFUND RENT" || s === "PENDING" && roundArchived) && !t.receipt?.closed && isProcessed && (!t.round || finalized);
+            return (s === "LOSS" || s === "SWEPT" || s === "EXPIRED" || s === "REFUNDED" || s === "REFUND RENT" || s === "PENDING" && roundArchived) && !t.receipt?.closed && isProcessed && (!t.round || finalized);
           });
           const allProccesableClaim = [...ticketsToClaimPrize, ...ticketsToRefund, ...ticketsToReclaim];
           [...ticketsToClaimPrize, ...ticketsToRefund];
           const canSettle = round2 && !finalized && revealDl > 0n && cSlot > revealDl && pulseSet && !tokenSettled;
           let rBg = "#f5f5f5";
-          let rThemeColor = "#666";
           if (rStatus === "OPEN") {
             rBg = "#D1FAE5";
-            rThemeColor = "#065F46";
           }
           if (rStatus === "WAITING PULSE") {
             rBg = "#FEF3C7";
-            rThemeColor = "#92400E";
           }
           if (rStatus === "REVEAL OPEN") {
             rBg = "#DBEAFE";
-            rThemeColor = "#1E40AF";
           }
           if (rStatus === "AWAITING SETTLE") {
             rBg = "#F3E8FF";
-            rThemeColor = "#6B21A8";
           }
           if (rStatus === "REFUND MODE") {
             rBg = "#FEE2E2";
-            rThemeColor = "#991B1B";
           }
           if (rStatus === "REFUNDED") {
             rBg = "#F3F4F6";
-            rThemeColor = "#4B5563";
           }
           if (rStatus === "CLAIM WINDOW") {
             rBg = "#CCFBF1";
-            rThemeColor = "#115E59";
           }
           return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { background: rBg }, children: [
@@ -47613,8 +47644,8 @@ function MyTickets({
                 {
                   className: "beta-btn beta-btn--sm",
                   style: {
-                    background: globalLoading ? "#f9f9f9" : "#eee",
-                    color: globalLoading ? "#aaa" : "#444",
+                    background: loading || globalLoading ? "#f9f9f9" : "#eee",
+                    color: loading || globalLoading ? "#aaa" : "#444",
                     height: "36px",
                     padding: "0 14px",
                     display: "flex",
@@ -47627,7 +47658,7 @@ function MyTickets({
                     whiteSpace: "nowrap"
                   },
                   onClick: () => ticketsToReveal.forEach((t) => doRevealTicket(t)),
-                  disabled: globalLoading,
+                  disabled: loading || globalLoading || !!processingId,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
                     " Reveal All (",
@@ -47640,8 +47671,8 @@ function MyTickets({
                 {
                   className: "beta-btn beta-btn--sm",
                   style: {
-                    background: globalLoading ? "#f9f9f9" : "#eee",
-                    color: globalLoading ? "#aaa" : "#444",
+                    background: loading || globalLoading ? "#f9f9f9" : "#eee",
+                    color: loading || globalLoading ? "#aaa" : "#444",
                     height: "36px",
                     padding: "0 14px",
                     display: "flex",
@@ -47654,7 +47685,7 @@ function MyTickets({
                     whiteSpace: "nowrap"
                   },
                   onClick: async () => {
-                    if (globalLoading) return;
+                    if (loading || globalLoading) return;
                     for (const t of allProccesableClaim) {
                       const s = getComputedStatus(t, currentSlot);
                       if (s === "READY TO CLAIM") await doClaimTicket(t);
@@ -47662,7 +47693,7 @@ function MyTickets({
                       else await doCloseTicket(t);
                     }
                   },
-                  disabled: globalLoading,
+                  disabled: loading || globalLoading || !!processingId,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
                     " Claim All (",
@@ -47675,8 +47706,8 @@ function MyTickets({
                 {
                   className: "beta-btn beta-btn--sm",
                   style: {
-                    background: globalLoading ? "#f9f9f9" : "#eee",
-                    color: globalLoading ? "#aaa" : "#444",
+                    background: loading || globalLoading ? "#f9f9f9" : "#eee",
+                    color: loading || globalLoading ? "#aaa" : "#444",
                     height: "36px",
                     padding: "0 14px",
                     display: "flex",
@@ -47689,14 +47720,14 @@ function MyTickets({
                     whiteSpace: "nowrap"
                   },
                   onClick: async () => {
-                    if (globalLoading) return;
+                    if (loading || globalLoading) return;
                     if (window.confirm(`Reclaim all ${ticketsToReclaim.length} tickets?`)) {
                       for (const t of ticketsToReclaim) {
                         await doCloseTicket(t);
                       }
                     }
                   },
-                  disabled: globalLoading,
+                  disabled: loading || globalLoading || !!processingId,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
                     " Reclaim All (",
@@ -47711,8 +47742,8 @@ function MyTickets({
                     className: "beta-btn beta-btn--sm",
                     title: "Commit Bear",
                     style: {
-                      background: globalLoading ? "#f9f9f9" : "#eee",
-                      color: globalLoading ? "#aaa" : "#444",
+                      background: loading || globalLoading || !!processingId ? "#f9f9f9" : "#eee",
+                      color: loading || globalLoading || !!processingId ? "#aaa" : "#444",
                       width: "36px",
                       height: "36px",
                       padding: 0,
@@ -47722,7 +47753,7 @@ function MyTickets({
                       border: "1px solid #ccc",
                       borderRadius: "4px"
                     },
-                    disabled: globalLoading,
+                    disabled: loading || globalLoading || !!processingId,
                     onClick: () => doCommitGlobal({
                       targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
@@ -47740,8 +47771,8 @@ function MyTickets({
                     className: "beta-btn beta-btn--sm",
                     title: "Commit Bull",
                     style: {
-                      background: globalLoading ? "#f9f9f9" : "#eee",
-                      color: globalLoading ? "#aaa" : "#444",
+                      background: loading || globalLoading || !!processingId ? "#f9f9f9" : "#eee",
+                      color: loading || globalLoading || !!processingId ? "#aaa" : "#444",
                       width: "36px",
                       height: "36px",
                       padding: 0,
@@ -47751,7 +47782,7 @@ function MyTickets({
                       border: "1px solid #ccc",
                       borderRadius: "4px"
                     },
-                    disabled: globalLoading,
+                    disabled: loading || globalLoading || !!processingId,
                     onClick: () => doCommitGlobal({
                       targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
@@ -47769,8 +47800,8 @@ function MyTickets({
                     className: "beta-btn beta-btn--sm",
                     title: "Commit Random",
                     style: {
-                      background: globalLoading ? "#f9f9f9" : "#eee",
-                      color: globalLoading ? "#aaa" : "#444",
+                      background: loading || globalLoading || !!processingId ? "#f9f9f9" : "#eee",
+                      color: loading || globalLoading || !!processingId ? "#aaa" : "#444",
                       width: "36px",
                       height: "36px",
                       padding: 0,
@@ -47780,7 +47811,7 @@ function MyTickets({
                       border: "1px solid #ccc",
                       borderRadius: "4px"
                     },
-                    disabled: globalLoading,
+                    disabled: loading || globalLoading || !!processingId,
                     onClick: () => doCommitGlobal({
                       targetRoundId: roundId2,
                       targetPulseIndex: Number(pulseTarget),
@@ -47797,8 +47828,8 @@ function MyTickets({
                 {
                   className: "beta-btn beta-btn--sm",
                   style: {
-                    background: globalLoading ? "#f9f9f9" : "#eee",
-                    color: globalLoading ? "#aaa" : "#444",
+                    background: loading || globalLoading || !!processingId ? "#f9f9f9" : "#eee",
+                    color: loading || globalLoading || !!processingId ? "#aaa" : "#444",
                     height: "36px",
                     padding: "0 14px",
                     display: "flex",
@@ -47810,7 +47841,7 @@ function MyTickets({
                     fontSize: "13px"
                   },
                   onClick: () => doSettleRound({ roundId: roundId2 }),
-                  disabled: globalLoading,
+                  disabled: loading || globalLoading || !!processingId,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(SettleIcon, { size: 16, style: { marginRight: 6 } }),
                     " Manual Settle"
@@ -47825,11 +47856,9 @@ function MyTickets({
               const COLOR_PENDING = "#9CA3AF";
               const COLOR_PROCESSING = "#F59E0B";
               let iconColor = COLOR_PENDING;
-              if (status === "WIN" || status === "READY TO CLAIM" || status.includes("RECLAIMED") && t.win) {
-                rThemeColor = COLOR_WIN;
+              if (status === "WIN" || status === "READY TO CLAIM" || status.includes("SWEPT") && t.win) {
                 iconColor = COLOR_WIN;
-              } else if (status === "LOSS" || status.includes("RECLAIMED") && !t.win && t.revealed) {
-                rThemeColor = COLOR_LOSS;
+              } else if (status === "LOSS" || status.includes("SWEPT") && !t.win && t.revealed) {
                 iconColor = COLOR_LOSS;
               } else if (t.revealed) {
                 if (status === "REVEALING") {
@@ -47849,9 +47878,11 @@ function MyTickets({
               }
               const guessIcon = t.guess === 1 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { color: iconColor, size: 20 }) : t.guess === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { color: iconColor, size: 20 }) : "—";
               let actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.2 }, children: "—" });
+              const isProcessing = processingId === t.ticketPk?.toBase58() || processingId === t.ticketPk?.toString();
+              const isAnyLoading = loading || globalLoading || !!processingId;
               const btnStyle = {
-                background: globalLoading ? "#f9f9f9" : "#eee",
-                color: globalLoading ? "#aaa" : "#444",
+                background: isProcessing ? "#f9f9f9" : isAnyLoading ? "#fdfdfd" : "#eee",
+                color: isProcessing ? "#aaa" : isAnyLoading ? "#bbb" : "#444",
                 height: "30px",
                 // Slightly smaller for children to keep hierarchy
                 padding: "0 10px",
@@ -47863,37 +47894,38 @@ function MyTickets({
                 borderRadius: "4px",
                 fontWeight: "bold",
                 fontSize: "11px",
-                cursor: globalLoading ? "default" : "pointer"
+                cursor: isAnyLoading ? "default" : "pointer",
+                opacity: isAnyLoading ? 0.7 : 1
               };
               if (!t.receipt?.closed) {
-                if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: globalLoading, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: rThemeColor, style: { marginRight: 6 } }),
+                if (status === "REVEAL NOW") actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doRevealTicket(t), disabled: isAnyLoading, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(RevealIcon, { size: 20, color: "#444", style: { marginRight: 6 } }),
                   " Reveal"
                 ] });
                 if (status === "READY TO CLAIM") {
-                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doClaimTicket(t), disabled: isAnyLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -6 }, children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: rThemeColor }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: rThemeColor })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: "#444" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: "#444" })
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: 2 }, children: "Claim" })
                   ] }) });
                 }
                 if (status === "REFUND AVAILABLE") {
-                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: globalLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsx("button", { style: btnStyle, onClick: () => doRefundTicket(t), disabled: isAnyLoading, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: -6 }, children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: rThemeColor }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: rThemeColor })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, color: "#444" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 24, style: { marginLeft: -6 }, color: "#444" })
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: 2 }, children: "Claim" })
                   ] }) });
                 }
                 const roundArchived = !t.round;
                 const isProcessed = t.processed || roundArchived || t.round?.finalized && !t.win;
-                if (isProcessed && (status === "LOSS" || status === "RECLAIMED" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
-                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: globalLoading, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, style: { marginRight: 8 }, color: rThemeColor }),
-                    " Claim"
+                if (isProcessed && (status === "LOSS" || status === "SWEPT" || status === "EXPIRED" || status === "REFUNDED" || status === "REFUND RENT" || status === "PENDING" && roundArchived)) {
+                  actionBtn = /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { style: btnStyle, onClick: () => doCloseTicket(t), disabled: isAnyLoading, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 24, style: { marginRight: 8 }, color: "#444" }),
+                    " Claim Rent"
                   ] });
                 }
               }
@@ -47910,7 +47942,7 @@ function MyTickets({
                     /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { whiteSpace: "nowrap", fontSize: 11, opacity: 0.6, textTransform: "uppercase" }, children: t.guess === 1 ? "Bull" : "Bear" })
                   ] })
                 ] }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "RECLAIMED" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 13, fontWeight: 500, opacity: 0.7, color: status === "SWEPT" || status === "LOSS" || status === "EXPIRED" ? "#EF4444" : iconColor !== "#9CA3AF" ? iconColor : "inherit" }, children: friendlyStatus(status) }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost beta-btn--mini", onClick: () => setSelectedTicket(t), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketAuditIcon, { size: 19 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "beta-btn--ghost", onClick: () => handleDownloadTicket(t, roundId2), children: /* @__PURE__ */ jsxRuntimeExports.jsx(TicketDownloadIcon, { size: 19 }) }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { textAlign: "right", paddingRight: 24 }, children: actionBtn })
@@ -48436,6 +48468,7 @@ function useUserTickets({
   const coder = reactExports.useMemo(() => new BorshAccountsCoder(idl), []);
   const [rows, setRows] = reactExports.useState([]);
   const [loading, setLoading2] = reactExports.useState(false);
+  const [processingId, setProcessingId] = reactExports.useState(null);
   const [error, setError] = reactExports.useState(null);
   const [lastUpdatedAt, setLastUpdatedAt] = reactExports.useState(null);
   const [retryInSec, setRetryInSec] = reactExports.useState(0);
@@ -48721,6 +48754,7 @@ function useUserTickets({
       const roundPda = await pdaRound(programPk, row.roundId);
       const salt = hexToBytes(row.receipt.saltHex);
       appendLog?.(`Reveal: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
+      setProcessingId(row.ticketPk.toBase58());
       try {
         const sig = await program.methods.revealTicket(new BN(row.roundId), new BN(row.nonce), Number(row.receipt.guess), Array.from(salt)).accounts({ config: configPda, round: roundPda, user: userPubkey, ticket: row.ticketPk }).rpc();
         appendLog?.(`Reveal OK ✅ tx=${sig}`);
@@ -48790,6 +48824,8 @@ function useUserTickets({
         const logs = extractProgramLogs(e);
         if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
         return null;
+      } finally {
+        setProcessingId(null);
       }
     },
     [program, programPk, userPubkey, appendLog, setLastTx, onAfterAction, refresh]
@@ -48805,6 +48841,7 @@ function useUserTickets({
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const userTIMLGAta = await index.token.associatedAddress({ mint: mintPk, owner: userPubkey });
       appendLog?.(`Claim: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
+      setProcessingId(row.ticketPk.toBase58());
       try {
         const sig = await program.methods.claimReward(new BN(row.roundId), new BN(row.nonce)).accounts({
           config: configPda,
@@ -48873,6 +48910,8 @@ function useUserTickets({
         const logs = extractProgramLogs(e);
         if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
         return null;
+      } finally {
+        setProcessingId(null);
       }
     },
     [program, programPk, userPubkey, mintPk, appendLog, setLastTx, onAfterAction, refresh]
@@ -48886,6 +48925,7 @@ function useUserTickets({
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const userTIMLGAta = await index.token.associatedAddress({ mint: mintPk, owner: userPubkey });
       appendLog?.(`Refund: recovering funds… (round=${row.roundId})`);
+      setProcessingId(row.ticketPk.toBase58());
       try {
         const sig = await program.methods.recoverFunds(new BN(row.roundId)).accounts({
           config: configPda,
@@ -48943,6 +48983,8 @@ function useUserTickets({
         const logs = extractProgramLogs(e);
         if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
         return null;
+      } finally {
+        setProcessingId(null);
       }
     },
     [program, programPk, userPubkey, mintPk, appendLog, setLastTx, onAfterAction, refresh]
@@ -48952,6 +48994,7 @@ function useUserTickets({
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       if (!mintPk) throw new Error("Mint not set");
       appendLog?.(`Settle: discovering tickets for round ${row.roundId}...`);
+      setProcessingId(`settle-${row.roundId}`);
       const configPda = await pdaConfig(programPk);
       const roundPda = await pdaRound(programPk, row.roundId);
       const tokenomicsPda = await pdaTokenomics(programPk, configPda);
@@ -49034,6 +49077,8 @@ function useUserTickets({
         const logs = extractProgramLogs(e);
         if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
         return null;
+      } finally {
+        setProcessingId(null);
       }
     },
     [program, programPk, userPubkey, mintPk, connection, coder, appendLog, setLastTx, onAfterAction, refresh]
@@ -49042,6 +49087,7 @@ function useUserTickets({
     async (row) => {
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       appendLog?.(`Close Ticket: recovering rent… (round=${row.roundId}, nonce=${row.nonce})`);
+      setProcessingId(row.ticketPk.toBase58());
       try {
         const sig = await program.methods.closeTicket(new BN(row.roundId), new BN(row.nonce)).accounts({
           round: await pdaRound(programPk, row.roundId),
@@ -49093,6 +49139,8 @@ function useUserTickets({
         const logs = extractProgramLogs(e);
         if (logs?.length) logs.slice(0, 12).forEach((l) => appendLog?.(`  ${l}`));
         return null;
+      } finally {
+        setProcessingId(null);
       }
     },
     [program, programPk, userPubkey, appendLog, setLastTx, onAfterAction, refresh]
@@ -49100,6 +49148,7 @@ function useUserTickets({
   return {
     rows,
     loading,
+    processingId,
     error,
     lastUpdatedAt,
     retryInSec,
@@ -49212,6 +49261,8 @@ function App() {
   const [ticketVersion, setTicketVersion] = reactExports.useState(0);
   const [guess, setGuess] = reactExports.useState(-1);
   const [loading, setLoading2] = reactExports.useState(false);
+  const [solLoading, setSolLoading] = reactExports.useState(false);
+  const [faucetLoading, setFaucetLoading] = reactExports.useState(false);
   const [lastTx, setLastTx] = reactExports.useState("");
   const [showSankey, setShowSankey] = reactExports.useState(false);
   const [programStatus, setProgramStatus] = reactExports.useState({
@@ -49296,6 +49347,7 @@ function App() {
   const {
     rows: ticketRows = [],
     loading: ticketsLoading,
+    processingId: ticketsProcessingId,
     error: ticketsError,
     doRevealTicket,
     doClaimTicket,
@@ -49541,6 +49593,7 @@ function App() {
       return;
     }
     try {
+      setSolLoading(true);
       setStatus("Requesting 1 SOL airdrop (devnet)...");
       appendLog("Airdrop SOL: requesting 1 SOL…");
       const sig = await connection.requestAirdrop(pubkey2, 1 * LAMPORTS_PER_SOL);
@@ -49558,6 +49611,8 @@ function App() {
     } catch (e) {
       setStatus(`Airdrop error: ${e?.message ?? String(e)}`);
       appendLog(`Airdrop SOL error: ${e?.message ?? String(e)}`);
+    } finally {
+      setSolLoading(false);
     }
   }
   async function claimTIMLG() {
@@ -49578,6 +49633,7 @@ function App() {
     appendLog("TIMLG faucet: preparing request…");
     setTxSig("");
     try {
+      setFaucetLoading(true);
       const message = `Recipient: ${recipient}
 Timestamp: ${Date.now()}
 Domain: timlg.org`;
@@ -49616,6 +49672,8 @@ Domain: timlg.org`;
       const msg = e?.message ?? String(e);
       setStatus(`Faucet error: ${msg}`);
       appendLog(`TIMLG faucet error: ${msg}`);
+    } finally {
+      setFaucetLoading(false);
     }
   }
   const doCommitGlobal = reactExports.useCallback(async ({ targetRoundId, targetPulseIndex, targetRoundPda, targetTIMLGVaultPda, targetCommitDl, forcedGuess, nonce: passedNonce, salt: passedSalt }) => {
@@ -49771,19 +49829,86 @@ Domain: timlg.org`;
   const [showInfo, setShowInfo] = reactExports.useState(false);
   const [isCompact, setIsCompact] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-app", children: [
-    !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card beta-card--warn", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "Phantom not detected." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: 6 }, children: [
-        "Install Phantom:",
+    !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
+      marginBottom: 16,
+      background: "rgba(171, 159, 242, 0.08)",
+      borderColor: "rgba(171, 159, 242, 0.3)",
+      display: "flex",
+      alignItems: "center",
+      gap: "16px",
+      padding: "20px"
+    }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        width: "52px",
+        height: "52px",
+        background: "#fff",
+        borderRadius: "12px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 4px 10px rgba(171, 159, 242, 0.2)",
+        flexShrink: 0
+      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 34 }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "15px", fontWeight: "900", color: "#111", marginBottom: "4px" }, children: "Phantom Wallet Not Detected" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "13px", color: "#555", lineHeight: "1.4" }, children: "To participate in the devnet beta, you need the Phantom wallet installed." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: "https://phantom.app/",
+          target: "_blank",
+          rel: "noreferrer",
+          style: {
+            background: "#AB9FF2",
+            color: "#fff",
+            padding: "10px 18px",
+            borderRadius: "10px",
+            fontSize: "12px",
+            fontWeight: "900",
+            textDecoration: "none",
+            boxShadow: "0 4px 12px rgba(171, 159, 242, 0.3)",
+            transition: "transform 0.2s"
+          },
+          onMouseEnter: (e) => e.currentTarget.style.transform = "translateY(-1px)",
+          onMouseLeave: (e) => e.currentTarget.style.transform = "translateY(0)",
+          children: "INSTALL PHANTOM"
+        }
+      )
+    ] }),
+    !walletStr && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
+      marginBottom: 8,
+      background: "rgba(45, 104, 234, 0.05)",
+      borderColor: "rgba(45, 104, 234, 0.3)",
+      display: "flex",
+      alignItems: "center",
+      gap: "12px",
+      padding: "16px 20px"
+    }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        width: "28px",
+        height: "28px",
+        borderRadius: "50%",
+        background: "#2D68EA",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        fontSize: "14px",
+        fontWeight: "bold"
+      }, children: "i" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", color: "#111", lineHeight: "1.4" }, children: [
+        "To learn how to play and use the interface, check the",
         " ",
-        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://phantom.app/", target: "_blank", rel: "noreferrer", children: "https://phantom.app/" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/devnet_guide/", target: "_top", style: { color: "#2D68EA", fontWeight: "800", textDecoration: "none" }, children: "User Guide" })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
+    phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__title", style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(WalletIcon, { size: 18, color: "#111" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 18, color: walletStr ? "#AB9FF2" : "#111" }),
             "Wallet"
           ] }),
           walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
@@ -50090,9 +50215,9 @@ Domain: timlg.org`;
                 className: "beta-btn",
                 style: { width: "110px", height: "32px", borderRadius: "10px", fontWeight: "700", background: "rgba(255,255,255,0.5)", border: "1px solid rgba(0,0,0,0.1)", color: "#555", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
                 onClick: airdrop1Sol,
-                disabled: !walletStr || isDemo,
+                disabled: !walletStr || isDemo || solLoading,
                 type: "button",
-                children: "AIRDROP SOL"
+                children: solLoading ? "..." : "AIRDROP SOL"
               }
             )
           ] }),
@@ -50114,9 +50239,9 @@ Domain: timlg.org`;
                   className: "beta-btn",
                   style: { width: "110px", height: "30px", borderRadius: "8px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
                   onClick: claimTIMLG,
-                  disabled: !walletStr || isDemo,
+                  disabled: !walletStr || isDemo || faucetLoading,
                   type: "button",
-                  children: "GET TIMLG"
+                  children: faucetLoading ? "..." : "GET TIMLG"
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
@@ -50286,6 +50411,7 @@ Domain: timlg.org`;
           limit: 1e3,
           rows: ticketRows,
           loading: ticketsLoading,
+          processingId: ticketsProcessingId,
           error: ticketsError,
           doRevealTicket,
           doClaimTicket,
