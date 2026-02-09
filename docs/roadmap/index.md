@@ -3,7 +3,7 @@
 The TIMLG roadmap outlines a rigorous path from cryptographic foundation to mainnet-scale production. Over 85% of the core protocol and infrastructure is already functional on Devnet. 
 Devnet is live; ongoing hardening focuses on RPC rate-limits (HTTP/WebSocket 429) and late pulse handling (PulseTooLate).
 
-**Last updated:** 2026-02-02
+**Last updated:** 2026-02-09
 
 ---
 
@@ -12,7 +12,7 @@ Devnet is live; ongoing hardening focuses on RPC rate-limits (HTTP/WebSocket 429
 Each stage represents a critical piece of the protocol's architecture.
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 1: Multi-Round Cryptographic Core</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 1: Multi-Round Cryptographic Core</strong></summary>
 
 The engine that enforces the "Hawking Wall" principle.
 - **Focus**: Secure slot-bounded commitment and revelation phases.
@@ -20,7 +20,7 @@ The engine that enforces the "Hawking Wall" principle.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 2: Deterministic Oracle & Pulse Verification</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 2: Deterministic Oracle & Pulse Verification</strong></summary>
 
 Anchoring the protocol to public, verifiable randomness.
 - **Focus**: Ed25519 on-chain verification of signed NIST pulses.
@@ -28,7 +28,7 @@ Anchoring the protocol to public, verifiable randomness.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 3: Escrow & Signed Participation (Gasless-Ready)</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 3: Escrow & Signed Participation (Gasless-Ready)</strong></summary>
 
 Building the foundation for zero-SOL user participation.
 - **Focus**: On-chain escrow accounts and batched, signed participation instructions.
@@ -36,7 +36,7 @@ Building the foundation for zero-SOL user participation.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 4: Automated Lifecycle & Settlement Engine</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 4: Automated Lifecycle & Settlement Engine</strong></summary>
 
 Removing manual intervention from the protocol's daily operations.
 - **Focus**: The "Supervisor" system that handles round creation, state transitions, and prize distribution.
@@ -44,7 +44,7 @@ Removing manual intervention from the protocol's daily operations.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 5: High-Trust Tokenomics & Burn Mechanics</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 5: High-Trust Tokenomics & Burn Mechanics</strong></summary>
 
 Aligning incentives and ensuring the protocol's economic security.
 - **Focus**: Deflationary burn for losses and unrevealed stakes, with transparent fee routing.
@@ -52,7 +52,7 @@ Aligning incentives and ensuring the protocol's economic security.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 6: Premium Non-Custodial Beta</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 6: Premium Non-Custodial Beta</strong></summary>
 
 A world-class interface for the TIMLG experiment.
 - **Focus**: Pro-grade dashboard with real-time P&L, ticket history, and NIST pulse tracking.
@@ -60,7 +60,7 @@ A world-class interface for the TIMLG experiment.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>✅ <strong>Stage 7: Resource Recycling & SOL Sustainability</strong></summary>
+<summary><span class="roadmap-icon success"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> <strong>Stage 7: Resource Recycling & SOL Sustainability</strong></summary>
 
 Optimizing the protocol's on-chain storage footprint.
 - **Focus**: Automated `close_round` mechanics to reclaim rent and cycle lamports back to the treasury.
@@ -68,7 +68,7 @@ Optimizing the protocol's on-chain storage footprint.
 </details>
 
 <details class="roadmap-stage" markdown="1" open>
-<summary>🟡 <strong>Stage 8: Public Relayer & Scale Testing</strong></summary>
+<summary><span class="roadmap-icon progress"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span> <strong>Stage 8: Public Relayer & Scale Testing</strong></summary>
 
 Opening the protocol to users without SOL balances.
 - **Focus**: Decentralized relayer infrastructure to submit user-signed envelopes on-chain.
@@ -76,7 +76,7 @@ Opening the protocol to users without SOL balances.
 </details>
 
 <details class="roadmap-stage" markdown="1">
-<summary>⚪ <strong>Stage 9: Mainnet Alpha & Fundraising Launch</strong></summary>
+<summary><span class="roadmap-icon planned"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></span> <strong>Stage 9: Mainnet Alpha & Fundraising Launch</strong></summary>
 
 Hardening the protocol for institutional-grade production.
 - **Focus**: Multisig governance, security audits, and production Timings.
