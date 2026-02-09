@@ -58,6 +58,8 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/beta.css
+  - stylesheets/roadmap.css
+  - stylesheets/status.css
 
 nav:
   - Home: index.md

@@ -1,10 +1,20 @@
 /* Roadmap accordion (collapsible stages) */
 .md-typeset details.roadmap-stage {
   border: 1px solid rgba(45, 104, 234, 0.3);
-  border-radius: 0.6rem;
-  padding: 0.6rem 0.8rem;
-  margin: 0.8rem 0;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1.2rem 0;
   background: rgba(45, 104, 234, 0.05);
+  /* Azulito bg */
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.md-typeset details.roadmap-stage:hover {
+  border-color: rgba(45, 104, 234, 0.5);
+  background: rgba(45, 104, 234, 0.08);
+  box-shadow: 0 8px 15px rgba(45, 104, 234, 0.1);
+  transform: translateY(-1px);
 }
 
 .md-typeset details.roadmap-stage>summary {
@@ -12,32 +22,48 @@
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-weight: 600;
+  gap: 0.8rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2D68EA;
+  /* TIMLG Blue */
+}
+
+.md-typeset details.roadmap-stage>summary strong {
+  color: inherit;
 }
 
 .md-typeset details.roadmap-stage>summary::-webkit-details-marker {
   display: none;
 }
 
-/* Make the built-in marker act like a “+ / −” */
+/* Custom Marker (+ / -) */
 .md-typeset details.roadmap-stage>summary::after {
   content: "+";
   margin-left: auto;
   font-weight: 700;
-  opacity: 0.7;
+  opacity: 0.5;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
 }
 
 .md-typeset details.roadmap-stage[open]>summary::after {
   content: "−";
 }
 
-.md-typeset .roadmap-stage-meta {
-  font-weight: 400;
-  opacity: 0.8;
+/* Content styling */
+.md-typeset details.roadmap-stage p,
+.md-typeset details.roadmap-stage ul {
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+  color: var(--md-default-fg-color);
+  opacity: 0.9;
 }
 
-/* Tighter lists inside */
 .md-typeset details.roadmap-stage ul {
-  margin: 0.3rem 0 0.3rem 1.2rem;
+  padding-left: 1.4rem;
+}
+
+.md-typeset details.roadmap-stage ul li {
+  margin-bottom: 0.2rem;
 }
