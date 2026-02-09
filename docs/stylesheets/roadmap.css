@@ -1,13 +1,13 @@
 /* Roadmap accordion (collapsible stages) */
 .md-typeset details.roadmap-stage {
-  border: 1px solid var(--md-default-fg-color--lighter);
+  border: 1px solid rgba(45, 104, 234, 0.3);
   border-radius: 0.6rem;
   padding: 0.6rem 0.8rem;
   margin: 0.8rem 0;
-  background: var(--md-default-bg-color);
+  background: rgba(45, 104, 234, 0.05);
 }
 
-.md-typeset details.roadmap-stage > summary {
+.md-typeset details.roadmap-stage>summary {
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -16,19 +16,19 @@
   font-weight: 600;
 }
 
-.md-typeset details.roadmap-stage > summary::-webkit-details-marker {
+.md-typeset details.roadmap-stage>summary::-webkit-details-marker {
   display: none;
 }
 
 /* Make the built-in marker act like a “+ / −” */
-.md-typeset details.roadmap-stage > summary::after {
+.md-typeset details.roadmap-stage>summary::after {
   content: "+";
   margin-left: auto;
   font-weight: 700;
   opacity: 0.7;
 }
 
-.md-typeset details.roadmap-stage[open] > summary::after {
+.md-typeset details.roadmap-stage[open]>summary::after {
   content: "−";
 }
 
