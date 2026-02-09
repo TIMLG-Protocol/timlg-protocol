@@ -1,36 +1,45 @@
 /* Roadmap accordion (collapsible stages) */
+/* Unified with the Beta App "Azulito" Card style */
+
 .md-typeset details.roadmap-stage {
-  border: 1px solid rgba(45, 104, 234, 0.3);
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1.2rem 0;
-  background: rgba(45, 104, 234, 0.05);
-  /* Azulito bg */
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(45, 104, 234, 0.3) !important;
+  border-radius: 16px !important;
+  margin: 1.5rem 0 !important;
+  padding: 0 !important;
+  background: rgba(45, 104, 234, 0.05) !important;
+  /* The Azulito tone */
+  overflow: hidden;
+  box-shadow: none !important;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .md-typeset details.roadmap-stage:hover {
-  border-color: rgba(45, 104, 234, 0.5);
-  background: rgba(45, 104, 234, 0.08);
-  box-shadow: 0 8px 15px rgba(45, 104, 234, 0.1);
+  border-color: rgba(45, 104, 234, 0.5) !important;
   transform: translateY(-1px);
 }
 
 .md-typeset details.roadmap-stage>summary {
   cursor: pointer;
   list-style: none;
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 0.8rem;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #2D68EA;
+  padding: 16px 24px !important;
+  background: rgba(45, 104, 234, 0.02) !important;
+  /* Slightly distinct header background */
+  border-bottom: 1px solid rgba(45, 104, 234, 0.15) !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  color: #2D68EA !important;
   /* TIMLG Blue */
 }
 
-.md-typeset details.roadmap-stage>summary strong {
-  color: inherit;
+/* Ensure content area is also transparent over the details background */
+.md-typeset details.roadmap-stage>*:not(summary) {
+  padding: 16px 24px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
 }
 
 .md-typeset details.roadmap-stage>summary::-webkit-details-marker {
@@ -51,19 +60,20 @@
   content: "−";
 }
 
-/* Content styling */
+/* Content typography */
 .md-typeset details.roadmap-stage p,
 .md-typeset details.roadmap-stage ul {
-  margin-top: 0.8rem;
-  margin-bottom: 0;
+  margin-top: 0.5rem !important;
   color: var(--md-default-fg-color);
   opacity: 0.9;
+  line-height: 1.6;
 }
 
 .md-typeset details.roadmap-stage ul {
-  padding-left: 1.4rem;
+  padding-left: 1.4rem !important;
+  list-style-type: disc !important;
 }
 
 .md-typeset details.roadmap-stage ul li {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.4rem !important;
 }
