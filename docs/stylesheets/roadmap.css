@@ -1,104 +1,81 @@
-/* Roadmap accordion (collapsible stages) */
-/* Unified with the Beta App "Azulito" Card style */
+/* Roadmap Card - Unified with Beta App "Azulito" style */
 
-.md-typeset details.roadmap-stage {
+.roadmap-stage {
   border: 1px solid rgba(45, 104, 234, 0.25) !important;
-  border-radius: 12px !important;
-  margin: 1rem 0 !important;
+  border-radius: 16px !important;
+  margin: 1.5rem 0 !important;
   padding: 0 !important;
-  background: rgba(45, 104, 234, 0.04) !important;
-  /* The Azulito tone */
+  background: rgba(45, 104, 234, 0.05) !important;
+  /* Azulito tone */
   overflow: hidden;
   box-shadow: none !important;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.md-typeset details.roadmap-stage:hover {
-  border-color: rgba(45, 104, 234, 0.45) !important;
-  transform: translateY(-1px);
-}
-
-.md-typeset details.roadmap-stage>summary {
-  cursor: pointer;
-  list-style: none;
+.roadmap-header {
   display: flex !important;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px !important;
-  background: rgba(45, 104, 234, 0.02) !important;
-  border-bottom: 1px solid rgba(45, 104, 234, 0.1) !important;
+  gap: 14px;
+  padding: 14px 24px !important;
+  background: rgba(45, 104, 234, 0.03) !important;
+  border-bottom: 1px solid rgba(45, 104, 234, 0.12) !important;
+}
+
+.roadmap-title {
   font-weight: 700 !important;
-  font-size: 0.95rem !important;
+  font-size: 1.0rem !important;
   color: #1e40af !important;
   /* Deeper blue for header text */
-}
-
-/* Ensure content area is also transparent over the details background */
-.md-typeset details.roadmap-stage>*:not(summary) {
-  padding: 12px 20px !important;
   margin: 0 !important;
+}
+
+.roadmap-content {
+  padding: 16px 24px !important;
   background: transparent !important;
-  border: none !important;
 }
 
-.md-typeset details.roadmap-stage>summary::-webkit-details-marker {
-  display: none;
-}
-
-/* Custom Marker (Arrow instead of +/-) */
-.md-typeset details.roadmap-stage>summary::after {
-  content: "";
-  margin-left: auto;
-  width: 16px;
-  height: 16px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232D68EA' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.6;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.md-typeset details.roadmap-stage[open]>summary::after {
-  transform: rotate(180deg);
-}
-
-/* Content typography */
-.md-typeset details.roadmap-stage p,
-.md-typeset details.roadmap-stage ul {
-  margin-top: 0.4rem !important;
-  color: var(--md-default-fg-color);
-  opacity: 0.85;
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
-.md-typeset details.roadmap-stage ul {
-  padding-left: 1.2rem !important;
-  list-style-type: disc !important;
-}
-
-.md-typeset details.roadmap-stage ul li {
-  margin-bottom: 0.2rem !important;
-}
-
-/* Roadmap Icons */
-.roadmap-icon {
+/* Medal Icons */
+.roadmap-medal {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
 }
 
-.roadmap-icon.success {
-  color: #4ade80;
+/* Medal Colors */
+.medal-gold {
+  color: #FFD700;
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
 }
 
-.roadmap-icon.progress {
-  color: #fbbf24;
+.medal-silver {
+  color: #C0C0C0;
+  filter: drop-shadow(0 0 2px rgba(192, 192, 192, 0.3));
 }
 
-.roadmap-icon.planned {
-  color: #94a3b8;
+.medal-bronze {
+  color: #CD7F32;
+  filter: drop-shadow(0 0 2px rgba(205, 127, 50, 0.3));
+}
+
+/* Content typography */
+.roadmap-content p,
+.roadmap-content ul {
+  margin-top: 0.4rem !important;
+  color: var(--md-default-fg-color);
+  opacity: 0.9;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.roadmap-content ul {
+  padding-left: 1.4rem !important;
+  list-style-type: disc !important;
+}
+
+.roadmap-content ul li {
+  margin-bottom: 0.4rem !important;
 }
