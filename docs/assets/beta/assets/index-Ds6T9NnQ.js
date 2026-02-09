@@ -46046,7 +46046,7 @@ function PlayCard({
             { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
             { val: -1, label: "RAND", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RandomIconHead, { size: 42, color: guess === -1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" }
           ].map((tile) => {
-            loading && guess === tile.val;
+            const isSubmitting = loading && guess === tile.val;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
@@ -46070,7 +46070,7 @@ function PlayCard({
                   transition: "all 0.2s"
                 },
                 children: [
-                  tile.icon,
+                  isSubmitting ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: tile.color }, children: "..." }) : tile.icon,
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: guess === tile.val ? tile.color : "#666", marginTop: "2px" }, children: tile.label })
                 ]
               },
