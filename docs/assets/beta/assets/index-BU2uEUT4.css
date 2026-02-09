@@ -38,8 +38,10 @@
 
 .cursor-blink {
   animation: blink 1s step-end infinite;
-}/* All styles are scoped to the embed root to avoid breaking MkDocs pages */
-:where(#beta-root, #root) .beta-app {
+}:where(#beta-root, #root) .beta-app {
+  --beta-blue-border: rgba(45, 104, 234, 0.3);
+  --beta-blue-bg: rgba(45, 104, 234, 0.05);
+
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -57,9 +59,9 @@
   flex-direction: column;
   gap: 4px;
   padding: 12px 20px;
-  border: 1px solid #444;
+  border: 1px solid var(--beta-blue-border);
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--beta-blue-bg);
   position: relative;
   overflow: hidden;
 }
@@ -193,9 +195,9 @@
 :where(#beta-root, #root) .beta-card,
 :where(#beta-root, #root) .beta-panel {
   padding: 24px;
-  border: 1px solid #444;
+  border: 1px solid var(--beta-blue-border);
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--beta-blue-bg);
 }
 
 :where(#beta-root, #root) .beta-muted {
@@ -643,7 +645,7 @@
 
 :where(#beta-root, #root) .beta-modal {
   background: #1a1a1a;
-  border: 1px solid #444;
+  border: 1px solid var(--beta-blue-border);
   border-radius: 16px;
   width: 100%;
   max-width: 500px;

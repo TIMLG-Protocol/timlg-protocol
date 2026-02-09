@@ -45578,6 +45578,10 @@ const RoundDownloadIcon = ({ size = 17, color = "#6B7280", ...props }) => /* @__
 const RentLockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "-13.39 0 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.892,56.036h8.959v-1.075V37.117c0-10.205,4.177-19.484,10.898-26.207v-0.009 C29.473,4.177,38.754,0,48.966,0C59.17,0,68.449,4.177,75.173,10.901l0.01,0.009c6.721,6.723,10.898,16.002,10.898,26.207v17.844 v1.075h7.136c1.59,0,2.892,1.302,2.892,2.891v61.062c0,1.589-1.302,2.891-2.892,2.891H2.892c-1.59,0-2.892-1.302-2.892-2.891 V58.927C0,57.338,1.302,56.036,2.892,56.036L2.892,56.036z M26.271,56.036h45.387v-1.075V36.911c0-6.24-2.554-11.917-6.662-16.03 l-0.005,0.004c-4.111-4.114-9.787-6.669-16.025-6.669c-6.241,0-11.917,2.554-16.033,6.665c-4.109,4.113-6.662,9.79-6.662,16.03 v18.051V56.036L26.271,56.036z M49.149,89.448l4.581,21.139l-12.557,0.053l3.685-21.423c-3.431-1.1-5.918-4.315-5.918-8.111 c0-4.701,3.81-8.511,8.513-8.511c4.698,0,8.511,3.81,8.511,8.511C55.964,85.226,53.036,88.663,49.149,89.448L49.149,89.448z" }) });
 const RentUnlockIcon = ({ size = 20, color = "currentColor", style = {} }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 -6.61 122.88 122.88", fill: color, style, xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M2.585,49.871H54.77V34.054v-0.011h0.009c0.002-9.368,3.828-17.878,9.989-24.042 c6.164-6.163,14.679-9.991,24.051-9.991V0h0.005l0,0h0.012v0.009c9.368,0.002,17.878,3.828,24.042,9.989 c6.164,6.164,9.991,14.679,9.991,24.051h0.012v0.004v15.96v2.403h-2.403h-9.811h-2.404v-2.403V33.868v-0.009h0.012 c-0.002-5.332-2.195-10.189-5.722-13.715c-3.528-3.531-8.388-5.721-13.724-5.724v0.009h-0.005l0,0h-0.011V14.42 c-5.334,0.002-10.191,2.19-13.72,5.717l0.005,0.005c-3.529,3.528-5.722,8.388-5.722,13.722h0.009v0.005v16.003h13.987 c1.422,0,2.585,1.164,2.585,2.585v54.613c0,1.422-1.163,2.583-2.585,2.583H2.585c-1.424,0-2.585-1.161-2.585-2.583V52.456 C0,51.035,1.161,49.871,2.585,49.871L2.585,49.871z M43.957,79.753l4.098,18.908l-11.232,0.045l3.297-19.162 c-3.068-0.981-5.295-3.857-5.295-7.252c0-4.202,3.411-7.613,7.614-7.613c4.202,0,7.613,3.411,7.613,7.613 C50.053,75.975,47.433,79.048,43.957,79.753L43.957,79.753z" }) });
 const PhantomIcon = ({ size = 20, color = "#AB9FF2", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size * 493 / 593, viewBox: "0 0 593 493", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M70.0546 493C145.604 493 202.38 427.297 236.263 375.378C232.142 386.865 229.852 398.351 229.852 409.378C229.852 439.703 247.252 461.297 281.592 461.297C328.753 461.297 379.119 419.946 405.218 375.378C403.386 381.811 402.471 387.784 402.471 393.297C402.471 414.432 414.375 427.757 438.643 427.757C515.108 427.757 592.03 292.216 592.03 173.676C592.03 81.3243 545.327 0 428.112 0C222.069 0 0 251.784 0 414.432C0 478.297 34.3405 493 70.0546 493ZM357.141 163.568C357.141 140.595 369.962 124.514 388.734 124.514C407.049 124.514 419.87 140.595 419.87 163.568C419.87 186.541 407.049 203.081 388.734 203.081C369.962 203.081 357.141 186.541 357.141 163.568ZM455.126 163.568C455.126 140.595 467.947 124.514 486.719 124.514C505.034 124.514 517.855 140.595 517.855 163.568C517.855 186.541 505.034 203.081 486.719 203.081C467.947 203.081 455.126 186.541 455.126 163.568Z", fill: color }) });
+const UserGuideIcon = ({ size = 20, color = "#09244B", ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", version: "1.1", xmlns: "http://www.w3.org/2000/svg", ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx("g", { id: "页面-1", stroke: "none", "stroke-width": "1", fill: "none", "fill-rule": "evenodd", children: /* @__PURE__ */ jsxRuntimeExports.jsx("g", { id: "Education", transform: "translate(-816.000000, 0.000000)", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { id: "book_6_line", transform: "translate(816.000000, 0.000000)", children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.107,23.14 z", fill: "none" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M11.1211,20.6153 C10.923,20.4923 10.6312,20.3254 10.2684,20.158 C9.53474,19.8193 8.55682,19.5 7.5,19.5 C6.22109,19.5 5.06248,19.9675 4.32073,20.3617 C3.80203,20.6374 3.22918,20.5752 2.80631,20.342 C2.37858,20.106 2,19.6326 2,19 L2,6.5 C2,5.87876 2.29506,5.23692 2.89751,4.87097 C3.6721,4.40046 5.41372,3.5 7.5,3.5 C9.08128,3.5 10.6447,4.01008 12,4.80962 C13.3553,4.01008 14.9187,3.5 16.5,3.5 C18.5863,3.5 20.3279,4.40046 21.1025,4.87097 C21.7049,5.23692 22,5.87876 22,6.5 L22,19 C22,19.6326 21.6214,20.106 21.1937,20.342 C20.7708,20.5752 20.198,20.6374 19.6793,20.3617 C18.9375,19.9675 17.7789,19.5 16.5,19.5 C15.4432,19.5 14.4653,19.8193 13.7316,20.158 C13.3688,20.3254 13.077,20.4923 12.8789,20.6153 C12.5948,20.7916 12.3552,21 12.0005,21 C11.6451,21 11.4058,20.792 11.1211,20.6153 Z M4,18.2936 L4,6.5418 C4.67339,6.14226 6.00051,5.5 7.5,5.5 C8.73044,5.5 9.94819,5.91768 11,6.5418 L11,18.2936 C10.1153,17.8976 8.8866,17.5 7.5,17.5 C6.11866,17.5 4.89134,17.8946 4,18.2936 Z M13,18.2936 C13.8847,17.8976 15.1134,17.5 16.5,17.5 C17.8813,17.5 19.1087,17.8946 20,18.2936 L20,6.5418 C19.3266,6.14226 17.9995,5.5 16.5,5.5 C15.2696,5.5 14.0518,5.91768 13,6.5418 L13,18.2936 Z", id: "形状", fill: color })
+] }) }) }) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -45799,11 +45803,7 @@ function PlayCard({
     pubkey2 && selectedRound && localReceipt && selectedRound.pulseSet && revealDl != null && BigInt(curSlot) <= revealDl
   );
   const canClaim = Boolean(pubkey2 && selectedRound && selectedRound.tokenSettled && localReceipt);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-    background: "rgba(0, 0, 0, 0.03)",
-    border: "1px solid #444",
-    borderRadius: "16px",
-    padding: "20px",
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
     display: "flex",
     flexDirection: "column",
     gap: "12px"
@@ -45813,7 +45813,7 @@ function PlayCard({
       borderRadius: "14px",
       padding: "0 16px",
       height: "58px",
-      border: "1px solid rgba(0, 0, 0, 0.03)",
+      border: "1px solid var(--beta-blue-border)",
       display: "flex",
       alignItems: "center",
       boxSizing: "border-box"
@@ -45895,7 +45895,7 @@ function PlayCard({
         background: selectedRound ? "linear-gradient(135deg, #fff 0%, #f4f7ff 100%)" : "rgba(255, 255, 255, 0.4)",
         borderRadius: "14px",
         padding: "16px",
-        border: selectedRound ? "1px solid rgba(76, 130, 251, 0.15)" : "1px solid rgba(0, 0, 0, 0.05)",
+        border: "1px solid var(--beta-blue-border)",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
@@ -45993,7 +45993,7 @@ function PlayCard({
           background: canCommit ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.4)",
           borderRadius: "14px",
           padding: "16px",
-          border: "1px solid rgba(0, 0, 0, 0.03)",
+          border: "1px solid var(--beta-blue-border)",
           flex: 1,
           display: "flex",
           flexDirection: "column",
@@ -46033,7 +46033,7 @@ function PlayCard({
           background: canCommit ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.4)",
           borderRadius: "14px",
           padding: "16px",
-          border: "1px solid rgba(0, 0, 0, 0.03)",
+          border: "1px solid var(--beta-blue-border)",
           flex: 1.5,
           display: "flex",
           flexDirection: "column",
@@ -46998,7 +46998,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
           }, children: activeRound?.isFinalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 10, background: "rgba(45, 104, 234, 0.02)", border: "1px solid var(--beta-blue-border)" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", marginBottom: 6, opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px", fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
@@ -47449,7 +47449,7 @@ function MyTickets({
     )
   ] });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: { padding: 0, overflow: "hidden", background: "transparent", boxShadow: "none", border: "none" }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card", style: { marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottom: "1px solid rgba(0,0,0,0.05)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card__head", style: { padding: "8px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card", style: { marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottom: "1px solid var(--beta-blue-border)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card__head", style: { padding: "8px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 8 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-card__title", style: { fontWeight: 700, fontSize: 18, whiteSpace: "nowrap" }, children: "Order History" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: 10, color: "#6B7280", fontWeight: 600, opacity: loading ? 0.3 : 1, textTransform: "uppercase", letterSpacing: "0.02em" }, children: [
@@ -48097,7 +48097,7 @@ function WalletSankey({ stats, chainState }) {
     ].join(" ");
     return /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d, fill: `url(#${gradId})`, className: "beta-sankey-path" }, `${gradId}-${sOffset}`);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-sankey-container", style: { width: "100%", overflowX: "auto", overflowY: "hidden", background: "rgba(0,0,0,0.02)", borderRadius: 12, padding: "10px 0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width, height, viewBox: `0 0 ${width} ${height}`, style: { display: "block", margin: "0 auto" }, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "beta-sankey-container", style: { width: "100%", overflowX: "auto", overflowY: "hidden", background: "var(--beta-blue-bg)", border: "1px solid var(--beta-blue-border)", borderRadius: 16, padding: "10px 0" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width, height, viewBox: `0 0 ${width} ${height}`, style: { display: "block", margin: "0 auto" }, children: [
     gradients,
     renderFlow(nTotal, nRefunded, 0, 0, hRefunded, "g-tr"),
     renderFlow(nTotal, nPending, hRefunded, 0, hPending, "g-tp"),
@@ -49878,8 +49878,6 @@ Domain: timlg.org`;
     ] }),
     !walletStr && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
       marginBottom: 8,
-      background: "rgba(45, 104, 234, 0.05)",
-      borderColor: "rgba(45, 104, 234, 0.3)",
       display: "flex",
       alignItems: "center",
       gap: "12px",
@@ -49897,7 +49895,7 @@ Domain: timlg.org`;
         flexShrink: 0,
         fontSize: "14px",
         fontWeight: "bold"
-      }, children: "i" }),
+      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserGuideIcon, { size: 16, color: "#fff" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", color: "#111", lineHeight: "1.4" }, children: [
         "To learn how to play and use the interface, check the",
         " ",
