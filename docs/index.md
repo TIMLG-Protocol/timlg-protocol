@@ -85,32 +85,7 @@ The protocol operates in continuous, overlapping rounds. Users participate via t
 
 The protocol uses strict slot-based timing to ensure the "Hawking Wall" (unpredictability).
 
-```mermaid
-gantt
-    title Round Timeline (Slots)
-    dateFormat  X
-    axisFormat  %s
-
-    section PHASE 1<br/>Commit
-    Commit window                 : c, 0, 919
-    Commit (user)                 : done, milestone, mCommit, 460, 460
-
-    section Pulse<br/>(NIST + oracle)
-    Pulse-set lag                 : lag, 919, 1414
-    Pulse set on-chain            : active, milestone, mPulse, 1414, 1414
-
-    section PHASE 3<br/>Reveal
-    Reveal window                 : r, 919, 1919
-    Reveal (user)                 : done, milestone, mReveal, 1500, 1500
-
-    section PHASE 4<br/>Finalize / Settle
-    Settle (observed)             : crit, milestone, mSettle, 1959, 1959
-
-    section PHASE 5<br/>Claim / Sweep
-    Claim grace window            : g, 1919, 2819
-    Claim (user)                  : done, milestone, mClaim, 2300, 2300
-    Sweep (action)                : crit, milestone, mSweep, 2819, 2819
-```
+![Round Timeline (Slots)](assets/TimelineSlots.png){ width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb;" }
 
 ### The Interface: Transparency in Action
 
