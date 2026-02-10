@@ -25,14 +25,19 @@
 .roadmap-title {
   font-weight: 700 !important;
   font-size: 1.0rem !important;
-  color: #1e40af !important;
-  /* Deeper blue for header text */
+  color: #2D68EA !important;
+  /* Unified softer TIMLG Blue */
   margin: 0 !important;
 }
 
 .roadmap-content {
   padding: 16px 24px !important;
   background: transparent !important;
+}
+
+.roadmap-content strong {
+  color: #2D68EA !important;
+  /* Same blue as header */
 }
 
 /* Medal Icons - Final Star Medal SVG */
@@ -54,19 +59,19 @@
 /* Medal Colors Refined */
 .medal-gold {
   color: #D4AF37;
-  /* Rich Gold (not too yellow) */
+  /* Rich Gold */
   filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
 }
 
 .medal-silver {
   color: #B8B8B8;
-  /* Classic Silver */
-  filter: drop-shadow(0 0 3px rgba(184, 184, 184, 0.3));
+  /* Subtle Silver */
+  opacity: 0.8;
 }
 
 .medal-bronze {
   color: #CD7F32;
-  /* Shiny Bronze/Copper */
+  /* Shiny Bronze */
   filter: drop-shadow(0 0 4px rgba(205, 127, 50, 0.4));
 }
 

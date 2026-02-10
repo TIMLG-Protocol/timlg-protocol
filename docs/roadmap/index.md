@@ -17,6 +17,7 @@ Each stage represents a critical piece of the protocol's architecture.
 <h3 class="roadmap-title">Stage 1: Multi-Round Cryptographic Core</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 The engine that enforces the "Hawking Wall" principle.
 - **Focus**: Secure slot-bounded commitment and revelation phases.
 - **Status**: Production-ready. Verified on Localnet and Devnet.
@@ -29,6 +30,7 @@ The engine that enforces the "Hawking Wall" principle.
 <h3 class="roadmap-title">Stage 2: Deterministic Oracle & Pulse Verification</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Anchoring the protocol to public, verifiable randomness.
 - **Focus**: Ed25519 on-chain verification of signed NIST pulses.
 - **Status**: Integrated. Supporting 24/7 autonomous rounds.
@@ -41,6 +43,7 @@ Anchoring the protocol to public, verifiable randomness.
 <h3 class="roadmap-title">Stage 3: Escrow & Signed Participation (Gasless-Ready)</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Building the foundation for zero-SOL user participation.
 - **Focus**: On-chain escrow accounts and batched, signed participation instructions.
 - **Status**: Logic implemented in Rust and ready for Relayer integration.
@@ -53,6 +56,7 @@ Building the foundation for zero-SOL user participation.
 <h3 class="roadmap-title">Stage 4: Automated Lifecycle & Settlement Engine</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Removing manual intervention from the protocol's daily operations.
 - **Focus**: The "Supervisor" system that handles round creation, state transitions, and prize distribution.
 - **Status**: Operational on Devnet.
@@ -65,6 +69,7 @@ Removing manual intervention from the protocol's daily operations.
 <h3 class="roadmap-title">Stage 5: High-Trust Tokenomics & Burn Mechanics</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Aligning incentives and ensuring the protocol's economic security.
 - **Focus**: Deflationary burn for losses and unrevealed stakes, with transparent fee routing.
 - **Status**: Deployed on Devnet; parameters subject to tuning.
@@ -77,6 +82,7 @@ Aligning incentives and ensuring the protocol's economic security.
 <h3 class="roadmap-title">Stage 6: Premium Non-Custodial Beta</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 A world-class interface for the TIMLG experiment.
 - **Focus**: Pro-grade dashboard with real-time P&L, ticket history, and NIST pulse tracking.
 - **Status**: [Live on Devnet](/beta/) — Try it now.
@@ -89,6 +95,7 @@ A world-class interface for the TIMLG experiment.
 <h3 class="roadmap-title">Stage 7: Resource Recycling & SOL Sustainability</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Optimizing the protocol's on-chain storage footprint.
 - **Focus**: Automated `close_round` mechanics to reclaim rent and cycle lamports back to the treasury.
 - **Status**: Integrated and operational on Devnet.
@@ -101,6 +108,7 @@ Optimizing the protocol's on-chain storage footprint.
 <h3 class="roadmap-title">Stage 8: Public Relayer & Scale Testing</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Opening the protocol to users without SOL balances.
 - **Focus**: Decentralized relayer infrastructure to submit user-signed envelopes on-chain.
 - **Status**: Research and API development stage (Stage 8).
@@ -113,6 +121,7 @@ Opening the protocol to users without SOL balances.
 <h3 class="roadmap-title">Stage 9: Mainnet Alpha & Fundraising Launch</h3>
 </div>
 <div class="roadmap-content" markdown="1">
+
 Hardening the protocol for institutional-grade production.
 - **Focus**: Multisig governance, security audits, and production Timings.
 - **Status**: Planning.
