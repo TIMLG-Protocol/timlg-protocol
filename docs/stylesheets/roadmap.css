@@ -35,13 +35,13 @@
   background: transparent !important;
 }
 
-/* Medal Icons - Simplified SVG Version */
+/* Medal Icons - Final Star Medal SVG */
 .roadmap-medal {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
 }
 
@@ -51,20 +51,23 @@
   fill: currentColor !important;
 }
 
-/* Medal Colors */
+/* Medal Colors Refined */
 .medal-gold {
-  color: #facc15;
-  filter: drop-shadow(0 0 3px rgba(250, 204, 21, 0.3));
+  color: #D4AF37;
+  /* Rich Gold (not too yellow) */
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
 }
 
 .medal-silver {
-  color: #94a3b8;
-  filter: drop-shadow(0 0 3px rgba(148, 163, 184, 0.3));
+  color: #B8B8B8;
+  /* Classic Silver */
+  filter: drop-shadow(0 0 3px rgba(184, 184, 184, 0.3));
 }
 
 .medal-bronze {
-  color: #94a3b8;
-  opacity: 0.6;
+  color: #CD7F32;
+  /* Shiny Bronze/Copper */
+  filter: drop-shadow(0 0 4px rgba(205, 127, 50, 0.4));
 }
 
 /* Content typography */
