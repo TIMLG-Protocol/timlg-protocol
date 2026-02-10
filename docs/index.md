@@ -14,59 +14,39 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 ## Token Specifications
 
-<div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; margin-bottom: 1.5em; font-size: 0.9em;">
+<div class="azulito-card token-card">
 
-  <!-- 1. Identity Header (Compact) -->
-  <div style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; background: #f8fafc;">
-      <img src="assets/icon_vector_logo.svg" width="56" height="56" style="background: #fff; border-radius: 50%; padding: 4px; border: 1px solid #e2e8f0;">
+  <!-- 1. Identity Header -->
+  <div class="token-card-header">
+      <img src="assets/icon_vector_logo.svg" width="56" height="56" style="background: #fff; border-radius: 50%; padding: 4px; border: 1px solid var(--azulito-border);">
       <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
          <h3 style="margin: 0; font-size: 1.1rem; color: #0f172a; line-height: 1;">TIMLG <span style="font-size: 0.85em; color: #64748b; font-weight: 500;">$TIMLG</span></h3>
          <div style="display: flex; gap: 6px;">
-             <span style="background: #e0f2fe; color: #0284c7; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em; border: 1px solid #bae6fd;">SPL-2022</span>
-             <span style="background: #f0fdf4; color: #16a34a; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em; border: 1px solid #bbf7d0;">Devnet</span>
+             <span class="token-badge blue">SPL-2022</span>
+             <span class="token-badge green">Devnet</span>
          </div>
       </div>
   </div>
 
-  <!-- 2. Dashboard Grid (Dense) -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-      
-      <!-- Market Data -->
-      <div style="padding: 16px; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div>
-                  <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Price</div>
-                  <div style="font-size: 1.2rem; font-weight: 700; color: #0f172a;">$ -</div>
-              </div>
-              <div>
-                  <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Mkt Cap</div>
-                  <div style="font-size: 1.2rem; font-weight: 700; color: #cbd5e1;">-</div>
-              </div>
-          </div>
+  <!-- 2. Technical Stats (Simplified for Devnet) -->
+  <div class="token-card-body">
+      <div>
+          <div class="token-stat-label">Circulating</div>
+          <div class="token-stat-value">Dynamic</div>
+          <div style="font-size: 0.65rem; color: #64748b;">+1/-1 Mechanism</div>
       </div>
-      
-      <!-- Supply Stats -->
-      <div style="padding: 16px; border-bottom: 1px solid #f1f5f9; background: #fff;">
-          <div style="display: flex; justify-content: space-between; gap: 12px;">
-              <div>
-                  <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px;">Circulating</div>
-                  <div style="font-weight: 700; color: #0f172a;">Dynamic</div>
-                  <div style="font-size: 0.65rem; color: #64748b;">+1/-1 Mechanism</div>
-              </div>
-              <div style="text-align: right;">
-                 <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px;">Max Supply</div>
-                 <div style="font-weight: 700; color: #0f172a;">Elastic</div>
-                 <div style="font-size: 0.65rem; color: #64748b;">Self-Balancing</div>
-              </div>
-          </div>
+      <div>
+          <div class="token-stat-label">Max Supply</div>
+          <div class="token-stat-value">Elastic</div>
+          <div style="font-size: 0.65rem; color: #64748b;">Self-Balancing</div>
       </div>
   </div>
 
-   <!-- 3. Technical Specs (Row) -->
-   <div style="background: #f8fafc; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.8em; border-top: 1px solid #e2e8f0;">
+   <!-- 3. Technical Specs Footer -->
+   <div class="token-card-footer">
        <div style="display: flex; align-items: center; gap: 8px;">
            <span style="color: #64748b; font-weight: 600;">Mint:</span>
-           <a href="https://explorer.solana.com/address/7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: #2563eb; font-weight: 600; text-decoration: none;">7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy ↗</a>
+           <a href="https://explorer.solana.com/address/7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: var(--azulito-blue); font-weight: 600; text-decoration: none;">7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy ↗</a>
        </div>
        <div style="display: flex; align-items: center; gap: 8px;">
            <span style="color: #64748b; font-weight: 600;">Decimals:</span>
@@ -75,6 +55,7 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
   </div>
 
 </div>
+
 
 ### Cost model (current vs target)
 

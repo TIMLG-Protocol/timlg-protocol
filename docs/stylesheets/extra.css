@@ -70,3 +70,77 @@
   font-weight: 700;
   margin-left: 0.5rem;
 }
+
+/* --- Azulito Theme Core --- */
+:root {
+  --azulito-border: rgba(45, 104, 234, 0.2);
+  --azulito-bg: rgba(45, 104, 234, 0.04);
+  --azulito-blue: #5c8aea;
+}
+
+.azulito-card {
+  border: 1px solid var(--azulito-border) !important;
+  border-radius: 16px !important;
+  background: var(--azulito-bg) !important;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.token-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.token-card-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(45, 104, 234, 0.1);
+  background: rgba(45, 104, 234, 0.02);
+}
+
+.token-card-body {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.token-stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.token-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--azulito-blue);
+}
+
+.token-card-footer {
+  padding: 12px 20px;
+  background: rgba(45, 104, 234, 0.02);
+  border-top: 1px solid rgba(45, 104, 234, 0.1);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.token-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid var(--azulito-border);
+}
+
+.token-badge.blue { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+.token-badge.green { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
