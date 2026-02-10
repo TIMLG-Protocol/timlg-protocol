@@ -1,7 +1,7 @@
 /* Roadmap Card - Unified with Beta App "Azulito" style */
 
 .roadmap-stage {
-  border: 1px solid rgba(45, 104, 234, 0.2) !important;
+  border: 1px solid rgba(45, 104, 234, 0.18) !important;
   border-radius: 16px !important;
   margin: 1.5rem 0 !important;
   padding: 0 !important;
@@ -25,8 +25,8 @@
 .roadmap-title {
   font-weight: 700 !important;
   font-size: 1.0rem !important;
-  color: #4a78e1 !important;
-  /* Softer TIMLG Blue */
+  color: #5c8aea !important;
+  /* Lighter, more premium soft blue */
   margin: 0 !important;
 }
 
@@ -35,9 +35,10 @@
   background: transparent !important;
 }
 
-/* Harmonize bold text with header color */
+/* Harmonize strong text with header color */
 .roadmap-content strong {
-  color: #4a78e1 !important;
+  color: #5c8aea !important;
+  /* Identical to title blue */
   font-weight: 700 !important;
 }
 
@@ -89,6 +90,7 @@
 .roadmap-content ul {
   padding-left: 1.4rem !important;
   list-style-type: disc !important;
+  margin-bottom: 0 !important;
 }
 
 .roadmap-content ul li {
