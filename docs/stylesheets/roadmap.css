@@ -1,11 +1,11 @@
 /* Roadmap Card - Unified with Beta App "Azulito" style */
 
 .roadmap-stage {
-  border: 1px solid rgba(45, 104, 234, 0.25) !important;
+  border: 1px solid rgba(45, 104, 234, 0.2) !important;
   border-radius: 16px !important;
   margin: 1.5rem 0 !important;
   padding: 0 !important;
-  background: rgba(45, 104, 234, 0.05) !important;
+  background: rgba(45, 104, 234, 0.04) !important;
   /* Azulito tone */
   overflow: hidden;
   box-shadow: none !important;
@@ -18,15 +18,15 @@
   align-items: center;
   gap: 14px;
   padding: 14px 24px !important;
-  background: rgba(45, 104, 234, 0.03) !important;
-  border-bottom: 1px solid rgba(45, 104, 234, 0.12) !important;
+  background: rgba(45, 104, 234, 0.02) !important;
+  border-bottom: 1px solid rgba(45, 104, 234, 0.08) !important;
 }
 
 .roadmap-title {
   font-weight: 700 !important;
   font-size: 1.0rem !important;
-  color: #2D68EA !important;
-  /* Unified softer TIMLG Blue */
+  color: #4a78e1 !important;
+  /* Softer TIMLG Blue */
   margin: 0 !important;
 }
 
@@ -35,12 +35,13 @@
   background: transparent !important;
 }
 
+/* Harmonize bold text with header color */
 .roadmap-content strong {
-  color: #2D68EA !important;
-  /* Same blue as header */
+  color: #4a78e1 !important;
+  font-weight: 700 !important;
 }
 
-/* Medal Icons - Final Star Medal SVG */
+/* Medal Icons - Star Medal SVG */
 .roadmap-medal {
   display: flex;
   align-items: center;
@@ -60,19 +61,19 @@
 .medal-gold {
   color: #D4AF37;
   /* Rich Gold */
-  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
 }
 
 .medal-silver {
-  color: #B8B8B8;
-  /* Subtle Silver */
-  opacity: 0.8;
+  color: #B0B0B0;
+  /* Neutral Silver */
+  opacity: 0.9;
 }
 
 .medal-bronze {
   color: #CD7F32;
-  /* Shiny Bronze */
-  filter: drop-shadow(0 0 4px rgba(205, 127, 50, 0.4));
+  /* Shiny Bronze/Copper */
+  filter: drop-shadow(0 0 4px rgba(205, 127, 50, 0.3));
 }
 
 /* Content typography */
@@ -80,7 +81,7 @@
 .roadmap-content ul {
   margin-top: 0.4rem !important;
   color: var(--md-default-fg-color);
-  opacity: 0.9;
+  opacity: 0.95;
   font-size: 0.9rem;
   line-height: 1.6;
 }

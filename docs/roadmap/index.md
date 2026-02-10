@@ -19,8 +19,10 @@ Each stage represents a critical piece of the protocol's architecture.
 <div class="roadmap-content" markdown="1">
 
 The engine that enforces the "Hawking Wall" principle.
+
 - **Focus**: Secure slot-bounded commitment and revelation phases.
 - **Status**: Production-ready. Verified on Localnet and Devnet.
+
 </div>
 </div>
 
@@ -32,8 +34,10 @@ The engine that enforces the "Hawking Wall" principle.
 <div class="roadmap-content" markdown="1">
 
 Anchoring the protocol to public, verifiable randomness.
+
 - **Focus**: Ed25519 on-chain verification of signed NIST pulses.
 - **Status**: Integrated. Supporting 24/7 autonomous rounds.
+
 </div>
 </div>
 
@@ -45,8 +49,10 @@ Anchoring the protocol to public, verifiable randomness.
 <div class="roadmap-content" markdown="1">
 
 Building the foundation for zero-SOL user participation.
+
 - **Focus**: On-chain escrow accounts and batched, signed participation instructions.
 - **Status**: Logic implemented in Rust and ready for Relayer integration.
+
 </div>
 </div>
 
@@ -58,8 +64,10 @@ Building the foundation for zero-SOL user participation.
 <div class="roadmap-content" markdown="1">
 
 Removing manual intervention from the protocol's daily operations.
+
 - **Focus**: The "Supervisor" system that handles round creation, state transitions, and prize distribution.
 - **Status**: Operational on Devnet.
+
 </div>
 </div>
 
@@ -71,8 +79,10 @@ Removing manual intervention from the protocol's daily operations.
 <div class="roadmap-content" markdown="1">
 
 Aligning incentives and ensuring the protocol's economic security.
+
 - **Focus**: Deflationary burn for losses and unrevealed stakes, with transparent fee routing.
 - **Status**: Deployed on Devnet; parameters subject to tuning.
+
 </div>
 </div>
 
@@ -84,8 +94,10 @@ Aligning incentives and ensuring the protocol's economic security.
 <div class="roadmap-content" markdown="1">
 
 A world-class interface for the TIMLG experiment.
+
 - **Focus**: Pro-grade dashboard with real-time P&L, ticket history, and NIST pulse tracking.
 - **Status**: [Live on Devnet](/beta/) — Try it now.
+
 </div>
 </div>
 
@@ -97,8 +109,10 @@ A world-class interface for the TIMLG experiment.
 <div class="roadmap-content" markdown="1">
 
 Optimizing the protocol's on-chain storage footprint.
+
 - **Focus**: Automated `close_round` mechanics to reclaim rent and cycle lamports back to the treasury.
 - **Status**: Integrated and operational on Devnet.
+
 </div>
 </div>
 
@@ -110,8 +124,10 @@ Optimizing the protocol's on-chain storage footprint.
 <div class="roadmap-content" markdown="1">
 
 Opening the protocol to users without SOL balances.
+
 - **Focus**: Decentralized relayer infrastructure to submit user-signed envelopes on-chain.
 - **Status**: Research and API development stage (Stage 8).
+
 </div>
 </div>
 
@@ -123,8 +139,10 @@ Opening the protocol to users without SOL balances.
 <div class="roadmap-content" markdown="1">
 
 Hardening the protocol for institutional-grade production.
+
 - **Focus**: Multisig governance, security audits, and production Timings.
 - **Status**: Planning.
+
 </div>
 </div>
 
