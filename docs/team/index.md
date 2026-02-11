@@ -34,4 +34,8 @@ TIMLG is currently developed and maintained by a **single core contributor**.
 
     [linkedin.com/in/richard-david](https://www.linkedin.com/in/richard-david-mart%C3%ADn-mart%C3%ADn-9845b474/)
 
+-   **X (Twitter)**
+
+    [@TIMLG_Protocol](https://x.com/TIMLG_Protocol)
+
 </div>

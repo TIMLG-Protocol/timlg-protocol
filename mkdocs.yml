@@ -30,6 +30,15 @@ theme:
   logo: assets/icon_vector_logo.svg
   favicon: assets/icon_vector_logo.svg
 
+extra:
+  social:
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/TIMLG_Protocol
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/richard-david-mart%C3%ADn-mart%C3%ADn-9845b474/
+    - icon: fontawesome/brands/github
+      link: https://github.com/richarddmm/timlg-protocol
+
 plugins:
   - search
 

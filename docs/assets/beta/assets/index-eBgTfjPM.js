@@ -46626,26 +46626,21 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       });
     }
     const isSwept2 = realSweptSlot !== null;
-    const rawMax = Math.max(
-      cd || 0,
-      ps || 0,
-      rd || 0,
-      fn || 0,
-      st || 0,
-      claimDeadline || 0,
-      isSwept2 ? realSweptSlot : relCurrentSlot2 || 0
-    );
-    const totalSlots2 = Math.max(rawMax, 2500);
+    const lifecycleEnd = isSwept2 ? realSweptSlot : claimDeadline || 2500;
+    const buffer2 = 200;
+    const chartLimit = lifecycleEnd + buffer2;
+    const totalSlots2 = Math.max(chartLimit, 2500);
     const clip = (v) => Math.min(Math.max(v || 0, 0), totalSlots2);
+    const displayCurrentSlot = relCurrentSlot2 !== null ? clip(relCurrentSlot2) : null;
     const p1_end = clip(cd);
     let p2_end = Math.max(p1_end, clip(ps));
-    if (!ps && relCurrentSlot2 && relCurrentSlot2 > p1_end) {
-      p2_end = Math.min(relCurrentSlot2, clip(rd));
+    if (!ps && displayCurrentSlot && displayCurrentSlot > p1_end) {
+      p2_end = Math.min(displayCurrentSlot, clip(rd));
     }
     const p3_end = Math.max(p2_end, clip(rd));
     let p4_end = Math.max(p3_end, clip(st));
-    if (!st && relCurrentSlot2 && relCurrentSlot2 > p3_end) {
-      p4_end = relCurrentSlot2;
+    if (!st && !fn && displayCurrentSlot && displayCurrentSlot > p3_end) {
+      p4_end = Math.min(displayCurrentSlot, clip(rd + grace / 2));
     }
     const p5_end = Math.max(p4_end, clip(claimDeadline));
     const p6_end = totalSlots2;
@@ -46656,7 +46651,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       { name: "SETTLE", start: p3_end, end: p4_end },
       { name: "CLAIM", start: p4_end, end: p5_end },
       { name: "SWEEP", start: p5_end, end: p6_end }
-    ].filter((p) => p.end > p.start);
+    ].filter((p) => p.end - p.start > totalSlots2 * 1e-3);
     const milestones2 = [
       { slot: 0, label: "Start", critical: false },
       cd !== null && cd > 0 && { slot: cd, label: "Commit Deadline", critical: true },
@@ -46672,7 +46667,7 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
       phases: phases2,
       milestones: milestones2,
       ticketEvents: ticketEvents2,
-      currentSlot: relCurrentSlot2,
+      currentSlot: displayCurrentSlot,
       isSwept: isSwept2
     };
   }, [activeRound, tickets, claimGraceSlots, currentSlot]);
