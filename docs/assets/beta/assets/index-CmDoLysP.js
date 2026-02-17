@@ -59462,6 +59462,33 @@ function AuditDashboard() {
     muted: "rgba(255, 255, 255, 0.5)",
     text: "#ffffff"
   };
+  const exportCSV = () => {
+    if (!stats?.recentRounds?.length) return;
+    const headers = ["ROUND_ID", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "EXPLORER_URL"];
+    const rows = stats.recentRounds.map((r) => [
+      r.id,
+      ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN",
+      r.tickets,
+      r.reveals,
+      r.wins,
+      r.pulsePublished ? "YES" : "NO",
+      r.swept ? "YES" : "NO",
+      r.explorerUrl
+    ]);
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(","))
+    ].join("\n");
+    const blob2 = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob2);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `AUDIT_REPORT_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   reactExports.useEffect(() => {
     setLoading2(true);
     const statsRef = ref(db, "audit_stats");
@@ -59551,33 +59578,60 @@ function AuditDashboard() {
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flexGrow: 1, overflowY: "auto", padding: "24px 30px", display: "flex", flexDirection: "column", gap: "24px" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", flexShrink: 0 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, backdropFilter: "blur(10px)" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "GLOBAL ROUND ACTIVITY" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "ROUNDS TRACKED (RECENT)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "32px", fontWeight: "900", color: COLORS.blue, letterSpacing: "-0.02em" }, children: [
-            stats?.dailyRounds || 0,
-            " ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS.text }, children: "ROUNDS" })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, backdropFilter: "blur(10px)", gridColumn: "span 1" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "GLOBAL NETWORK VOLUME (24H/TRACKED)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", whiteSpace: "nowrap" }, children: "TICKETS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "20px", fontWeight: "900", color: COLORS.text }, children: stats?.dailyTickets?.toLocaleString() || 0 })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", whiteSpace: "nowrap" }, children: "REVEALS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "20px", fontWeight: "900", color: COLORS.text }, children: stats?.dailyReveals?.toLocaleString() || 0 })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", whiteSpace: "nowrap" }, children: "WINS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "20px", fontWeight: "900", color: COLORS.green }, children: stats?.dailyWins?.toLocaleString() || 0 })
+            ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "14px", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Currently Active" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "16px", paddingTop: "12px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Active Rounds" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900" }, children: activeRoundsCount })
-          ] })
+          ] }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}` }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "GLOBAL RECENT PERFORMANCE" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Tickets Created", value: stats?.dailyTickets.toLocaleString() || "0", COLORS }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Tickets Revealed", value: stats?.dailyReveals.toLocaleString() || "0", COLORS }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Winning Tickets", value: stats?.dailyWins.toLocaleString() || "0", COLORS })
-          ] })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "ECONOMIC OUTPUT (UTILITY)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL DISTRIBUTED REWARDS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "32px", fontWeight: "900", color: COLORS.blue, letterSpacing: "-0.02em" }, children: [
+            stats?.totalPayouts?.toLocaleString(void 0, { maximumFractionDigits: 1 }) || 0,
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS.text }, children: "TIMLG" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "14px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.4, fontStyle: "italic" }, children: "Cumulative value generated for the network." }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}` }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "AUDIT CONFIGURATION" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "TREASURY RESERVES" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Stake Amount", value: (stats?.config?.stake || 0).toFixed(1) + " TIMLG", COLORS }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Reward Fee", value: (stats?.config?.fee || 0).toFixed(1) + "%", COLORS }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Sweep Grace", value: (stats?.config?.grace || 0).toLocaleString() + " slots", COLORS })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ParamRow,
+              {
+                label: "Treasury Balance",
+                value: (stats?.treasury?.sol || 0).toFixed(4) + " SOL",
+                COLORS,
+                link: stats?.treasury?.address ? `https://explorer.solana.com/address/${stats.treasury.address}?cluster=devnet` : null
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Reward Pool", value: (stats?.treasury?.rewardPool || 0).toFixed(1) + " TIMLG", COLORS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "4px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: exportCSV,
+                style: { width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "9px", fontWeight: "900", padding: "6px", borderRadius: "4px", cursor: "pointer", transition: "all 0.2s" },
+                onMouseOver: (e) => e.target.style.background = "rgba(255,255,255,0.1)",
+                onMouseOut: (e) => e.target.style.background = "rgba(255,255,255,0.05)",
+                children: "GENERATE AUDIT REPORT (CSV)"
+              }
+            ) })
           ] })
         ] })
       ] }),
@@ -59610,17 +59664,18 @@ function AuditDashboard() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
             ] }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
                 "#",
-                r.id.toString().padStart(6, "0")
-              ] }),
+                r.id.toString().padStart(6, "0"),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
+              ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Pulse", active: r.pulsePublished, COLORS }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Pulse", active: r.pulsePublished, COLORS, link: r.pulseUrl }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sweep", active: r.swept, COLORS })
               ] }) })
             ] }, r.id)) })
@@ -59636,14 +59691,22 @@ function AuditDashboard() {
     ] })
   ] });
 }
-function ParamRow({ label, value, COLORS }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+function ParamRow({ label, value, COLORS, link }) {
+  const content = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "600" }, children: label }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: COLORS.blue }, children: value })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: COLORS.blue, textDecoration: link ? "underline" : "none", textUnderlineOffset: "3px" }, children: value })
   ] });
+  if (link) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: link, target: "_blank", rel: "noopener noreferrer", style: { textDecoration: "none", color: "inherit" }, onMouseOver: (e) => e.currentTarget.style.opacity = 0.8, onMouseOut: (e) => e.currentTarget.style.opacity = 1, children: content });
+  }
+  return content;
 }
-function IntegrityPill({ label, active, COLORS }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", padding: "2px 6px", borderRadius: "4px", background: active ? "rgba(16, 185, 129, 0.1)" : "rgba(255,255,255,0.05)", color: active ? COLORS.green : "rgba(255,255,255,0.2)", border: `1px solid ${active ? "rgba(16, 185, 129, 0.2)" : "rgba(255,255,255,0.05)"}` }, children: label });
+function IntegrityPill({ label, active, COLORS, link }) {
+  const content = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", padding: "2px 6px", borderRadius: "4px", background: active ? "rgba(16, 185, 129, 0.1)" : "rgba(255,255,255,0.05)", color: active ? COLORS.green : "rgba(255,255,255,0.2)", border: `1px solid ${active ? "rgba(16, 185, 129, 0.2)" : "rgba(255,255,255,0.05)"}`, cursor: link ? "pointer" : "default", transition: "all 0.2s" }, children: label });
+  if (link && active) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: link, target: "_blank", rel: "noopener noreferrer", style: { textDecoration: "none" }, onMouseOver: (e) => e.currentTarget.style.opacity = 0.7, onMouseOut: (e) => e.currentTarget.style.opacity = 1, children: content });
+  }
+  return content;
 }
 function WalletSankey({ stats, chainState }) {
   const { breakdown, total } = stats || {};
@@ -60832,7 +60895,7 @@ function useUserTickets({
     }
   };
 }
-const PUBLIC_RPC = "https://api.devnet.solana.com";
+const PUBLIC_RPC = "https://devnet.helius-rpc.com/?api-key=df9e7f13-259a-42be-af08-7cee2aacd36f";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
