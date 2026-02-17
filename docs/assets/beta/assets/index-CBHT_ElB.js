@@ -59523,7 +59523,8 @@ function AuditDashboard() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }` })
     ] });
   }
-  const rounds = stats?.recentRounds || [];
+  const rawRounds = stats?.recentRounds || [];
+  const rounds = Array.from(new Map(rawRounds.map((item) => [item.id, item])).values()).sort((a, b) => b.id - a.id);
   const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
     background: COLORS.bg,
