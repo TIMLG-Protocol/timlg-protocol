@@ -1649,9 +1649,9 @@ ieee754.write = function(buffer2, value, offset2, isLE2, mLen, nBytes) {
   }
   E(
     "ERR_BUFFER_OUT_OF_BOUNDS",
-    function(name) {
-      if (name) {
-        return `${name} is outside of buffer bounds`;
+    function(name2) {
+      if (name2) {
+        return `${name2} is outside of buffer bounds`;
       }
       return "Attempt to access memory outside buffer bounds";
     },
@@ -1659,8 +1659,8 @@ ieee754.write = function(buffer2, value, offset2, isLE2, mLen, nBytes) {
   );
   E(
     "ERR_INVALID_ARG_TYPE",
-    function(name, actual) {
-      return `The "${name}" argument must be of type number. Received type ${typeof actual}`;
+    function(name2, actual) {
+      return `The "${name2}" argument must be of type number. Received type ${typeof actual}`;
     },
     TypeError
   );
@@ -1713,9 +1713,9 @@ ieee754.write = function(buffer2, value, offset2, isLE2, mLen, nBytes) {
     }
     checkBounds(buf, offset2, byteLength3);
   }
-  function validateNumber(value, name) {
+  function validateNumber(value, name2) {
     if (typeof value !== "number") {
-      throw new errors2.ERR_INVALID_ARG_TYPE(name, "number", value);
+      throw new errors2.ERR_INVALID_ARG_TYPE(name2, "number", value);
     }
   }
   function boundsError(value, length, type2) {
@@ -2004,10 +2004,10 @@ process.removeAllListeners = noop;
 process.emit = noop;
 process.prependListener = noop;
 process.prependOnceListener = noop;
-process.listeners = function(name) {
+process.listeners = function(name2) {
   return [];
 };
-process.binding = function(name) {
+process.binding = function(name2) {
   throw new Error("process.binding is not supported");
 };
 process.cwd = function() {
@@ -2046,26 +2046,26 @@ function requireReact_production() {
     enqueueSetState: function() {
     }
   }, assign2 = Object.assign, emptyObject = {};
-  function Component(props, context, updater) {
+  function Component2(props, context, updater) {
     this.props = props;
     this.context = context;
     this.refs = emptyObject;
     this.updater = updater || ReactNoopUpdateQueue;
   }
-  Component.prototype.isReactComponent = {};
-  Component.prototype.setState = function(partialState, callback) {
+  Component2.prototype.isReactComponent = {};
+  Component2.prototype.setState = function(partialState, callback) {
     if ("object" !== typeof partialState && "function" !== typeof partialState && null != partialState)
       throw Error(
         "takes an object of state variables to update or a function which returns an object of state variables."
       );
     this.updater.enqueueSetState(this, partialState, callback, "setState");
   };
-  Component.prototype.forceUpdate = function(callback) {
+  Component2.prototype.forceUpdate = function(callback) {
     this.updater.enqueueForceUpdate(this, callback, "forceUpdate");
   };
   function ComponentDummy() {
   }
-  ComponentDummy.prototype = Component.prototype;
+  ComponentDummy.prototype = Component2.prototype;
   function PureComponent(props, context, updater) {
     this.props = props;
     this.context = context;
@@ -2074,7 +2074,7 @@ function requireReact_production() {
   }
   var pureComponentPrototype = PureComponent.prototype = new ComponentDummy();
   pureComponentPrototype.constructor = PureComponent;
-  assign2(pureComponentPrototype, Component.prototype);
+  assign2(pureComponentPrototype, Component2.prototype);
   pureComponentPrototype.isPureReactComponent = true;
   var isArrayImpl = Array.isArray;
   function noop2() {
@@ -2117,8 +2117,8 @@ function requireReact_production() {
           function(fulfilledValue) {
             "pending" === thenable.status && (thenable.status = "fulfilled", thenable.value = fulfilledValue);
           },
-          function(error) {
-            "pending" === thenable.status && (thenable.status = "rejected", thenable.reason = error);
+          function(error2) {
+            "pending" === thenable.status && (thenable.status = "rejected", thenable.reason = error2);
           }
         )), thenable.status) {
           case "fulfilled":
@@ -2206,8 +2206,8 @@ function requireReact_production() {
   function mapChildren(children, func, context) {
     if (null == children) return children;
     var result = [], count = 0;
-    mapIntoArray(children, result, "", "", function(child) {
-      return func.call(context, child, count++);
+    mapIntoArray(children, result, "", "", function(child2) {
+      return func.call(context, child2, count++);
     });
     return result;
   }
@@ -2220,9 +2220,9 @@ function requireReact_production() {
           if (0 === payload._status || -1 === payload._status)
             payload._status = 1, payload._result = moduleObject;
         },
-        function(error) {
+        function(error2) {
           if (0 === payload._status || -1 === payload._status)
-            payload._status = 2, payload._result = error;
+            payload._status = 2, payload._result = error2;
         }
       );
       -1 === payload._status && (payload._status = 0, payload._result = ctor);
@@ -2230,20 +2230,20 @@ function requireReact_production() {
     if (1 === payload._status) return payload._result.default;
     throw payload._result;
   }
-  var reportGlobalError = "function" === typeof reportError ? reportError : function(error) {
+  var reportGlobalError = "function" === typeof reportError ? reportError : function(error2) {
     if ("object" === typeof window && "function" === typeof window.ErrorEvent) {
       var event = new window.ErrorEvent("error", {
         bubbles: true,
         cancelable: true,
-        message: "object" === typeof error && null !== error && "string" === typeof error.message ? String(error.message) : String(error),
-        error
+        message: "object" === typeof error2 && null !== error2 && "string" === typeof error2.message ? String(error2.message) : String(error2),
+        error: error2
       });
       if (!window.dispatchEvent(event)) return;
     } else if ("object" === typeof process$1 && "function" === typeof process$1.emit) {
-      process$1.emit("uncaughtException", error);
+      process$1.emit("uncaughtException", error2);
       return;
     }
-    console.error(error);
+    console.error(error2);
   }, Children = {
     map: mapChildren,
     forEach: function(children, forEachFunc, forEachContext) {
@@ -2263,8 +2263,8 @@ function requireReact_production() {
       return n;
     },
     toArray: function(children) {
-      return mapChildren(children, function(child) {
-        return child;
+      return mapChildren(children, function(child2) {
+        return child2;
       }) || [];
     },
     only: function(children) {
@@ -2277,7 +2277,7 @@ function requireReact_production() {
   };
   react_production.Activity = REACT_ACTIVITY_TYPE;
   react_production.Children = Children;
-  react_production.Component = Component;
+  react_production.Component = Component2;
   react_production.Fragment = REACT_FRAGMENT_TYPE;
   react_production.Profiler = REACT_PROFILER_TYPE;
   react_production.PureComponent = PureComponent;
@@ -2377,8 +2377,8 @@ function requireReact_production() {
       var returnValue = scope(), onStartTransitionFinish = ReactSharedInternals.S;
       null !== onStartTransitionFinish && onStartTransitionFinish(currentTransition, returnValue);
       "object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && returnValue.then(noop2, reportGlobalError);
-    } catch (error) {
-      reportGlobalError(error);
+    } catch (error2) {
+      reportGlobalError(error2);
     } finally {
       null !== prevTransition && null !== currentTransition.types && (prevTransition.types = currentTransition.types), ReactSharedInternals.T = prevTransition;
     }
@@ -2412,8 +2412,8 @@ function requireReact_production() {
   react_production.useId = function() {
     return ReactSharedInternals.H.useId();
   };
-  react_production.useImperativeHandle = function(ref, create2, deps) {
-    return ReactSharedInternals.H.useImperativeHandle(ref, create2, deps);
+  react_production.useImperativeHandle = function(ref2, create2, deps) {
+    return ReactSharedInternals.H.useImperativeHandle(ref2, create2, deps);
   };
   react_production.useInsertionEffect = function(create2, deps) {
     return ReactSharedInternals.H.useInsertionEffect(create2, deps);
@@ -3138,7 +3138,7 @@ function requireReactDomClient_production() {
     hostTransitionProviderCursor.current === fiber && (pop(hostTransitionProviderCursor), HostTransitionContext._currentValue = sharedNotPendingObject);
   }
   var prefix, suffix;
-  function describeBuiltInComponentFrame(name) {
+  function describeBuiltInComponentFrame(name2) {
     if (void 0 === prefix)
       try {
         throw Error();
@@ -3147,7 +3147,7 @@ function requireReactDomClient_production() {
         prefix = match && match[1] || "";
         suffix = -1 < x.stack.indexOf("\n    at") ? " (<anonymous>)" : -1 < x.stack.indexOf("@") ? "@unknown:0:0" : "";
       }
-    return "\n" + prefix + name + suffix;
+    return "\n" + prefix + name2 + suffix;
   }
   var reentry = false;
   function describeNativeComponentFrame(fn, construct) {
@@ -3285,10 +3285,10 @@ function requireReactDomClient_production() {
       } catch (err) {
       }
   }
-  var clz32 = Math.clz32 ? Math.clz32 : clz32Fallback, log = Math.log, LN2 = Math.LN2;
+  var clz32 = Math.clz32 ? Math.clz32 : clz32Fallback, log2 = Math.log, LN2 = Math.LN2;
   function clz32Fallback(x) {
     x >>>= 0;
-    return 0 === x ? 32 : 31 - (log(x) / LN2 | 0) | 0;
+    return 0 === x ? 32 : 31 - (log2(x) / LN2 | 0) | 0;
   }
   var nextTransitionUpdateLane = 256, nextTransitionDeferredLane = 262144, nextRetryLane = 4194304;
   function getHighestPriorityLanes(lanes) {
@@ -3585,52 +3585,52 @@ function requireReactDomClient_production() {
     illegalAttributeNameCache[attributeName] = true;
     return false;
   }
-  function setValueForAttribute(node, name, value) {
-    if (isAttributeNameSafe(name))
-      if (null === value) node.removeAttribute(name);
+  function setValueForAttribute(node, name2, value) {
+    if (isAttributeNameSafe(name2))
+      if (null === value) node.removeAttribute(name2);
       else {
         switch (typeof value) {
           case "undefined":
           case "function":
           case "symbol":
-            node.removeAttribute(name);
+            node.removeAttribute(name2);
             return;
           case "boolean":
-            var prefix$10 = name.toLowerCase().slice(0, 5);
+            var prefix$10 = name2.toLowerCase().slice(0, 5);
             if ("data-" !== prefix$10 && "aria-" !== prefix$10) {
-              node.removeAttribute(name);
+              node.removeAttribute(name2);
               return;
             }
         }
-        node.setAttribute(name, "" + value);
+        node.setAttribute(name2, "" + value);
       }
   }
-  function setValueForKnownAttribute(node, name, value) {
-    if (null === value) node.removeAttribute(name);
+  function setValueForKnownAttribute(node, name2, value) {
+    if (null === value) node.removeAttribute(name2);
     else {
       switch (typeof value) {
         case "undefined":
         case "function":
         case "symbol":
         case "boolean":
-          node.removeAttribute(name);
+          node.removeAttribute(name2);
           return;
       }
-      node.setAttribute(name, "" + value);
+      node.setAttribute(name2, "" + value);
     }
   }
-  function setValueForNamespacedAttribute(node, namespace, name, value) {
-    if (null === value) node.removeAttribute(name);
+  function setValueForNamespacedAttribute(node, namespace, name2, value) {
+    if (null === value) node.removeAttribute(name2);
     else {
       switch (typeof value) {
         case "undefined":
         case "function":
         case "symbol":
         case "boolean":
-          node.removeAttribute(name);
+          node.removeAttribute(name2);
           return;
       }
-      node.setAttributeNS(namespace, name, "" + value);
+      node.setAttributeNS(namespace, name2, "" + value);
     }
   }
   function getToStringValue(value) {
@@ -3723,7 +3723,7 @@ function requireReactDomClient_production() {
       }
     );
   }
-  function updateInput(element, value, defaultValue, lastDefaultValue, checked, defaultChecked, type2, name) {
+  function updateInput(element, value, defaultValue, lastDefaultValue, checked, defaultChecked, type2, name2) {
     element.name = "";
     null != type2 && "function" !== typeof type2 && "symbol" !== typeof type2 && "boolean" !== typeof type2 ? element.type = type2 : element.removeAttribute("type");
     if (null != value)
@@ -3737,9 +3737,9 @@ function requireReactDomClient_production() {
     null != value ? setDefaultValue(element, type2, getToStringValue(value)) : null != defaultValue ? setDefaultValue(element, type2, getToStringValue(defaultValue)) : null != lastDefaultValue && element.removeAttribute("value");
     null == checked && null != defaultChecked && (element.defaultChecked = !!defaultChecked);
     null != checked && (element.checked = checked && "function" !== typeof checked && "symbol" !== typeof checked);
-    null != name && "function" !== typeof name && "symbol" !== typeof name && "boolean" !== typeof name ? element.name = "" + getToStringValue(name) : element.removeAttribute("name");
+    null != name2 && "function" !== typeof name2 && "symbol" !== typeof name2 && "boolean" !== typeof name2 ? element.name = "" + getToStringValue(name2) : element.removeAttribute("name");
   }
-  function initInput(element, value, defaultValue, checked, defaultChecked, type2, name, isHydrating2) {
+  function initInput(element, value, defaultValue, checked, defaultChecked, type2, name2, isHydrating2) {
     null != type2 && "function" !== typeof type2 && "symbol" !== typeof type2 && "boolean" !== typeof type2 && (element.type = type2);
     if (null != value || null != defaultValue) {
       if (!("submit" !== type2 && "reset" !== type2 || void 0 !== value && null !== value)) {
@@ -3755,7 +3755,7 @@ function requireReactDomClient_production() {
     checked = "function" !== typeof checked && "symbol" !== typeof checked && !!checked;
     element.checked = isHydrating2 ? element.checked : !!checked;
     element.defaultChecked = !!checked;
-    null != name && "function" !== typeof name && "symbol" !== typeof name && "boolean" !== typeof name && (element.name = name);
+    null != name2 && "function" !== typeof name2 && "symbol" !== typeof name2 && "boolean" !== typeof name2 && (element.name = name2);
     track(element);
   }
   function setDefaultValue(node, type2, value) {
@@ -4535,20 +4535,20 @@ function requireReactDomClient_production() {
     topLevelEventsToReactNames.set(domEventName, reactName);
     registerTwoPhaseEvent(reactName, [domEventName]);
   }
-  var reportGlobalError = "function" === typeof reportError ? reportError : function(error) {
+  var reportGlobalError = "function" === typeof reportError ? reportError : function(error2) {
     if ("object" === typeof window && "function" === typeof window.ErrorEvent) {
       var event = new window.ErrorEvent("error", {
         bubbles: true,
         cancelable: true,
-        message: "object" === typeof error && null !== error && "string" === typeof error.message ? String(error.message) : String(error),
-        error
+        message: "object" === typeof error2 && null !== error2 && "string" === typeof error2.message ? String(error2.message) : String(error2),
+        error: error2
       });
       if (!window.dispatchEvent(event)) return;
     } else if ("object" === typeof process$1 && "function" === typeof process$1.emit) {
-      process$1.emit("uncaughtException", error);
+      process$1.emit("uncaughtException", error2);
       return;
     }
-    console.error(error);
+    console.error(error2);
   }, concurrentQueues = [], concurrentQueuesIndex = 0, concurrentlyUpdatedLanes = 0;
   function finishQueueingConcurrentUpdates() {
     for (var endIndex = concurrentQueuesIndex, i = concurrentlyUpdatedLanes = concurrentQueuesIndex = 0; i < endIndex; ) {
@@ -4619,9 +4619,9 @@ function requireReactDomClient_production() {
   function createFiberImplClass(tag, pendingProps, key2, mode) {
     return new FiberNode(tag, pendingProps, key2, mode);
   }
-  function shouldConstruct(Component) {
-    Component = Component.prototype;
-    return !(!Component || !Component.isReactComponent);
+  function shouldConstruct(Component2) {
+    Component2 = Component2.prototype;
+    return !(!Component2 || !Component2.isReactComponent);
   }
   function createWorkInProgress(current, pendingProps) {
     var workInProgress2 = current.alternate;
@@ -4809,14 +4809,14 @@ function requireReactDomClient_production() {
   }
   var hydrationParentFiber = null, nextHydratableInstance = null, isHydrating = false, hydrationErrors = null, rootOrSingletonContext = false, HydrationMismatchException = Error(formatProdErrorMessage(519));
   function throwOnHydrationMismatch(fiber) {
-    var error = Error(
+    var error2 = Error(
       formatProdErrorMessage(
         418,
         1 < arguments.length && void 0 !== arguments[1] && arguments[1] ? "text" : "HTML",
         ""
       )
     );
-    queueHydrationError(createCapturedValueAtFiber(error, fiber));
+    queueHydrationError(createCapturedValueAtFiber(error2, fiber));
     throw HydrationMismatchException;
   }
   function prepareToHydrateHostInstance(fiber) {
@@ -4926,8 +4926,8 @@ function requireReactDomClient_production() {
     ), hydrationErrors = null);
     return queuedErrors;
   }
-  function queueHydrationError(error) {
-    null === hydrationErrors ? hydrationErrors = [error] : hydrationErrors.push(error);
+  function queueHydrationError(error2) {
+    null === hydrationErrors ? hydrationErrors = [error2] : hydrationErrors.push(error2);
   }
   var valueCursor = createCursor(null), currentlyRenderingFiber$1 = null, lastContextDependency = null;
   function pushProvider(providerFiber, context, nextValue) {
@@ -5141,11 +5141,11 @@ function requireReactDomClient_production() {
         thenableWithOverride.value = result;
         for (var i = 0; i < listeners.length; i++) (0, listeners[i])(result);
       },
-      function(error) {
+      function(error2) {
         thenableWithOverride.status = "rejected";
-        thenableWithOverride.reason = error;
-        for (error = 0; error < listeners.length; error++)
-          (0, listeners[error])(void 0);
+        thenableWithOverride.reason = error2;
+        for (error2 = 0; error2 < listeners.length; error2++)
+          (0, listeners[error2])(void 0);
       }
     );
     return thenableWithOverride;
@@ -5198,11 +5198,11 @@ function requireReactDomClient_production() {
                 fulfilledThenable.value = fulfilledValue;
               }
             },
-            function(error) {
+            function(error2) {
               if ("pending" === thenable.status) {
                 var rejectedThenable = thenable;
                 rejectedThenable.status = "rejected";
-                rejectedThenable.reason = error;
+                rejectedThenable.reason = error2;
               }
             }
           );
@@ -5516,8 +5516,8 @@ function requireReactDomClient_production() {
           currentFirstChild,
           newIdx
         ), null === previousNewFiber ? resultingFirstChild = nextOldFiber : previousNewFiber.sibling = nextOldFiber, previousNewFiber = nextOldFiber);
-      shouldTrackSideEffects && oldFiber.forEach(function(child) {
-        return deleteChild(returnFiber, child);
+      shouldTrackSideEffects && oldFiber.forEach(function(child2) {
+        return deleteChild(returnFiber, child2);
       });
       isHydrating && pushTreeFork(returnFiber, newIdx);
       return resultingFirstChild;
@@ -5547,8 +5547,8 @@ function requireReactDomClient_production() {
       }
       for (oldFiber = mapRemainingChildren(oldFiber); !step.done; newIdx++, step = newChildren.next())
         step = updateFromMap(oldFiber, returnFiber, newIdx, step.value, lanes), null !== step && (shouldTrackSideEffects && null !== step.alternate && oldFiber.delete(null === step.key ? newIdx : step.key), currentFirstChild = placeChild(step, currentFirstChild, newIdx), null === previousNewFiber ? resultingFirstChild = step : previousNewFiber.sibling = step, previousNewFiber = step);
-      shouldTrackSideEffects && oldFiber.forEach(function(child) {
-        return deleteChild(returnFiber, child);
+      shouldTrackSideEffects && oldFiber.forEach(function(child2) {
+        return deleteChild(returnFiber, child2);
       });
       isHydrating && pushTreeFork(returnFiber, newIdx);
       return resultingFirstChild;
@@ -5952,7 +5952,7 @@ function requireReactDomClient_production() {
       if (!objectIs(nextDeps[i], prevDeps[i])) return false;
     return true;
   }
-  function renderWithHooks(current, workInProgress2, Component, props, secondArg, nextRenderLanes) {
+  function renderWithHooks(current, workInProgress2, Component2, props, secondArg, nextRenderLanes) {
     renderLanes = nextRenderLanes;
     currentlyRenderingFiber = workInProgress2;
     workInProgress2.memoizedState = null;
@@ -5960,11 +5960,11 @@ function requireReactDomClient_production() {
     workInProgress2.lanes = 0;
     ReactSharedInternals.H = null === current || null === current.memoizedState ? HooksDispatcherOnMount : HooksDispatcherOnUpdate;
     shouldDoubleInvokeUserFnsInHooksDEV = false;
-    nextRenderLanes = Component(props, secondArg);
+    nextRenderLanes = Component2(props, secondArg);
     shouldDoubleInvokeUserFnsInHooksDEV = false;
     didScheduleRenderPhaseUpdateDuringThisPass && (nextRenderLanes = renderWithHooksAgain(
       workInProgress2,
-      Component,
+      Component2,
       props,
       secondArg
     ));
@@ -5982,7 +5982,7 @@ function requireReactDomClient_production() {
     if (didRenderTooFewHooks) throw Error(formatProdErrorMessage(300));
     null === current || didReceiveUpdate || (current = current.dependencies, null !== current && checkIfContextChanged(current) && (didReceiveUpdate = true));
   }
-  function renderWithHooksAgain(workInProgress2, Component, props, secondArg) {
+  function renderWithHooksAgain(workInProgress2, Component2, props, secondArg) {
     currentlyRenderingFiber = workInProgress2;
     var numberOfReRenders = 0;
     do {
@@ -6000,7 +6000,7 @@ function requireReactDomClient_production() {
         null != children.memoCache && (children.memoCache.index = 0);
       }
       ReactSharedInternals.H = HooksDispatcherOnRerender;
-      children = Component(props, secondArg);
+      children = Component2(props, secondArg);
     } while (didScheduleRenderPhaseUpdateDuringThisPass);
     return children;
   }
@@ -6268,7 +6268,7 @@ function requireReactDomClient_production() {
     try {
       var nextValue = latestGetSnapshot();
       return !objectIs(inst, nextValue);
-    } catch (error) {
+    } catch (error2) {
       return true;
     }
   }
@@ -6340,8 +6340,8 @@ function requireReactDomClient_production() {
         var returnValue = action(prevState, payload), onStartTransitionFinish = ReactSharedInternals.S;
         null !== onStartTransitionFinish && onStartTransitionFinish(currentTransition, returnValue);
         handleActionReturnValue(actionQueue, node, returnValue);
-      } catch (error) {
-        onActionError(actionQueue, node, error);
+      } catch (error2) {
+        onActionError(actionQueue, node, error2);
       } finally {
         null !== prevTransition && null !== currentTransition.types && (prevTransition.types = currentTransition.types), ReactSharedInternals.T = prevTransition;
       }
@@ -6357,8 +6357,8 @@ function requireReactDomClient_production() {
       function(nextState) {
         onActionSuccess(actionQueue, node, nextState);
       },
-      function(error) {
-        return onActionError(actionQueue, node, error);
+      function(error2) {
+        return onActionError(actionQueue, node, error2);
       }
     ) : onActionSuccess(actionQueue, node, returnValue);
   }
@@ -6370,13 +6370,13 @@ function requireReactDomClient_production() {
     actionNode = actionQueue.pending;
     null !== actionNode && (nextState = actionNode.next, nextState === actionNode ? actionQueue.pending = null : (nextState = nextState.next, actionNode.next = nextState, runActionStateAction(actionQueue, nextState)));
   }
-  function onActionError(actionQueue, actionNode, error) {
+  function onActionError(actionQueue, actionNode, error2) {
     var last = actionQueue.pending;
     actionQueue.pending = null;
     if (null !== last) {
       last = last.next;
       do
-        actionNode.status = "rejected", actionNode.reason = error, notifyActionListeners(actionNode), actionNode = actionNode.next;
+        actionNode.status = "rejected", actionNode.reason = error2, notifyActionListeners(actionNode), actionNode = actionNode.next;
       while (actionNode !== last);
     }
     actionQueue.action = null;
@@ -6563,11 +6563,11 @@ function requireReactDomClient_production() {
     }
   }
   function updateEvent(callback) {
-    var ref = updateWorkInProgressHook().memoizedState;
-    useEffectEventImpl({ ref, nextImpl: callback });
+    var ref2 = updateWorkInProgressHook().memoizedState;
+    useEffectEventImpl({ ref: ref2, nextImpl: callback });
     return function() {
       if (0 !== (executionContext & 2)) throw Error(formatProdErrorMessage(440));
-      return ref.impl.apply(void 0, arguments);
+      return ref2.impl.apply(void 0, arguments);
     };
   }
   function updateInsertionEffect(create2, deps) {
@@ -6576,22 +6576,22 @@ function requireReactDomClient_production() {
   function updateLayoutEffect(create2, deps) {
     return updateEffectImpl(4, 4, create2, deps);
   }
-  function imperativeHandleEffect(create2, ref) {
-    if ("function" === typeof ref) {
+  function imperativeHandleEffect(create2, ref2) {
+    if ("function" === typeof ref2) {
       create2 = create2();
-      var refCleanup = ref(create2);
+      var refCleanup = ref2(create2);
       return function() {
-        "function" === typeof refCleanup ? refCleanup() : ref(null);
+        "function" === typeof refCleanup ? refCleanup() : ref2(null);
       };
     }
-    if (null !== ref && void 0 !== ref)
-      return create2 = create2(), ref.current = create2, function() {
-        ref.current = null;
+    if (null !== ref2 && void 0 !== ref2)
+      return create2 = create2(), ref2.current = create2, function() {
+        ref2.current = null;
       };
   }
-  function updateImperativeHandle(ref, create2, deps) {
-    deps = null !== deps && void 0 !== deps ? deps.concat([ref]) : null;
-    updateEffectImpl(4, 4, imperativeHandleEffect.bind(null, create2, ref), deps);
+  function updateImperativeHandle(ref2, create2, deps) {
+    deps = null !== deps && void 0 !== deps ? deps.concat([ref2]) : null;
+    updateEffectImpl(4, 4, imperativeHandleEffect.bind(null, create2, ref2), deps);
   }
   function mountDebugValue() {
   }
@@ -6669,12 +6669,12 @@ function requireReactDomClient_production() {
           finishedState,
           requestUpdateLane(fiber)
         );
-    } catch (error) {
+    } catch (error2) {
       dispatchSetStateInternal(
         fiber,
         queue2,
         { then: function() {
-        }, status: "rejected", reason: error },
+        }, status: "rejected", reason: error2 },
         requestUpdateLane()
       );
     } finally {
@@ -6804,7 +6804,7 @@ function requireReactDomClient_production() {
           update.eagerState = eagerState;
           if (objectIs(eagerState, currentState))
             return enqueueUpdate$1(fiber, queue2, update, 0), null === workInProgressRoot && finishQueueingConcurrentUpdates(), false;
-        } catch (error) {
+        } catch (error2) {
         } finally {
         }
       action = enqueueConcurrentHookUpdate(fiber, queue2, update, lane);
@@ -6890,12 +6890,12 @@ function requireReactDomClient_production() {
     },
     useContext: readContext,
     useEffect: mountEffect,
-    useImperativeHandle: function(ref, create2, deps) {
-      deps = null !== deps && void 0 !== deps ? deps.concat([ref]) : null;
+    useImperativeHandle: function(ref2, create2, deps) {
+      deps = null !== deps && void 0 !== deps ? deps.concat([ref2]) : null;
       mountEffectImpl(
         4194308,
         4,
-        imperativeHandleEffect.bind(null, create2, ref),
+        imperativeHandleEffect.bind(null, create2, ref2),
         deps
       );
     },
@@ -7055,12 +7055,12 @@ function requireReactDomClient_production() {
       );
     },
     useEffectEvent: function(callback) {
-      var hook = mountWorkInProgressHook(), ref = { impl: callback };
-      hook.memoizedState = ref;
+      var hook = mountWorkInProgressHook(), ref2 = { impl: callback };
+      hook.memoizedState = ref2;
       return function() {
         if (0 !== (executionContext & 2))
           throw Error(formatProdErrorMessage(440));
-        return ref.impl.apply(void 0, arguments);
+        return ref2.impl.apply(void 0, arguments);
       };
     }
   }, HooksDispatcherOnUpdate = {
@@ -7200,28 +7200,28 @@ function requireReactDomClient_production() {
     "function" === typeof instance2.UNSAFE_componentWillReceiveProps && instance2.UNSAFE_componentWillReceiveProps(newProps, nextContext);
     instance2.state !== workInProgress2 && classComponentUpdater.enqueueReplaceState(instance2, instance2.state, null);
   }
-  function resolveClassComponentProps(Component, baseProps) {
+  function resolveClassComponentProps(Component2, baseProps) {
     var newProps = baseProps;
     if ("ref" in baseProps) {
       newProps = {};
       for (var propName in baseProps)
         "ref" !== propName && (newProps[propName] = baseProps[propName]);
     }
-    if (Component = Component.defaultProps) {
+    if (Component2 = Component2.defaultProps) {
       newProps === baseProps && (newProps = assign2({}, newProps));
-      for (var propName$73 in Component)
-        void 0 === newProps[propName$73] && (newProps[propName$73] = Component[propName$73]);
+      for (var propName$73 in Component2)
+        void 0 === newProps[propName$73] && (newProps[propName$73] = Component2[propName$73]);
     }
     return newProps;
   }
-  function defaultOnUncaughtError(error) {
-    reportGlobalError(error);
+  function defaultOnUncaughtError(error2) {
+    reportGlobalError(error2);
   }
-  function defaultOnCaughtError(error) {
-    console.error(error);
+  function defaultOnCaughtError(error2) {
+    console.error(error2);
   }
-  function defaultOnRecoverableError(error) {
-    reportGlobalError(error);
+  function defaultOnRecoverableError(error2) {
+    reportGlobalError(error2);
   }
   function logUncaughtError(root3, errorInfo) {
     try {
@@ -7263,9 +7263,9 @@ function requireReactDomClient_production() {
   function initializeClassErrorUpdate(update, root3, fiber, errorInfo) {
     var getDerivedStateFromError = fiber.type.getDerivedStateFromError;
     if ("function" === typeof getDerivedStateFromError) {
-      var error = errorInfo.value;
+      var error2 = errorInfo.value;
       update.payload = function() {
-        return getDerivedStateFromError(error);
+        return getDerivedStateFromError(error2);
       };
       update.callback = function() {
         logCaughtError(root3, fiber, errorInfo);
@@ -7353,9 +7353,9 @@ function requireReactDomClient_production() {
       renderLanes2
     );
   }
-  function updateForwardRef(current, workInProgress2, Component, nextProps, renderLanes2) {
-    Component = Component.render;
-    var ref = workInProgress2.ref;
+  function updateForwardRef(current, workInProgress2, Component2, nextProps, renderLanes2) {
+    Component2 = Component2.render;
+    var ref2 = workInProgress2.ref;
     if ("ref" in nextProps) {
       var propsWithoutRef = {};
       for (var key2 in nextProps)
@@ -7365,9 +7365,9 @@ function requireReactDomClient_production() {
     nextProps = renderWithHooks(
       current,
       workInProgress2,
-      Component,
+      Component2,
       propsWithoutRef,
-      ref,
+      ref2,
       renderLanes2
     );
     key2 = checkDidRenderIdHook();
@@ -7378,10 +7378,10 @@ function requireReactDomClient_production() {
     reconcileChildren(current, workInProgress2, nextProps, renderLanes2);
     return workInProgress2.child;
   }
-  function updateMemoComponent(current, workInProgress2, Component, nextProps, renderLanes2) {
+  function updateMemoComponent(current, workInProgress2, Component2, nextProps, renderLanes2) {
     if (null === current) {
-      var type2 = Component.type;
-      if ("function" === typeof type2 && !shouldConstruct(type2) && void 0 === type2.defaultProps && null === Component.compare)
+      var type2 = Component2.type;
+      if ("function" === typeof type2 && !shouldConstruct(type2) && void 0 === type2.defaultProps && null === Component2.compare)
         return workInProgress2.tag = 15, workInProgress2.type = type2, updateSimpleMemoComponent(
           current,
           workInProgress2,
@@ -7390,7 +7390,7 @@ function requireReactDomClient_production() {
           renderLanes2
         );
       current = createFiberFromTypeAndProps(
-        Component.type,
+        Component2.type,
         null,
         nextProps,
         workInProgress2,
@@ -7404,9 +7404,9 @@ function requireReactDomClient_production() {
     type2 = current.child;
     if (!checkScheduledUpdateOrContext(current, renderLanes2)) {
       var prevProps = type2.memoizedProps;
-      Component = Component.compare;
-      Component = null !== Component ? Component : shallowEqual;
-      if (Component(prevProps, nextProps) && current.ref === workInProgress2.ref)
+      Component2 = Component2.compare;
+      Component2 = null !== Component2 ? Component2 : shallowEqual;
+      if (Component2(prevProps, nextProps) && current.ref === workInProgress2.ref)
         return bailoutOnAlreadyFinishedWork(current, workInProgress2, renderLanes2);
     }
     workInProgress2.flags |= 1;
@@ -7415,7 +7415,7 @@ function requireReactDomClient_production() {
     current.return = workInProgress2;
     return workInProgress2.child = current;
   }
-  function updateSimpleMemoComponent(current, workInProgress2, Component, nextProps, renderLanes2) {
+  function updateSimpleMemoComponent(current, workInProgress2, Component2, nextProps, renderLanes2) {
     if (null !== current) {
       var prevProps = current.memoizedProps;
       if (shallowEqual(prevProps, nextProps) && current.ref === workInProgress2.ref)
@@ -7427,7 +7427,7 @@ function requireReactDomClient_production() {
     return updateFunctionComponent(
       current,
       workInProgress2,
-      Component,
+      Component2,
       nextProps,
       renderLanes2
     );
@@ -7577,22 +7577,22 @@ function requireReactDomClient_production() {
     return current;
   }
   function markRef(current, workInProgress2) {
-    var ref = workInProgress2.ref;
-    if (null === ref)
+    var ref2 = workInProgress2.ref;
+    if (null === ref2)
       null !== current && null !== current.ref && (workInProgress2.flags |= 4194816);
     else {
-      if ("function" !== typeof ref && "object" !== typeof ref)
+      if ("function" !== typeof ref2 && "object" !== typeof ref2)
         throw Error(formatProdErrorMessage(284));
-      if (null === current || current.ref !== ref)
+      if (null === current || current.ref !== ref2)
         workInProgress2.flags |= 4194816;
     }
   }
-  function updateFunctionComponent(current, workInProgress2, Component, nextProps, renderLanes2) {
+  function updateFunctionComponent(current, workInProgress2, Component2, nextProps, renderLanes2) {
     prepareToReadContext(workInProgress2);
-    Component = renderWithHooks(
+    Component2 = renderWithHooks(
       current,
       workInProgress2,
-      Component,
+      Component2,
       nextProps,
       void 0,
       renderLanes2
@@ -7602,33 +7602,33 @@ function requireReactDomClient_production() {
       return bailoutHooks(current, workInProgress2, renderLanes2), bailoutOnAlreadyFinishedWork(current, workInProgress2, renderLanes2);
     isHydrating && nextProps && pushMaterializedTreeId(workInProgress2);
     workInProgress2.flags |= 1;
-    reconcileChildren(current, workInProgress2, Component, renderLanes2);
+    reconcileChildren(current, workInProgress2, Component2, renderLanes2);
     return workInProgress2.child;
   }
-  function replayFunctionComponent(current, workInProgress2, nextProps, Component, secondArg, renderLanes2) {
+  function replayFunctionComponent(current, workInProgress2, nextProps, Component2, secondArg, renderLanes2) {
     prepareToReadContext(workInProgress2);
     workInProgress2.updateQueue = null;
     nextProps = renderWithHooksAgain(
       workInProgress2,
-      Component,
+      Component2,
       nextProps,
       secondArg
     );
     finishRenderingHooks(current);
-    Component = checkDidRenderIdHook();
+    Component2 = checkDidRenderIdHook();
     if (null !== current && !didReceiveUpdate)
       return bailoutHooks(current, workInProgress2, renderLanes2), bailoutOnAlreadyFinishedWork(current, workInProgress2, renderLanes2);
-    isHydrating && Component && pushMaterializedTreeId(workInProgress2);
+    isHydrating && Component2 && pushMaterializedTreeId(workInProgress2);
     workInProgress2.flags |= 1;
     reconcileChildren(current, workInProgress2, nextProps, renderLanes2);
     return workInProgress2.child;
   }
-  function updateClassComponent(current, workInProgress2, Component, nextProps, renderLanes2) {
+  function updateClassComponent(current, workInProgress2, Component2, nextProps, renderLanes2) {
     prepareToReadContext(workInProgress2);
     if (null === workInProgress2.stateNode) {
-      var context = emptyContextObject, contextType = Component.contextType;
+      var context = emptyContextObject, contextType = Component2.contextType;
       "object" === typeof contextType && null !== contextType && (context = readContext(contextType));
-      context = new Component(nextProps, context);
+      context = new Component2(nextProps, context);
       workInProgress2.memoizedState = null !== context.state && void 0 !== context.state ? context.state : null;
       context.updater = classComponentUpdater;
       workInProgress2.stateNode = context;
@@ -7638,27 +7638,27 @@ function requireReactDomClient_production() {
       context.state = workInProgress2.memoizedState;
       context.refs = {};
       initializeUpdateQueue(workInProgress2);
-      contextType = Component.contextType;
+      contextType = Component2.contextType;
       context.context = "object" === typeof contextType && null !== contextType ? readContext(contextType) : emptyContextObject;
       context.state = workInProgress2.memoizedState;
-      contextType = Component.getDerivedStateFromProps;
+      contextType = Component2.getDerivedStateFromProps;
       "function" === typeof contextType && (applyDerivedStateFromProps(
         workInProgress2,
-        Component,
+        Component2,
         contextType,
         nextProps
       ), context.state = workInProgress2.memoizedState);
-      "function" === typeof Component.getDerivedStateFromProps || "function" === typeof context.getSnapshotBeforeUpdate || "function" !== typeof context.UNSAFE_componentWillMount && "function" !== typeof context.componentWillMount || (contextType = context.state, "function" === typeof context.componentWillMount && context.componentWillMount(), "function" === typeof context.UNSAFE_componentWillMount && context.UNSAFE_componentWillMount(), contextType !== context.state && classComponentUpdater.enqueueReplaceState(context, context.state, null), processUpdateQueue(workInProgress2, nextProps, context, renderLanes2), suspendIfUpdateReadFromEntangledAsyncAction(), context.state = workInProgress2.memoizedState);
+      "function" === typeof Component2.getDerivedStateFromProps || "function" === typeof context.getSnapshotBeforeUpdate || "function" !== typeof context.UNSAFE_componentWillMount && "function" !== typeof context.componentWillMount || (contextType = context.state, "function" === typeof context.componentWillMount && context.componentWillMount(), "function" === typeof context.UNSAFE_componentWillMount && context.UNSAFE_componentWillMount(), contextType !== context.state && classComponentUpdater.enqueueReplaceState(context, context.state, null), processUpdateQueue(workInProgress2, nextProps, context, renderLanes2), suspendIfUpdateReadFromEntangledAsyncAction(), context.state = workInProgress2.memoizedState);
       "function" === typeof context.componentDidMount && (workInProgress2.flags |= 4194308);
       nextProps = true;
     } else if (null === current) {
       context = workInProgress2.stateNode;
-      var unresolvedOldProps = workInProgress2.memoizedProps, oldProps = resolveClassComponentProps(Component, unresolvedOldProps);
+      var unresolvedOldProps = workInProgress2.memoizedProps, oldProps = resolveClassComponentProps(Component2, unresolvedOldProps);
       context.props = oldProps;
-      var oldContext = context.context, contextType$jscomp$0 = Component.contextType;
+      var oldContext = context.context, contextType$jscomp$0 = Component2.contextType;
       contextType = emptyContextObject;
       "object" === typeof contextType$jscomp$0 && null !== contextType$jscomp$0 && (contextType = readContext(contextType$jscomp$0));
-      var getDerivedStateFromProps = Component.getDerivedStateFromProps;
+      var getDerivedStateFromProps = Component2.getDerivedStateFromProps;
       contextType$jscomp$0 = "function" === typeof getDerivedStateFromProps || "function" === typeof context.getSnapshotBeforeUpdate;
       unresolvedOldProps = workInProgress2.pendingProps !== unresolvedOldProps;
       contextType$jscomp$0 || "function" !== typeof context.UNSAFE_componentWillReceiveProps && "function" !== typeof context.componentWillReceiveProps || (unresolvedOldProps || oldContext !== contextType) && callComponentWillReceiveProps(
@@ -7675,12 +7675,12 @@ function requireReactDomClient_production() {
       oldContext = workInProgress2.memoizedState;
       unresolvedOldProps || oldState !== oldContext || hasForceUpdate ? ("function" === typeof getDerivedStateFromProps && (applyDerivedStateFromProps(
         workInProgress2,
-        Component,
+        Component2,
         getDerivedStateFromProps,
         nextProps
       ), oldContext = workInProgress2.memoizedState), (oldProps = hasForceUpdate || checkShouldComponentUpdate(
         workInProgress2,
-        Component,
+        Component2,
         oldProps,
         nextProps,
         oldState,
@@ -7691,14 +7691,14 @@ function requireReactDomClient_production() {
       context = workInProgress2.stateNode;
       cloneUpdateQueue(current, workInProgress2);
       contextType = workInProgress2.memoizedProps;
-      contextType$jscomp$0 = resolveClassComponentProps(Component, contextType);
+      contextType$jscomp$0 = resolveClassComponentProps(Component2, contextType);
       context.props = contextType$jscomp$0;
       getDerivedStateFromProps = workInProgress2.pendingProps;
       oldState = context.context;
-      oldContext = Component.contextType;
+      oldContext = Component2.contextType;
       oldProps = emptyContextObject;
       "object" === typeof oldContext && null !== oldContext && (oldProps = readContext(oldContext));
-      unresolvedOldProps = Component.getDerivedStateFromProps;
+      unresolvedOldProps = Component2.getDerivedStateFromProps;
       (oldContext = "function" === typeof unresolvedOldProps || "function" === typeof context.getSnapshotBeforeUpdate) || "function" !== typeof context.UNSAFE_componentWillReceiveProps && "function" !== typeof context.componentWillReceiveProps || (contextType !== getDerivedStateFromProps || oldState !== oldProps) && callComponentWillReceiveProps(
         workInProgress2,
         context,
@@ -7713,12 +7713,12 @@ function requireReactDomClient_production() {
       var newState = workInProgress2.memoizedState;
       contextType !== getDerivedStateFromProps || oldState !== newState || hasForceUpdate || null !== current && null !== current.dependencies && checkIfContextChanged(current.dependencies) ? ("function" === typeof unresolvedOldProps && (applyDerivedStateFromProps(
         workInProgress2,
-        Component,
+        Component2,
         unresolvedOldProps,
         nextProps
       ), newState = workInProgress2.memoizedState), (contextType$jscomp$0 = hasForceUpdate || checkShouldComponentUpdate(
         workInProgress2,
-        Component,
+        Component2,
         contextType$jscomp$0,
         nextProps,
         oldState,
@@ -7733,7 +7733,7 @@ function requireReactDomClient_production() {
     context = nextProps;
     markRef(current, workInProgress2);
     nextProps = 0 !== (workInProgress2.flags & 128);
-    context || nextProps ? (context = workInProgress2.stateNode, Component = nextProps && "function" !== typeof Component.getDerivedStateFromError ? null : context.render(), workInProgress2.flags |= 1, null !== current && nextProps ? (workInProgress2.child = reconcileChildFibers(
+    context || nextProps ? (context = workInProgress2.stateNode, Component2 = nextProps && "function" !== typeof Component2.getDerivedStateFromError ? null : context.render(), workInProgress2.flags |= 1, null !== current && nextProps ? (workInProgress2.child = reconcileChildFibers(
       workInProgress2,
       current.child,
       null,
@@ -7741,9 +7741,9 @@ function requireReactDomClient_production() {
     ), workInProgress2.child = reconcileChildFibers(
       workInProgress2,
       null,
-      Component,
+      Component2,
       renderLanes2
-    )) : reconcileChildren(current, workInProgress2, Component, renderLanes2), workInProgress2.memoizedState = context.state, current = workInProgress2.child) : current = bailoutOnAlreadyFinishedWork(
+    )) : reconcileChildren(current, workInProgress2, Component2, renderLanes2), workInProgress2.memoizedState = context.state, current = workInProgress2.child) : current = bailoutOnAlreadyFinishedWork(
       current,
       workInProgress2,
       renderLanes2
@@ -8936,8 +8936,8 @@ function requireReactDomClient_production() {
           updateQueue = updateQueue.next;
         } while (updateQueue !== firstEffect);
       }
-    } catch (error) {
-      captureCommitPhaseError(finishedWork, finishedWork.return, error);
+    } catch (error2) {
+      captureCommitPhaseError(finishedWork, finishedWork.return, error2);
     }
   }
   function commitHookEffectListUnmount(flags, finishedWork, nearestMountedAncestor$jscomp$0) {
@@ -8955,11 +8955,11 @@ function requireReactDomClient_production() {
               var nearestMountedAncestor = nearestMountedAncestor$jscomp$0, destroy_ = destroy;
               try {
                 destroy_();
-              } catch (error) {
+              } catch (error2) {
                 captureCommitPhaseError(
                   lastEffect,
                   nearestMountedAncestor,
-                  error
+                  error2
                 );
               }
             }
@@ -8967,8 +8967,8 @@ function requireReactDomClient_production() {
           updateQueue = updateQueue.next;
         } while (updateQueue !== firstEffect);
       }
-    } catch (error) {
-      captureCommitPhaseError(finishedWork, finishedWork.return, error);
+    } catch (error2) {
+      captureCommitPhaseError(finishedWork, finishedWork.return, error2);
     }
   }
   function commitClassCallbacks(finishedWork) {
@@ -8977,8 +8977,8 @@ function requireReactDomClient_production() {
       var instance2 = finishedWork.stateNode;
       try {
         commitCallbacks(updateQueue, instance2);
-      } catch (error) {
-        captureCommitPhaseError(finishedWork, finishedWork.return, error);
+      } catch (error2) {
+        captureCommitPhaseError(finishedWork, finishedWork.return, error2);
       }
     }
   }
@@ -8990,14 +8990,14 @@ function requireReactDomClient_production() {
     instance2.state = current.memoizedState;
     try {
       instance2.componentWillUnmount();
-    } catch (error) {
-      captureCommitPhaseError(current, nearestMountedAncestor, error);
+    } catch (error2) {
+      captureCommitPhaseError(current, nearestMountedAncestor, error2);
     }
   }
   function safelyAttachRef(current, nearestMountedAncestor) {
     try {
-      var ref = current.ref;
-      if (null !== ref) {
+      var ref2 = current.ref;
+      if (null !== ref2) {
         switch (current.tag) {
           case 26:
           case 27:
@@ -9010,30 +9010,30 @@ function requireReactDomClient_production() {
           default:
             instanceToUse = current.stateNode;
         }
-        "function" === typeof ref ? current.refCleanup = ref(instanceToUse) : ref.current = instanceToUse;
+        "function" === typeof ref2 ? current.refCleanup = ref2(instanceToUse) : ref2.current = instanceToUse;
       }
-    } catch (error) {
-      captureCommitPhaseError(current, nearestMountedAncestor, error);
+    } catch (error2) {
+      captureCommitPhaseError(current, nearestMountedAncestor, error2);
     }
   }
   function safelyDetachRef(current, nearestMountedAncestor) {
-    var ref = current.ref, refCleanup = current.refCleanup;
-    if (null !== ref)
+    var ref2 = current.ref, refCleanup = current.refCleanup;
+    if (null !== ref2)
       if ("function" === typeof refCleanup)
         try {
           refCleanup();
-        } catch (error) {
-          captureCommitPhaseError(current, nearestMountedAncestor, error);
+        } catch (error2) {
+          captureCommitPhaseError(current, nearestMountedAncestor, error2);
         } finally {
           current.refCleanup = null, current = current.alternate, null != current && (current.refCleanup = null);
         }
-      else if ("function" === typeof ref)
+      else if ("function" === typeof ref2)
         try {
-          ref(null);
+          ref2(null);
         } catch (error$140) {
           captureCommitPhaseError(current, nearestMountedAncestor, error$140);
         }
-      else ref.current = null;
+      else ref2.current = null;
   }
   function commitHostMount(finishedWork) {
     var type2 = finishedWork.type, props = finishedWork.memoizedProps, instance2 = finishedWork.stateNode;
@@ -9048,8 +9048,8 @@ function requireReactDomClient_production() {
         case "img":
           props.src ? instance2.src = props.src : props.srcSet && (instance2.srcset = props.srcSet);
       }
-    } catch (error) {
-      captureCommitPhaseError(finishedWork, finishedWork.return, error);
+    } catch (error2) {
+      captureCommitPhaseError(finishedWork, finishedWork.return, error2);
     }
   }
   function commitHostUpdate(finishedWork, newProps, oldProps) {
@@ -9057,8 +9057,8 @@ function requireReactDomClient_production() {
       var domElement = finishedWork.stateNode;
       updateProperties(domElement, finishedWork.type, oldProps, newProps);
       domElement[internalPropsKey] = newProps;
-    } catch (error) {
-      captureCommitPhaseError(finishedWork, finishedWork.return, error);
+    } catch (error2) {
+      captureCommitPhaseError(finishedWork, finishedWork.return, error2);
     }
   }
   function isHostParent(fiber) {
@@ -9104,8 +9104,8 @@ function requireReactDomClient_production() {
       setInitialProperties(singleton, type2, props);
       singleton[internalInstanceKey] = finishedWork;
       singleton[internalPropsKey] = props;
-    } catch (error) {
-      captureCommitPhaseError(finishedWork, finishedWork.return, error);
+    } catch (error2) {
+      captureCommitPhaseError(finishedWork, finishedWork.return, error2);
     }
   }
   var offscreenSubtreeIsHidden = false, offscreenSubtreeWasHidden = false, needsFormReset = false, PossiblyWeakSet = "function" === typeof WeakSet ? WeakSet : Set, nextEffect = null;
@@ -9194,11 +9194,11 @@ function requireReactDomClient_production() {
                     focusNode
                   );
                   selection.__reactInternalSnapshotBeforeUpdate = root3;
-                } catch (error) {
+                } catch (error2) {
                   captureCommitPhaseError(
                     JSCompiler_temp,
                     JSCompiler_temp.return,
-                    error
+                    error2
                   );
                 }
               }
@@ -9253,8 +9253,8 @@ function requireReactDomClient_production() {
           if (finishedRoot = finishedWork.stateNode, null === current)
             try {
               finishedRoot.componentDidMount();
-            } catch (error) {
-              captureCommitPhaseError(finishedWork, finishedWork.return, error);
+            } catch (error2) {
+              captureCommitPhaseError(finishedWork, finishedWork.return, error2);
             }
           else {
             var prevProps = resolveClassComponentProps(
@@ -9294,8 +9294,8 @@ function requireReactDomClient_production() {
             }
           try {
             commitCallbacks(finishedRoot, current);
-          } catch (error) {
-            captureCommitPhaseError(finishedWork, finishedWork.return, error);
+          } catch (error2) {
+            captureCommitPhaseError(finishedWork, finishedWork.return, error2);
           }
         }
         break;
@@ -9411,21 +9411,21 @@ function requireReactDomClient_production() {
           if (hostParentIsContainer)
             try {
               (9 === hostParent.nodeType ? hostParent.body : "HTML" === hostParent.nodeName ? hostParent.ownerDocument.body : hostParent).removeChild(deletedFiber.stateNode);
-            } catch (error) {
+            } catch (error2) {
               captureCommitPhaseError(
                 deletedFiber,
                 nearestMountedAncestor,
-                error
+                error2
               );
             }
           else
             try {
               hostParent.removeChild(deletedFiber.stateNode);
-            } catch (error) {
+            } catch (error2) {
               captureCommitPhaseError(
                 deletedFiber,
                 nearestMountedAncestor,
-                error
+                error2
               );
             }
         break;
@@ -9501,8 +9501,8 @@ function requireReactDomClient_production() {
       finishedRoot = finishedRoot.dehydrated;
       try {
         retryIfBlockedOn(finishedRoot);
-      } catch (error) {
-        captureCommitPhaseError(finishedWork, finishedWork.return, error);
+      } catch (error2) {
+        captureCommitPhaseError(finishedWork, finishedWork.return, error2);
       }
     }
   }
@@ -9510,8 +9510,8 @@ function requireReactDomClient_production() {
     if (null === finishedWork.memoizedState && (finishedRoot = finishedWork.alternate, null !== finishedRoot && (finishedRoot = finishedRoot.memoizedState, null !== finishedRoot && (finishedRoot = finishedRoot.dehydrated, null !== finishedRoot))))
       try {
         retryIfBlockedOn(finishedRoot);
-      } catch (error) {
-        captureCommitPhaseError(finishedWork, finishedWork.return, error);
+      } catch (error2) {
+        captureCommitPhaseError(finishedWork, finishedWork.return, error2);
       }
   }
   function getRetryCache(finishedWork) {
@@ -9709,8 +9709,8 @@ function requireReactDomClient_production() {
           hoistableRoot = finishedWork.stateNode;
           try {
             setTextContent(hoistableRoot, "");
-          } catch (error) {
-            captureCommitPhaseError(finishedWork, finishedWork.return, error);
+          } catch (error2) {
+            captureCommitPhaseError(finishedWork, finishedWork.return, error2);
           }
         }
         flags & 4 && null != finishedWork.stateNode && (hoistableRoot = finishedWork.memoizedProps, commitHostUpdate(
@@ -9730,8 +9730,8 @@ function requireReactDomClient_production() {
           current = finishedWork.stateNode;
           try {
             current.nodeValue = flags;
-          } catch (error) {
-            captureCommitPhaseError(finishedWork, finishedWork.return, error);
+          } catch (error2) {
+            captureCommitPhaseError(finishedWork, finishedWork.return, error2);
           }
         }
         break;
@@ -9745,8 +9745,8 @@ function requireReactDomClient_production() {
         if (flags & 4 && null !== current && current.memoizedState.isDehydrated)
           try {
             retryIfBlockedOn(root3.containerInfo);
-          } catch (error) {
-            captureCommitPhaseError(finishedWork, finishedWork.return, error);
+          } catch (error2) {
+            captureCommitPhaseError(finishedWork, finishedWork.return, error2);
           }
         needsFormReset && (needsFormReset = false, recursivelyResetForms(finishedWork));
         break;
@@ -9796,8 +9796,8 @@ function requireReactDomClient_production() {
                     var styleProp = wasHidden.memoizedProps.style, display = void 0 !== styleProp && null !== styleProp && styleProp.hasOwnProperty("display") ? styleProp.display : null;
                     i.style.display = null == display || "boolean" === typeof display ? "" : ("" + display).trim();
                   }
-                } catch (error) {
-                  captureCommitPhaseError(wasHidden, wasHidden.return, error);
+                } catch (error2) {
+                  captureCommitPhaseError(wasHidden, wasHidden.return, error2);
                 }
               }
             } else if (6 === root3.tag) {
@@ -9805,8 +9805,8 @@ function requireReactDomClient_production() {
                 wasHidden = root3;
                 try {
                   wasHidden.stateNode.nodeValue = hoistableRoot ? "" : wasHidden.memoizedProps;
-                } catch (error) {
-                  captureCommitPhaseError(wasHidden, wasHidden.return, error);
+                } catch (error2) {
+                  captureCommitPhaseError(wasHidden, wasHidden.return, error2);
                 }
               }
             } else if (18 === root3.tag) {
@@ -9815,8 +9815,8 @@ function requireReactDomClient_production() {
                 try {
                   var instance2 = wasHidden.stateNode;
                   hoistableRoot ? hideOrUnhideDehydratedBoundary(instance2, true) : hideOrUnhideDehydratedBoundary(wasHidden.stateNode, false);
-                } catch (error) {
-                  captureCommitPhaseError(wasHidden, wasHidden.return, error);
+                } catch (error2) {
+                  captureCommitPhaseError(wasHidden, wasHidden.return, error2);
                 }
               }
             } else if ((22 !== root3.tag && 23 !== root3.tag || null === root3.memoizedState || root3 === finishedWork) && null !== root3.child) {
@@ -9884,8 +9884,8 @@ function requireReactDomClient_production() {
           default:
             throw Error(formatProdErrorMessage(161));
         }
-      } catch (error) {
-        captureCommitPhaseError(finishedWork, finishedWork.return, error);
+      } catch (error2) {
+        captureCommitPhaseError(finishedWork, finishedWork.return, error2);
       }
       finishedWork.flags &= -3;
     }
@@ -9971,8 +9971,8 @@ function requireReactDomClient_production() {
           if ("function" === typeof finishedRoot.componentDidMount)
             try {
               finishedRoot.componentDidMount();
-            } catch (error) {
-              captureCommitPhaseError(current, current.return, error);
+            } catch (error2) {
+              captureCommitPhaseError(current, current.return, error2);
             }
           current = finishedWork;
           finishedRoot = current.updateQueue;
@@ -9983,8 +9983,8 @@ function requireReactDomClient_production() {
               if (null !== hiddenCallbacks)
                 for (finishedRoot.shared.hiddenCallbacks = null, finishedRoot = 0; finishedRoot < hiddenCallbacks.length; finishedRoot++)
                   callCallback(hiddenCallbacks[finishedRoot], instance2);
-            } catch (error) {
-              captureCommitPhaseError(current, current.return, error);
+            } catch (error2) {
+              captureCommitPhaseError(current, current.return, error2);
             }
           }
           includeWorkInProgressEffects && flags & 64 && commitClassCallbacks(finishedWork);
@@ -10116,8 +10116,8 @@ function requireReactDomClient_production() {
               finishedRoot.passiveEffectDuration,
               -0
             );
-          } catch (error) {
-            captureCommitPhaseError(finishedWork, finishedWork.return, error);
+          } catch (error2) {
+            captureCommitPhaseError(finishedWork, finishedWork.return, error2);
           }
         } else
           recursivelyTraversePassiveMountEffects(
@@ -10702,7 +10702,7 @@ function requireReactDomClient_production() {
           check = check.value;
           try {
             if (!objectIs(getSnapshot(), check)) return false;
-          } catch (error) {
+          } catch (error2) {
             return false;
           }
         }
@@ -11025,8 +11025,8 @@ function requireReactDomClient_production() {
         workInProgress = null;
         return;
       }
-    } catch (error) {
-      if (null !== returnFiber) throw workInProgress = returnFiber, error;
+    } catch (error2) {
+      if (null !== returnFiber) throw workInProgress = returnFiber, error2;
       workInProgressRootExitStatus = 1;
       logUncaughtError(
         root3,
@@ -11320,32 +11320,32 @@ function requireReactDomClient_production() {
       ReactDOMSharedInternals.p = previousPriority, ReactSharedInternals.T = prevTransition, releaseRootPooledCache(root3, remainingLanes);
     }
   }
-  function captureCommitPhaseErrorOnRoot(rootFiber, sourceFiber, error) {
-    sourceFiber = createCapturedValueAtFiber(error, sourceFiber);
+  function captureCommitPhaseErrorOnRoot(rootFiber, sourceFiber, error2) {
+    sourceFiber = createCapturedValueAtFiber(error2, sourceFiber);
     sourceFiber = createRootErrorUpdate(rootFiber.stateNode, sourceFiber, 2);
     rootFiber = enqueueUpdate(rootFiber, sourceFiber, 2);
     null !== rootFiber && (markRootUpdated$1(rootFiber, 2), ensureRootIsScheduled(rootFiber));
   }
-  function captureCommitPhaseError(sourceFiber, nearestMountedAncestor, error) {
+  function captureCommitPhaseError(sourceFiber, nearestMountedAncestor, error2) {
     if (3 === sourceFiber.tag)
-      captureCommitPhaseErrorOnRoot(sourceFiber, sourceFiber, error);
+      captureCommitPhaseErrorOnRoot(sourceFiber, sourceFiber, error2);
     else
       for (; null !== nearestMountedAncestor; ) {
         if (3 === nearestMountedAncestor.tag) {
           captureCommitPhaseErrorOnRoot(
             nearestMountedAncestor,
             sourceFiber,
-            error
+            error2
           );
           break;
         } else if (1 === nearestMountedAncestor.tag) {
           var instance2 = nearestMountedAncestor.stateNode;
           if ("function" === typeof nearestMountedAncestor.type.getDerivedStateFromError || "function" === typeof instance2.componentDidCatch && (null === legacyErrorBoundariesThatAlreadyFailed || !legacyErrorBoundariesThatAlreadyFailed.has(instance2))) {
-            sourceFiber = createCapturedValueAtFiber(error, sourceFiber);
-            error = createClassErrorUpdate(2);
-            instance2 = enqueueUpdate(nearestMountedAncestor, error, 2);
+            sourceFiber = createCapturedValueAtFiber(error2, sourceFiber);
+            error2 = createClassErrorUpdate(2);
+            instance2 = enqueueUpdate(nearestMountedAncestor, error2, 2);
             null !== instance2 && (initializeClassErrorUpdate(
-              error,
+              error2,
               instance2,
               nearestMountedAncestor,
               sourceFiber
@@ -11682,8 +11682,8 @@ function requireReactDomClient_production() {
             event.currentTarget = currentTarget;
             try {
               previousInstance(event);
-            } catch (error) {
-              reportGlobalError(error);
+            } catch (error2) {
+              reportGlobalError(error2);
             }
             event.currentTarget = null;
             previousInstance = instance2;
@@ -11700,8 +11700,8 @@ function requireReactDomClient_production() {
             event.currentTarget = currentTarget;
             try {
               previousInstance(event);
-            } catch (error) {
-              reportGlobalError(error);
+            } catch (error2) {
+              reportGlobalError(error2);
             }
             event.currentTarget = null;
             previousInstance = instance2;
@@ -12651,7 +12651,7 @@ function requireReactDomClient_production() {
       case "li":
         break;
       case "input":
-        var name = null, type2 = null, value = null, defaultValue = null, lastDefaultValue = null, checked = null, defaultChecked = null;
+        var name2 = null, type2 = null, value = null, defaultValue = null, lastDefaultValue = null, checked = null, defaultChecked = null;
         for (propKey in lastProps) {
           var lastProp = lastProps[propKey];
           if (lastProps.hasOwnProperty(propKey) && null != lastProp)
@@ -12675,7 +12675,7 @@ function requireReactDomClient_production() {
                 type2 = propKey;
                 break;
               case "name":
-                name = propKey;
+                name2 = propKey;
                 break;
               case "checked":
                 checked = propKey;
@@ -12713,7 +12713,7 @@ function requireReactDomClient_production() {
           checked,
           defaultChecked,
           type2,
-          name
+          name2
         );
         return;
       case "select":
@@ -12735,9 +12735,9 @@ function requireReactDomClient_production() {
                   lastDefaultValue
                 );
             }
-        for (name in nextProps)
-          if (type2 = nextProps[name], lastDefaultValue = lastProps[name], nextProps.hasOwnProperty(name) && (null != type2 || null != lastDefaultValue))
-            switch (name) {
+        for (name2 in nextProps)
+          if (type2 = nextProps[name2], lastDefaultValue = lastProps[name2], nextProps.hasOwnProperty(name2) && (null != type2 || null != lastDefaultValue))
+            switch (name2) {
               case "value":
                 propKey$201 = type2;
                 break;
@@ -12750,7 +12750,7 @@ function requireReactDomClient_production() {
                 type2 !== lastDefaultValue && setProp(
                   domElement,
                   tag,
-                  name,
+                  name2,
                   type2,
                   nextProps,
                   lastDefaultValue
@@ -12764,31 +12764,31 @@ function requireReactDomClient_production() {
       case "textarea":
         propKey = propKey$201 = null;
         for (defaultValue in lastProps)
-          if (name = lastProps[defaultValue], lastProps.hasOwnProperty(defaultValue) && null != name && !nextProps.hasOwnProperty(defaultValue))
+          if (name2 = lastProps[defaultValue], lastProps.hasOwnProperty(defaultValue) && null != name2 && !nextProps.hasOwnProperty(defaultValue))
             switch (defaultValue) {
               case "value":
                 break;
               case "children":
                 break;
               default:
-                setProp(domElement, tag, defaultValue, null, nextProps, name);
+                setProp(domElement, tag, defaultValue, null, nextProps, name2);
             }
         for (value in nextProps)
-          if (name = nextProps[value], type2 = lastProps[value], nextProps.hasOwnProperty(value) && (null != name || null != type2))
+          if (name2 = nextProps[value], type2 = lastProps[value], nextProps.hasOwnProperty(value) && (null != name2 || null != type2))
             switch (value) {
               case "value":
-                propKey$201 = name;
+                propKey$201 = name2;
                 break;
               case "defaultValue":
-                propKey = name;
+                propKey = name2;
                 break;
               case "children":
                 break;
               case "dangerouslySetInnerHTML":
-                if (null != name) throw Error(formatProdErrorMessage(91));
+                if (null != name2) throw Error(formatProdErrorMessage(91));
                 break;
               default:
-                name !== type2 && setProp(domElement, tag, value, name, nextProps, type2);
+                name2 !== type2 && setProp(domElement, tag, value, name2, nextProps, type2);
             }
         updateTextarea(domElement, propKey$201, propKey);
         return;
@@ -12970,9 +12970,9 @@ function requireReactDomClient_production() {
   var scheduleTimeout = "function" === typeof setTimeout ? setTimeout : void 0, cancelTimeout = "function" === typeof clearTimeout ? clearTimeout : void 0, localPromise = "function" === typeof Promise ? Promise : void 0, scheduleMicrotask = "function" === typeof queueMicrotask ? queueMicrotask : "undefined" !== typeof localPromise ? function(callback) {
     return localPromise.resolve(null).then(callback).catch(handleErrorInNextTick);
   } : scheduleTimeout;
-  function handleErrorInNextTick(error) {
+  function handleErrorInNextTick(error2) {
     setTimeout(function() {
-      throw error;
+      throw error2;
     });
   }
   function isSingletonScope(type2) {
@@ -13054,8 +13054,8 @@ function requireReactDomClient_production() {
           break;
       } else if (!inRootOrSingleton)
         if ("input" === type2 && "hidden" === instance2.type) {
-          var name = null == anyProps.name ? null : "" + anyProps.name;
-          if ("hidden" === anyProps.type && instance2.getAttribute("name") === name)
+          var name2 = null == anyProps.name ? null : "" + anyProps.name;
+          if ("hidden" === anyProps.type && instance2.getAttribute("name") === name2)
             return instance2;
         } else return instance2;
       else if (!instance2[internalHoistableMarker])
@@ -13064,18 +13064,18 @@ function requireReactDomClient_production() {
             if (!instance2.hasAttribute("itemprop")) break;
             return instance2;
           case "link":
-            name = instance2.getAttribute("rel");
-            if ("stylesheet" === name && instance2.hasAttribute("data-precedence"))
+            name2 = instance2.getAttribute("rel");
+            if ("stylesheet" === name2 && instance2.hasAttribute("data-precedence"))
               break;
-            else if (name !== anyProps.rel || instance2.getAttribute("href") !== (null == anyProps.href || "" === anyProps.href ? null : anyProps.href) || instance2.getAttribute("crossorigin") !== (null == anyProps.crossOrigin ? null : anyProps.crossOrigin) || instance2.getAttribute("title") !== (null == anyProps.title ? null : anyProps.title))
+            else if (name2 !== anyProps.rel || instance2.getAttribute("href") !== (null == anyProps.href || "" === anyProps.href ? null : anyProps.href) || instance2.getAttribute("crossorigin") !== (null == anyProps.crossOrigin ? null : anyProps.crossOrigin) || instance2.getAttribute("title") !== (null == anyProps.title ? null : anyProps.title))
               break;
             return instance2;
           case "style":
             if (instance2.hasAttribute("data-precedence")) break;
             return instance2;
           case "script":
-            name = instance2.getAttribute("src");
-            if ((name !== (null == anyProps.src ? null : anyProps.src) || instance2.getAttribute("type") !== (null == anyProps.type ? null : anyProps.type) || instance2.getAttribute("crossorigin") !== (null == anyProps.crossOrigin ? null : anyProps.crossOrigin)) && name && instance2.hasAttribute("async") && !instance2.hasAttribute("itemprop"))
+            name2 = instance2.getAttribute("src");
+            if ((name2 !== (null == anyProps.src ? null : anyProps.src) || instance2.getAttribute("type") !== (null == anyProps.type ? null : anyProps.type) || instance2.getAttribute("crossorigin") !== (null == anyProps.crossOrigin ? null : anyProps.crossOrigin)) && name2 && instance2.hasAttribute("async") && !instance2.hasAttribute("itemprop"))
               break;
             return instance2;
           default:
@@ -14165,8 +14165,8 @@ function requireReactDomClient_production() {
     }
     return true;
   }
-  function attemptReplayContinuousQueuedEventInMap(queuedEvent, key2, map) {
-    attemptReplayContinuousQueuedEvent(queuedEvent) && map.delete(key2);
+  function attemptReplayContinuousQueuedEventInMap(queuedEvent, key2, map2) {
+    attemptReplayContinuousQueuedEvent(queuedEvent) && map2.delete(key2);
   }
   function replayUnblockedEvents() {
     hasScheduledReplayAttempt = false;
@@ -15238,13 +15238,13 @@ function _validateObject(object, fields, optFields = {}) {
   Object.entries(optFields).forEach(([k, v]) => checkField(k, v, true));
 }
 function memoized(fn) {
-  const map = /* @__PURE__ */ new WeakMap();
+  const map2 = /* @__PURE__ */ new WeakMap();
   return (arg, ...args) => {
-    const val = map.get(arg);
+    const val = map2.get(arg);
     if (val !== void 0)
       return val;
     const computed = fn(arg, ...args);
-    map.set(arg, computed);
+    map2.set(arg, computed);
     return computed;
   };
 }
@@ -15409,9 +15409,9 @@ function validateField(field) {
     BYTES: "number",
     BITS: "number"
   };
-  const opts = FIELD_FIELDS.reduce((map, val) => {
-    map[val] = "function";
-    return map;
+  const opts = FIELD_FIELDS.reduce((map2, val) => {
+    map2[val] = "function";
+    return map2;
   }, initial);
   _validateObject(field, opts);
   return field;
@@ -16222,7 +16222,7 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
       A = Point.fromBytes(publicKey2, zip215);
       R = Point.fromBytes(r, zip215);
       SB = BASE.multiplyUnsafe(s);
-    } catch (error) {
+    } catch (error2) {
       return false;
     }
     if (!zip215 && A.isSmallOrder())
@@ -16251,7 +16251,7 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
   function isValidPublicKey(key2, zip215) {
     try {
       return !!Point.fromBytes(key2, zip215);
-    } catch (error) {
+    } catch (error2) {
       return false;
     }
   }
@@ -17966,9 +17966,9 @@ function requireDist$1() {
       }
       E(
         "ERR_BUFFER_OUT_OF_BOUNDS",
-        function(name) {
-          if (name) {
-            return `${name} is outside of buffer bounds`;
+        function(name2) {
+          if (name2) {
+            return `${name2} is outside of buffer bounds`;
           }
           return "Attempt to access memory outside buffer bounds";
         },
@@ -17976,8 +17976,8 @@ function requireDist$1() {
       );
       E(
         "ERR_INVALID_ARG_TYPE",
-        function(name, actual) {
-          return `The "${name}" argument must be of type number. Received type ${typeof actual}`;
+        function(name2, actual) {
+          return `The "${name2}" argument must be of type number. Received type ${typeof actual}`;
         },
         TypeError
       );
@@ -18030,9 +18030,9 @@ function requireDist$1() {
         }
         checkBounds(buf, offset2, byteLength4);
       }
-      function validateNumber(value, name) {
+      function validateNumber(value, name2) {
         if (typeof value !== "number") {
-          throw new errors2.ERR_INVALID_ARG_TYPE(name, "number", value);
+          throw new errors2.ERR_INVALID_ARG_TYPE(name2, "number", value);
         }
       }
       function boundsError(value, length, type2) {
@@ -20548,8 +20548,8 @@ function requireBn() {
         p192: null,
         p25519: null
       };
-      function MPrime(name, p) {
-        this.name = name;
+      function MPrime(name2, p) {
+        this.name = name2;
         this.p = new BN2(p, 16);
         this.n = this.p.bitLength();
         this.k = new BN2(1).iushln(this.n).isub(this.p);
@@ -20682,21 +20682,21 @@ function requireBn() {
         }
         return num;
       };
-      BN2._prime = function prime(name) {
-        if (primes[name]) return primes[name];
+      BN2._prime = function prime(name2) {
+        if (primes[name2]) return primes[name2];
         var prime2;
-        if (name === "k256") {
+        if (name2 === "k256") {
           prime2 = new K256();
-        } else if (name === "p224") {
+        } else if (name2 === "p224") {
           prime2 = new P224();
-        } else if (name === "p192") {
+        } else if (name2 === "p192") {
           prime2 = new P192();
-        } else if (name === "p25519") {
+        } else if (name2 === "p25519") {
           prime2 = new P25519();
         } else {
-          throw new Error("Unknown prime " + name);
+          throw new Error("Unknown prime " + name2);
         }
-        primes[name] = prime2;
+        primes[name2] = prime2;
         return prime2;
       };
       function Red(m) {
@@ -21419,8 +21419,8 @@ Stream.prototype = {
   }
 };
 var finished = -1;
-function decoderError(fatal, opt_code_point) {
-  if (fatal)
+function decoderError(fatal2, opt_code_point) {
+  if (fatal2)
     throw TypeError("Decoder error");
   return opt_code_point || 65533;
 }
@@ -21578,12 +21578,12 @@ TextEncoder$1.prototype = {
   }
 };
 function UTF8Decoder(options) {
-  var fatal = options.fatal;
+  var fatal2 = options.fatal;
   var utf8_code_point = 0, utf8_bytes_seen = 0, utf8_bytes_needed = 0, utf8_lower_boundary = 128, utf8_upper_boundary = 191;
   this.handler = function(stream, bite) {
     if (bite === end_of_stream && utf8_bytes_needed !== 0) {
       utf8_bytes_needed = 0;
-      return decoderError(fatal);
+      return decoderError(fatal2);
     }
     if (bite === end_of_stream)
       return finished;
@@ -21609,7 +21609,7 @@ function UTF8Decoder(options) {
         utf8_bytes_needed = 3;
         utf8_code_point = bite - 240;
       } else {
-        return decoderError(fatal);
+        return decoderError(fatal2);
       }
       utf8_code_point = utf8_code_point << 6 * utf8_bytes_needed;
       return null;
@@ -21619,7 +21619,7 @@ function UTF8Decoder(options) {
       utf8_lower_boundary = 128;
       utf8_upper_boundary = 191;
       stream.prepend(bite);
-      return decoderError(fatal);
+      return decoderError(fatal2);
     }
     utf8_lower_boundary = 128;
     utf8_upper_boundary = 191;
@@ -21965,11 +21965,11 @@ function requireLib() {
       } else {
         serializeStruct(schema, value, writer);
       }
-    } catch (error) {
-      if (error instanceof BorshError) {
-        error.addToFieldPath(fieldName);
+    } catch (error2) {
+      if (error2 instanceof BorshError) {
+        error2.addToFieldPath(fieldName);
       }
-      throw error;
+      throw error2;
     }
   }
   function serializeStruct(schema, obj, writer) {
@@ -21986,10 +21986,10 @@ function requireLib() {
         serializeField(schema, fieldName, obj[fieldName], fieldType, writer);
       });
     } else if (structSchema.kind === "enum") {
-      const name = obj[structSchema.field];
+      const name2 = obj[structSchema.field];
       for (let idx = 0; idx < structSchema.values.length; ++idx) {
         const [fieldName, fieldType] = structSchema.values[idx];
-        if (fieldName === name) {
+        if (fieldName === name2) {
           writer.writeU8(idx);
           serializeField(schema, fieldName, obj[fieldName], fieldType, writer);
           break;
@@ -22031,21 +22031,21 @@ function requireLib() {
         return void 0;
       }
       if (fieldType.kind === "map") {
-        let map = /* @__PURE__ */ new Map();
+        let map2 = /* @__PURE__ */ new Map();
         const length = reader.readU32();
         for (let i = 0; i < length; i++) {
           const key2 = deserializeField(schema, fieldName, fieldType.key, reader);
           const val = deserializeField(schema, fieldName, fieldType.value, reader);
-          map.set(key2, val);
+          map2.set(key2, val);
         }
-        return map;
+        return map2;
       }
       return deserializeStruct(schema, fieldType, reader);
-    } catch (error) {
-      if (error instanceof BorshError) {
-        error.addToFieldPath(fieldName);
+    } catch (error2) {
+      if (error2 instanceof BorshError) {
+        error2.addToFieldPath(fieldName);
       }
-      throw error;
+      throw error2;
     }
   }
   function deserializeStruct(schema, classType, reader) {
@@ -22206,11 +22206,11 @@ function requireLayout$1() {
     }
   }
   Layout$2.Layout = Layout2;
-  function nameWithProperty2(name, lo) {
+  function nameWithProperty2(name2, lo) {
     if (lo.property) {
-      return name + "[" + lo.property + "]";
+      return name2 + "[" + lo.property + "]";
     }
-    return name;
+    return name2;
   }
   Layout$2.nameWithProperty = nameWithProperty2;
   function bindConstructorLayout(Class, layout) {
@@ -23664,13 +23664,13 @@ let StructError$1 = class StructError extends TypeError {
   }
 };
 function isIterable$1(x) {
-  return isObject$1(x) && typeof x[Symbol.iterator] === "function";
+  return isObject$2(x) && typeof x[Symbol.iterator] === "function";
 }
-function isObject$1(x) {
+function isObject$2(x) {
   return typeof x === "object" && x != null;
 }
 function isNonArrayObject(x) {
-  return isObject$1(x) && !Array.isArray(x);
+  return isObject$2(x) && !Array.isArray(x);
 }
 function print$1(value) {
   if (typeof value === "symbol") {
@@ -23747,7 +23747,7 @@ function* run$1(value, struct2, options = {}) {
           value.set(k, v);
         } else if (value instanceof Set) {
           value.add(v);
-        } else if (isObject$1(value)) {
+        } else if (isObject$2(value)) {
           if (v !== void 0 || k in value)
             value[k] = v;
         }
@@ -23794,7 +23794,7 @@ let Struct$2 = class Struct {
    * Assert that a value passes the struct's validation, throwing if it doesn't.
    */
   assert(value, message) {
-    return assert$2(value, this, message);
+    return assert$3(value, this, message);
   }
   /**
    * Create a value with the struct's coercion logic, then validate it.
@@ -23829,7 +23829,7 @@ let Struct$2 = class Struct {
     return validate$2(value, this, options);
   }
 };
-function assert$2(value, struct2, message) {
+function assert$3(value, struct2, message) {
   const result = validate$2(value, struct2, { message });
   if (result[0]) {
     throw result[0];
@@ -23859,21 +23859,21 @@ function validate$2(value, struct2, options = {}) {
   const tuples = run$1(value, struct2, options);
   const tuple2 = shiftIterator$1(tuples);
   if (tuple2[0]) {
-    const error = new StructError$1(tuple2[0], function* () {
+    const error2 = new StructError$1(tuple2[0], function* () {
       for (const t of tuples) {
         if (t[0]) {
           yield t[0];
         }
       }
     });
-    return [error, void 0];
+    return [error2, void 0];
   } else {
     const v = tuple2[1];
     return [void 0, v];
   }
 }
-function define$1(name, validator) {
-  return new Struct$2({ type: name, schema: null, validator });
+function define$1(name2, validator) {
+  return new Struct$2({ type: name2, schema: null, validator });
 }
 function any$1() {
   return define$1("any", () => true);
@@ -23945,7 +23945,7 @@ function record(Key, Value) {
     type: "record",
     schema: null,
     *entries(value) {
-      if (isObject$1(value)) {
+      if (isObject$2(value)) {
         for (const k in value) {
           const v = value[k];
           yield [k, k, Key];
@@ -23993,7 +23993,7 @@ function type$1(schema) {
     type: "type",
     schema,
     *entries(value) {
-      if (isObject$1(value)) {
+      if (isObject$2(value)) {
         for (const k of keys) {
           yield [k, value[k], schema[k]];
         }
@@ -24014,11 +24014,11 @@ function union$2(Structs) {
     schema: null,
     coercer(value, ctx) {
       for (const S of Structs) {
-        const [error, coerced] = S.validate(value, {
+        const [error2, coerced] = S.validate(value, {
           coerce: true,
           mask: ctx.mask
         });
-        if (!error) {
+        if (!error2) {
           return coerced;
         }
       }
@@ -24076,7 +24076,7 @@ var byteToHex = [];
 for (var i = 0; i < 256; ++i) {
   byteToHex.push((i + 256).toString(16).substr(1));
 }
-function stringify(arr) {
+function stringify$1(arr) {
   var offset2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
   var uuid2 = (byteToHex[arr[offset2 + 0]] + byteToHex[arr[offset2 + 1]] + byteToHex[arr[offset2 + 2]] + byteToHex[arr[offset2 + 3]] + "-" + byteToHex[arr[offset2 + 4]] + byteToHex[arr[offset2 + 5]] + "-" + byteToHex[arr[offset2 + 6]] + byteToHex[arr[offset2 + 7]] + "-" + byteToHex[arr[offset2 + 8]] + byteToHex[arr[offset2 + 9]] + "-" + byteToHex[arr[offset2 + 10]] + byteToHex[arr[offset2 + 11]] + byteToHex[arr[offset2 + 12]] + byteToHex[arr[offset2 + 13]] + byteToHex[arr[offset2 + 14]] + byteToHex[arr[offset2 + 15]]).toLowerCase();
   if (!validate$1(uuid2)) {
@@ -24134,7 +24134,7 @@ function v1(options, buf, offset2) {
   for (var n = 0; n < 6; ++n) {
     b[i + n] = node[n];
   }
-  return buf || stringify(b);
+  return buf || stringify$1(b);
 }
 function parse(uuid2) {
   if (!validate$1(uuid2)) {
@@ -24170,7 +24170,7 @@ function stringToBytes(str) {
 }
 var DNS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 var URL$1 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
-function v35(name, version2, hashfunc) {
+function v35(name2, version2, hashfunc) {
   function generateUUID(value, namespace, buf, offset2) {
     if (typeof value === "string") {
       value = stringToBytes(value);
@@ -24194,10 +24194,10 @@ function v35(name, version2, hashfunc) {
       }
       return buf;
     }
-    return stringify(bytes);
+    return stringify$1(bytes);
   }
   try {
-    generateUUID.name = name;
+    generateUUID.name = name2;
   } catch (err) {
   }
   generateUUID.DNS = DNS;
@@ -24358,7 +24358,7 @@ function v4(options, buf, offset2) {
     }
     return buf;
   }
-  return stringify(rnds);
+  return stringify$1(rnds);
 }
 function f(s, x, y, z) {
   switch (s) {
@@ -24375,7 +24375,7 @@ function f(s, x, y, z) {
 function ROTL(x, n) {
   return x << n | x >>> 32 - n;
 }
-function sha1(bytes) {
+function sha1$1(bytes) {
   var K = [1518500249, 1859775393, 2400959708, 3395469782];
   var H = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
   if (typeof bytes === "string") {
@@ -24431,9 +24431,9 @@ function sha1(bytes) {
   }
   return [H[0] >> 24 & 255, H[0] >> 16 & 255, H[0] >> 8 & 255, H[0] & 255, H[1] >> 24 & 255, H[1] >> 16 & 255, H[1] >> 8 & 255, H[1] & 255, H[2] >> 24 & 255, H[2] >> 16 & 255, H[2] >> 8 & 255, H[2] & 255, H[3] >> 24 & 255, H[3] >> 16 & 255, H[3] >> 8 & 255, H[3] & 255, H[4] >> 24 & 255, H[4] >> 16 & 255, H[4] >> 8 & 255, H[4] & 255];
 }
-var v5 = v35("v5", 80, sha1);
+var v5 = v35("v5", 80, sha1$1);
 const nil = "00000000-0000-0000-0000-000000000000";
-function version(uuid2) {
+function version$3(uuid2) {
   if (!validate$1(uuid2)) {
     throw TypeError("Invalid UUID");
   }
@@ -24443,13 +24443,13 @@ const esmBrowser = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePr
   __proto__: null,
   NIL: nil,
   parse,
-  stringify,
+  stringify: stringify$1,
   v1,
   v3,
   v4,
   v5,
   validate: validate$1,
-  version
+  version: version$3
 }, Symbol.toStringTag, { value: "Module" }));
 const require$$0 = /* @__PURE__ */ getAugmentedNamespace(esmBrowser);
 var generateRequest_1;
@@ -24642,10 +24642,10 @@ function requireEventemitter3$1() {
       this._eventsCount = 0;
     }
     EventEmitter2.prototype.eventNames = function eventNames() {
-      var names = [], events, name;
+      var names = [], events, name2;
       if (this._eventsCount === 0) return names;
-      for (name in events = this._events) {
-        if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+      for (name2 in events = this._events) {
+        if (has.call(events, name2)) names.push(prefix ? name2.slice(1) : name2);
       }
       if (Object.getOwnPropertySymbols) {
         return names.concat(Object.getOwnPropertySymbols(events));
@@ -24769,8 +24769,8 @@ function requireEventemitter3$1() {
   return eventemitter3$1.exports;
 }
 var eventemitter3Exports$1 = requireEventemitter3$1();
-const EventEmitter$1 = /* @__PURE__ */ getDefaultExportFromCjs$3(eventemitter3Exports$1);
-var WebSocketBrowserImpl = class extends EventEmitter$1 {
+const EventEmitter$2 = /* @__PURE__ */ getDefaultExportFromCjs$3(eventemitter3Exports$1);
+var WebSocketBrowserImpl = class extends EventEmitter$2 {
   socket;
   /** Instantiate a WebSocket class
   * @constructor
@@ -24783,7 +24783,7 @@ var WebSocketBrowserImpl = class extends EventEmitter$1 {
     this.socket = new window.WebSocket(address2, options.protocols);
     this.socket.onopen = () => this.emit("open");
     this.socket.onmessage = (event) => this.emit("message", event.data);
-    this.socket.onerror = (error) => this.emit("error", error);
+    this.socket.onerror = (error2) => this.emit("error", error2);
     this.socket.onclose = (event) => {
       this.emit("close", event.code, event.reason);
     };
@@ -24801,8 +24801,8 @@ var WebSocketBrowserImpl = class extends EventEmitter$1 {
     try {
       this.socket.send(data);
       cb();
-    } catch (error) {
-      cb(error);
+    } catch (error2) {
+      cb(error2);
     }
   }
   /**
@@ -24820,7 +24820,7 @@ var WebSocketBrowserImpl = class extends EventEmitter$1 {
     this.socket.addEventListener(type2, listener, options);
   }
 };
-function WebSocket(address2, options) {
+function WebSocket$1(address2, options) {
   return new WebSocketBrowserImpl(address2, options);
 }
 var DefaultDataPack = class {
@@ -24831,7 +24831,7 @@ var DefaultDataPack = class {
     return JSON.parse(value);
   }
 };
-var CommonClient = class extends EventEmitter$1 {
+var CommonClient = class extends EventEmitter$2 {
   address;
   rpc_id;
   queue;
@@ -24928,8 +24928,8 @@ var CommonClient = class extends EventEmitter$1 {
         params: params || void 0,
         id: rpc_id
       };
-      this.socket.send(this.dataPack.encode(message), ws_opts, (error) => {
-        if (error) return reject(error);
+      this.socket.send(this.dataPack.encode(message), ws_opts, (error2) => {
+        if (error2) return reject(error2);
         this.queue[rpc_id] = { promise: [resolve, reject] };
         if (timeout) {
           this.queue[rpc_id].timeout = setTimeout(() => {
@@ -24974,8 +24974,8 @@ var CommonClient = class extends EventEmitter$1 {
         method,
         params
       };
-      this.socket.send(this.dataPack.encode(message), (error) => {
-        if (error) return reject(error);
+      this.socket.send(this.dataPack.encode(message), (error2) => {
+        if (error2) return reject(error2);
         resolve();
       });
     });
@@ -25100,7 +25100,7 @@ var CommonClient = class extends EventEmitter$1 {
         message = Buffer$1.from(message).toString();
       try {
         message = this.dataPack.decode(message);
-      } catch (error) {
+      } catch (error2) {
         return;
       }
       if (message.notification && this.listeners(message.notification).length) {
@@ -25135,7 +25135,7 @@ var CommonClient = class extends EventEmitter$1 {
       else this.queue[message.id].promise[0](message.result);
       delete this.queue[message.id];
     });
-    this.socket.addEventListener("error", (error) => this.emit("error", error));
+    this.socket.addEventListener("error", (error2) => this.emit("error", error2));
     this.socket.addEventListener("close", ({ code: code2, reason }) => {
       if (this.ready)
         setTimeout(() => this.emit("close", code2, reason), 0);
@@ -25549,7 +25549,7 @@ function _normFnElement(Fn, key2) {
     let bytes = ensureBytes("private key", key2);
     try {
       num = Fn.fromBytes(bytes);
-    } catch (error) {
+    } catch (error2) {
       throw new Error(`invalid private key: expected ui8a of size ${expected}, got ${typeof key2}`);
     }
   }
@@ -26022,7 +26022,7 @@ function ecdh(Point, ecdhOpts = {}) {
   function isValidSecretKey(secretKey) {
     try {
       return !!_normFnElement(Fn, secretKey);
-    } catch (error) {
+    } catch (error2) {
       return false;
     }
   }
@@ -26035,7 +26035,7 @@ function ecdh(Point, ecdhOpts = {}) {
       if (isCompressed === false && l !== publicKeyUncompressed)
         return false;
       return !!Point.fromBytes(publicKey2);
-    } catch (error) {
+    } catch (error2) {
       return false;
     }
   }
@@ -26299,7 +26299,7 @@ function ecdsa(Point, hash2, ecdsaOpts = {}) {
       if (!sig) {
         try {
           sig = Signature.fromBytes(ensureBytes("sig", sg), "compact");
-        } catch (error) {
+        } catch (error2) {
           return false;
         }
       }
@@ -26899,7 +26899,7 @@ function encodeLength(bytes, len) {
     }
   }
 }
-function assert$1(condition, message) {
+function assert$2(condition, message) {
   if (!condition) {
     throw new Error(message || "Assertion failed");
   }
@@ -26941,7 +26941,7 @@ class CompiledKeys {
   }
   getMessageComponents() {
     const mapEntries = [...this.keyMetaMap.entries()];
-    assert$1(mapEntries.length <= 256, "Max static account keys length exceeded");
+    assert$2(mapEntries.length <= 256, "Max static account keys length exceeded");
     const writableSigners = mapEntries.filter(([, meta]) => meta.isSigner && meta.isWritable);
     const readonlySigners = mapEntries.filter(([, meta]) => meta.isSigner && !meta.isWritable);
     const writableNonSigners = mapEntries.filter(([, meta]) => !meta.isSigner && meta.isWritable);
@@ -26952,9 +26952,9 @@ class CompiledKeys {
       numReadonlyUnsignedAccounts: readonlyNonSigners.length
     };
     {
-      assert$1(writableSigners.length > 0, "Expected at least one writable signer key");
+      assert$2(writableSigners.length > 0, "Expected at least one writable signer key");
       const [payerAddress] = writableSigners[0];
-      assert$1(payerAddress === this.payer.toBase58(), "Expected first writable signer key to be the fee payer");
+      assert$2(payerAddress === this.payer.toBase58(), "Expected first writable signer key to be the fee payer");
     }
     const staticAccountKeys = [...writableSigners.map(([address2]) => new PublicKey(address2)), ...readonlySigners.map(([address2]) => new PublicKey(address2)), ...writableNonSigners.map(([address2]) => new PublicKey(address2)), ...readonlyNonSigners.map(([address2]) => new PublicKey(address2))];
     return [header, staticAccountKeys];
@@ -26983,7 +26983,7 @@ class CompiledKeys {
         const key2 = new PublicKey(address2);
         const lookupTableIndex = lookupTableEntries.findIndex((entry) => entry.equals(key2));
         if (lookupTableIndex >= 0) {
-          assert$1(lookupTableIndex < 256, "Max lookup table index exceeded");
+          assert$2(lookupTableIndex < 256, "Max lookup table index exceeded");
           lookupTableIndexes.push(lookupTableIndex);
           drainedKeys.push(key2);
           this.keyMetaMap.delete(address2);
@@ -27354,9 +27354,9 @@ class MessageV0 {
     let byteArray = [...serializedMessage];
     const prefix = guardedShift(byteArray);
     const maskedPrefix = prefix & VERSION_PREFIX_MASK;
-    assert$1(prefix !== maskedPrefix, `Expected versioned message but received legacy message`);
+    assert$2(prefix !== maskedPrefix, `Expected versioned message but received legacy message`);
     const version2 = maskedPrefix;
-    assert$1(version2 === 0, `Expected versioned message with version 0 but found version ${version2}`);
+    assert$2(version2 === 0, `Expected versioned message with version 0 but found version ${version2}`);
     const header = {
       numRequiredSignatures: guardedShift(byteArray),
       numReadonlySignedAccounts: guardedShift(byteArray),
@@ -27724,8 +27724,8 @@ class Transaction {
       };
     });
     compiledInstructions.forEach((instruction) => {
-      assert$1(instruction.programIdIndex >= 0);
-      instruction.accounts.forEach((keyIndex) => assert$1(keyIndex >= 0));
+      assert$2(instruction.programIdIndex >= 0);
+      instruction.accounts.forEach((keyIndex) => assert$2(keyIndex >= 0));
     });
     return new Message({
       header: {
@@ -27891,7 +27891,7 @@ class Transaction {
    * @internal
    */
   _addSignature(pubkey2, signature2) {
-    assert$1(signature2.length === 64);
+    assert$2(signature2.length === 64);
     const index2 = this.signatures.findIndex((sigpair) => pubkey2.equals(sigpair.publicKey));
     if (index2 < 0) {
       throw new Error(`unknown signer: ${pubkey2.toString()}`);
@@ -27974,18 +27974,18 @@ Missing signature for public key${sigErrors.missing.length === 1 ? "" : "(s)"} [
     encodeLength(signatureCount, signatures.length);
     const transactionLength = signatureCount.length + signatures.length * 64 + signData.length;
     const wireTransaction = Buffer$1.alloc(transactionLength);
-    assert$1(signatures.length < 256);
+    assert$2(signatures.length < 256);
     Buffer$1.from(signatureCount).copy(wireTransaction, 0);
     signatures.forEach(({
       signature: signature2
     }, index2) => {
       if (signature2 !== null) {
-        assert$1(signature2.length === 64, `signature has invalid length`);
+        assert$2(signature2.length === 64, `signature has invalid length`);
         Buffer$1.from(signature2).copy(wireTransaction, signatureCount.length + index2 * 64);
       }
     });
     signData.copy(wireTransaction, signatureCount.length + signatures.length * 64);
-    assert$1(wireTransaction.length <= PACKET_DATA_SIZE, `Transaction too large: ${wireTransaction.length} > ${PACKET_DATA_SIZE}`);
+    assert$2(wireTransaction.length <= PACKET_DATA_SIZE, `Transaction too large: ${wireTransaction.length} > ${PACKET_DATA_SIZE}`);
     return wireTransaction;
   }
   /**
@@ -27993,7 +27993,7 @@ Missing signature for public key${sigErrors.missing.length === 1 ? "" : "(s)"} [
    * @internal
    */
   get keys() {
-    assert$1(this.instructions.length === 1);
+    assert$2(this.instructions.length === 1);
     return this.instructions[0].keys.map((keyObj) => keyObj.pubkey);
   }
   /**
@@ -28001,7 +28001,7 @@ Missing signature for public key${sigErrors.missing.length === 1 ? "" : "(s)"} [
    * @internal
    */
   get programId() {
-    assert$1(this.instructions.length === 1);
+    assert$2(this.instructions.length === 1);
     return this.instructions[0].programId;
   }
   /**
@@ -28009,7 +28009,7 @@ Missing signature for public key${sigErrors.missing.length === 1 ? "" : "(s)"} [
    * @internal
    */
   get data() {
-    assert$1(this.instructions.length === 1);
+    assert$2(this.instructions.length === 1);
     return this.instructions[0].data;
   }
   /**
@@ -28091,9 +28091,9 @@ class TransactionMessage {
       numReadonlyUnsignedAccounts
     } = header;
     const numWritableSignedAccounts = numRequiredSignatures - numReadonlySignedAccounts;
-    assert$1(numWritableSignedAccounts > 0, "Message header is invalid");
+    assert$2(numWritableSignedAccounts > 0, "Message header is invalid");
     const numWritableUnsignedAccounts = message.staticAccountKeys.length - numRequiredSignatures - numReadonlyUnsignedAccounts;
-    assert$1(numWritableUnsignedAccounts >= 0, "Message header is invalid");
+    assert$2(numWritableUnsignedAccounts >= 0, "Message header is invalid");
     const accountKeys = message.getAccountKeys(args);
     const payerKey = accountKeys.get(0);
     if (payerKey === void 0) {
@@ -28163,7 +28163,7 @@ class VersionedTransaction {
     this.signatures = void 0;
     this.message = void 0;
     if (signatures !== void 0) {
-      assert$1(signatures.length === message.header.numRequiredSignatures, "Expected signatures length to be equal to the number of required signatures");
+      assert$2(signatures.length === message.header.numRequiredSignatures, "Expected signatures length to be equal to the number of required signatures");
       this.signatures = signatures;
     } else {
       const defaultSignatures = [];
@@ -28202,15 +28202,15 @@ class VersionedTransaction {
     const signerPubkeys = this.message.staticAccountKeys.slice(0, this.message.header.numRequiredSignatures);
     for (const signer of signers) {
       const signerIndex = signerPubkeys.findIndex((pubkey2) => pubkey2.equals(signer.publicKey));
-      assert$1(signerIndex >= 0, `Cannot sign with non signer key ${signer.publicKey.toBase58()}`);
+      assert$2(signerIndex >= 0, `Cannot sign with non signer key ${signer.publicKey.toBase58()}`);
       this.signatures[signerIndex] = sign(messageData, signer.secretKey);
     }
   }
   addSignature(publicKey2, signature2) {
-    assert$1(signature2.byteLength === 64, "Signature must be 64 bytes long");
+    assert$2(signature2.byteLength === 64, "Signature must be 64 bytes long");
     const signerPubkeys = this.message.staticAccountKeys.slice(0, this.message.header.numRequiredSignatures);
     const signerIndex = signerPubkeys.findIndex((pubkey2) => pubkey2.equals(publicKey2));
-    assert$1(signerIndex >= 0, `Can not add signature; \`${publicKey2.toBase58()}\` is not required to sign this transaction`);
+    assert$2(signerIndex >= 0, `Can not add signature; \`${publicKey2.toBase58()}\` is not required to sign this transaction`);
     this.signatures[signerIndex] = signature2;
   }
 }
@@ -29273,8 +29273,8 @@ function requireFastStableStringify() {
   var objToString = Object.prototype.toString;
   var objKeys = Object.keys || function(obj) {
     var keys = [];
-    for (var name in obj) {
-      keys.push(name);
+    for (var name2 in obj) {
+      keys.push(name2);
     }
     return keys;
   };
@@ -29416,7 +29416,7 @@ var fetchImpl = globalThis.fetch;
 class RpcWebSocketClient extends CommonClient {
   constructor(address2, options, generate_request_id) {
     const webSocketFactory = (url) => {
-      const rpc2 = WebSocket(url, {
+      const rpc2 = WebSocket$1(url, {
         autoconnect: true,
         max_reconnects: 5,
         reconnect: true,
@@ -29475,8 +29475,8 @@ class AddressLookupTableAccount {
   static deserialize(accountData) {
     const meta = decodeData(LookupTableMetaLayout, accountData);
     const serializedAddressesLen = accountData.length - LOOKUP_TABLE_META_SIZE;
-    assert$1(serializedAddressesLen >= 0, "lookup table is invalid");
-    assert$1(serializedAddressesLen % 32 === 0, "lookup table is invalid");
+    assert$2(serializedAddressesLen >= 0, "lookup table is invalid");
+    assert$2(serializedAddressesLen % 32 === 0, "lookup table is invalid");
     const numSerializedAddresses = serializedAddressesLen / 32;
     const {
       addresses
@@ -29726,8 +29726,8 @@ function createRpcClient(url, httpHeaders, customFetch, fetchMiddleware, disable
       const modifiedFetchArgs = await new Promise((resolve, reject) => {
         try {
           fetchMiddleware(info, init, (modifiedInfo, modifiedInit) => resolve([modifiedInfo, modifiedInit]));
-        } catch (error) {
-          reject(error);
+        } catch (error2) {
+          reject(error2);
         }
       });
       return await fetch2(...modifiedFetchArgs);
@@ -30254,7 +30254,7 @@ const LogsNotificationResult = type$1({
 const COMMON_HTTP_HEADERS = {
   "solana-client": `js/${"1.0.0-maintenance"}`
 };
-class Connection {
+let Connection$1 = class Connection {
   /**
    * Establish a JSON RPC connection
    *
@@ -30725,7 +30725,7 @@ class Connection {
     } catch (err) {
       throw new Error("signature must be base58 encoded: " + rawSignature);
     }
-    assert$1(decodedSignature.length === 64, "signature has invalid length");
+    assert$2(decodedSignature.length === 64, "signature has invalid length");
     if (typeof strategy === "string") {
       return await this.confirmTransactionUsingLegacyTimeoutStrategy({
         commitment: commitment || this.commitment,
@@ -31151,7 +31151,7 @@ class Connection {
       context,
       value: values
     } = await this.getSignatureStatuses([signature2], config);
-    assert$1(values.length === 1);
+    assert$2(values.length === 1);
     const value = values[0];
     return {
       context,
@@ -32589,7 +32589,7 @@ class Connection {
       delete this._subscriptionDisposeFunctionsByClientSubscriptionId[clientSubscriptionId];
       delete this._subscriptionHashByClientSubscriptionId[clientSubscriptionId];
       const subscription = this._subscriptionsByHash[hash2];
-      assert$1(subscription !== void 0, `Could not find a \`Subscription\` when tearing down client subscription #${clientSubscriptionId}`);
+      assert$2(subscription !== void 0, `Could not find a \`Subscription\` when tearing down client subscription #${clientSubscriptionId}`);
       subscription.callbacks.delete(subscriptionConfig.callback);
       await this._updateSubscriptions();
     };
@@ -32954,7 +32954,7 @@ class Connection {
   async removeRootChangeListener(clientSubscriptionId) {
     await this._unsubscribeClientSubscription(clientSubscriptionId, "root change");
   }
-}
+};
 class Keypair {
   /**
    * Create a new keypair instance.
@@ -33459,8 +33459,8 @@ class Ed25519Program {
       signature: signature2,
       instructionIndex
     } = params;
-    assert$1(publicKey2.length === PUBLIC_KEY_BYTES$1, `Public Key must be ${PUBLIC_KEY_BYTES$1} bytes but received ${publicKey2.length} bytes`);
-    assert$1(signature2.length === SIGNATURE_BYTES, `Signature must be ${SIGNATURE_BYTES} bytes but received ${signature2.length} bytes`);
+    assert$2(publicKey2.length === PUBLIC_KEY_BYTES$1, `Public Key must be ${PUBLIC_KEY_BYTES$1} bytes but received ${publicKey2.length} bytes`);
+    assert$2(signature2.length === SIGNATURE_BYTES, `Signature must be ${SIGNATURE_BYTES} bytes but received ${signature2.length} bytes`);
     const publicKeyOffset = ED25519_INSTRUCTION_LAYOUT.span;
     const signatureOffset = publicKeyOffset + publicKey2.length;
     const messageDataOffset = signatureOffset + signature2.length;
@@ -33497,7 +33497,7 @@ class Ed25519Program {
       message,
       instructionIndex
     } = params;
-    assert$1(privateKey.length === PRIVATE_KEY_BYTES$1, `Private key must be ${PRIVATE_KEY_BYTES$1} bytes but received ${privateKey.length} bytes`);
+    assert$2(privateKey.length === PRIVATE_KEY_BYTES$1, `Private key must be ${PRIVATE_KEY_BYTES$1} bytes but received ${privateKey.length} bytes`);
     try {
       const keypair = Keypair.fromSecretKey(privateKey);
       const publicKey2 = keypair.publicKey.toBytes();
@@ -33508,8 +33508,8 @@ class Ed25519Program {
         signature: signature2,
         instructionIndex
       });
-    } catch (error) {
-      throw new Error(`Error creating instruction; ${error}`);
+    } catch (error2) {
+      throw new Error(`Error creating instruction; ${error2}`);
     }
   }
 }
@@ -33539,11 +33539,11 @@ class Secp256k1Program {
    * @param {Buffer} publicKey a 64 byte secp256k1 public key buffer
    */
   static publicKeyToEthAddress(publicKey2) {
-    assert$1(publicKey2.length === PUBLIC_KEY_BYTES, `Public key must be ${PUBLIC_KEY_BYTES} bytes but received ${publicKey2.length} bytes`);
+    assert$2(publicKey2.length === PUBLIC_KEY_BYTES, `Public key must be ${PUBLIC_KEY_BYTES} bytes but received ${publicKey2.length} bytes`);
     try {
       return Buffer$1.from(keccak_256(toBuffer(publicKey2))).slice(-ETHEREUM_ADDRESS_BYTES);
-    } catch (error) {
-      throw new Error(`Error constructing Ethereum address: ${error}`);
+    } catch (error2) {
+      throw new Error(`Error constructing Ethereum address: ${error2}`);
     }
   }
   /**
@@ -33588,7 +33588,7 @@ class Secp256k1Program {
     } else {
       ethAddress = rawAddress;
     }
-    assert$1(ethAddress.length === ETHEREUM_ADDRESS_BYTES, `Address must be ${ETHEREUM_ADDRESS_BYTES} bytes but received ${ethAddress.length} bytes`);
+    assert$2(ethAddress.length === ETHEREUM_ADDRESS_BYTES, `Address must be ${ETHEREUM_ADDRESS_BYTES} bytes but received ${ethAddress.length} bytes`);
     const dataStart = 1 + SIGNATURE_OFFSETS_SERIALIZED_SIZE;
     const ethAddressOffset = dataStart;
     const signatureOffset = dataStart + ethAddress.length;
@@ -33625,7 +33625,7 @@ class Secp256k1Program {
       message,
       instructionIndex
     } = params;
-    assert$1(pkey.length === PRIVATE_KEY_BYTES, `Private key must be ${PRIVATE_KEY_BYTES} bytes but received ${pkey.length} bytes`);
+    assert$2(pkey.length === PRIVATE_KEY_BYTES, `Private key must be ${PRIVATE_KEY_BYTES} bytes but received ${pkey.length} bytes`);
     try {
       const privateKey = toBuffer(pkey);
       const publicKey2 = publicKeyCreate(
@@ -33642,8 +33642,8 @@ class Secp256k1Program {
         recoveryId,
         instructionIndex
       });
-    } catch (error) {
-      throw new Error(`Error creating instruction; ${error}`);
+    } catch (error2) {
+      throw new Error(`Error creating instruction; ${error2}`);
     }
   }
 }
@@ -34759,7 +34759,7 @@ class ValidatorInfo {
       if (configKeys[1].isSigner) {
         const rawInfo = rustString().decode(Buffer$1.from(byteArray));
         const info = JSON.parse(rawInfo);
-        assert$2(info, InfoString);
+        assert$3(info, InfoString);
         return new ValidatorInfo(configKeys[1].publicKey, info);
       }
     }
@@ -34858,9 +34858,9 @@ function parsePriorVoters({
 function getPriorVoters({
   buf,
   idx,
-  isEmpty
+  isEmpty: isEmpty2
 }) {
-  if (isEmpty) {
+  if (isEmpty2) {
     return [];
   }
   return [...buf.slice(idx + 1).map(parsePriorVoters), ...buf.slice(0, idx).map(parsePriorVoters)];
@@ -34936,7 +34936,7 @@ const index_browser_esm = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.d
   COMPUTE_BUDGET_INSTRUCTION_LAYOUTS,
   ComputeBudgetInstruction,
   ComputeBudgetProgram,
-  Connection,
+  Connection: Connection$1,
   Ed25519Program,
   Enum,
   EpochSchedule,
@@ -35510,11 +35510,11 @@ function requireLayout() {
     }
   }
   Layout$1.Layout = Layout2;
-  function nameWithProperty2(name, lo) {
+  function nameWithProperty2(name2, lo) {
     if (lo.property) {
-      return name + "[" + lo.property + "]";
+      return name2 + "[" + lo.property + "]";
     }
-    return name;
+    return name2;
   }
   Layout$1.nameWithProperty = nameWithProperty2;
   function bindConstructorLayout(Class, layout) {
@@ -36908,7 +36908,7 @@ function requireDist() {
     exports$1.str = str;
     exports$1.rustEnum = rustEnum;
     exports$1.array = array2;
-    exports$1.map = map;
+    exports$1.map = map2;
     const buffer_layout_1 = requireLayout();
     const web3_js_1 = require$$1;
     const bn_js_1 = __importDefault(requireBn());
@@ -37112,7 +37112,7 @@ function requireDist() {
         return this.keyLayout.getSpan(b, offset2) + this.valueLayout.getSpan(b, offset2);
       }
     }
-    function map(keyLayout, valueLayout, property) {
+    function map2(keyLayout, valueLayout, property) {
       const length = (0, buffer_layout_1.u32)("length");
       const layout = (0, buffer_layout_1.struct)([
         length,
@@ -38070,16 +38070,16 @@ const inflateReset = (strm) => {
   return inflateResetKeep(strm);
 };
 const inflateReset2 = (strm, windowBits) => {
-  let wrap;
+  let wrap2;
   if (inflateStateCheck(strm)) {
     return Z_STREAM_ERROR$1;
   }
   const state = strm.state;
   if (windowBits < 0) {
-    wrap = 0;
+    wrap2 = 0;
     windowBits = -windowBits;
   } else {
-    wrap = (windowBits >> 4) + 5;
+    wrap2 = (windowBits >> 4) + 5;
     if (windowBits < 48) {
       windowBits &= 15;
     }
@@ -38090,7 +38090,7 @@ const inflateReset2 = (strm, windowBits) => {
   if (state.window !== null && state.wbits !== windowBits) {
     state.window = null;
   }
-  state.wrap = wrap;
+  state.wrap = wrap2;
   state.wbits = windowBits;
   return inflateReset(strm);
 };
@@ -39388,10 +39388,10 @@ function requireEventemitter3() {
       this._eventsCount = 0;
     }
     EventEmitter2.prototype.eventNames = function eventNames() {
-      var names = [], events, name;
+      var names = [], events, name2;
       if (this._eventsCount === 0) return names;
-      for (name in events = this._events) {
-        if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+      for (name2 in events = this._events) {
+        if (has.call(events, name2)) names.push(prefix ? name2.slice(1) : name2);
       }
       if (Object.getOwnPropertySymbols) {
         return names.concat(Object.getOwnPropertySymbols(events));
@@ -39515,7 +39515,7 @@ function requireEventemitter3() {
   return eventemitter3.exports;
 }
 var eventemitter3Exports = requireEventemitter3();
-const EventEmitter = /* @__PURE__ */ getDefaultExportFromCjs$3(eventemitter3Exports);
+const EventEmitter$1 = /* @__PURE__ */ getDefaultExportFromCjs$3(eventemitter3Exports);
 function chunks(array2, size) {
   return Array.apply(0, new Array(Math.ceil(array2.length / size))).map((_, index2) => array2.slice(index2 * size, (index2 + 1) * size));
 }
@@ -39570,20 +39570,20 @@ var bs58 = /* @__PURE__ */ Object.freeze({
 function encode2(data) {
   return data.toString("base64");
 }
-function decode2(data) {
+function decode$4(data) {
   return Buffer$1.from(data, "base64");
 }
-var base64 = /* @__PURE__ */ Object.freeze({
+var base64$1 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   encode: encode2,
-  decode: decode2
+  decode: decode$4
 });
 var index$1 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   hex,
   utf8,
   bs58,
-  base64
+  base64: base64$1
 });
 function isCompositeAccounts(accountItem) {
   return "accounts" in accountItem;
@@ -39692,9 +39692,9 @@ class StructError2 extends TypeError {
   }
 }
 function isIterable(x) {
-  return isObject(x) && typeof x[Symbol.iterator] === "function";
+  return isObject$1(x) && typeof x[Symbol.iterator] === "function";
 }
-function isObject(x) {
+function isObject$1(x) {
   return typeof x === "object" && x != null;
 }
 function print(value) {
@@ -39766,7 +39766,7 @@ function* run(value, struct2, options) {
   };
   if (coerce2) {
     value = struct2.coercer(value, ctx);
-    if (mask2 && struct2.type !== "type" && isObject(struct2.schema) && isObject(value) && !Array.isArray(value)) {
+    if (mask2 && struct2.type !== "type" && isObject$1(struct2.schema) && isObject$1(value) && !Array.isArray(value)) {
       for (const key2 in value) {
         if (struct2.schema[key2] === void 0) {
           delete value[key2];
@@ -39798,7 +39798,7 @@ function* run(value, struct2, options) {
           value.set(k, v);
         } else if (value instanceof Set) {
           value.add(v);
-        } else if (isObject(value)) {
+        } else if (isObject$1(value)) {
           value[k] = v;
         }
       }
@@ -39857,7 +39857,7 @@ class Struct3 {
    * Assert that a value passes the struct's validation, throwing if it doesn't.
    */
   assert(value) {
-    return assert(value, this);
+    return assert$1(value, this);
   }
   /**
    * Create a value with the struct's coercion logic, then validate it.
@@ -39893,7 +39893,7 @@ class Struct3 {
     return validate(value, this, options);
   }
 }
-function assert(value, struct2) {
+function assert$1(value, struct2) {
   const result = validate(value, struct2);
   if (result[0]) {
     throw result[0];
@@ -39931,22 +39931,22 @@ function validate(value, struct2, options) {
   const tuples = run(value, struct2, options);
   const tuple2 = shiftIterator(tuples);
   if (tuple2[0]) {
-    const error = new StructError2(tuple2[0], function* () {
+    const error2 = new StructError2(tuple2[0], function* () {
       for (const t of tuples) {
         if (t[0]) {
           yield t[0];
         }
       }
     });
-    return [error, void 0];
+    return [error2, void 0];
   } else {
     const v = tuple2[1];
     return [void 0, v];
   }
 }
-function define(name, validator) {
+function define(name2, validator) {
   return new Struct3({
-    type: name,
+    type: name2,
     schema: null,
     validator
   });
@@ -40018,14 +40018,14 @@ function type(schema) {
     type: "type",
     schema,
     *entries(value) {
-      if (isObject(value)) {
+      if (isObject$1(value)) {
         for (const k of keys) {
           yield [k, value[k], schema[k]];
         }
       }
     },
     validator(value) {
-      return isObject(value) || "Expected an object, but received: " + print(value);
+      return isObject$1(value) || "Expected an object, but received: " + print(value);
     }
   });
 }
@@ -40594,7 +40594,7 @@ class AnchorError extends Error {
     if (!logs) {
       return null;
     }
-    const anchorErrorLogIndex = logs.findIndex((log) => log.startsWith("Program log: AnchorError"));
+    const anchorErrorLogIndex = logs.findIndex((log2) => log2.startsWith("Program log: AnchorError"));
     if (anchorErrorLogIndex === -1) {
       return null;
     }
@@ -41173,7 +41173,7 @@ class IdlCoder {
   /**
    * Get the type layout of the given defined type(struct or enum).
    */
-  static typeDefLayout({ typeDef, types: types2, name, genericArgs }) {
+  static typeDefLayout({ typeDef, types: types2, name: name2, genericArgs }) {
     switch (typeDef.type.kind) {
       case "struct": {
         const fieldLayouts = handleDefinedFields(typeDef.type.fields, () => [], (fields) => fields.map((f2) => {
@@ -41191,7 +41191,7 @@ class IdlCoder {
           }) : genericArgs;
           return IdlCoder.fieldLayout({ name: i.toString(), type: f2 }, types2, genArgs);
         }));
-        return distExports.struct(fieldLayouts, name);
+        return distExports.struct(fieldLayouts, name2);
       }
       case "enum": {
         const variants = typeDef.type.variants.map((variant) => {
@@ -41212,13 +41212,13 @@ class IdlCoder {
           }));
           return distExports.struct(fieldLayouts, variant.name);
         });
-        if (name !== void 0) {
-          return distExports.rustEnum(variants).replicate(name);
+        if (name2 !== void 0) {
+          return distExports.rustEnum(variants).replicate(name2);
         }
-        return distExports.rustEnum(variants, name);
+        return distExports.rustEnum(variants, name2);
       }
       case "type": {
-        return IdlCoder.fieldLayout({ type: typeDef.type.alias, name }, types2);
+        return IdlCoder.fieldLayout({ type: typeDef.type.alias, name: name2 }, types2);
       }
     }
   }
@@ -41448,10 +41448,10 @@ class BorshInstructionCoder {
   constructor(idl2) {
     this.idl = idl2;
     const ixLayouts = idl2.instructions.map((ix) => {
-      const name = ix.name;
+      const name2 = ix.name;
       const fieldLayouts = ix.args.map((arg) => IdlCoder.fieldLayout(arg, idl2.types));
-      const layout = distExports.struct(fieldLayouts, name);
-      return [name, { discriminator: ix.discriminator, layout }];
+      const layout = distExports.struct(fieldLayouts, name2);
+      return [name2, { discriminator: ix.discriminator, layout }];
     });
     this.ixLayouts = new Map(ixLayouts);
   }
@@ -41475,12 +41475,12 @@ class BorshInstructionCoder {
     if (typeof ix === "string") {
       ix = encoding2 === "hex" ? Buffer$1.from(ix, "hex") : bs58$1.decode(ix);
     }
-    for (const [name, layout] of this.ixLayouts) {
+    for (const [name2, layout] of this.ixLayouts) {
       const givenDisc = ix.subarray(0, layout.discriminator.length);
       const matches = givenDisc.equals(Buffer$1.from(layout.discriminator));
       if (matches) {
         return {
-          name,
+          name: name2,
           data: layout.layout.decode(ix.subarray(givenDisc.length))
         };
       }
@@ -41544,7 +41544,7 @@ class InstructionFormatter {
       return `Array<${idlType.array[0]}; ${idlType.array[1]}>`;
     }
     if ("defined" in idlType) {
-      const name = idlType.defined.name;
+      const name2 = idlType.defined.name;
       if (idlType.defined.generics) {
         const generics = idlType.defined.generics.map((g) => {
           switch (g.kind) {
@@ -41554,9 +41554,9 @@ class InstructionFormatter {
               return g.value;
           }
         }).join(", ");
-        return `${name}<${generics}>`;
+        return `${name2}<${generics}>`;
       }
-      return name;
+      return name2;
     }
     throw new Error(`Unknown IDL type: ${idlType}`);
   }
@@ -41693,11 +41693,11 @@ class BorshAccountsCoder {
     return this.decodeUnchecked(accountName, data);
   }
   decodeAny(data) {
-    for (const [name, layout] of this.accountLayouts) {
+    for (const [name2, layout] of this.accountLayouts) {
       const givenDisc = data.subarray(0, layout.discriminator.length);
       const matches = givenDisc.equals(Buffer$1.from(layout.discriminator));
       if (matches)
-        return this.decodeUnchecked(name, data);
+        return this.decodeUnchecked(name2, data);
     }
     throw new Error("Account not found");
   }
@@ -41725,11 +41725,11 @@ class BorshAccountsCoder {
    *
    * @param name The name of the account to get the discriminator of.
    */
-  accountDiscriminator(name) {
+  accountDiscriminator(name2) {
     var _a;
-    const account = (_a = this.idl.accounts) === null || _a === void 0 ? void 0 : _a.find((acc) => acc.name === name);
+    const account = (_a = this.idl.accounts) === null || _a === void 0 ? void 0 : _a.find((acc) => acc.name === name2);
     if (!account) {
-      throw new Error(`Account not found: ${name}`);
+      throw new Error(`Account not found: ${name2}`);
     }
     return Buffer$1.from(account.discriminator);
   }
@@ -41759,19 +41759,19 @@ class BorshEventCoder {
     });
     this.layouts = new Map(layouts);
   }
-  decode(log) {
+  decode(log2) {
     let logArr;
     try {
-      logArr = decode2(log);
+      logArr = decode$4(log2);
     } catch (e) {
       return null;
     }
-    for (const [name, layout] of this.layouts) {
+    for (const [name2, layout] of this.layouts) {
       const givenDisc = logArr.subarray(0, layout.discriminator.length);
       const matches = givenDisc.equals(Buffer$1.from(layout.discriminator));
       if (matches) {
         return {
-          name,
+          name: name2,
           data: layout.layout.decode(logArr.subarray(givenDisc.length))
         };
       }
@@ -41792,19 +41792,19 @@ class BorshTypesCoder {
     ]);
     this.typeLayouts = new Map(layouts);
   }
-  encode(name, type2) {
+  encode(name2, type2) {
     const buffer2 = Buffer$1.alloc(1e3);
-    const layout = this.typeLayouts.get(name);
+    const layout = this.typeLayouts.get(name2);
     if (!layout) {
-      throw new Error(`Unknown type: ${name}`);
+      throw new Error(`Unknown type: ${name2}`);
     }
     const len = layout.encode(type2, buffer2);
     return buffer2.slice(0, len);
   }
-  decode(name, data) {
-    const layout = this.typeLayouts.get(name);
+  decode(name2, data) {
+    const layout = this.typeLayouts.get(name2);
     if (!layout) {
-      throw new Error(`Unknown type: ${name}`);
+      throw new Error(`Unknown type: ${name2}`);
     }
     return layout.decode(data);
   }
@@ -41952,11 +41952,11 @@ class Layout {
   }
 }
 var Layout_2 = Layout;
-function nameWithProperty(name, lo) {
+function nameWithProperty(name2, lo) {
   if (lo.property) {
-    return name + "[" + lo.property + "]";
+    return name2 + "[" + lo.property + "]";
   }
-  return name;
+  return name2;
 }
 class ExternalLayout extends Layout {
   /**
@@ -42832,14 +42832,14 @@ var browserPonyfill = { exports: {} };
           return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1;
         };
       }
-      function normalizeName(name) {
-        if (typeof name !== "string") {
-          name = String(name);
+      function normalizeName(name2) {
+        if (typeof name2 !== "string") {
+          name2 = String(name2);
         }
-        if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
+        if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name2)) {
           throw new TypeError("Invalid character in header field name");
         }
-        return name.toLowerCase();
+        return name2.toLowerCase();
       }
       function normalizeValue(value) {
         if (typeof value !== "string") {
@@ -42864,49 +42864,49 @@ var browserPonyfill = { exports: {} };
       function Headers(headers) {
         this.map = {};
         if (headers instanceof Headers) {
-          headers.forEach(function(value, name) {
-            this.append(name, value);
+          headers.forEach(function(value, name2) {
+            this.append(name2, value);
           }, this);
         } else if (Array.isArray(headers)) {
           headers.forEach(function(header) {
             this.append(header[0], header[1]);
           }, this);
         } else if (headers) {
-          Object.getOwnPropertyNames(headers).forEach(function(name) {
-            this.append(name, headers[name]);
+          Object.getOwnPropertyNames(headers).forEach(function(name2) {
+            this.append(name2, headers[name2]);
           }, this);
         }
       }
-      Headers.prototype.append = function(name, value) {
-        name = normalizeName(name);
+      Headers.prototype.append = function(name2, value) {
+        name2 = normalizeName(name2);
         value = normalizeValue(value);
-        var oldValue = this.map[name];
-        this.map[name] = oldValue ? oldValue + ", " + value : value;
+        var oldValue = this.map[name2];
+        this.map[name2] = oldValue ? oldValue + ", " + value : value;
       };
-      Headers.prototype["delete"] = function(name) {
-        delete this.map[normalizeName(name)];
+      Headers.prototype["delete"] = function(name2) {
+        delete this.map[normalizeName(name2)];
       };
-      Headers.prototype.get = function(name) {
-        name = normalizeName(name);
-        return this.has(name) ? this.map[name] : null;
+      Headers.prototype.get = function(name2) {
+        name2 = normalizeName(name2);
+        return this.has(name2) ? this.map[name2] : null;
       };
-      Headers.prototype.has = function(name) {
-        return this.map.hasOwnProperty(normalizeName(name));
+      Headers.prototype.has = function(name2) {
+        return this.map.hasOwnProperty(normalizeName(name2));
       };
-      Headers.prototype.set = function(name, value) {
-        this.map[normalizeName(name)] = normalizeValue(value);
+      Headers.prototype.set = function(name2, value) {
+        this.map[normalizeName(name2)] = normalizeValue(value);
       };
       Headers.prototype.forEach = function(callback, thisArg) {
-        for (var name in this.map) {
-          if (this.map.hasOwnProperty(name)) {
-            callback.call(thisArg, this.map[name], name, this);
+        for (var name2 in this.map) {
+          if (this.map.hasOwnProperty(name2)) {
+            callback.call(thisArg, this.map[name2], name2, this);
           }
         }
       };
       Headers.prototype.keys = function() {
         var items = [];
-        this.forEach(function(value, name) {
-          items.push(name);
+        this.forEach(function(value, name2) {
+          items.push(name2);
         });
         return iteratorFor(items);
       };
@@ -42919,8 +42919,8 @@ var browserPonyfill = { exports: {} };
       };
       Headers.prototype.entries = function() {
         var items = [];
-        this.forEach(function(value, name) {
-          items.push([name, value]);
+        this.forEach(function(value, name2) {
+          items.push([name2, value]);
         });
         return iteratorFor(items);
       };
@@ -43101,9 +43101,9 @@ var browserPonyfill = { exports: {} };
         body.trim().split("&").forEach(function(bytes) {
           if (bytes) {
             var split2 = bytes.split("=");
-            var name = split2.shift().replace(/\+/g, " ");
+            var name2 = split2.shift().replace(/\+/g, " ");
             var value = split2.join("=").replace(/\+/g, " ");
-            form.append(decodeURIComponent(name), decodeURIComponent(value));
+            form.append(decodeURIComponent(name2), decodeURIComponent(value));
           }
         });
         return form;
@@ -43159,11 +43159,11 @@ var browserPonyfill = { exports: {} };
       try {
         new exports$12.DOMException();
       } catch (err) {
-        exports$12.DOMException = function(message, name) {
+        exports$12.DOMException = function(message, name2) {
           this.message = message;
-          this.name = name;
-          var error = Error(message);
-          this.stack = error.stack;
+          this.name = name2;
+          var error2 = Error(message);
+          this.stack = error2.stack;
         };
         exports$12.DOMException.prototype = Object.create(Error.prototype);
         exports$12.DOMException.prototype.constructor = exports$12.DOMException;
@@ -43206,8 +43206,8 @@ var browserPonyfill = { exports: {} };
           if ("responseType" in xhr && support.blob) {
             xhr.responseType = "blob";
           }
-          request.headers.forEach(function(value, name) {
-            xhr.setRequestHeader(name, value);
+          request.headers.forEach(function(value, name2) {
+            xhr.setRequestHeader(name2, value);
           });
           if (request.signal) {
             request.signal.addEventListener("abort", abortXhr);
@@ -43403,10 +43403,10 @@ class EventParser {
     }
     execution.push(firstCap[1]);
     while (scanner.peek() !== null) {
-      const log = scanner.next();
-      if (log === null)
+      const log2 = scanner.next();
+      if (log2 === null)
         break;
-      let [event, newProgram, didPop] = this.handleLog(execution, log, errorOnDecodeFailure);
+      let [event, newProgram, didPop] = this.handleLog(execution, log2, errorOnDecodeFailure);
       if (event)
         yield event;
       if (newProgram)
@@ -43426,35 +43426,35 @@ class EventParser {
   // next program that was invoked for CPI, and a boolean indicating if
   // a program has completed execution (and thus should be popped off the
   // execution stack).
-  handleLog(execution, log, errorOnDecodeFailure) {
+  handleLog(execution, log2, errorOnDecodeFailure) {
     if (execution.stack.length > 0 && execution.program() === this.programId.toString()) {
-      return this.handleProgramLog(log, errorOnDecodeFailure);
+      return this.handleProgramLog(log2, errorOnDecodeFailure);
     } else {
-      return [null, ...this.handleSystemLog(log)];
+      return [null, ...this.handleSystemLog(log2)];
     }
   }
   // Handles logs from *this* program.
-  handleProgramLog(log, errorOnDecodeFailure) {
-    if (log.startsWith(PROGRAM_LOG) || log.startsWith(PROGRAM_DATA)) {
-      const logStr = log.startsWith(PROGRAM_LOG) ? log.slice(PROGRAM_LOG_START_INDEX) : log.slice(PROGRAM_DATA_START_INDEX);
+  handleProgramLog(log2, errorOnDecodeFailure) {
+    if (log2.startsWith(PROGRAM_LOG) || log2.startsWith(PROGRAM_DATA)) {
+      const logStr = log2.startsWith(PROGRAM_LOG) ? log2.slice(PROGRAM_LOG_START_INDEX) : log2.slice(PROGRAM_DATA_START_INDEX);
       const event = this.coder.events.decode(logStr);
       if (errorOnDecodeFailure && event === null) {
         throw new Error(`Unable to decode event ${logStr}`);
       }
       return [event, null, false];
     } else {
-      return [null, ...this.handleSystemLog(log)];
+      return [null, ...this.handleSystemLog(log2)];
     }
   }
   // Handles logs when the current program being executing is *not* this.
-  handleSystemLog(log) {
-    if (log.startsWith(`Program ${this.programId.toString()} log:`)) {
+  handleSystemLog(log2) {
+    if (log2.startsWith(`Program ${this.programId.toString()} log:`)) {
       return [this.programId.toString(), false];
-    } else if (log.includes("invoke") && !log.endsWith("[1]")) {
+    } else if (log2.includes("invoke") && !log2.endsWith("[1]")) {
       return ["cpi", false];
     } else {
       let regex = /^Program ([1-9A-HJ-NP-Za-km-z]+) success$/;
-      if (regex.test(log)) {
+      if (regex.test(log2)) {
         return [null, true];
       } else {
         return [null, false];
@@ -43487,7 +43487,7 @@ class ExecutionContext {
 class LogScanner {
   constructor(logs) {
     this.logs = logs;
-    this.logs = this.logs.filter((log) => log.startsWith("Program "));
+    this.logs = this.logs.filter((log2) => log2.startsWith("Program "));
   }
   next() {
     if (this.logs.length === 0) {
@@ -43765,7 +43765,7 @@ class AccountClient {
     if (sub) {
       return sub.ee;
     }
-    const ee = new EventEmitter();
+    const ee = new EventEmitter$1();
     address2 = translateAddress(address2);
     const listener = this._provider.connection.onAccountChange(address2, (acc) => {
       const account = this._coder.accounts.decode(this._idlAccount.name, acc.data);
@@ -44090,20 +44090,20 @@ class AccountsResolver {
   }
   resolveConst(accounts2, path = []) {
     for (const accountOrAccounts of accounts2) {
-      const name = accountOrAccounts.name;
+      const name2 = accountOrAccounts.name;
       if (isCompositeAccounts(accountOrAccounts)) {
-        this.resolveConst(accountOrAccounts.accounts, [...path, name]);
+        this.resolveConst(accountOrAccounts.accounts, [...path, name2]);
       } else {
         const account = accountOrAccounts;
-        if ((account.signer || account.address) && !this.get([...path, name])) {
+        if ((account.signer || account.address) && !this.get([...path, name2])) {
           if (account.signer) {
             if (!this._provider.publicKey) {
               throw new Error("This function requires the `Provider` interface implementor to have a `publicKey` field.");
             }
-            this.set([...path, name], this._provider.publicKey);
+            this.set([...path, name2], this._provider.publicKey);
           }
           if (account.address) {
-            this.set([...path, name], translateAddress(account.address));
+            this.set([...path, name2], translateAddress(account.address));
           }
         }
       }
@@ -44112,12 +44112,12 @@ class AccountsResolver {
   async resolvePdasAndRelations(accounts2, path = []) {
     let found = 0;
     for (const accountOrAccounts of accounts2) {
-      const name = accountOrAccounts.name;
+      const name2 = accountOrAccounts.name;
       if (isCompositeAccounts(accountOrAccounts)) {
-        found += await this.resolvePdasAndRelations(accountOrAccounts.accounts, [...path, name]);
+        found += await this.resolvePdasAndRelations(accountOrAccounts.accounts, [...path, name2]);
       } else {
         const account = accountOrAccounts;
-        if ((account.pda || account.relations) && !this.get([...path, name])) {
+        if ((account.pda || account.relations) && !this.get([...path, name2])) {
           found++;
           try {
             if (account.pda) {
@@ -44127,7 +44127,7 @@ class AccountsResolver {
               }
               const programId = await this.parseProgramId(account, path);
               const [pubkey2] = PublicKey.findProgramAddressSync(seeds, programId);
-              this.set([...path, name], pubkey2);
+              this.set([...path, name2], pubkey2);
             }
           } catch {
           }
@@ -44138,7 +44138,7 @@ class AccountsResolver {
                 const account2 = await this._accountStore.fetchAccount({
                   publicKey: accountKey
                 });
-                this.set([...path, name], account2[name]);
+                this.set([...path, name2], account2[name2]);
               }
             }
           } catch {
@@ -44175,10 +44175,10 @@ class AccountsResolver {
     return this.toBufferValue("bytes", seed2.value);
   }
   async toBufferArg(seed2) {
-    const [name, ...path] = seed2.path.split(".");
-    const index2 = this._idlIx.args.findIndex((arg) => arg.name === name);
+    const [name2, ...path] = seed2.path.split(".");
+    const index2 = this._idlIx.args.findIndex((arg) => arg.name === name2);
     if (index2 === -1) {
-      throw new Error(`Unable to find argument for seed: ${name}`);
+      throw new Error(`Unable to find argument for seed: ${name2}`);
     }
     const value = path.reduce((acc, path2) => (acc !== null && acc !== void 0 ? acc : {})[path2], this._args[index2]);
     if (value === void 0) {
@@ -44188,8 +44188,8 @@ class AccountsResolver {
     return this.toBufferValue(type2, value);
   }
   async toBufferAccount(seed2, path = []) {
-    const [name, ...paths] = seed2.path.split(".");
-    const fieldPubkey = this.get([...path, name]);
+    const [name2, ...paths] = seed2.path.split(".");
+    const fieldPubkey = this.get([...path, name2]);
     if (!fieldPubkey)
       return;
     if (!paths.length) {
@@ -44292,14 +44292,14 @@ class AccountStore {
     this._idls = {};
     this._idls[programId.toBase58()] = accounts2;
   }
-  async fetchAccount({ publicKey: publicKey2, name }) {
+  async fetchAccount({ publicKey: publicKey2, name: name2 }) {
     const address2 = publicKey2.toBase58();
     if (!this._cache.has(address2)) {
       const accountInfo = await this._provider.connection.getAccountInfo(publicKey2);
       if (accountInfo === null) {
         throw new Error(`Account not found: ${address2}`);
       }
-      if (name === "tokenAccount") {
+      if (name2 === "tokenAccount") {
         const account = decodeTokenAccount(accountInfo.data);
         this._cache.set(address2, account);
       } else {
@@ -44624,7 +44624,7 @@ class ViewFactory {
       if (!returnLog) {
         throw new Error("View expected return log");
       }
-      let returnData = decode2(returnLog.slice(returnPrefix.length));
+      let returnData = decode$4(returnLog.slice(returnPrefix.length));
       let returnType = idlIx.returns;
       if (!returnType) {
         throw new Error("View expected return type");
@@ -44655,14 +44655,14 @@ class NamespaceFactory {
       const simulateItem = SimulateFactory.build(idlIx, txItem, idlErrors, provider, coder, programId, idl2);
       const viewItem = ViewFactory.build(programId, idlIx, simulateItem, idl2);
       const methodItem = MethodsBuilderFactory.build(provider, programId, idlIx, ixItem, txItem, rpcItem, simulateItem, viewItem, account, idl2.types || [], getCustomResolver === null || getCustomResolver === void 0 ? void 0 : getCustomResolver(idlIx));
-      const name = idlIx.name;
-      instruction[name] = ixItem;
-      transaction[name] = txItem;
-      rpc2[name] = rpcItem;
-      simulate[name] = simulateItem;
-      methods[name] = methodItem;
+      const name2 = idlIx.name;
+      instruction[name2] = ixItem;
+      transaction[name2] = txItem;
+      rpc2[name2] = rpcItem;
+      simulate[name2] = simulateItem;
+      methods[name2] = methodItem;
       if (viewItem) {
-        view[name] = viewItem;
+        view[name2] = viewItem;
       }
     });
     return [
@@ -45603,7 +45603,7 @@ function PlayCard({
   doCommitGlobal,
   globalLoading
 }) {
-  const log = typeof appendLog === "function" ? appendLog : () => {
+  const log2 = typeof appendLog === "function" ? appendLog : () => {
   };
   const mintPk = reactExports.useMemo(() => new PublicKey(String(timlgMint).trim()), [timlgMint]);
   const walletStr = pubkey2?.toBase58?.() ?? null;
@@ -45691,12 +45691,12 @@ function PlayCard({
     setStableSalt(nextSalt);
   }
   async function doReveal() {
-    if (!pubkey2) return log("Reveal: connect wallet first.");
-    if (!walletReady || !program) return log("Reveal: wallet/program not ready yet.");
-    if (!selectedRound || currentRoundId == null) return log("Reveal: round not loaded.");
-    if (!selectedRound.pulseSet) return log("Reveal: pulse not set yet (pulseSet=false).");
+    if (!pubkey2) return log2("Reveal: connect wallet first.");
+    if (!walletReady || !program) return log2("Reveal: wallet/program not ready yet.");
+    if (!selectedRound || currentRoundId == null) return log2("Reveal: round not loaded.");
+    if (!selectedRound.pulseSet) return log2("Reveal: pulse not set yet (pulseSet=false).");
     const r = localReceipt;
-    if (!r?.nonce || !r?.saltHex || !r?.ticketPda) return log("Reveal: missing local receipt.");
+    if (!r?.nonce || !r?.saltHex || !r?.ticketPda) return log2("Reveal: missing local receipt.");
     setLoading(true);
     setLastTx("");
     try {
@@ -45712,7 +45712,7 @@ function PlayCard({
       };
       const sig = await program.methods.revealTicket(new BN(roundId2), new BN(nonce), revealGuess, Array.from(salt)).accounts(accounts2).rpc();
       setLastTx(sig);
-      log(`Reveal OK ✅ tx=${sig}`);
+      log2(`Reveal OK ✅ tx=${sig}`);
       if (r) {
         const updated = { ...r, revealTx: sig, revealedAt: Date.now() };
         saveLocalReceipt(pubkey2.toBase58(), roundId2, updated);
@@ -45720,18 +45720,18 @@ function PlayCard({
       }
       await refreshNow?.();
     } catch (e) {
-      log(`Reveal failed: ${parseAnchorErr(e)}`);
+      log2(`Reveal failed: ${parseAnchorErr(e)}`);
     } finally {
       setLoading(false);
     }
   }
   async function doClaim() {
-    if (!pubkey2) return log("Claim: connect wallet first.");
-    if (!walletReady || !program) return log("Claim: wallet/program not ready yet.");
-    if (!selectedRound || currentRoundId == null) return log("Claim: round not loaded.");
-    if (!selectedRound.tokenSettled) return log("Claim: tokenSettled=false.");
+    if (!pubkey2) return log2("Claim: connect wallet first.");
+    if (!walletReady || !program) return log2("Claim: wallet/program not ready yet.");
+    if (!selectedRound || currentRoundId == null) return log2("Claim: round not loaded.");
+    if (!selectedRound.tokenSettled) return log2("Claim: tokenSettled=false.");
     const r = localReceipt;
-    if (!r?.nonce || !r?.ticketPda) return log("Claim: missing local ticket.");
+    if (!r?.nonce || !r?.ticketPda) return log2("Claim: missing local ticket.");
     setLoading(true);
     setLastTx("");
     try {
@@ -45750,7 +45750,7 @@ function PlayCard({
       };
       const sig = await program.methods.claimReward(new BN(currentRoundId), new BN(r.nonce)).accounts(accounts2).rpc();
       setLastTx(sig);
-      log(`Claim OK ✅ tx=${sig}`);
+      log2(`Claim OK ✅ tx=${sig}`);
       if (r) {
         const updated = { ...r, claimTx: sig, claimedAt: Date.now() };
         saveLocalReceipt(pubkey2.toBase58(), currentRoundId, updated);
@@ -45758,7 +45758,7 @@ function PlayCard({
       }
       await refreshNow?.();
     } catch (e) {
-      log(`Claim failed: ${parseAnchorErr(e)}`);
+      log2(`Claim failed: ${parseAnchorErr(e)}`);
     } finally {
       setLoading(false);
     }
@@ -47022,10 +47022,10 @@ function formatCSSText(style) {
   return `${style.cssText} content: '${content.replace(/'|"/g, "")}';`;
 }
 function formatCSSProperties(style, options) {
-  return getStyleProperties(options).map((name) => {
-    const value = style.getPropertyValue(name);
-    const priority = style.getPropertyPriority(name);
-    return `${name}: ${value}${priority ? " !important" : ""};`;
+  return getStyleProperties(options).map((name2) => {
+    const value = style.getPropertyValue(name2);
+    const priority = style.getPropertyPriority(name2);
+    return `${name2}: ${value}${priority ? " !important" : ""};`;
   }).join(" ");
 }
 function getPseudoElementStyle(className, pseudo, style, options) {
@@ -47097,8 +47097,8 @@ async function fetchAsDataURL(url, init, process2) {
     reader.onloadend = () => {
       try {
         resolve(process2({ res, result: reader.result }));
-      } catch (error) {
-        reject(error);
+      } catch (error2) {
+        reject(error2);
       }
     };
     reader.readAsDataURL(blob2);
@@ -47132,11 +47132,11 @@ async function resourceToDataURL(resourceUrl, contentType, options) {
       return getContentFromDataUrl(result);
     });
     dataURL = makeDataUrl(content, contentType);
-  } catch (error) {
+  } catch (error2) {
     dataURL = options.imagePlaceholder || "";
     let msg = `Failed to fetch resource: ${resourceUrl}`;
-    if (error) {
-      msg = typeof error === "string" ? error : error.message;
+    if (error2) {
+      msg = typeof error2 === "string" ? error2 : error2.message;
     }
     if (msg) {
       console.warn(msg);
@@ -47207,7 +47207,7 @@ async function cloneChildren(nativeNode, clonedNode, options) {
   if (children.length === 0 || isInstanceOfElement(nativeNode, HTMLVideoElement)) {
     return clonedNode;
   }
-  await children.reduce((deferred, child) => deferred.then(() => cloneNode(child, options)).then((clonedChild) => {
+  await children.reduce((deferred, child2) => deferred.then(() => cloneNode(child2, options)).then((clonedChild) => {
     if (clonedChild) {
       clonedNode.appendChild(clonedChild);
     }
@@ -47224,19 +47224,19 @@ function cloneCSSStyle(nativeNode, clonedNode, options) {
     targetStyle.cssText = sourceStyle.cssText;
     targetStyle.transformOrigin = sourceStyle.transformOrigin;
   } else {
-    getStyleProperties(options).forEach((name) => {
-      let value = sourceStyle.getPropertyValue(name);
-      if (name === "font-size" && value.endsWith("px")) {
+    getStyleProperties(options).forEach((name2) => {
+      let value = sourceStyle.getPropertyValue(name2);
+      if (name2 === "font-size" && value.endsWith("px")) {
         const reducedFont = Math.floor(parseFloat(value.substring(0, value.length - 2))) - 0.1;
         value = `${reducedFont}px`;
       }
-      if (isInstanceOfElement(nativeNode, HTMLIFrameElement) && name === "display" && value === "inline") {
+      if (isInstanceOfElement(nativeNode, HTMLIFrameElement) && name2 === "display" && value === "inline") {
         value = "block";
       }
-      if (name === "d" && clonedNode.getAttribute("d")) {
+      if (name2 === "d" && clonedNode.getAttribute("d")) {
         value = `path(${clonedNode.getAttribute("d")})`;
       }
-      targetStyle.setProperty(name, value, sourceStyle.getPropertyPriority(name));
+      targetStyle.setProperty(name2, value, sourceStyle.getPropertyPriority(name2));
     });
   }
 }
@@ -47251,7 +47251,7 @@ function cloneInputValue(nativeNode, clonedNode) {
 function cloneSelectValue(nativeNode, clonedNode) {
   if (isInstanceOfElement(nativeNode, HTMLSelectElement)) {
     const clonedSelect = clonedNode;
-    const selectedOption = Array.from(clonedSelect.children).find((child) => nativeNode.value === child.getAttribute("value"));
+    const selectedOption = Array.from(clonedSelect.children).find((child2) => nativeNode.value === child2.getAttribute("value"));
     if (selectedOption) {
       selectedOption.setAttribute("selected", "");
     }
@@ -47333,7 +47333,7 @@ async function embed(cssText, resourceURL, baseURL, options, getContentFromUrl) 
       dataURL = await resourceToDataURL(resolvedURL, contentType, options);
     }
     return cssText.replace(toRegex(resourceURL), `$1${dataURL}$3`);
-  } catch (error) {
+  } catch (error2) {
   }
   return cssText;
 }
@@ -47387,8 +47387,8 @@ async function embedImageNode(clonedNode, options) {
     clonedNode.onerror = options.onImageErrorHandler ? (...attributes) => {
       try {
         resolve(options.onImageErrorHandler(...attributes));
-      } catch (error) {
-        reject(error);
+      } catch (error2) {
+        reject(error2);
       }
     } : reject;
     const image = clonedNode;
@@ -47408,7 +47408,7 @@ async function embedImageNode(clonedNode, options) {
 }
 async function embedChildren(clonedNode, options) {
   const children = toArray(clonedNode.childNodes);
-  const deferreds = children.map((child) => embedImages(child, options));
+  const deferreds = children.map((child2) => embedImages(child2, options));
   await Promise.all(deferreds).then(() => clonedNode);
 }
 async function embedImages(clonedNode, options) {
@@ -47513,10 +47513,10 @@ async function getCSSRules(styleSheets, options) {
             const deferred = fetchCSS(url).then((metadata2) => embedFonts(metadata2, options)).then((cssText) => parseCSS(cssText).forEach((rule) => {
               try {
                 sheet.insertRule(rule, rule.startsWith("@import") ? importIndex += 1 : sheet.cssRules.length);
-              } catch (error) {
+              } catch (error2) {
                 console.error("Error inserting rule from remote css", {
                   rule,
-                  error
+                  error: error2
                 });
               }
             })).catch((e) => {
@@ -47574,9 +47574,9 @@ function getUsedFonts(node) {
     fontFamily.split(",").forEach((font) => {
       fonts.add(normalizeFontFamily(font));
     });
-    Array.from(node2.children).forEach((child) => {
-      if (child instanceof HTMLElement) {
-        traverse(child);
+    Array.from(node2.children).forEach((child2) => {
+      if (child2 instanceof HTMLElement) {
+        traverse(child2);
       }
     });
   }
@@ -47880,10 +47880,10 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
 });
 const address = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const metadata = { "name": "timlg_protocol", "version": "0.1.0", "spec": "0.1.0", "description": "Created with Anchor" };
-const instructions = /* @__PURE__ */ JSON.parse('[{"name":"add_oracle","discriminator":[185,165,165,167,208,207,55,35],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"claim_reward","discriminator":[149,95,181,242,94,90,158,162],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"user_timlg_ata","writable":true},{"name":"reward_fee_pool","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"close_config","discriminator":[145,9,72,157,95,125,61,85],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","writable":true,"signer":true}],"args":[]},{"name":"close_round","discriminator":[149,14,81,88,230,226,234,37],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"close_ticket","discriminator":[66,209,114,197,75,27,182,117],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","docs":["Address verification is secondary as Ticket PDA already enforces the round_id."]},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"commit_batch","discriminator":[27,234,100,224,134,31,168,142],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitEntry"}}}}]},{"name":"commit_batch_signed","discriminator":[114,249,180,103,248,14,43,173],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"payer","docs":["Relayer (paga fees)"],"writable":true,"signer":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user"},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"instructions"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitSignedEntry"}}}}]},{"name":"commit_ticket","discriminator":[15,97,55,56,38,249,88,220],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"commitment","type":{"array":["u8",32]}}]},{"name":"create_round","discriminator":[229,218,236,169,231,80,134,112],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"create_round_auto","discriminator":[203,214,64,8,185,82,116,71],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"deposit_escrow","discriminator":[226,112,158,176,178,118,153,128],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"finalize_round","discriminator":[239,160,254,11,254,144,53,148],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","signer":true}],"args":[{"name":"round_id","type":"u64"}]},{"name":"fund_vault","discriminator":[26,33,207,242,119,108,134,73],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"funder","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"amount","type":"u64"}]},{"name":"init_user_escrow","discriminator":[122,51,129,53,23,2,205,146],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[]},{"name":"initialize_config","discriminator":[208,127,21,1,194,190,196,70],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","docs":["Mint SPL del token TIMLG (ya creado off-chain en tests o en deploy script)"],"writable":true},{"name":"treasury_sol","docs":["✅ NUEVO: Treasury SOL (lamports) como system-owned PDA (igual que vault)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"treasury","docs":["Treasury SPL = TokenAccount PDA controlado por el programa (authority = config PDA)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"stake_amount","type":"u64"},{"name":"commit_window_slots","type":"u64"},{"name":"reveal_window_slots","type":"u64"}]},{"name":"initialize_oracle_set","discriminator":[130,190,220,106,237,202,154,216],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"threshold","type":"u8"},{"name":"initial_oracles","type":{"vec":"pubkey"}}]},{"name":"initialize_round_registry","discriminator":[168,224,102,212,197,199,124,55],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"start_round_id","type":"u64"}]},{"name":"initialize_tokenomics","discriminator":[212,84,141,244,21,193,39,208],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"reward_fee_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,119,97,114,100,95,102,101,101,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"replication_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,112,108,105,99,97,116,105,111,110,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"recover_funds","discriminator":[194,165,70,223,66,241,45,34],"accounts":[{"name":"config","writable":true},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"recover_funds_anyone","discriminator":[63,252,95,65,228,16,150,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"account","path":"ticket.nonce","account":"Ticket"}]}},{"name":"user","writable":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"cranker","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"remove_oracle","discriminator":[60,93,51,197,182,42,170,26],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"reveal_batch","discriminator":[42,176,196,168,123,47,195,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealEntry"}}}}]},{"name":"reveal_batch_signed","discriminator":[157,126,204,244,23,210,88,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"payer","docs":["Relayer paying tx fees (must sign tx)"],"signer":true},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealSignedEntry"}}}}]},{"name":"reveal_ticket","discriminator":[223,24,70,21,181,13,151,239],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"guess","type":"u8"},{"name":"salt","type":{"array":["u8",32]}}]},{"name":"set_claim_grace_slots","discriminator":[186,199,198,137,128,29,135,49],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"claim_grace_slots","type":"u64"}]},{"name":"set_oracle_pubkey","discriminator":[90,135,153,229,200,95,163,243],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle_pubkey","type":"pubkey"}]},{"name":"set_oracle_threshold","discriminator":[181,85,21,30,120,168,37,233],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"threshold","type":"u8"}]},{"name":"set_pause","discriminator":[63,32,154,2,56,103,79,45],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"paused","type":"bool"}]},{"name":"set_pulse_signed","discriminator":[50,221,54,125,25,40,123,89],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse","type":{"array":["u8",64]}}]},{"name":"settle_round_tokens","discriminator":[237,209,221,2,7,78,113,158],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"treasury","writable":true},{"name":"replication_pool","writable":true},{"name":"payer","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"sweep_unclaimed","discriminator":[64,168,221,224,42,216,138,144],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury_sol","docs":["✅ SOL destination"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"timlg_vault","docs":["✅ SPL vault per round"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury","docs":["✅ SPL destination (from config)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"timlg_mint"},{"name":"admin","signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"update_stake_amount","discriminator":[253,105,70,4,212,31,206,34],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"new_stake_amount","type":"u64"}]},{"name":"withdraw_escrow","discriminator":[81,84,226,128,245,47,96,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]}]');
+const instructions = /* @__PURE__ */ JSON.parse('[{"name":"add_oracle","discriminator":[185,165,165,167,208,207,55,35],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"claim_reward","discriminator":[149,95,181,242,94,90,158,162],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"user_timlg_ata","writable":true},{"name":"reward_fee_pool","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"close_config","discriminator":[145,9,72,157,95,125,61,85],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","writable":true,"signer":true}],"args":[]},{"name":"close_round","discriminator":[149,14,81,88,230,226,234,37],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"close_ticket","discriminator":[66,209,114,197,75,27,182,117],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","docs":["Address verification is secondary as Ticket PDA already enforces the round_id."]},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"}]},{"name":"commit_batch","discriminator":[27,234,100,224,134,31,168,142],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitEntry"}}}}]},{"name":"commit_batch_signed","discriminator":[114,249,180,103,248,14,43,173],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"payer","docs":["Relayer (paga fees)"],"writable":true,"signer":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user"},{"name":"instructions"},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"CommitSignedEntry"}}}}]},{"name":"commit_ticket","discriminator":[15,97,55,56,38,249,88,220],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"timlg_vault","writable":true},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"commitment","type":{"array":["u8",32]}}]},{"name":"create_round","discriminator":[229,218,236,169,231,80,134,112],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"create_round_auto","discriminator":[203,214,64,8,185,82,116,71],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"round_registry.next_round_id","account":"RoundRegistry"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"pulse_index_target","type":"u64"},{"name":"commit_deadline_slot","type":"u64"},{"name":"reveal_deadline_slot","type":"u64"}]},{"name":"deposit_escrow","discriminator":[226,112,158,176,178,118,153,128],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"finalize_round","discriminator":[239,160,254,11,254,144,53,148],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"admin","signer":true}],"args":[{"name":"round_id","type":"u64"}]},{"name":"fund_vault","discriminator":[26,33,207,242,119,108,134,73],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"funder","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"amount","type":"u64"}]},{"name":"init_user_escrow","discriminator":[122,51,129,53,23,2,205,146],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[]},{"name":"initialize_config","discriminator":[208,127,21,1,194,190,196,70],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","docs":["Mint SPL del token TIMLG (ya creado off-chain en tests o en deploy script)"],"writable":true},{"name":"treasury_sol","docs":["✅ NUEVO: Treasury SOL (lamports) como system-owned PDA (igual que vault)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"treasury","docs":["Treasury SPL = TokenAccount PDA controlado por el programa (authority = config PDA)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"stake_amount","type":"u64"},{"name":"commit_window_slots","type":"u64"},{"name":"reveal_window_slots","type":"u64"}]},{"name":"initialize_oracle_set","discriminator":[130,190,220,106,237,202,154,216],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"threshold","type":"u8"},{"name":"initial_oracles","type":{"vec":"pubkey"}}]},{"name":"initialize_round_registry","discriminator":[168,224,102,212,197,199,124,55],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round_registry","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,114,101,103,105,115,116,114,121,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"start_round_id","type":"u64"}]},{"name":"initialize_tokenomics","discriminator":[212,84,141,244,21,193,39,208],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint"},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"reward_fee_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,119,97,114,100,95,102,101,101,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"replication_pool","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,101,112,108,105,99,97,116,105,111,110,95,112,111,111,108,95,118,51]},{"kind":"account","path":"tokenomics"}]}},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"},{"name":"rent","address":"SysvarRent111111111111111111111111111111111"}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"migrate_config","discriminator":[92,131,58,105,210,154,224,193],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[]},{"name":"recover_funds","discriminator":[194,165,70,223,66,241,45,34],"accounts":[{"name":"config","writable":true},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true},{"name":"user","writable":true,"signer":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"recover_funds_anyone","discriminator":[63,252,95,65,228,16,150,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"account","path":"ticket.nonce","account":"Ticket"}]}},{"name":"user","writable":true,"relations":["ticket"]},{"name":"user_token_account","writable":true},{"name":"timlg_vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint"},{"name":"cranker","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"remove_oracle","discriminator":[60,93,51,197,182,42,170,26],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle","type":"pubkey"}]},{"name":"reveal_batch","discriminator":[42,176,196,168,123,47,195,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealEntry"}}}}]},{"name":"reveal_batch_signed","discriminator":[157,126,204,244,23,210,88,121],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"payer","docs":["Relayer paying tx fees (must sign tx)"],"signer":true},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"entries","type":{"vec":{"defined":{"name":"RevealSignedEntry"}}}}]},{"name":"reveal_ticket","discriminator":[223,24,70,21,181,13,151,239],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"ticket","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,99,107,101,116,95,118,51]},{"kind":"arg","path":"round_id"},{"kind":"account","path":"user"},{"kind":"arg","path":"nonce"}]}},{"name":"user","signer":true}],"args":[{"name":"round_id","type":"u64"},{"name":"nonce","type":"u64"},{"name":"guess","type":"u8"},{"name":"salt","type":{"array":["u8",32]}}]},{"name":"set_claim_grace_slots","discriminator":[186,199,198,137,128,29,135,49],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"claim_grace_slots","type":"u64"}]},{"name":"set_oracle_pubkey","discriminator":[90,135,153,229,200,95,163,243],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"oracle_pubkey","type":"pubkey"}]},{"name":"set_oracle_threshold","discriminator":[181,85,21,30,120,168,37,233],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"oracle_set","writable":true,"pda":{"seeds":[{"kind":"const","value":[111,114,97,99,108,101,95,115,101,116,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"threshold","type":"u8"}]},{"name":"set_pause","discriminator":[63,32,154,2,56,103,79,45],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"paused","type":"bool"}]},{"name":"set_pulse_signed","discriminator":[50,221,54,125,25,40,123,89],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"instructions","address":"Sysvar1nstructions1111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"},{"name":"pulse","type":{"array":["u8",64]}}]},{"name":"settle_round_tokens","discriminator":[237,209,221,2,7,78,113,158],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"timlg_mint","writable":true},{"name":"timlg_vault","writable":true},{"name":"treasury","writable":true},{"name":"replication_pool","writable":true},{"name":"payer","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"sweep_unclaimed","discriminator":[64,168,221,224,42,216,138,144],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"round","writable":true,"pda":{"seeds":[{"kind":"const","value":[114,111,117,110,100,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"vault","writable":true,"pda":{"seeds":[{"kind":"const","value":[118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury_sol","docs":["✅ SOL destination"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"timlg_vault","docs":["✅ SPL vault per round"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,105,109,108,103,95,118,97,117,108,116,95,118,51]},{"kind":"arg","path":"round_id"}]}},{"name":"treasury","docs":["✅ SPL destination (from config)"],"writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,118,51]}]}},{"name":"timlg_mint"},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"round_id","type":"u64"}]},{"name":"update_sol_service_fee","discriminator":[205,10,164,129,227,229,63,156],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"new_fee","type":"u64"}]},{"name":"update_stake_amount","discriminator":[253,105,70,4,212,31,206,34],"accounts":[{"name":"config","writable":true,"pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"admin","signer":true}],"args":[{"name":"new_stake_amount","type":"u64"}]},{"name":"update_tokenomics","discriminator":[84,5,120,188,85,71,140,3],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"tokenomics","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,111,107,101,110,111,109,105,99,115,95,118,51]},{"kind":"account","path":"config"}]}},{"name":"admin","signer":true}],"args":[{"name":"reward_fee_bps","type":"u16"}]},{"name":"withdraw_escrow","discriminator":[81,84,226,128,245,47,96,104],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"timlg_mint","writable":true},{"name":"user_escrow","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user_escrow_ata","writable":true,"pda":{"seeds":[{"kind":"const","value":[117,115,101,114,95,101,115,99,114,111,119,95,118,97,117,108,116,95,118,51]},{"kind":"account","path":"user"}]}},{"name":"user","writable":true,"signer":true},{"name":"user_timlg_ata","writable":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]},{"name":"withdraw_treasury_sol","discriminator":[183,223,87,23,30,186,126,187],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"treasury_sol","writable":true,"pda":{"seeds":[{"kind":"const","value":[116,114,101,97,115,117,114,121,95,115,111,108,95,118,51]}]}},{"name":"admin","writable":true,"signer":true},{"name":"system_program","address":"11111111111111111111111111111111"}],"args":[{"name":"amount","type":"u64"}]},{"name":"withdraw_treasury_tokens","discriminator":[133,133,63,52,57,241,76,215],"accounts":[{"name":"config","pda":{"seeds":[{"kind":"const","value":[99,111,110,102,105,103,95,118,51]}]}},{"name":"source_vault","writable":true},{"name":"admin_ata","writable":true},{"name":"admin","writable":true,"signer":true},{"name":"token_program","address":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"}],"args":[{"name":"amount","type":"u64"}]}]');
 const accounts = [{ "name": "Config", "discriminator": [155, 12, 170, 224, 30, 250, 204, 130] }, { "name": "OracleSet", "discriminator": [128, 26, 73, 134, 218, 90, 126, 42] }, { "name": "Round", "discriminator": [87, 127, 165, 51, 73, 78, 116, 174] }, { "name": "RoundRegistry", "discriminator": [89, 3, 13, 175, 73, 80, 211, 206] }, { "name": "Ticket", "discriminator": [41, 228, 24, 165, 78, 90, 235, 200] }, { "name": "Tokenomics", "discriminator": [252, 176, 228, 183, 130, 36, 15, 194] }, { "name": "UserEscrow", "discriminator": [242, 233, 85, 38, 26, 5, 142, 109] }];
 const errors = [{ "code": 6e3, "name": "Unauthorized", "msg": "Unauthorized" }, { "code": 6001, "name": "Paused", "msg": "Protocol paused" }, { "code": 6002, "name": "InvalidDeadlines", "msg": "Invalid deadlines" }, { "code": 6003, "name": "CommitClosed", "msg": "Commit window closed" }, { "code": 6004, "name": "RevealClosed", "msg": "Reveal window closed" }, { "code": 6005, "name": "PulseNotSet", "msg": "Pulse not set" }, { "code": 6006, "name": "PulseAlreadySet", "msg": "Round pulse already set" }, { "code": 6007, "name": "AlreadyFinalized", "msg": "Round already finalized" }, { "code": 6008, "name": "NotFinalized", "msg": "Round not finalized" }, { "code": 6009, "name": "CannotFinalizeYet", "msg": "Cannot finalize yet" }, { "code": 6010, "name": "AlreadyRevealed", "msg": "Already revealed" }, { "code": 6011, "name": "CommitmentMismatch", "msg": "Commitment mismatch" }, { "code": 6012, "name": "InvalidGuess", "msg": "Invalid guess (must be 0/1)" }, { "code": 6013, "name": "TooManyEntries", "msg": "Too many entries" }, { "code": 6014, "name": "TicketPdaMismatch", "msg": "Ticket PDA mismatch" }, { "code": 6015, "name": "TicketAlreadyExists", "msg": "Ticket already exists" }, { "code": 6016, "name": "TicketNotOwnedByProgram", "msg": "Ticket not owned by program" }, { "code": 6017, "name": "VaultPdaMismatch", "msg": "Vault PDA mismatch" }, { "code": 6018, "name": "InsufficientVaultFunds", "msg": "Insufficient vault funds" }, { "code": 6019, "name": "MissingOrInvalidEd25519Ix", "msg": "Missing or invalid ed25519 verify instruction" }, { "code": 6020, "name": "Ed25519PubkeyMismatch", "msg": "Ed25519 pubkey mismatch" }, { "code": 6021, "name": "Ed25519MessageMismatch", "msg": "Ed25519 message mismatch" }, { "code": 6022, "name": "OracleNotSet", "msg": "Oracle pubkey not set" }, { "code": 6023, "name": "BitIndexMismatch", "msg": "Bit index mismatch" }, { "code": 6024, "name": "AccountBorrowFailed", "msg": "Failed to borrow account data" }, { "code": 6025, "name": "RoundFinalized", "msg": "Round is finalized" }, { "code": 6026, "name": "CommitAfterPulseSet", "msg": "Commit not allowed after pulse is set" }, { "code": 6027, "name": "SweepTooEarly", "msg": "Sweep not allowed yet (grace period not elapsed)" }, { "code": 6028, "name": "AlreadySwept", "msg": "Vault already swept for this round" }, { "code": 6029, "name": "ClaimAfterSweep", "msg": "Cannot claim after vault sweep" }, { "code": 6030, "name": "InvalidStakeAmount", "msg": "Invalid stake amount" }, { "code": 6031, "name": "InvalidWindow", "msg": "Invalid window" }, { "code": 6032, "name": "MissingBump", "msg": "Missing bump" }, { "code": 6033, "name": "MathOverflow", "msg": "Math overflow" }, { "code": 6034, "name": "TIMLGMintMismatch", "msg": "timlg_mint does not match config" }, { "code": 6035, "name": "InvalidUserTIMLGAta", "msg": "Invalid user TIMLG token account" }, { "code": 6036, "name": "TicketNotRevealed", "msg": "Ticket not revealed" }, { "code": 6037, "name": "NotWinner", "msg": "Not a winner" }, { "code": 6038, "name": "AlreadyClaimed", "msg": "Already claimed" }, { "code": 6039, "name": "StakeNotPaid", "msg": "Stake not paid for this ticket" }, { "code": 6040, "name": "InsufficientEscrow", "msg": "Insufficient escrow funds" }, { "code": 6041, "name": "SignedBatchMixedUsers", "msg": "Signed batch contains mixed users" }, { "code": 6042, "name": "RoundNotSettled", "msg": "Round tokens not settled yet" }, { "code": 6043, "name": "SettleTooEarly", "msg": "Too early to settle round tokens" }, { "code": 6044, "name": "RoundTokensAlreadySettled", "msg": "Round tokens already settled" }, { "code": 6045, "name": "OracleSetFull", "msg": "OracleSet is full" }, { "code": 6046, "name": "OracleAlreadyExists", "msg": "Oracle already exists in allowlist" }, { "code": 6047, "name": "OracleNotFound", "msg": "Oracle not found in allowlist" }, { "code": 6048, "name": "InvalidThreshold", "msg": "Invalid threshold" }, { "code": 6049, "name": "ThresholdExceedsOracleCount", "msg": "Threshold exceeds current oracle count" }, { "code": 6050, "name": "InvalidFeeBps", "msg": "Invalid fee bps (must be 0..=10_000)." }, { "code": 6051, "name": "InvalidBps", "msg": "Invalid basis points (must be <= 10000)" }, { "code": 12052, "name": "RefundTooEarly", "msg": "Refund too early" }, { "code": 12053, "name": "VaultNotEmpty", "msg": "Vault not empty" }, { "code": 12054, "name": "RevealWindowTooShort", "msg": "Reveal window too short" }, { "code": 12055, "name": "TokenomicsNotInitialized", "msg": "Tokenomics not initialized" }, { "code": 12056, "name": "NotSwept", "msg": "Round not swept" }, { "code": 12057, "name": "RoundTokensNotSettled", "msg": "Round tokens not settled" }, { "code": 12058, "name": "TicketAlreadyProcessed", "msg": "Ticket already processed" }, { "code": 12059, "name": "TicketNotProcessed", "msg": "Ticket not processed yet" }, { "code": 12060, "name": "WinnerMustClaimFirst", "msg": "Winner must claim reward first" }, { "code": 12061, "name": "PulseTooLate", "msg": "Pulse too late (liveness hazard)" }];
-const types = [{ "name": "CommitEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "CommitSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "Config", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "stake_amount", "type": "u64" }, { "name": "commit_window_slots", "type": "u64" }, { "name": "reveal_window_slots", "type": "u64" }, { "name": "claim_grace_slots", "type": "u64" }, { "name": "oracle_pubkey", "type": "pubkey" }, { "name": "paused", "type": "bool" }, { "name": "version", "type": "u16" }, { "name": "timlg_mint", "type": "pubkey" }, { "name": "treasury", "type": "pubkey" }, { "name": "treasury_bump", "type": "u8" }, { "name": "treasury_sol", "type": "pubkey" }, { "name": "treasury_sol_bump", "type": "u8" }] } }, { "name": "OracleSet", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "threshold", "docs": ["Minimum number of oracle attestations required (PR2 will consume this)."], "type": "u8" }, { "name": "oracles", "docs": ["Allowlisted oracle pubkeys.", "NOTE: fixed max_len to keep account size deterministic."], "type": { "vec": "pubkey" } }, { "name": "version", "type": "u16" }] } }, { "name": "RevealEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "RevealSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "Round", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "state", "type": "u8" }, { "name": "vault", "type": "pubkey" }, { "name": "vault_bump", "type": "u8" }, { "name": "pulse_index_target", "type": "u64" }, { "name": "commit_deadline_slot", "type": "u64" }, { "name": "reveal_deadline_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "pulse_set", "type": "bool" }, { "name": "pulse", "type": { "array": ["u8", 64] } }, { "name": "pulse_set_slot", "type": "u64" }, { "name": "finalized", "type": "bool" }, { "name": "finalized_slot", "type": "u64" }, { "name": "swept", "type": "bool" }, { "name": "swept_slot", "type": "u64" }, { "name": "timlg_vault", "type": "pubkey" }, { "name": "timlg_vault_bump", "type": "u8" }, { "name": "committed_count", "type": "u64" }, { "name": "revealed_count", "type": "u64" }, { "name": "win_count", "type": "u64" }, { "name": "settled_count", "type": "u64" }, { "name": "token_settled", "type": "bool" }, { "name": "token_settled_slot", "type": "u64" }] } }, { "name": "RoundRegistry", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "next_round_id", "type": "u64" }, { "name": "version", "type": "u16" }] } }, { "name": "Ticket", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "commitment", "type": { "array": ["u8", 32] } }, { "name": "stake_paid", "type": "bool" }, { "name": "stake_slashed", "type": "bool" }, { "name": "processed", "type": "bool" }, { "name": "revealed", "type": "bool" }, { "name": "guess", "type": "u8" }, { "name": "win", "type": "bool" }, { "name": "bit_index", "type": "u16" }, { "name": "claimed", "type": "bool" }, { "name": "claimed_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "revealed_slot", "type": "u64" }] } }, { "name": "Tokenomics", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "reward_fee_bps", "docs": ["Fee charged on minted rewards (basis points). 100 = 1%."], "type": "u16" }, { "name": "reward_fee_pool", "docs": ["SPL TokenAccount PDAs (TIMLG mint)"], "type": "pubkey" }, { "name": "reward_fee_pool_bump", "type": "u8" }, { "name": "replication_pool", "type": "pubkey" }, { "name": "replication_pool_bump", "type": "u8" }, { "name": "version", "type": "u16" }] } }, { "name": "UserEscrow", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "created_slot", "type": "u64" }, { "name": "updated_slot", "type": "u64" }] } }];
+const types = [{ "name": "CommitEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "CommitSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "commitment", "type": { "array": ["u8", 32] } }] } }, { "name": "Config", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "stake_amount", "type": "u64" }, { "name": "commit_window_slots", "type": "u64" }, { "name": "reveal_window_slots", "type": "u64" }, { "name": "claim_grace_slots", "type": "u64" }, { "name": "oracle_pubkey", "type": "pubkey" }, { "name": "paused", "type": "bool" }, { "name": "version", "type": "u16" }, { "name": "timlg_mint", "type": "pubkey" }, { "name": "treasury", "type": "pubkey" }, { "name": "treasury_bump", "type": "u8" }, { "name": "treasury_sol", "type": "pubkey" }, { "name": "treasury_sol_bump", "type": "u8" }, { "name": "sol_service_fee_lamports", "type": "u64" }] } }, { "name": "OracleSet", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "threshold", "docs": ["Minimum number of oracle attestations required (PR2 will consume this)."], "type": "u8" }, { "name": "oracles", "docs": ["Allowlisted oracle pubkeys.", "NOTE: fixed max_len to keep account size deterministic."], "type": { "vec": "pubkey" } }, { "name": "version", "type": "u16" }] } }, { "name": "RevealEntry", "type": { "kind": "struct", "fields": [{ "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "RevealSignedEntry", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "guess", "type": "u8" }, { "name": "salt", "type": { "array": ["u8", 32] } }] } }, { "name": "Round", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "state", "type": "u8" }, { "name": "vault", "type": "pubkey" }, { "name": "vault_bump", "type": "u8" }, { "name": "pulse_index_target", "type": "u64" }, { "name": "commit_deadline_slot", "type": "u64" }, { "name": "reveal_deadline_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "pulse_set", "type": "bool" }, { "name": "pulse", "type": { "array": ["u8", 64] } }, { "name": "pulse_set_slot", "type": "u64" }, { "name": "finalized", "type": "bool" }, { "name": "finalized_slot", "type": "u64" }, { "name": "swept", "type": "bool" }, { "name": "swept_slot", "type": "u64" }, { "name": "timlg_vault", "type": "pubkey" }, { "name": "timlg_vault_bump", "type": "u8" }, { "name": "committed_count", "type": "u64" }, { "name": "revealed_count", "type": "u64" }, { "name": "win_count", "type": "u64" }, { "name": "settled_count", "type": "u64" }, { "name": "token_settled", "type": "bool" }, { "name": "token_settled_slot", "type": "u64" }] } }, { "name": "RoundRegistry", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "next_round_id", "type": "u64" }, { "name": "version", "type": "u16" }] } }, { "name": "Ticket", "type": { "kind": "struct", "fields": [{ "name": "round_id", "type": "u64" }, { "name": "user", "type": "pubkey" }, { "name": "nonce", "type": "u64" }, { "name": "bump", "type": "u8" }, { "name": "commitment", "type": { "array": ["u8", 32] } }, { "name": "stake_paid", "type": "bool" }, { "name": "stake_slashed", "type": "bool" }, { "name": "processed", "type": "bool" }, { "name": "revealed", "type": "bool" }, { "name": "guess", "type": "u8" }, { "name": "win", "type": "bool" }, { "name": "bit_index", "type": "u16" }, { "name": "claimed", "type": "bool" }, { "name": "claimed_slot", "type": "u64" }, { "name": "created_slot", "type": "u64" }, { "name": "revealed_slot", "type": "u64" }] } }, { "name": "Tokenomics", "type": { "kind": "struct", "fields": [{ "name": "admin", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "reward_fee_bps", "docs": ["Fee charged on minted rewards (basis points). 100 = 1%."], "type": "u16" }, { "name": "reward_fee_pool", "docs": ["SPL TokenAccount PDAs (TIMLG mint)"], "type": "pubkey" }, { "name": "reward_fee_pool_bump", "type": "u8" }, { "name": "replication_pool", "type": "pubkey" }, { "name": "replication_pool_bump", "type": "u8" }, { "name": "version", "type": "u16" }] } }, { "name": "UserEscrow", "type": { "kind": "struct", "fields": [{ "name": "user", "type": "pubkey" }, { "name": "bump", "type": "u8" }, { "name": "created_slot", "type": "u64" }, { "name": "updated_slot", "type": "u64" }] } }];
 const idl = {
   address,
   metadata,
@@ -47923,7 +47923,7 @@ function MyTickets({
   // Props from App
   rows = [],
   loading = false,
-  error = null,
+  error: error2 = null,
   doRevealTicket,
   doClaimTicket,
   doRefundTicket,
@@ -48810,6 +48810,10841 @@ function MyTickets({
     )
   ] });
 }
+const getDefaultsFromPostinstall = () => void 0;
+var define_process_env_default$1 = {};
+const CONSTANTS = {
+  /**
+   * @define {boolean} Whether this is the Admin Node.js SDK.
+   */
+  NODE_ADMIN: false,
+  /**
+   * Firebase SDK Version
+   */
+  SDK_VERSION: "${JSCORE_VERSION}"
+};
+const assert = function(assertion, message) {
+  if (!assertion) {
+    throw assertionError(message);
+  }
+};
+const assertionError = function(message) {
+  return new Error("Firebase Database (" + CONSTANTS.SDK_VERSION + ") INTERNAL ASSERT FAILED: " + message);
+};
+const stringToByteArray$1 = function(str) {
+  const out = [];
+  let p = 0;
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i);
+    if (c < 128) {
+      out[p++] = c;
+    } else if (c < 2048) {
+      out[p++] = c >> 6 | 192;
+      out[p++] = c & 63 | 128;
+    } else if ((c & 64512) === 55296 && i + 1 < str.length && (str.charCodeAt(i + 1) & 64512) === 56320) {
+      c = 65536 + ((c & 1023) << 10) + (str.charCodeAt(++i) & 1023);
+      out[p++] = c >> 18 | 240;
+      out[p++] = c >> 12 & 63 | 128;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    } else {
+      out[p++] = c >> 12 | 224;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    }
+  }
+  return out;
+};
+const byteArrayToString = function(bytes) {
+  const out = [];
+  let pos = 0, c = 0;
+  while (pos < bytes.length) {
+    const c1 = bytes[pos++];
+    if (c1 < 128) {
+      out[c++] = String.fromCharCode(c1);
+    } else if (c1 > 191 && c1 < 224) {
+      const c2 = bytes[pos++];
+      out[c++] = String.fromCharCode((c1 & 31) << 6 | c2 & 63);
+    } else if (c1 > 239 && c1 < 365) {
+      const c2 = bytes[pos++];
+      const c3 = bytes[pos++];
+      const c4 = bytes[pos++];
+      const u = ((c1 & 7) << 18 | (c2 & 63) << 12 | (c3 & 63) << 6 | c4 & 63) - 65536;
+      out[c++] = String.fromCharCode(55296 + (u >> 10));
+      out[c++] = String.fromCharCode(56320 + (u & 1023));
+    } else {
+      const c2 = bytes[pos++];
+      const c3 = bytes[pos++];
+      out[c++] = String.fromCharCode((c1 & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+    }
+  }
+  return out.join("");
+};
+const base64 = {
+  /**
+   * Maps bytes to characters.
+   */
+  byteToCharMap_: null,
+  /**
+   * Maps characters to bytes.
+   */
+  charToByteMap_: null,
+  /**
+   * Maps bytes to websafe characters.
+   * @private
+   */
+  byteToCharMapWebSafe_: null,
+  /**
+   * Maps websafe characters to bytes.
+   * @private
+   */
+  charToByteMapWebSafe_: null,
+  /**
+   * Our default alphabet, shared between
+   * ENCODED_VALS and ENCODED_VALS_WEBSAFE
+   */
+  ENCODED_VALS_BASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  /**
+   * Our default alphabet. Value 64 (=) is special; it means "nothing."
+   */
+  get ENCODED_VALS() {
+    return this.ENCODED_VALS_BASE + "+/=";
+  },
+  /**
+   * Our websafe alphabet.
+   */
+  get ENCODED_VALS_WEBSAFE() {
+    return this.ENCODED_VALS_BASE + "-_.";
+  },
+  /**
+   * Whether this browser supports the atob and btoa functions. This extension
+   * started at Mozilla but is now implemented by many browsers. We use the
+   * ASSUME_* variables to avoid pulling in the full useragent detection library
+   * but still allowing the standard per-browser compilations.
+   *
+   */
+  HAS_NATIVE_SUPPORT: typeof atob === "function",
+  /**
+   * Base64-encode an array of bytes.
+   *
+   * @param input An array of bytes (numbers with
+   *     value in [0, 255]) to encode.
+   * @param webSafe Boolean indicating we should use the
+   *     alternative alphabet.
+   * @return The base64 encoded string.
+   */
+  encodeByteArray(input, webSafe) {
+    if (!Array.isArray(input)) {
+      throw Error("encodeByteArray takes an array as a parameter");
+    }
+    this.init_();
+    const byteToCharMap = webSafe ? this.byteToCharMapWebSafe_ : this.byteToCharMap_;
+    const output = [];
+    for (let i = 0; i < input.length; i += 3) {
+      const byte1 = input[i];
+      const haveByte2 = i + 1 < input.length;
+      const byte2 = haveByte2 ? input[i + 1] : 0;
+      const haveByte3 = i + 2 < input.length;
+      const byte3 = haveByte3 ? input[i + 2] : 0;
+      const outByte1 = byte1 >> 2;
+      const outByte2 = (byte1 & 3) << 4 | byte2 >> 4;
+      let outByte3 = (byte2 & 15) << 2 | byte3 >> 6;
+      let outByte4 = byte3 & 63;
+      if (!haveByte3) {
+        outByte4 = 64;
+        if (!haveByte2) {
+          outByte3 = 64;
+        }
+      }
+      output.push(byteToCharMap[outByte1], byteToCharMap[outByte2], byteToCharMap[outByte3], byteToCharMap[outByte4]);
+    }
+    return output.join("");
+  },
+  /**
+   * Base64-encode a string.
+   *
+   * @param input A string to encode.
+   * @param webSafe If true, we should use the
+   *     alternative alphabet.
+   * @return The base64 encoded string.
+   */
+  encodeString(input, webSafe) {
+    if (this.HAS_NATIVE_SUPPORT && !webSafe) {
+      return btoa(input);
+    }
+    return this.encodeByteArray(stringToByteArray$1(input), webSafe);
+  },
+  /**
+   * Base64-decode a string.
+   *
+   * @param input to decode.
+   * @param webSafe True if we should use the
+   *     alternative alphabet.
+   * @return string representing the decoded value.
+   */
+  decodeString(input, webSafe) {
+    if (this.HAS_NATIVE_SUPPORT && !webSafe) {
+      return atob(input);
+    }
+    return byteArrayToString(this.decodeStringToByteArray(input, webSafe));
+  },
+  /**
+   * Base64-decode a string.
+   *
+   * In base-64 decoding, groups of four characters are converted into three
+   * bytes.  If the encoder did not apply padding, the input length may not
+   * be a multiple of 4.
+   *
+   * In this case, the last group will have fewer than 4 characters, and
+   * padding will be inferred.  If the group has one or two characters, it decodes
+   * to one byte.  If the group has three characters, it decodes to two bytes.
+   *
+   * @param input Input to decode.
+   * @param webSafe True if we should use the web-safe alphabet.
+   * @return bytes representing the decoded value.
+   */
+  decodeStringToByteArray(input, webSafe) {
+    this.init_();
+    const charToByteMap = webSafe ? this.charToByteMapWebSafe_ : this.charToByteMap_;
+    const output = [];
+    for (let i = 0; i < input.length; ) {
+      const byte1 = charToByteMap[input.charAt(i++)];
+      const haveByte2 = i < input.length;
+      const byte2 = haveByte2 ? charToByteMap[input.charAt(i)] : 0;
+      ++i;
+      const haveByte3 = i < input.length;
+      const byte3 = haveByte3 ? charToByteMap[input.charAt(i)] : 64;
+      ++i;
+      const haveByte4 = i < input.length;
+      const byte4 = haveByte4 ? charToByteMap[input.charAt(i)] : 64;
+      ++i;
+      if (byte1 == null || byte2 == null || byte3 == null || byte4 == null) {
+        throw new DecodeBase64StringError();
+      }
+      const outByte1 = byte1 << 2 | byte2 >> 4;
+      output.push(outByte1);
+      if (byte3 !== 64) {
+        const outByte2 = byte2 << 4 & 240 | byte3 >> 2;
+        output.push(outByte2);
+        if (byte4 !== 64) {
+          const outByte3 = byte3 << 6 & 192 | byte4;
+          output.push(outByte3);
+        }
+      }
+    }
+    return output;
+  },
+  /**
+   * Lazy static initialization function. Called before
+   * accessing any of the static map variables.
+   * @private
+   */
+  init_() {
+    if (!this.byteToCharMap_) {
+      this.byteToCharMap_ = {};
+      this.charToByteMap_ = {};
+      this.byteToCharMapWebSafe_ = {};
+      this.charToByteMapWebSafe_ = {};
+      for (let i = 0; i < this.ENCODED_VALS.length; i++) {
+        this.byteToCharMap_[i] = this.ENCODED_VALS.charAt(i);
+        this.charToByteMap_[this.byteToCharMap_[i]] = i;
+        this.byteToCharMapWebSafe_[i] = this.ENCODED_VALS_WEBSAFE.charAt(i);
+        this.charToByteMapWebSafe_[this.byteToCharMapWebSafe_[i]] = i;
+        if (i >= this.ENCODED_VALS_BASE.length) {
+          this.charToByteMap_[this.ENCODED_VALS_WEBSAFE.charAt(i)] = i;
+          this.charToByteMapWebSafe_[this.ENCODED_VALS.charAt(i)] = i;
+        }
+      }
+    }
+  }
+};
+class DecodeBase64StringError extends Error {
+  constructor() {
+    super(...arguments);
+    this.name = "DecodeBase64StringError";
+  }
+}
+const base64Encode = function(str) {
+  const utf8Bytes = stringToByteArray$1(str);
+  return base64.encodeByteArray(utf8Bytes, true);
+};
+const base64urlEncodeWithoutPadding = function(str) {
+  return base64Encode(str).replace(/\./g, "");
+};
+const base64Decode = function(str) {
+  try {
+    return base64.decodeString(str, true);
+  } catch (e) {
+    console.error("base64Decode failed: ", e);
+  }
+  return null;
+};
+function deepCopy(value) {
+  return deepExtend(void 0, value);
+}
+function deepExtend(target, source) {
+  if (!(source instanceof Object)) {
+    return source;
+  }
+  switch (source.constructor) {
+    case Date:
+      const dateValue = source;
+      return new Date(dateValue.getTime());
+    case Object:
+      if (target === void 0) {
+        target = {};
+      }
+      break;
+    case Array:
+      target = [];
+      break;
+    default:
+      return source;
+  }
+  for (const prop in source) {
+    if (!source.hasOwnProperty(prop) || !isValidKey$1(prop)) {
+      continue;
+    }
+    target[prop] = deepExtend(target[prop], source[prop]);
+  }
+  return target;
+}
+function isValidKey$1(key2) {
+  return key2 !== "__proto__";
+}
+function getGlobal() {
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw new Error("Unable to locate global object.");
+}
+const getDefaultsFromGlobal = () => getGlobal().__FIREBASE_DEFAULTS__;
+const getDefaultsFromEnvVariable = () => {
+  if (typeof process$1 === "undefined" || typeof define_process_env_default$1 === "undefined") {
+    return;
+  }
+  const defaultsJsonString = define_process_env_default$1.__FIREBASE_DEFAULTS__;
+  if (defaultsJsonString) {
+    return JSON.parse(defaultsJsonString);
+  }
+};
+const getDefaultsFromCookie = () => {
+  if (typeof document === "undefined") {
+    return;
+  }
+  let match;
+  try {
+    match = document.cookie.match(/__FIREBASE_DEFAULTS__=([^;]+)/);
+  } catch (e) {
+    return;
+  }
+  const decoded = match && base64Decode(match[1]);
+  return decoded && JSON.parse(decoded);
+};
+const getDefaults = () => {
+  try {
+    return getDefaultsFromPostinstall() || getDefaultsFromGlobal() || getDefaultsFromEnvVariable() || getDefaultsFromCookie();
+  } catch (e) {
+    console.info(`Unable to get __FIREBASE_DEFAULTS__ due to: ${e}`);
+    return;
+  }
+};
+const getDefaultEmulatorHost = (productName) => getDefaults()?.emulatorHosts?.[productName];
+const getDefaultEmulatorHostnameAndPort = (productName) => {
+  const host = getDefaultEmulatorHost(productName);
+  if (!host) {
+    return void 0;
+  }
+  const separatorIndex = host.lastIndexOf(":");
+  if (separatorIndex <= 0 || separatorIndex + 1 === host.length) {
+    throw new Error(`Invalid host ${host} with no separate hostname and port!`);
+  }
+  const port = parseInt(host.substring(separatorIndex + 1), 10);
+  if (host[0] === "[") {
+    return [host.substring(1, separatorIndex - 1), port];
+  } else {
+    return [host.substring(0, separatorIndex), port];
+  }
+};
+const getDefaultAppConfig = () => getDefaults()?.config;
+class Deferred {
+  constructor() {
+    this.reject = () => {
+    };
+    this.resolve = () => {
+    };
+    this.promise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+  /**
+   * Our API internals are not promisified and cannot because our callback APIs have subtle expectations around
+   * invoking promises inline, which Promises are forbidden to do. This method accepts an optional node-style callback
+   * and returns a node-style callback which will resolve or reject the Deferred's promise.
+   */
+  wrapCallback(callback) {
+    return (error2, value) => {
+      if (error2) {
+        this.reject(error2);
+      } else {
+        this.resolve(value);
+      }
+      if (typeof callback === "function") {
+        this.promise.catch(() => {
+        });
+        if (callback.length === 1) {
+          callback(error2);
+        } else {
+          callback(error2, value);
+        }
+      }
+    };
+  }
+}
+function isCloudWorkstation(url) {
+  try {
+    const host = url.startsWith("http://") || url.startsWith("https://") ? new URL(url).hostname : url;
+    return host.endsWith(".cloudworkstations.dev");
+  } catch {
+    return false;
+  }
+}
+async function pingServer(endpoint2) {
+  const result = await fetch(endpoint2, {
+    credentials: "include"
+  });
+  return result.ok;
+}
+function createMockUserToken(token2, projectId) {
+  if (token2.uid) {
+    throw new Error('The "uid" field is no longer supported by mockUserToken. Please use "sub" instead for Firebase Auth User ID.');
+  }
+  const header = {
+    alg: "none",
+    type: "JWT"
+  };
+  const project = projectId || "demo-project";
+  const iat = token2.iat || 0;
+  const sub = token2.sub || token2.user_id;
+  if (!sub) {
+    throw new Error("mockUserToken must contain 'sub' or 'user_id' field!");
+  }
+  const payload = {
+    // Set all required fields to decent defaults
+    iss: `https://securetoken.google.com/${project}`,
+    aud: project,
+    iat,
+    exp: iat + 3600,
+    auth_time: iat,
+    sub,
+    user_id: sub,
+    firebase: {
+      sign_in_provider: "custom",
+      identities: {}
+    },
+    // Override with user options
+    ...token2
+  };
+  const signature2 = "";
+  return [
+    base64urlEncodeWithoutPadding(JSON.stringify(header)),
+    base64urlEncodeWithoutPadding(JSON.stringify(payload)),
+    signature2
+  ].join(".");
+}
+const emulatorStatus = {};
+function getEmulatorSummary() {
+  const summary = {
+    prod: [],
+    emulator: []
+  };
+  for (const key2 of Object.keys(emulatorStatus)) {
+    if (emulatorStatus[key2]) {
+      summary.emulator.push(key2);
+    } else {
+      summary.prod.push(key2);
+    }
+  }
+  return summary;
+}
+function getOrCreateEl(id) {
+  let parentDiv = document.getElementById(id);
+  let created = false;
+  if (!parentDiv) {
+    parentDiv = document.createElement("div");
+    parentDiv.setAttribute("id", id);
+    created = true;
+  }
+  return { created, element: parentDiv };
+}
+let previouslyDismissed = false;
+function updateEmulatorBanner(name2, isRunningEmulator) {
+  if (typeof window === "undefined" || typeof document === "undefined" || !isCloudWorkstation(window.location.host) || emulatorStatus[name2] === isRunningEmulator || emulatorStatus[name2] || // If already set to use emulator, can't go back to prod.
+  previouslyDismissed) {
+    return;
+  }
+  emulatorStatus[name2] = isRunningEmulator;
+  function prefixedId(id) {
+    return `__firebase__banner__${id}`;
+  }
+  const bannerId = "__firebase__banner";
+  const summary = getEmulatorSummary();
+  const showError = summary.prod.length > 0;
+  function tearDown() {
+    const element = document.getElementById(bannerId);
+    if (element) {
+      element.remove();
+    }
+  }
+  function setupBannerStyles(bannerEl) {
+    bannerEl.style.display = "flex";
+    bannerEl.style.background = "#7faaf0";
+    bannerEl.style.position = "fixed";
+    bannerEl.style.bottom = "5px";
+    bannerEl.style.left = "5px";
+    bannerEl.style.padding = ".5em";
+    bannerEl.style.borderRadius = "5px";
+    bannerEl.style.alignItems = "center";
+  }
+  function setupIconStyles(prependIcon, iconId) {
+    prependIcon.setAttribute("width", "24");
+    prependIcon.setAttribute("id", iconId);
+    prependIcon.setAttribute("height", "24");
+    prependIcon.setAttribute("viewBox", "0 0 24 24");
+    prependIcon.setAttribute("fill", "none");
+    prependIcon.style.marginLeft = "-6px";
+  }
+  function setupCloseBtn() {
+    const closeBtn = document.createElement("span");
+    closeBtn.style.cursor = "pointer";
+    closeBtn.style.marginLeft = "16px";
+    closeBtn.style.fontSize = "24px";
+    closeBtn.innerHTML = " &times;";
+    closeBtn.onclick = () => {
+      previouslyDismissed = true;
+      tearDown();
+    };
+    return closeBtn;
+  }
+  function setupLinkStyles(learnMoreLink, learnMoreId) {
+    learnMoreLink.setAttribute("id", learnMoreId);
+    learnMoreLink.innerText = "Learn more";
+    learnMoreLink.href = "https://firebase.google.com/docs/studio/preview-apps#preview-backend";
+    learnMoreLink.setAttribute("target", "__blank");
+    learnMoreLink.style.paddingLeft = "5px";
+    learnMoreLink.style.textDecoration = "underline";
+  }
+  function setupDom() {
+    const banner = getOrCreateEl(bannerId);
+    const firebaseTextId = prefixedId("text");
+    const firebaseText = document.getElementById(firebaseTextId) || document.createElement("span");
+    const learnMoreId = prefixedId("learnmore");
+    const learnMoreLink = document.getElementById(learnMoreId) || document.createElement("a");
+    const prependIconId = prefixedId("preprendIcon");
+    const prependIcon = document.getElementById(prependIconId) || document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    if (banner.created) {
+      const bannerEl = banner.element;
+      setupBannerStyles(bannerEl);
+      setupLinkStyles(learnMoreLink, learnMoreId);
+      const closeBtn = setupCloseBtn();
+      setupIconStyles(prependIcon, prependIconId);
+      bannerEl.append(prependIcon, firebaseText, learnMoreLink, closeBtn);
+      document.body.appendChild(bannerEl);
+    }
+    if (showError) {
+      firebaseText.innerText = `Preview backend disconnected.`;
+      prependIcon.innerHTML = `<g clip-path="url(#clip0_6013_33858)">
+<path d="M4.8 17.6L12 5.6L19.2 17.6H4.8ZM6.91667 16.4H17.0833L12 7.93333L6.91667 16.4ZM12 15.6C12.1667 15.6 12.3056 15.5444 12.4167 15.4333C12.5389 15.3111 12.6 15.1667 12.6 15C12.6 14.8333 12.5389 14.6944 12.4167 14.5833C12.3056 14.4611 12.1667 14.4 12 14.4C11.8333 14.4 11.6889 14.4611 11.5667 14.5833C11.4556 14.6944 11.4 14.8333 11.4 15C11.4 15.1667 11.4556 15.3111 11.5667 15.4333C11.6889 15.5444 11.8333 15.6 12 15.6ZM11.4 13.6H12.6V10.4H11.4V13.6Z" fill="#212121"/>
+</g>
+<defs>
+<clipPath id="clip0_6013_33858">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>`;
+    } else {
+      prependIcon.innerHTML = `<g clip-path="url(#clip0_6083_34804)">
+<path d="M11.4 15.2H12.6V11.2H11.4V15.2ZM12 10C12.1667 10 12.3056 9.94444 12.4167 9.83333C12.5389 9.71111 12.6 9.56667 12.6 9.4C12.6 9.23333 12.5389 9.09444 12.4167 8.98333C12.3056 8.86111 12.1667 8.8 12 8.8C11.8333 8.8 11.6889 8.86111 11.5667 8.98333C11.4556 9.09444 11.4 9.23333 11.4 9.4C11.4 9.56667 11.4556 9.71111 11.5667 9.83333C11.6889 9.94444 11.8333 10 12 10ZM12 18.4C11.1222 18.4 10.2944 18.2333 9.51667 17.9C8.73889 17.5667 8.05556 17.1111 7.46667 16.5333C6.88889 15.9444 6.43333 15.2611 6.1 14.4833C5.76667 13.7056 5.6 12.8778 5.6 12C5.6 11.1111 5.76667 10.2833 6.1 9.51667C6.43333 8.73889 6.88889 8.06111 7.46667 7.48333C8.05556 6.89444 8.73889 6.43333 9.51667 6.1C10.2944 5.76667 11.1222 5.6 12 5.6C12.8889 5.6 13.7167 5.76667 14.4833 6.1C15.2611 6.43333 15.9389 6.89444 16.5167 7.48333C17.1056 8.06111 17.5667 8.73889 17.9 9.51667C18.2333 10.2833 18.4 11.1111 18.4 12C18.4 12.8778 18.2333 13.7056 17.9 14.4833C17.5667 15.2611 17.1056 15.9444 16.5167 16.5333C15.9389 17.1111 15.2611 17.5667 14.4833 17.9C13.7167 18.2333 12.8889 18.4 12 18.4ZM12 17.2C13.4444 17.2 14.6722 16.6944 15.6833 15.6833C16.6944 14.6722 17.2 13.4444 17.2 12C17.2 10.5556 16.6944 9.32778 15.6833 8.31667C14.6722 7.30555 13.4444 6.8 12 6.8C10.5556 6.8 9.32778 7.30555 8.31667 8.31667C7.30556 9.32778 6.8 10.5556 6.8 12C6.8 13.4444 7.30556 14.6722 8.31667 15.6833C9.32778 16.6944 10.5556 17.2 12 17.2Z" fill="#212121"/>
+</g>
+<defs>
+<clipPath id="clip0_6083_34804">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>`;
+      firebaseText.innerText = "Preview backend running in this workspace.";
+    }
+    firebaseText.setAttribute("id", firebaseTextId);
+  }
+  if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", setupDom);
+  } else {
+    setupDom();
+  }
+}
+function getUA() {
+  if (typeof navigator !== "undefined" && typeof navigator["userAgent"] === "string") {
+    return navigator["userAgent"];
+  } else {
+    return "";
+  }
+}
+function isMobileCordova() {
+  return typeof window !== "undefined" && // @ts-ignore Setting up an broadly applicable index signature for Window
+  // just to deal with this case would probably be a bad idea.
+  !!(window["cordova"] || window["phonegap"] || window["PhoneGap"]) && /ios|iphone|ipod|ipad|android|blackberry|iemobile/i.test(getUA());
+}
+function isReactNative() {
+  return typeof navigator === "object" && navigator["product"] === "ReactNative";
+}
+function isNodeSdk() {
+  return CONSTANTS.NODE_ADMIN === true;
+}
+function isIndexedDBAvailable() {
+  try {
+    return typeof indexedDB === "object";
+  } catch (e) {
+    return false;
+  }
+}
+function validateIndexedDBOpenable() {
+  return new Promise((resolve, reject) => {
+    try {
+      let preExist = true;
+      const DB_CHECK_NAME = "validate-browser-context-for-indexeddb-analytics-module";
+      const request = self.indexedDB.open(DB_CHECK_NAME);
+      request.onsuccess = () => {
+        request.result.close();
+        if (!preExist) {
+          self.indexedDB.deleteDatabase(DB_CHECK_NAME);
+        }
+        resolve(true);
+      };
+      request.onupgradeneeded = () => {
+        preExist = false;
+      };
+      request.onerror = () => {
+        reject(request.error?.message || "");
+      };
+    } catch (error2) {
+      reject(error2);
+    }
+  });
+}
+const ERROR_NAME = "FirebaseError";
+class FirebaseError extends Error {
+  constructor(code2, message, customData) {
+    super(message);
+    this.code = code2;
+    this.customData = customData;
+    this.name = ERROR_NAME;
+    Object.setPrototypeOf(this, FirebaseError.prototype);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ErrorFactory.prototype.create);
+    }
+  }
+}
+class ErrorFactory {
+  constructor(service, serviceName, errors2) {
+    this.service = service;
+    this.serviceName = serviceName;
+    this.errors = errors2;
+  }
+  create(code2, ...data) {
+    const customData = data[0] || {};
+    const fullCode = `${this.service}/${code2}`;
+    const template = this.errors[code2];
+    const message = template ? replaceTemplate(template, customData) : "Error";
+    const fullMessage = `${this.serviceName}: ${message} (${fullCode}).`;
+    const error2 = new FirebaseError(fullCode, fullMessage, customData);
+    return error2;
+  }
+}
+function replaceTemplate(template, data) {
+  return template.replace(PATTERN, (_, key2) => {
+    const value = data[key2];
+    return value != null ? String(value) : `<${key2}?>`;
+  });
+}
+const PATTERN = /\{\$([^}]+)}/g;
+function jsonEval(str) {
+  return JSON.parse(str);
+}
+function stringify(data) {
+  return JSON.stringify(data);
+}
+const decode2 = function(token2) {
+  let header = {}, claims = {}, data = {}, signature2 = "";
+  try {
+    const parts = token2.split(".");
+    header = jsonEval(base64Decode(parts[0]) || "");
+    claims = jsonEval(base64Decode(parts[1]) || "");
+    signature2 = parts[2];
+    data = claims["d"] || {};
+    delete claims["d"];
+  } catch (e) {
+  }
+  return {
+    header,
+    claims,
+    data,
+    signature: signature2
+  };
+};
+const isValidFormat = function(token2) {
+  const decoded = decode2(token2), claims = decoded.claims;
+  return !!claims && typeof claims === "object" && claims.hasOwnProperty("iat");
+};
+const isAdmin = function(token2) {
+  const claims = decode2(token2).claims;
+  return typeof claims === "object" && claims["admin"] === true;
+};
+function contains(obj, key2) {
+  return Object.prototype.hasOwnProperty.call(obj, key2);
+}
+function safeGet(obj, key2) {
+  if (Object.prototype.hasOwnProperty.call(obj, key2)) {
+    return obj[key2];
+  } else {
+    return void 0;
+  }
+}
+function isEmpty(obj) {
+  for (const key2 in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key2)) {
+      return false;
+    }
+  }
+  return true;
+}
+function map(obj, fn, contextObj) {
+  const res = {};
+  for (const key2 in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key2)) {
+      res[key2] = fn.call(contextObj, obj[key2], key2, obj);
+    }
+  }
+  return res;
+}
+function deepEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  for (const k of aKeys) {
+    if (!bKeys.includes(k)) {
+      return false;
+    }
+    const aProp = a[k];
+    const bProp = b[k];
+    if (isObject(aProp) && isObject(bProp)) {
+      if (!deepEqual(aProp, bProp)) {
+        return false;
+      }
+    } else if (aProp !== bProp) {
+      return false;
+    }
+  }
+  for (const k of bKeys) {
+    if (!aKeys.includes(k)) {
+      return false;
+    }
+  }
+  return true;
+}
+function isObject(thing) {
+  return thing !== null && typeof thing === "object";
+}
+function querystring(querystringParams) {
+  const params = [];
+  for (const [key2, value] of Object.entries(querystringParams)) {
+    if (Array.isArray(value)) {
+      value.forEach((arrayVal) => {
+        params.push(encodeURIComponent(key2) + "=" + encodeURIComponent(arrayVal));
+      });
+    } else {
+      params.push(encodeURIComponent(key2) + "=" + encodeURIComponent(value));
+    }
+  }
+  return params.length ? "&" + params.join("&") : "";
+}
+class Sha1 {
+  constructor() {
+    this.chain_ = [];
+    this.buf_ = [];
+    this.W_ = [];
+    this.pad_ = [];
+    this.inbuf_ = 0;
+    this.total_ = 0;
+    this.blockSize = 512 / 8;
+    this.pad_[0] = 128;
+    for (let i = 1; i < this.blockSize; ++i) {
+      this.pad_[i] = 0;
+    }
+    this.reset();
+  }
+  reset() {
+    this.chain_[0] = 1732584193;
+    this.chain_[1] = 4023233417;
+    this.chain_[2] = 2562383102;
+    this.chain_[3] = 271733878;
+    this.chain_[4] = 3285377520;
+    this.inbuf_ = 0;
+    this.total_ = 0;
+  }
+  /**
+   * Internal compress helper function.
+   * @param buf Block to compress.
+   * @param offset Offset of the block in the buffer.
+   * @private
+   */
+  compress_(buf, offset2) {
+    if (!offset2) {
+      offset2 = 0;
+    }
+    const W = this.W_;
+    if (typeof buf === "string") {
+      for (let i = 0; i < 16; i++) {
+        W[i] = buf.charCodeAt(offset2) << 24 | buf.charCodeAt(offset2 + 1) << 16 | buf.charCodeAt(offset2 + 2) << 8 | buf.charCodeAt(offset2 + 3);
+        offset2 += 4;
+      }
+    } else {
+      for (let i = 0; i < 16; i++) {
+        W[i] = buf[offset2] << 24 | buf[offset2 + 1] << 16 | buf[offset2 + 2] << 8 | buf[offset2 + 3];
+        offset2 += 4;
+      }
+    }
+    for (let i = 16; i < 80; i++) {
+      const t = W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16];
+      W[i] = (t << 1 | t >>> 31) & 4294967295;
+    }
+    let a = this.chain_[0];
+    let b = this.chain_[1];
+    let c = this.chain_[2];
+    let d = this.chain_[3];
+    let e = this.chain_[4];
+    let f2, k;
+    for (let i = 0; i < 80; i++) {
+      if (i < 40) {
+        if (i < 20) {
+          f2 = d ^ b & (c ^ d);
+          k = 1518500249;
+        } else {
+          f2 = b ^ c ^ d;
+          k = 1859775393;
+        }
+      } else {
+        if (i < 60) {
+          f2 = b & c | d & (b | c);
+          k = 2400959708;
+        } else {
+          f2 = b ^ c ^ d;
+          k = 3395469782;
+        }
+      }
+      const t = (a << 5 | a >>> 27) + f2 + e + k + W[i] & 4294967295;
+      e = d;
+      d = c;
+      c = (b << 30 | b >>> 2) & 4294967295;
+      b = a;
+      a = t;
+    }
+    this.chain_[0] = this.chain_[0] + a & 4294967295;
+    this.chain_[1] = this.chain_[1] + b & 4294967295;
+    this.chain_[2] = this.chain_[2] + c & 4294967295;
+    this.chain_[3] = this.chain_[3] + d & 4294967295;
+    this.chain_[4] = this.chain_[4] + e & 4294967295;
+  }
+  update(bytes, length) {
+    if (bytes == null) {
+      return;
+    }
+    if (length === void 0) {
+      length = bytes.length;
+    }
+    const lengthMinusBlock = length - this.blockSize;
+    let n = 0;
+    const buf = this.buf_;
+    let inbuf = this.inbuf_;
+    while (n < length) {
+      if (inbuf === 0) {
+        while (n <= lengthMinusBlock) {
+          this.compress_(bytes, n);
+          n += this.blockSize;
+        }
+      }
+      if (typeof bytes === "string") {
+        while (n < length) {
+          buf[inbuf] = bytes.charCodeAt(n);
+          ++inbuf;
+          ++n;
+          if (inbuf === this.blockSize) {
+            this.compress_(buf);
+            inbuf = 0;
+            break;
+          }
+        }
+      } else {
+        while (n < length) {
+          buf[inbuf] = bytes[n];
+          ++inbuf;
+          ++n;
+          if (inbuf === this.blockSize) {
+            this.compress_(buf);
+            inbuf = 0;
+            break;
+          }
+        }
+      }
+    }
+    this.inbuf_ = inbuf;
+    this.total_ += length;
+  }
+  /** @override */
+  digest() {
+    const digest = [];
+    let totalBits = this.total_ * 8;
+    if (this.inbuf_ < 56) {
+      this.update(this.pad_, 56 - this.inbuf_);
+    } else {
+      this.update(this.pad_, this.blockSize - (this.inbuf_ - 56));
+    }
+    for (let i = this.blockSize - 1; i >= 56; i--) {
+      this.buf_[i] = totalBits & 255;
+      totalBits /= 256;
+    }
+    this.compress_(this.buf_);
+    let n = 0;
+    for (let i = 0; i < 5; i++) {
+      for (let j = 24; j >= 0; j -= 8) {
+        digest[n] = this.chain_[i] >> j & 255;
+        ++n;
+      }
+    }
+    return digest;
+  }
+}
+function errorPrefix(fnName, argName) {
+  return `${fnName} failed: ${argName} argument `;
+}
+const stringToByteArray = function(str) {
+  const out = [];
+  let p = 0;
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i);
+    if (c >= 55296 && c <= 56319) {
+      const high = c - 55296;
+      i++;
+      assert(i < str.length, "Surrogate pair missing trail surrogate.");
+      const low = str.charCodeAt(i) - 56320;
+      c = 65536 + (high << 10) + low;
+    }
+    if (c < 128) {
+      out[p++] = c;
+    } else if (c < 2048) {
+      out[p++] = c >> 6 | 192;
+      out[p++] = c & 63 | 128;
+    } else if (c < 65536) {
+      out[p++] = c >> 12 | 224;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    } else {
+      out[p++] = c >> 18 | 240;
+      out[p++] = c >> 12 & 63 | 128;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    }
+  }
+  return out;
+};
+const stringLength = function(str) {
+  let p = 0;
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    if (c < 128) {
+      p++;
+    } else if (c < 2048) {
+      p += 2;
+    } else if (c >= 55296 && c <= 56319) {
+      p += 4;
+      i++;
+    } else {
+      p += 3;
+    }
+  }
+  return p;
+};
+function getModularInstance(service) {
+  if (service && service._delegate) {
+    return service._delegate;
+  } else {
+    return service;
+  }
+}
+class Component {
+  /**
+   *
+   * @param name The public service name, e.g. app, auth, firestore, database
+   * @param instanceFactory Service factory responsible for creating the public interface
+   * @param type whether the service provided by the component is public or private
+   */
+  constructor(name2, instanceFactory, type2) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type2;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
+const DEFAULT_ENTRY_NAME$1 = "[DEFAULT]";
+class Provider {
+  constructor(name2, container) {
+    this.name = name2;
+    this.container = container;
+    this.component = null;
+    this.instances = /* @__PURE__ */ new Map();
+    this.instancesDeferred = /* @__PURE__ */ new Map();
+    this.instancesOptions = /* @__PURE__ */ new Map();
+    this.onInitCallbacks = /* @__PURE__ */ new Map();
+  }
+  /**
+   * @param identifier A provider can provide multiple instances of a service
+   * if this.component.multipleInstances is true.
+   */
+  get(identifier) {
+    const normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
+    if (!this.instancesDeferred.has(normalizedIdentifier)) {
+      const deferred = new Deferred();
+      this.instancesDeferred.set(normalizedIdentifier, deferred);
+      if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
+        try {
+          const instance2 = this.getOrInitializeService({
+            instanceIdentifier: normalizedIdentifier
+          });
+          if (instance2) {
+            deferred.resolve(instance2);
+          }
+        } catch (e) {
+        }
+      }
+    }
+    return this.instancesDeferred.get(normalizedIdentifier).promise;
+  }
+  getImmediate(options) {
+    const normalizedIdentifier = this.normalizeInstanceIdentifier(options?.identifier);
+    const optional2 = options?.optional ?? false;
+    if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
+      try {
+        return this.getOrInitializeService({
+          instanceIdentifier: normalizedIdentifier
+        });
+      } catch (e) {
+        if (optional2) {
+          return null;
+        } else {
+          throw e;
+        }
+      }
+    } else {
+      if (optional2) {
+        return null;
+      } else {
+        throw Error(`Service ${this.name} is not available`);
+      }
+    }
+  }
+  getComponent() {
+    return this.component;
+  }
+  setComponent(component) {
+    if (component.name !== this.name) {
+      throw Error(`Mismatching Component ${component.name} for Provider ${this.name}.`);
+    }
+    if (this.component) {
+      throw Error(`Component for ${this.name} has already been provided`);
+    }
+    this.component = component;
+    if (!this.shouldAutoInitialize()) {
+      return;
+    }
+    if (isComponentEager(component)) {
+      try {
+        this.getOrInitializeService({ instanceIdentifier: DEFAULT_ENTRY_NAME$1 });
+      } catch (e) {
+      }
+    }
+    for (const [instanceIdentifier, instanceDeferred] of this.instancesDeferred.entries()) {
+      const normalizedIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
+      try {
+        const instance2 = this.getOrInitializeService({
+          instanceIdentifier: normalizedIdentifier
+        });
+        instanceDeferred.resolve(instance2);
+      } catch (e) {
+      }
+    }
+  }
+  clearInstance(identifier = DEFAULT_ENTRY_NAME$1) {
+    this.instancesDeferred.delete(identifier);
+    this.instancesOptions.delete(identifier);
+    this.instances.delete(identifier);
+  }
+  // app.delete() will call this method on every provider to delete the services
+  // TODO: should we mark the provider as deleted?
+  async delete() {
+    const services = Array.from(this.instances.values());
+    await Promise.all([
+      ...services.filter((service) => "INTERNAL" in service).map((service) => service.INTERNAL.delete()),
+      ...services.filter((service) => "_delete" in service).map((service) => service._delete())
+    ]);
+  }
+  isComponentSet() {
+    return this.component != null;
+  }
+  isInitialized(identifier = DEFAULT_ENTRY_NAME$1) {
+    return this.instances.has(identifier);
+  }
+  getOptions(identifier = DEFAULT_ENTRY_NAME$1) {
+    return this.instancesOptions.get(identifier) || {};
+  }
+  initialize(opts = {}) {
+    const { options = {} } = opts;
+    const normalizedIdentifier = this.normalizeInstanceIdentifier(opts.instanceIdentifier);
+    if (this.isInitialized(normalizedIdentifier)) {
+      throw Error(`${this.name}(${normalizedIdentifier}) has already been initialized`);
+    }
+    if (!this.isComponentSet()) {
+      throw Error(`Component ${this.name} has not been registered yet`);
+    }
+    const instance2 = this.getOrInitializeService({
+      instanceIdentifier: normalizedIdentifier,
+      options
+    });
+    for (const [instanceIdentifier, instanceDeferred] of this.instancesDeferred.entries()) {
+      const normalizedDeferredIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
+      if (normalizedIdentifier === normalizedDeferredIdentifier) {
+        instanceDeferred.resolve(instance2);
+      }
+    }
+    return instance2;
+  }
+  /**
+   *
+   * @param callback - a function that will be invoked  after the provider has been initialized by calling provider.initialize().
+   * The function is invoked SYNCHRONOUSLY, so it should not execute any longrunning tasks in order to not block the program.
+   *
+   * @param identifier An optional instance identifier
+   * @returns a function to unregister the callback
+   */
+  onInit(callback, identifier) {
+    const normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
+    const existingCallbacks = this.onInitCallbacks.get(normalizedIdentifier) ?? /* @__PURE__ */ new Set();
+    existingCallbacks.add(callback);
+    this.onInitCallbacks.set(normalizedIdentifier, existingCallbacks);
+    const existingInstance = this.instances.get(normalizedIdentifier);
+    if (existingInstance) {
+      callback(existingInstance, normalizedIdentifier);
+    }
+    return () => {
+      existingCallbacks.delete(callback);
+    };
+  }
+  /**
+   * Invoke onInit callbacks synchronously
+   * @param instance the service instance`
+   */
+  invokeOnInitCallbacks(instance2, identifier) {
+    const callbacks = this.onInitCallbacks.get(identifier);
+    if (!callbacks) {
+      return;
+    }
+    for (const callback of callbacks) {
+      try {
+        callback(instance2, identifier);
+      } catch {
+      }
+    }
+  }
+  getOrInitializeService({ instanceIdentifier, options = {} }) {
+    let instance2 = this.instances.get(instanceIdentifier);
+    if (!instance2 && this.component) {
+      instance2 = this.component.instanceFactory(this.container, {
+        instanceIdentifier: normalizeIdentifierForFactory(instanceIdentifier),
+        options
+      });
+      this.instances.set(instanceIdentifier, instance2);
+      this.instancesOptions.set(instanceIdentifier, options);
+      this.invokeOnInitCallbacks(instance2, instanceIdentifier);
+      if (this.component.onInstanceCreated) {
+        try {
+          this.component.onInstanceCreated(this.container, instanceIdentifier, instance2);
+        } catch {
+        }
+      }
+    }
+    return instance2 || null;
+  }
+  normalizeInstanceIdentifier(identifier = DEFAULT_ENTRY_NAME$1) {
+    if (this.component) {
+      return this.component.multipleInstances ? identifier : DEFAULT_ENTRY_NAME$1;
+    } else {
+      return identifier;
+    }
+  }
+  shouldAutoInitialize() {
+    return !!this.component && this.component.instantiationMode !== "EXPLICIT";
+  }
+}
+function normalizeIdentifierForFactory(identifier) {
+  return identifier === DEFAULT_ENTRY_NAME$1 ? void 0 : identifier;
+}
+function isComponentEager(component) {
+  return component.instantiationMode === "EAGER";
+}
+class ComponentContainer {
+  constructor(name2) {
+    this.name = name2;
+    this.providers = /* @__PURE__ */ new Map();
+  }
+  /**
+   *
+   * @param component Component being added
+   * @param overwrite When a component with the same name has already been registered,
+   * if overwrite is true: overwrite the existing component with the new component and create a new
+   * provider with the new component. It can be useful in tests where you want to use different mocks
+   * for different tests.
+   * if overwrite is false: throw an exception
+   */
+  addComponent(component) {
+    const provider = this.getProvider(component.name);
+    if (provider.isComponentSet()) {
+      throw new Error(`Component ${component.name} has already been registered with ${this.name}`);
+    }
+    provider.setComponent(component);
+  }
+  addOrOverwriteComponent(component) {
+    const provider = this.getProvider(component.name);
+    if (provider.isComponentSet()) {
+      this.providers.delete(component.name);
+    }
+    this.addComponent(component);
+  }
+  /**
+   * getProvider provides a type safe interface where it can only be called with a field name
+   * present in NameServiceMapping interface.
+   *
+   * Firebase SDKs providing services should extend NameServiceMapping interface to register
+   * themselves.
+   */
+  getProvider(name2) {
+    if (this.providers.has(name2)) {
+      return this.providers.get(name2);
+    }
+    const provider = new Provider(name2, this);
+    this.providers.set(name2, provider);
+    return provider;
+  }
+  getProviders() {
+    return Array.from(this.providers.values());
+  }
+}
+var LogLevel;
+(function(LogLevel2) {
+  LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
+  LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
+  LogLevel2[LogLevel2["INFO"] = 2] = "INFO";
+  LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
+  LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
+  LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
+})(LogLevel || (LogLevel = {}));
+const levelStringToEnum = {
+  "debug": LogLevel.DEBUG,
+  "verbose": LogLevel.VERBOSE,
+  "info": LogLevel.INFO,
+  "warn": LogLevel.WARN,
+  "error": LogLevel.ERROR,
+  "silent": LogLevel.SILENT
+};
+const defaultLogLevel = LogLevel.INFO;
+const ConsoleMethod = {
+  [LogLevel.DEBUG]: "log",
+  [LogLevel.VERBOSE]: "log",
+  [LogLevel.INFO]: "info",
+  [LogLevel.WARN]: "warn",
+  [LogLevel.ERROR]: "error"
+};
+const defaultLogHandler = (instance2, logType, ...args) => {
+  if (logType < instance2.logLevel) {
+    return;
+  }
+  const now = (/* @__PURE__ */ new Date()).toISOString();
+  const method = ConsoleMethod[logType];
+  if (method) {
+    console[method](`[${now}]  ${instance2.name}:`, ...args);
+  } else {
+    throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+  }
+};
+class Logger {
+  /**
+   * Gives you an instance of a Logger to capture messages according to
+   * Firebase's logging scheme.
+   *
+   * @param name The name that the logs will be associated with
+   */
+  constructor(name2) {
+    this.name = name2;
+    this._logLevel = defaultLogLevel;
+    this._logHandler = defaultLogHandler;
+    this._userLogHandler = null;
+  }
+  get logLevel() {
+    return this._logLevel;
+  }
+  set logLevel(val) {
+    if (!(val in LogLevel)) {
+      throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+    }
+    this._logLevel = val;
+  }
+  // Workaround for setter/getter having to be the same type.
+  setLogLevel(val) {
+    this._logLevel = typeof val === "string" ? levelStringToEnum[val] : val;
+  }
+  get logHandler() {
+    return this._logHandler;
+  }
+  set logHandler(val) {
+    if (typeof val !== "function") {
+      throw new TypeError("Value assigned to `logHandler` must be a function");
+    }
+    this._logHandler = val;
+  }
+  get userLogHandler() {
+    return this._userLogHandler;
+  }
+  set userLogHandler(val) {
+    this._userLogHandler = val;
+  }
+  /**
+   * The functions below are all based on the `console` interface
+   */
+  debug(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.DEBUG, ...args);
+    this._logHandler(this, LogLevel.DEBUG, ...args);
+  }
+  log(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.VERBOSE, ...args);
+    this._logHandler(this, LogLevel.VERBOSE, ...args);
+  }
+  info(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.INFO, ...args);
+    this._logHandler(this, LogLevel.INFO, ...args);
+  }
+  warn(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.WARN, ...args);
+    this._logHandler(this, LogLevel.WARN, ...args);
+  }
+  error(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.ERROR, ...args);
+    this._logHandler(this, LogLevel.ERROR, ...args);
+  }
+}
+const instanceOfAny = (object, constructors) => constructors.some((c) => object instanceof c);
+let idbProxyableTypes;
+let cursorAdvanceMethods;
+function getIdbProxyableTypes() {
+  return idbProxyableTypes || (idbProxyableTypes = [
+    IDBDatabase,
+    IDBObjectStore,
+    IDBIndex,
+    IDBCursor,
+    IDBTransaction
+  ]);
+}
+function getCursorAdvanceMethods() {
+  return cursorAdvanceMethods || (cursorAdvanceMethods = [
+    IDBCursor.prototype.advance,
+    IDBCursor.prototype.continue,
+    IDBCursor.prototype.continuePrimaryKey
+  ]);
+}
+const cursorRequestMap = /* @__PURE__ */ new WeakMap();
+const transactionDoneMap = /* @__PURE__ */ new WeakMap();
+const transactionStoreNamesMap = /* @__PURE__ */ new WeakMap();
+const transformCache = /* @__PURE__ */ new WeakMap();
+const reverseTransformCache = /* @__PURE__ */ new WeakMap();
+function promisifyRequest(request) {
+  const promise = new Promise((resolve, reject) => {
+    const unlisten = () => {
+      request.removeEventListener("success", success);
+      request.removeEventListener("error", error2);
+    };
+    const success = () => {
+      resolve(wrap(request.result));
+      unlisten();
+    };
+    const error2 = () => {
+      reject(request.error);
+      unlisten();
+    };
+    request.addEventListener("success", success);
+    request.addEventListener("error", error2);
+  });
+  promise.then((value) => {
+    if (value instanceof IDBCursor) {
+      cursorRequestMap.set(value, request);
+    }
+  }).catch(() => {
+  });
+  reverseTransformCache.set(promise, request);
+  return promise;
+}
+function cacheDonePromiseForTransaction(tx) {
+  if (transactionDoneMap.has(tx))
+    return;
+  const done = new Promise((resolve, reject) => {
+    const unlisten = () => {
+      tx.removeEventListener("complete", complete);
+      tx.removeEventListener("error", error2);
+      tx.removeEventListener("abort", error2);
+    };
+    const complete = () => {
+      resolve();
+      unlisten();
+    };
+    const error2 = () => {
+      reject(tx.error || new DOMException("AbortError", "AbortError"));
+      unlisten();
+    };
+    tx.addEventListener("complete", complete);
+    tx.addEventListener("error", error2);
+    tx.addEventListener("abort", error2);
+  });
+  transactionDoneMap.set(tx, done);
+}
+let idbProxyTraps = {
+  get(target, prop, receiver) {
+    if (target instanceof IDBTransaction) {
+      if (prop === "done")
+        return transactionDoneMap.get(target);
+      if (prop === "objectStoreNames") {
+        return target.objectStoreNames || transactionStoreNamesMap.get(target);
+      }
+      if (prop === "store") {
+        return receiver.objectStoreNames[1] ? void 0 : receiver.objectStore(receiver.objectStoreNames[0]);
+      }
+    }
+    return wrap(target[prop]);
+  },
+  set(target, prop, value) {
+    target[prop] = value;
+    return true;
+  },
+  has(target, prop) {
+    if (target instanceof IDBTransaction && (prop === "done" || prop === "store")) {
+      return true;
+    }
+    return prop in target;
+  }
+};
+function replaceTraps(callback) {
+  idbProxyTraps = callback(idbProxyTraps);
+}
+function wrapFunction(func) {
+  if (func === IDBDatabase.prototype.transaction && !("objectStoreNames" in IDBTransaction.prototype)) {
+    return function(storeNames, ...args) {
+      const tx = func.call(unwrap(this), storeNames, ...args);
+      transactionStoreNamesMap.set(tx, storeNames.sort ? storeNames.sort() : [storeNames]);
+      return wrap(tx);
+    };
+  }
+  if (getCursorAdvanceMethods().includes(func)) {
+    return function(...args) {
+      func.apply(unwrap(this), args);
+      return wrap(cursorRequestMap.get(this));
+    };
+  }
+  return function(...args) {
+    return wrap(func.apply(unwrap(this), args));
+  };
+}
+function transformCachableValue(value) {
+  if (typeof value === "function")
+    return wrapFunction(value);
+  if (value instanceof IDBTransaction)
+    cacheDonePromiseForTransaction(value);
+  if (instanceOfAny(value, getIdbProxyableTypes()))
+    return new Proxy(value, idbProxyTraps);
+  return value;
+}
+function wrap(value) {
+  if (value instanceof IDBRequest)
+    return promisifyRequest(value);
+  if (transformCache.has(value))
+    return transformCache.get(value);
+  const newValue = transformCachableValue(value);
+  if (newValue !== value) {
+    transformCache.set(value, newValue);
+    reverseTransformCache.set(newValue, value);
+  }
+  return newValue;
+}
+const unwrap = (value) => reverseTransformCache.get(value);
+function openDB(name2, version2, { blocked, upgrade, blocking, terminated } = {}) {
+  const request = indexedDB.open(name2, version2);
+  const openPromise = wrap(request);
+  if (upgrade) {
+    request.addEventListener("upgradeneeded", (event) => {
+      upgrade(wrap(request.result), event.oldVersion, event.newVersion, wrap(request.transaction), event);
+    });
+  }
+  if (blocked) {
+    request.addEventListener("blocked", (event) => blocked(
+      // Casting due to https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1405
+      event.oldVersion,
+      event.newVersion,
+      event
+    ));
+  }
+  openPromise.then((db2) => {
+    if (terminated)
+      db2.addEventListener("close", () => terminated());
+    if (blocking) {
+      db2.addEventListener("versionchange", (event) => blocking(event.oldVersion, event.newVersion, event));
+    }
+  }).catch(() => {
+  });
+  return openPromise;
+}
+const readMethods = ["get", "getKey", "getAll", "getAllKeys", "count"];
+const writeMethods = ["put", "add", "delete", "clear"];
+const cachedMethods = /* @__PURE__ */ new Map();
+function getMethod(target, prop) {
+  if (!(target instanceof IDBDatabase && !(prop in target) && typeof prop === "string")) {
+    return;
+  }
+  if (cachedMethods.get(prop))
+    return cachedMethods.get(prop);
+  const targetFuncName = prop.replace(/FromIndex$/, "");
+  const useIndex = prop !== targetFuncName;
+  const isWrite = writeMethods.includes(targetFuncName);
+  if (
+    // Bail if the target doesn't exist on the target. Eg, getAll isn't in Edge.
+    !(targetFuncName in (useIndex ? IDBIndex : IDBObjectStore).prototype) || !(isWrite || readMethods.includes(targetFuncName))
+  ) {
+    return;
+  }
+  const method = async function(storeName, ...args) {
+    const tx = this.transaction(storeName, isWrite ? "readwrite" : "readonly");
+    let target2 = tx.store;
+    if (useIndex)
+      target2 = target2.index(args.shift());
+    return (await Promise.all([
+      target2[targetFuncName](...args),
+      isWrite && tx.done
+    ]))[0];
+  };
+  cachedMethods.set(prop, method);
+  return method;
+}
+replaceTraps((oldTraps) => ({
+  ...oldTraps,
+  get: (target, prop, receiver) => getMethod(target, prop) || oldTraps.get(target, prop, receiver),
+  has: (target, prop) => !!getMethod(target, prop) || oldTraps.has(target, prop)
+}));
+class PlatformLoggerServiceImpl {
+  constructor(container) {
+    this.container = container;
+  }
+  // In initial implementation, this will be called by installations on
+  // auth token refresh, and installations will send this string.
+  getPlatformInfoString() {
+    const providers = this.container.getProviders();
+    return providers.map((provider) => {
+      if (isVersionServiceProvider(provider)) {
+        const service = provider.getImmediate();
+        return `${service.library}/${service.version}`;
+      } else {
+        return null;
+      }
+    }).filter((logString) => logString).join(" ");
+  }
+}
+function isVersionServiceProvider(provider) {
+  const component = provider.getComponent();
+  return component?.type === "VERSION";
+}
+const name$q = "@firebase/app";
+const version$1$1 = "0.14.8";
+const logger$1 = new Logger("@firebase/app");
+const name$p = "@firebase/app-compat";
+const name$o = "@firebase/analytics-compat";
+const name$n = "@firebase/analytics";
+const name$m = "@firebase/app-check-compat";
+const name$l = "@firebase/app-check";
+const name$k = "@firebase/auth";
+const name$j = "@firebase/auth-compat";
+const name$i = "@firebase/database";
+const name$h = "@firebase/data-connect";
+const name$g = "@firebase/database-compat";
+const name$f = "@firebase/functions";
+const name$e = "@firebase/functions-compat";
+const name$d = "@firebase/installations";
+const name$c = "@firebase/installations-compat";
+const name$b = "@firebase/messaging";
+const name$a = "@firebase/messaging-compat";
+const name$9 = "@firebase/performance";
+const name$8 = "@firebase/performance-compat";
+const name$7 = "@firebase/remote-config";
+const name$6 = "@firebase/remote-config-compat";
+const name$5 = "@firebase/storage";
+const name$4 = "@firebase/storage-compat";
+const name$3 = "@firebase/firestore";
+const name$2 = "@firebase/ai";
+const name$1$1 = "@firebase/firestore-compat";
+const name$r = "firebase";
+const version$2 = "12.9.0";
+const DEFAULT_ENTRY_NAME = "[DEFAULT]";
+const PLATFORM_LOG_STRING = {
+  [name$q]: "fire-core",
+  [name$p]: "fire-core-compat",
+  [name$n]: "fire-analytics",
+  [name$o]: "fire-analytics-compat",
+  [name$l]: "fire-app-check",
+  [name$m]: "fire-app-check-compat",
+  [name$k]: "fire-auth",
+  [name$j]: "fire-auth-compat",
+  [name$i]: "fire-rtdb",
+  [name$h]: "fire-data-connect",
+  [name$g]: "fire-rtdb-compat",
+  [name$f]: "fire-fn",
+  [name$e]: "fire-fn-compat",
+  [name$d]: "fire-iid",
+  [name$c]: "fire-iid-compat",
+  [name$b]: "fire-fcm",
+  [name$a]: "fire-fcm-compat",
+  [name$9]: "fire-perf",
+  [name$8]: "fire-perf-compat",
+  [name$7]: "fire-rc",
+  [name$6]: "fire-rc-compat",
+  [name$5]: "fire-gcs",
+  [name$4]: "fire-gcs-compat",
+  [name$3]: "fire-fst",
+  [name$1$1]: "fire-fst-compat",
+  [name$2]: "fire-vertex",
+  "fire-js": "fire-js",
+  // Platform identifier for JS SDK.
+  [name$r]: "fire-js-all"
+};
+const _apps = /* @__PURE__ */ new Map();
+const _serverApps = /* @__PURE__ */ new Map();
+const _components = /* @__PURE__ */ new Map();
+function _addComponent(app2, component) {
+  try {
+    app2.container.addComponent(component);
+  } catch (e) {
+    logger$1.debug(`Component ${component.name} failed to register with FirebaseApp ${app2.name}`, e);
+  }
+}
+function _registerComponent(component) {
+  const componentName = component.name;
+  if (_components.has(componentName)) {
+    logger$1.debug(`There were multiple attempts to register component ${componentName}.`);
+    return false;
+  }
+  _components.set(componentName, component);
+  for (const app2 of _apps.values()) {
+    _addComponent(app2, component);
+  }
+  for (const serverApp of _serverApps.values()) {
+    _addComponent(serverApp, component);
+  }
+  return true;
+}
+function _getProvider(app2, name2) {
+  const heartbeatController = app2.container.getProvider("heartbeat").getImmediate({ optional: true });
+  if (heartbeatController) {
+    void heartbeatController.triggerHeartbeat();
+  }
+  return app2.container.getProvider(name2);
+}
+function _isFirebaseServerApp(obj) {
+  if (obj === null || obj === void 0) {
+    return false;
+  }
+  return obj.settings !== void 0;
+}
+const ERRORS = {
+  [
+    "no-app"
+    /* AppError.NO_APP */
+  ]: "No Firebase App '{$appName}' has been created - call initializeApp() first",
+  [
+    "bad-app-name"
+    /* AppError.BAD_APP_NAME */
+  ]: "Illegal App name: '{$appName}'",
+  [
+    "duplicate-app"
+    /* AppError.DUPLICATE_APP */
+  ]: "Firebase App named '{$appName}' already exists with different options or config",
+  [
+    "app-deleted"
+    /* AppError.APP_DELETED */
+  ]: "Firebase App named '{$appName}' already deleted",
+  [
+    "server-app-deleted"
+    /* AppError.SERVER_APP_DELETED */
+  ]: "Firebase Server App has been deleted",
+  [
+    "no-options"
+    /* AppError.NO_OPTIONS */
+  ]: "Need to provide options, when not being deployed to hosting via source.",
+  [
+    "invalid-app-argument"
+    /* AppError.INVALID_APP_ARGUMENT */
+  ]: "firebase.{$appName}() takes either no argument or a Firebase App instance.",
+  [
+    "invalid-log-argument"
+    /* AppError.INVALID_LOG_ARGUMENT */
+  ]: "First argument to `onLog` must be null or a function.",
+  [
+    "idb-open"
+    /* AppError.IDB_OPEN */
+  ]: "Error thrown when opening IndexedDB. Original error: {$originalErrorMessage}.",
+  [
+    "idb-get"
+    /* AppError.IDB_GET */
+  ]: "Error thrown when reading from IndexedDB. Original error: {$originalErrorMessage}.",
+  [
+    "idb-set"
+    /* AppError.IDB_WRITE */
+  ]: "Error thrown when writing to IndexedDB. Original error: {$originalErrorMessage}.",
+  [
+    "idb-delete"
+    /* AppError.IDB_DELETE */
+  ]: "Error thrown when deleting from IndexedDB. Original error: {$originalErrorMessage}.",
+  [
+    "finalization-registry-not-supported"
+    /* AppError.FINALIZATION_REGISTRY_NOT_SUPPORTED */
+  ]: "FirebaseServerApp deleteOnDeref field defined but the JS runtime does not support FinalizationRegistry.",
+  [
+    "invalid-server-app-environment"
+    /* AppError.INVALID_SERVER_APP_ENVIRONMENT */
+  ]: "FirebaseServerApp is not for use in browser environments."
+};
+const ERROR_FACTORY = new ErrorFactory("app", "Firebase", ERRORS);
+class FirebaseAppImpl {
+  constructor(options, config, container) {
+    this._isDeleted = false;
+    this._options = { ...options };
+    this._config = { ...config };
+    this._name = config.name;
+    this._automaticDataCollectionEnabled = config.automaticDataCollectionEnabled;
+    this._container = container;
+    this.container.addComponent(new Component(
+      "app",
+      () => this,
+      "PUBLIC"
+      /* ComponentType.PUBLIC */
+    ));
+  }
+  get automaticDataCollectionEnabled() {
+    this.checkDestroyed();
+    return this._automaticDataCollectionEnabled;
+  }
+  set automaticDataCollectionEnabled(val) {
+    this.checkDestroyed();
+    this._automaticDataCollectionEnabled = val;
+  }
+  get name() {
+    this.checkDestroyed();
+    return this._name;
+  }
+  get options() {
+    this.checkDestroyed();
+    return this._options;
+  }
+  get config() {
+    this.checkDestroyed();
+    return this._config;
+  }
+  get container() {
+    return this._container;
+  }
+  get isDeleted() {
+    return this._isDeleted;
+  }
+  set isDeleted(val) {
+    this._isDeleted = val;
+  }
+  /**
+   * This function will throw an Error if the App has already been deleted -
+   * use before performing API actions on the App.
+   */
+  checkDestroyed() {
+    if (this.isDeleted) {
+      throw ERROR_FACTORY.create("app-deleted", { appName: this._name });
+    }
+  }
+}
+const SDK_VERSION$1 = version$2;
+function initializeApp(_options, rawConfig = {}) {
+  let options = _options;
+  if (typeof rawConfig !== "object") {
+    const name3 = rawConfig;
+    rawConfig = { name: name3 };
+  }
+  const config = {
+    name: DEFAULT_ENTRY_NAME,
+    automaticDataCollectionEnabled: true,
+    ...rawConfig
+  };
+  const name2 = config.name;
+  if (typeof name2 !== "string" || !name2) {
+    throw ERROR_FACTORY.create("bad-app-name", {
+      appName: String(name2)
+    });
+  }
+  options || (options = getDefaultAppConfig());
+  if (!options) {
+    throw ERROR_FACTORY.create(
+      "no-options"
+      /* AppError.NO_OPTIONS */
+    );
+  }
+  const existingApp = _apps.get(name2);
+  if (existingApp) {
+    if (deepEqual(options, existingApp.options) && deepEqual(config, existingApp.config)) {
+      return existingApp;
+    } else {
+      throw ERROR_FACTORY.create("duplicate-app", { appName: name2 });
+    }
+  }
+  const container = new ComponentContainer(name2);
+  for (const component of _components.values()) {
+    container.addComponent(component);
+  }
+  const newApp = new FirebaseAppImpl(options, config, container);
+  _apps.set(name2, newApp);
+  return newApp;
+}
+function getApp(name2 = DEFAULT_ENTRY_NAME) {
+  const app2 = _apps.get(name2);
+  if (!app2 && name2 === DEFAULT_ENTRY_NAME && getDefaultAppConfig()) {
+    return initializeApp();
+  }
+  if (!app2) {
+    throw ERROR_FACTORY.create("no-app", { appName: name2 });
+  }
+  return app2;
+}
+function registerVersion(libraryKeyOrName, version2, variant) {
+  let library = PLATFORM_LOG_STRING[libraryKeyOrName] ?? libraryKeyOrName;
+  if (variant) {
+    library += `-${variant}`;
+  }
+  const libraryMismatch = library.match(/\s|\//);
+  const versionMismatch = version2.match(/\s|\//);
+  if (libraryMismatch || versionMismatch) {
+    const warning = [
+      `Unable to register library "${library}" with version "${version2}":`
+    ];
+    if (libraryMismatch) {
+      warning.push(`library name "${library}" contains illegal characters (whitespace or "/")`);
+    }
+    if (libraryMismatch && versionMismatch) {
+      warning.push("and");
+    }
+    if (versionMismatch) {
+      warning.push(`version name "${version2}" contains illegal characters (whitespace or "/")`);
+    }
+    logger$1.warn(warning.join(" "));
+    return;
+  }
+  _registerComponent(new Component(
+    `${library}-version`,
+    () => ({ library, version: version2 }),
+    "VERSION"
+    /* ComponentType.VERSION */
+  ));
+}
+const DB_NAME = "firebase-heartbeat-database";
+const DB_VERSION = 1;
+const STORE_NAME = "firebase-heartbeat-store";
+let dbPromise = null;
+function getDbPromise() {
+  if (!dbPromise) {
+    dbPromise = openDB(DB_NAME, DB_VERSION, {
+      upgrade: (db2, oldVersion) => {
+        switch (oldVersion) {
+          case 0:
+            try {
+              db2.createObjectStore(STORE_NAME);
+            } catch (e) {
+              console.warn(e);
+            }
+        }
+      }
+    }).catch((e) => {
+      throw ERROR_FACTORY.create("idb-open", {
+        originalErrorMessage: e.message
+      });
+    });
+  }
+  return dbPromise;
+}
+async function readHeartbeatsFromIndexedDB(app2) {
+  try {
+    const db2 = await getDbPromise();
+    const tx = db2.transaction(STORE_NAME);
+    const result = await tx.objectStore(STORE_NAME).get(computeKey(app2));
+    await tx.done;
+    return result;
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      logger$1.warn(e.message);
+    } else {
+      const idbGetError = ERROR_FACTORY.create("idb-get", {
+        originalErrorMessage: e?.message
+      });
+      logger$1.warn(idbGetError.message);
+    }
+  }
+}
+async function writeHeartbeatsToIndexedDB(app2, heartbeatObject) {
+  try {
+    const db2 = await getDbPromise();
+    const tx = db2.transaction(STORE_NAME, "readwrite");
+    const objectStore = tx.objectStore(STORE_NAME);
+    await objectStore.put(heartbeatObject, computeKey(app2));
+    await tx.done;
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      logger$1.warn(e.message);
+    } else {
+      const idbGetError = ERROR_FACTORY.create("idb-set", {
+        originalErrorMessage: e?.message
+      });
+      logger$1.warn(idbGetError.message);
+    }
+  }
+}
+function computeKey(app2) {
+  return `${app2.name}!${app2.options.appId}`;
+}
+const MAX_HEADER_BYTES = 1024;
+const MAX_NUM_STORED_HEARTBEATS = 30;
+class HeartbeatServiceImpl {
+  constructor(container) {
+    this.container = container;
+    this._heartbeatsCache = null;
+    const app2 = this.container.getProvider("app").getImmediate();
+    this._storage = new HeartbeatStorageImpl(app2);
+    this._heartbeatsCachePromise = this._storage.read().then((result) => {
+      this._heartbeatsCache = result;
+      return result;
+    });
+  }
+  /**
+   * Called to report a heartbeat. The function will generate
+   * a HeartbeatsByUserAgent object, update heartbeatsCache, and persist it
+   * to IndexedDB.
+   * Note that we only store one heartbeat per day. So if a heartbeat for today is
+   * already logged, subsequent calls to this function in the same day will be ignored.
+   */
+  async triggerHeartbeat() {
+    try {
+      const platformLogger = this.container.getProvider("platform-logger").getImmediate();
+      const agent = platformLogger.getPlatformInfoString();
+      const date = getUTCDateString();
+      if (this._heartbeatsCache?.heartbeats == null) {
+        this._heartbeatsCache = await this._heartbeatsCachePromise;
+        if (this._heartbeatsCache?.heartbeats == null) {
+          return;
+        }
+      }
+      if (this._heartbeatsCache.lastSentHeartbeatDate === date || this._heartbeatsCache.heartbeats.some((singleDateHeartbeat) => singleDateHeartbeat.date === date)) {
+        return;
+      } else {
+        this._heartbeatsCache.heartbeats.push({ date, agent });
+        if (this._heartbeatsCache.heartbeats.length > MAX_NUM_STORED_HEARTBEATS) {
+          const earliestHeartbeatIdx = getEarliestHeartbeatIdx(this._heartbeatsCache.heartbeats);
+          this._heartbeatsCache.heartbeats.splice(earliestHeartbeatIdx, 1);
+        }
+      }
+      return this._storage.overwrite(this._heartbeatsCache);
+    } catch (e) {
+      logger$1.warn(e);
+    }
+  }
+  /**
+   * Returns a base64 encoded string which can be attached to the heartbeat-specific header directly.
+   * It also clears all heartbeats from memory as well as in IndexedDB.
+   *
+   * NOTE: Consuming product SDKs should not send the header if this method
+   * returns an empty string.
+   */
+  async getHeartbeatsHeader() {
+    try {
+      if (this._heartbeatsCache === null) {
+        await this._heartbeatsCachePromise;
+      }
+      if (this._heartbeatsCache?.heartbeats == null || this._heartbeatsCache.heartbeats.length === 0) {
+        return "";
+      }
+      const date = getUTCDateString();
+      const { heartbeatsToSend, unsentEntries } = extractHeartbeatsForHeader(this._heartbeatsCache.heartbeats);
+      const headerString = base64urlEncodeWithoutPadding(JSON.stringify({ version: 2, heartbeats: heartbeatsToSend }));
+      this._heartbeatsCache.lastSentHeartbeatDate = date;
+      if (unsentEntries.length > 0) {
+        this._heartbeatsCache.heartbeats = unsentEntries;
+        await this._storage.overwrite(this._heartbeatsCache);
+      } else {
+        this._heartbeatsCache.heartbeats = [];
+        void this._storage.overwrite(this._heartbeatsCache);
+      }
+      return headerString;
+    } catch (e) {
+      logger$1.warn(e);
+      return "";
+    }
+  }
+}
+function getUTCDateString() {
+  const today = /* @__PURE__ */ new Date();
+  return today.toISOString().substring(0, 10);
+}
+function extractHeartbeatsForHeader(heartbeatsCache, maxSize = MAX_HEADER_BYTES) {
+  const heartbeatsToSend = [];
+  let unsentEntries = heartbeatsCache.slice();
+  for (const singleDateHeartbeat of heartbeatsCache) {
+    const heartbeatEntry = heartbeatsToSend.find((hb) => hb.agent === singleDateHeartbeat.agent);
+    if (!heartbeatEntry) {
+      heartbeatsToSend.push({
+        agent: singleDateHeartbeat.agent,
+        dates: [singleDateHeartbeat.date]
+      });
+      if (countBytes(heartbeatsToSend) > maxSize) {
+        heartbeatsToSend.pop();
+        break;
+      }
+    } else {
+      heartbeatEntry.dates.push(singleDateHeartbeat.date);
+      if (countBytes(heartbeatsToSend) > maxSize) {
+        heartbeatEntry.dates.pop();
+        break;
+      }
+    }
+    unsentEntries = unsentEntries.slice(1);
+  }
+  return {
+    heartbeatsToSend,
+    unsentEntries
+  };
+}
+class HeartbeatStorageImpl {
+  constructor(app2) {
+    this.app = app2;
+    this._canUseIndexedDBPromise = this.runIndexedDBEnvironmentCheck();
+  }
+  async runIndexedDBEnvironmentCheck() {
+    if (!isIndexedDBAvailable()) {
+      return false;
+    } else {
+      return validateIndexedDBOpenable().then(() => true).catch(() => false);
+    }
+  }
+  /**
+   * Read all heartbeats.
+   */
+  async read() {
+    const canUseIndexedDB = await this._canUseIndexedDBPromise;
+    if (!canUseIndexedDB) {
+      return { heartbeats: [] };
+    } else {
+      const idbHeartbeatObject = await readHeartbeatsFromIndexedDB(this.app);
+      if (idbHeartbeatObject?.heartbeats) {
+        return idbHeartbeatObject;
+      } else {
+        return { heartbeats: [] };
+      }
+    }
+  }
+  // overwrite the storage with the provided heartbeats
+  async overwrite(heartbeatsObject) {
+    const canUseIndexedDB = await this._canUseIndexedDBPromise;
+    if (!canUseIndexedDB) {
+      return;
+    } else {
+      const existingHeartbeatsObject = await this.read();
+      return writeHeartbeatsToIndexedDB(this.app, {
+        lastSentHeartbeatDate: heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
+        heartbeats: heartbeatsObject.heartbeats
+      });
+    }
+  }
+  // add heartbeats
+  async add(heartbeatsObject) {
+    const canUseIndexedDB = await this._canUseIndexedDBPromise;
+    if (!canUseIndexedDB) {
+      return;
+    } else {
+      const existingHeartbeatsObject = await this.read();
+      return writeHeartbeatsToIndexedDB(this.app, {
+        lastSentHeartbeatDate: heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
+        heartbeats: [
+          ...existingHeartbeatsObject.heartbeats,
+          ...heartbeatsObject.heartbeats
+        ]
+      });
+    }
+  }
+}
+function countBytes(heartbeatsCache) {
+  return base64urlEncodeWithoutPadding(
+    // heartbeatsCache wrapper properties
+    JSON.stringify({ version: 2, heartbeats: heartbeatsCache })
+  ).length;
+}
+function getEarliestHeartbeatIdx(heartbeats) {
+  if (heartbeats.length === 0) {
+    return -1;
+  }
+  let earliestHeartbeatIdx = 0;
+  let earliestHeartbeatDate = heartbeats[0].date;
+  for (let i = 1; i < heartbeats.length; i++) {
+    if (heartbeats[i].date < earliestHeartbeatDate) {
+      earliestHeartbeatDate = heartbeats[i].date;
+      earliestHeartbeatIdx = i;
+    }
+  }
+  return earliestHeartbeatIdx;
+}
+function registerCoreComponents(variant) {
+  _registerComponent(new Component(
+    "platform-logger",
+    (container) => new PlatformLoggerServiceImpl(container),
+    "PRIVATE"
+    /* ComponentType.PRIVATE */
+  ));
+  _registerComponent(new Component(
+    "heartbeat",
+    (container) => new HeartbeatServiceImpl(container),
+    "PRIVATE"
+    /* ComponentType.PRIVATE */
+  ));
+  registerVersion(name$q, version$1$1, variant);
+  registerVersion(name$q, version$1$1, "esm2020");
+  registerVersion("fire-js", "");
+}
+registerCoreComponents("");
+var name$1 = "firebase";
+var version$1 = "12.9.0";
+registerVersion(name$1, version$1, "app");
+var define_process_env_default = {};
+const name = "@firebase/database";
+const version = "1.1.0";
+let SDK_VERSION = "";
+function setSDKVersion(version2) {
+  SDK_VERSION = version2;
+}
+class DOMStorageWrapper {
+  /**
+   * @param domStorage_ - The underlying storage object (e.g. localStorage or sessionStorage)
+   */
+  constructor(domStorage_) {
+    this.domStorage_ = domStorage_;
+    this.prefix_ = "firebase:";
+  }
+  /**
+   * @param key - The key to save the value under
+   * @param value - The value being stored, or null to remove the key.
+   */
+  set(key2, value) {
+    if (value == null) {
+      this.domStorage_.removeItem(this.prefixedName_(key2));
+    } else {
+      this.domStorage_.setItem(this.prefixedName_(key2), stringify(value));
+    }
+  }
+  /**
+   * @returns The value that was stored under this key, or null
+   */
+  get(key2) {
+    const storedVal = this.domStorage_.getItem(this.prefixedName_(key2));
+    if (storedVal == null) {
+      return null;
+    } else {
+      return jsonEval(storedVal);
+    }
+  }
+  remove(key2) {
+    this.domStorage_.removeItem(this.prefixedName_(key2));
+  }
+  prefixedName_(name2) {
+    return this.prefix_ + name2;
+  }
+  toString() {
+    return this.domStorage_.toString();
+  }
+}
+class MemoryStorage {
+  constructor() {
+    this.cache_ = {};
+    this.isInMemoryStorage = true;
+  }
+  set(key2, value) {
+    if (value == null) {
+      delete this.cache_[key2];
+    } else {
+      this.cache_[key2] = value;
+    }
+  }
+  get(key2) {
+    if (contains(this.cache_, key2)) {
+      return this.cache_[key2];
+    }
+    return null;
+  }
+  remove(key2) {
+    delete this.cache_[key2];
+  }
+}
+const createStoragefor = function(domStorageName) {
+  try {
+    if (typeof window !== "undefined" && typeof window[domStorageName] !== "undefined") {
+      const domStorage = window[domStorageName];
+      domStorage.setItem("firebase:sentinel", "cache");
+      domStorage.removeItem("firebase:sentinel");
+      return new DOMStorageWrapper(domStorage);
+    }
+  } catch (e) {
+  }
+  return new MemoryStorage();
+};
+const PersistentStorage = createStoragefor("localStorage");
+const SessionStorage = createStoragefor("sessionStorage");
+const logClient = new Logger("@firebase/database");
+const LUIDGenerator = /* @__PURE__ */ (function() {
+  let id = 1;
+  return function() {
+    return id++;
+  };
+})();
+const sha1 = function(str) {
+  const utf8Bytes = stringToByteArray(str);
+  const sha12 = new Sha1();
+  sha12.update(utf8Bytes);
+  const sha1Bytes = sha12.digest();
+  return base64.encodeByteArray(sha1Bytes);
+};
+const buildLogMessage_ = function(...varArgs) {
+  let message = "";
+  for (let i = 0; i < varArgs.length; i++) {
+    const arg = varArgs[i];
+    if (Array.isArray(arg) || arg && typeof arg === "object" && // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    typeof arg.length === "number") {
+      message += buildLogMessage_.apply(null, arg);
+    } else if (typeof arg === "object") {
+      message += stringify(arg);
+    } else {
+      message += arg;
+    }
+    message += " ";
+  }
+  return message;
+};
+let logger = null;
+let firstLog_ = true;
+const enableLogging$1 = function(logger_, persistent) {
+  assert(true, "Can't turn on custom loggers persistently.");
+  {
+    logClient.logLevel = LogLevel.VERBOSE;
+    logger = logClient.log.bind(logClient);
+  }
+};
+const log = function(...varArgs) {
+  if (firstLog_ === true) {
+    firstLog_ = false;
+    if (logger === null && SessionStorage.get("logging_enabled") === true) {
+      enableLogging$1();
+    }
+  }
+  if (logger) {
+    const message = buildLogMessage_.apply(null, varArgs);
+    logger(message);
+  }
+};
+const logWrapper = function(prefix) {
+  return function(...varArgs) {
+    log(prefix, ...varArgs);
+  };
+};
+const error = function(...varArgs) {
+  const message = "FIREBASE INTERNAL ERROR: " + buildLogMessage_(...varArgs);
+  logClient.error(message);
+};
+const fatal = function(...varArgs) {
+  const message = `FIREBASE FATAL ERROR: ${buildLogMessage_(...varArgs)}`;
+  logClient.error(message);
+  throw new Error(message);
+};
+const warn = function(...varArgs) {
+  const message = "FIREBASE WARNING: " + buildLogMessage_(...varArgs);
+  logClient.warn(message);
+};
+const warnIfPageIsSecure = function() {
+  if (typeof window !== "undefined" && window.location && window.location.protocol && window.location.protocol.indexOf("https:") !== -1) {
+    warn("Insecure Firebase access from a secure page. Please use https in calls to new Firebase().");
+  }
+};
+const isInvalidJSONNumber = function(data) {
+  return typeof data === "number" && (data !== data || // NaN
+  data === Number.POSITIVE_INFINITY || data === Number.NEGATIVE_INFINITY);
+};
+const executeWhenDOMReady = function(fn) {
+  if (document.readyState === "complete") {
+    fn();
+  } else {
+    let called = false;
+    const wrappedFn = function() {
+      if (!document.body) {
+        setTimeout(wrappedFn, Math.floor(10));
+        return;
+      }
+      if (!called) {
+        called = true;
+        fn();
+      }
+    };
+    if (document.addEventListener) {
+      document.addEventListener("DOMContentLoaded", wrappedFn, false);
+      window.addEventListener("load", wrappedFn, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("onreadystatechange", () => {
+        if (document.readyState === "complete") {
+          wrappedFn();
+        }
+      });
+      window.attachEvent("onload", wrappedFn);
+    }
+  }
+};
+const MIN_NAME = "[MIN_NAME]";
+const MAX_NAME = "[MAX_NAME]";
+const nameCompare = function(a, b) {
+  if (a === b) {
+    return 0;
+  } else if (a === MIN_NAME || b === MAX_NAME) {
+    return -1;
+  } else if (b === MIN_NAME || a === MAX_NAME) {
+    return 1;
+  } else {
+    const aAsInt = tryParseInt(a), bAsInt = tryParseInt(b);
+    if (aAsInt !== null) {
+      if (bAsInt !== null) {
+        return aAsInt - bAsInt === 0 ? a.length - b.length : aAsInt - bAsInt;
+      } else {
+        return -1;
+      }
+    } else if (bAsInt !== null) {
+      return 1;
+    } else {
+      return a < b ? -1 : 1;
+    }
+  }
+};
+const stringCompare = function(a, b) {
+  if (a === b) {
+    return 0;
+  } else if (a < b) {
+    return -1;
+  } else {
+    return 1;
+  }
+};
+const requireKey = function(key2, obj) {
+  if (obj && key2 in obj) {
+    return obj[key2];
+  } else {
+    throw new Error("Missing required key (" + key2 + ") in object: " + stringify(obj));
+  }
+};
+const ObjectToUniqueKey = function(obj) {
+  if (typeof obj !== "object" || obj === null) {
+    return stringify(obj);
+  }
+  const keys = [];
+  for (const k in obj) {
+    keys.push(k);
+  }
+  keys.sort();
+  let key2 = "{";
+  for (let i = 0; i < keys.length; i++) {
+    if (i !== 0) {
+      key2 += ",";
+    }
+    key2 += stringify(keys[i]);
+    key2 += ":";
+    key2 += ObjectToUniqueKey(obj[keys[i]]);
+  }
+  key2 += "}";
+  return key2;
+};
+const splitStringBySize = function(str, segsize) {
+  const len = str.length;
+  if (len <= segsize) {
+    return [str];
+  }
+  const dataSegs = [];
+  for (let c = 0; c < len; c += segsize) {
+    if (c + segsize > len) {
+      dataSegs.push(str.substring(c, len));
+    } else {
+      dataSegs.push(str.substring(c, c + segsize));
+    }
+  }
+  return dataSegs;
+};
+function each(obj, fn) {
+  for (const key2 in obj) {
+    if (obj.hasOwnProperty(key2)) {
+      fn(key2, obj[key2]);
+    }
+  }
+}
+const doubleToIEEE754String = function(v) {
+  assert(!isInvalidJSONNumber(v), "Invalid JSON number");
+  const ebits = 11, fbits = 52;
+  const bias = (1 << ebits - 1) - 1;
+  let s, e, f2, ln, i;
+  if (v === 0) {
+    e = 0;
+    f2 = 0;
+    s = 1 / v === -Infinity ? 1 : 0;
+  } else {
+    s = v < 0;
+    v = Math.abs(v);
+    if (v >= Math.pow(2, 1 - bias)) {
+      ln = Math.min(Math.floor(Math.log(v) / Math.LN2), bias);
+      e = ln + bias;
+      f2 = Math.round(v * Math.pow(2, fbits - ln) - Math.pow(2, fbits));
+    } else {
+      e = 0;
+      f2 = Math.round(v / Math.pow(2, 1 - bias - fbits));
+    }
+  }
+  const bits = [];
+  for (i = fbits; i; i -= 1) {
+    bits.push(f2 % 2 ? 1 : 0);
+    f2 = Math.floor(f2 / 2);
+  }
+  for (i = ebits; i; i -= 1) {
+    bits.push(e % 2 ? 1 : 0);
+    e = Math.floor(e / 2);
+  }
+  bits.push(s ? 1 : 0);
+  bits.reverse();
+  const str = bits.join("");
+  let hexByteString = "";
+  for (i = 0; i < 64; i += 8) {
+    let hexByte = parseInt(str.substr(i, 8), 2).toString(16);
+    if (hexByte.length === 1) {
+      hexByte = "0" + hexByte;
+    }
+    hexByteString = hexByteString + hexByte;
+  }
+  return hexByteString.toLowerCase();
+};
+const isChromeExtensionContentScript = function() {
+  return !!(typeof window === "object" && window["chrome"] && window["chrome"]["extension"] && !/^chrome/.test(window.location.href));
+};
+const isWindowsStoreApp = function() {
+  return typeof Windows === "object" && typeof Windows.UI === "object";
+};
+function errorForServerCode(code2, query2) {
+  let reason = "Unknown Error";
+  if (code2 === "too_big") {
+    reason = "The data requested exceeds the maximum size that can be accessed with a single request.";
+  } else if (code2 === "permission_denied") {
+    reason = "Client doesn't have permission to access the desired data.";
+  } else if (code2 === "unavailable") {
+    reason = "The service is unavailable";
+  }
+  const error2 = new Error(code2 + " at " + query2._path.toString() + ": " + reason);
+  error2.code = code2.toUpperCase();
+  return error2;
+}
+const INTEGER_REGEXP_ = new RegExp("^-?(0*)\\d{1,10}$");
+const INTEGER_32_MIN = -2147483648;
+const INTEGER_32_MAX = 2147483647;
+const tryParseInt = function(str) {
+  if (INTEGER_REGEXP_.test(str)) {
+    const intVal = Number(str);
+    if (intVal >= INTEGER_32_MIN && intVal <= INTEGER_32_MAX) {
+      return intVal;
+    }
+  }
+  return null;
+};
+const exceptionGuard = function(fn) {
+  try {
+    fn();
+  } catch (e) {
+    setTimeout(() => {
+      const stack = e.stack || "";
+      warn("Exception was thrown by user callback.", stack);
+      throw e;
+    }, Math.floor(0));
+  }
+};
+const beingCrawled = function() {
+  const userAgent = typeof window === "object" && window["navigator"] && window["navigator"]["userAgent"] || "";
+  return userAgent.search(/googlebot|google webmaster tools|bingbot|yahoo! slurp|baiduspider|yandexbot|duckduckbot/i) >= 0;
+};
+const setTimeoutNonBlocking = function(fn, time) {
+  const timeout = setTimeout(fn, time);
+  if (typeof timeout === "number" && // @ts-ignore Is only defined in Deno environments.
+  typeof Deno !== "undefined" && // @ts-ignore Deno and unrefTimer are only defined in Deno environments.
+  Deno["unrefTimer"]) {
+    Deno.unrefTimer(timeout);
+  } else if (typeof timeout === "object" && timeout["unref"]) {
+    timeout["unref"]();
+  }
+  return timeout;
+};
+class AppCheckTokenProvider {
+  constructor(app2, appCheckProvider) {
+    this.appCheckProvider = appCheckProvider;
+    this.appName = app2.name;
+    if (_isFirebaseServerApp(app2) && app2.settings.appCheckToken) {
+      this.serverAppAppCheckToken = app2.settings.appCheckToken;
+    }
+    this.appCheck = appCheckProvider?.getImmediate({ optional: true });
+    if (!this.appCheck) {
+      appCheckProvider?.get().then((appCheck) => this.appCheck = appCheck);
+    }
+  }
+  getToken(forceRefresh) {
+    if (this.serverAppAppCheckToken) {
+      if (forceRefresh) {
+        throw new Error("Attempted reuse of `FirebaseServerApp.appCheckToken` after previous usage failed.");
+      }
+      return Promise.resolve({ token: this.serverAppAppCheckToken });
+    }
+    if (!this.appCheck) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (this.appCheck) {
+            this.getToken(forceRefresh).then(resolve, reject);
+          } else {
+            resolve(null);
+          }
+        }, 0);
+      });
+    }
+    return this.appCheck.getToken(forceRefresh);
+  }
+  addTokenChangeListener(listener) {
+    this.appCheckProvider?.get().then((appCheck) => appCheck.addTokenListener(listener));
+  }
+  notifyForInvalidToken() {
+    warn(`Provided AppCheck credentials for the app named "${this.appName}" are invalid. This usually indicates your app was not initialized correctly.`);
+  }
+}
+class FirebaseAuthTokenProvider {
+  constructor(appName_, firebaseOptions_, authProvider_) {
+    this.appName_ = appName_;
+    this.firebaseOptions_ = firebaseOptions_;
+    this.authProvider_ = authProvider_;
+    this.auth_ = null;
+    this.auth_ = authProvider_.getImmediate({ optional: true });
+    if (!this.auth_) {
+      authProvider_.onInit((auth) => this.auth_ = auth);
+    }
+  }
+  getToken(forceRefresh) {
+    if (!this.auth_) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (this.auth_) {
+            this.getToken(forceRefresh).then(resolve, reject);
+          } else {
+            resolve(null);
+          }
+        }, 0);
+      });
+    }
+    return this.auth_.getToken(forceRefresh).catch((error2) => {
+      if (error2 && error2.code === "auth/token-not-initialized") {
+        log("Got auth/token-not-initialized error.  Treating as null token.");
+        return null;
+      } else {
+        return Promise.reject(error2);
+      }
+    });
+  }
+  addTokenChangeListener(listener) {
+    if (this.auth_) {
+      this.auth_.addAuthTokenListener(listener);
+    } else {
+      this.authProvider_.get().then((auth) => auth.addAuthTokenListener(listener));
+    }
+  }
+  removeTokenChangeListener(listener) {
+    this.authProvider_.get().then((auth) => auth.removeAuthTokenListener(listener));
+  }
+  notifyForInvalidToken() {
+    let errorMessage = 'Provided authentication credentials for the app named "' + this.appName_ + '" are invalid. This usually indicates your app was not initialized correctly. ';
+    if ("credential" in this.firebaseOptions_) {
+      errorMessage += 'Make sure the "credential" property provided to initializeApp() is authorized to access the specified "databaseURL" and is from the correct project.';
+    } else if ("serviceAccount" in this.firebaseOptions_) {
+      errorMessage += 'Make sure the "serviceAccount" property provided to initializeApp() is authorized to access the specified "databaseURL" and is from the correct project.';
+    } else {
+      errorMessage += 'Make sure the "apiKey" and "databaseURL" properties provided to initializeApp() match the values provided for your app at https://console.firebase.google.com/.';
+    }
+    warn(errorMessage);
+  }
+}
+class EmulatorTokenProvider {
+  constructor(accessToken) {
+    this.accessToken = accessToken;
+  }
+  getToken(forceRefresh) {
+    return Promise.resolve({
+      accessToken: this.accessToken
+    });
+  }
+  addTokenChangeListener(listener) {
+    listener(this.accessToken);
+  }
+  removeTokenChangeListener(listener) {
+  }
+  notifyForInvalidToken() {
+  }
+}
+EmulatorTokenProvider.OWNER = "owner";
+const PROTOCOL_VERSION$1 = "5";
+const VERSION_PARAM = "v";
+const TRANSPORT_SESSION_PARAM = "s";
+const REFERER_PARAM = "r";
+const FORGE_REF = "f";
+const FORGE_DOMAIN_RE = /(console\.firebase|firebase-console-\w+\.corp|firebase\.corp)\.google\.com/;
+const LAST_SESSION_PARAM = "ls";
+const APPLICATION_ID_PARAM = "p";
+const APP_CHECK_TOKEN_PARAM = "ac";
+const WEBSOCKET = "websocket";
+const LONG_POLLING = "long_polling";
+class RepoInfo {
+  /**
+   * @param host - Hostname portion of the url for the repo
+   * @param secure - Whether or not this repo is accessed over ssl
+   * @param namespace - The namespace represented by the repo
+   * @param webSocketOnly - Whether to prefer websockets over all other transports (used by Nest).
+   * @param nodeAdmin - Whether this instance uses Admin SDK credentials
+   * @param persistenceKey - Override the default session persistence storage key
+   */
+  constructor(host, secure, namespace, webSocketOnly, nodeAdmin = false, persistenceKey = "", includeNamespaceInQueryParams = false, isUsingEmulator = false, emulatorOptions = null) {
+    this.secure = secure;
+    this.namespace = namespace;
+    this.webSocketOnly = webSocketOnly;
+    this.nodeAdmin = nodeAdmin;
+    this.persistenceKey = persistenceKey;
+    this.includeNamespaceInQueryParams = includeNamespaceInQueryParams;
+    this.isUsingEmulator = isUsingEmulator;
+    this.emulatorOptions = emulatorOptions;
+    this._host = host.toLowerCase();
+    this._domain = this._host.substr(this._host.indexOf(".") + 1);
+    this.internalHost = PersistentStorage.get("host:" + host) || this._host;
+  }
+  isCacheableHost() {
+    return this.internalHost.substr(0, 2) === "s-";
+  }
+  isCustomHost() {
+    return this._domain !== "firebaseio.com" && this._domain !== "firebaseio-demo.com";
+  }
+  get host() {
+    return this._host;
+  }
+  set host(newHost) {
+    if (newHost !== this.internalHost) {
+      this.internalHost = newHost;
+      if (this.isCacheableHost()) {
+        PersistentStorage.set("host:" + this._host, this.internalHost);
+      }
+    }
+  }
+  toString() {
+    let str = this.toURLString();
+    if (this.persistenceKey) {
+      str += "<" + this.persistenceKey + ">";
+    }
+    return str;
+  }
+  toURLString() {
+    const protocol = this.secure ? "https://" : "http://";
+    const query2 = this.includeNamespaceInQueryParams ? `?ns=${this.namespace}` : "";
+    return `${protocol}${this.host}/${query2}`;
+  }
+}
+function repoInfoNeedsQueryParam(repoInfo) {
+  return repoInfo.host !== repoInfo.internalHost || repoInfo.isCustomHost() || repoInfo.includeNamespaceInQueryParams;
+}
+function repoInfoConnectionURL(repoInfo, type2, params) {
+  assert(typeof type2 === "string", "typeof type must == string");
+  assert(typeof params === "object", "typeof params must == object");
+  let connURL;
+  if (type2 === WEBSOCKET) {
+    connURL = (repoInfo.secure ? "wss://" : "ws://") + repoInfo.internalHost + "/.ws?";
+  } else if (type2 === LONG_POLLING) {
+    connURL = (repoInfo.secure ? "https://" : "http://") + repoInfo.internalHost + "/.lp?";
+  } else {
+    throw new Error("Unknown connection type: " + type2);
+  }
+  if (repoInfoNeedsQueryParam(repoInfo)) {
+    params["ns"] = repoInfo.namespace;
+  }
+  const pairs = [];
+  each(params, (key2, value) => {
+    pairs.push(key2 + "=" + value);
+  });
+  return connURL + pairs.join("&");
+}
+class StatsCollection {
+  constructor() {
+    this.counters_ = {};
+  }
+  incrementCounter(name2, amount = 1) {
+    if (!contains(this.counters_, name2)) {
+      this.counters_[name2] = 0;
+    }
+    this.counters_[name2] += amount;
+  }
+  get() {
+    return deepCopy(this.counters_);
+  }
+}
+const collections = {};
+const reporters = {};
+function statsManagerGetCollection(repoInfo) {
+  const hashString = repoInfo.toString();
+  if (!collections[hashString]) {
+    collections[hashString] = new StatsCollection();
+  }
+  return collections[hashString];
+}
+function statsManagerGetOrCreateReporter(repoInfo, creatorFunction) {
+  const hashString = repoInfo.toString();
+  if (!reporters[hashString]) {
+    reporters[hashString] = creatorFunction();
+  }
+  return reporters[hashString];
+}
+class PacketReceiver {
+  /**
+   * @param onMessage_
+   */
+  constructor(onMessage_) {
+    this.onMessage_ = onMessage_;
+    this.pendingResponses = [];
+    this.currentResponseNum = 0;
+    this.closeAfterResponse = -1;
+    this.onClose = null;
+  }
+  closeAfter(responseNum, callback) {
+    this.closeAfterResponse = responseNum;
+    this.onClose = callback;
+    if (this.closeAfterResponse < this.currentResponseNum) {
+      this.onClose();
+      this.onClose = null;
+    }
+  }
+  /**
+   * Each message from the server comes with a response number, and an array of data. The responseNumber
+   * allows us to ensure that we process them in the right order, since we can't be guaranteed that all
+   * browsers will respond in the same order as the requests we sent
+   */
+  handleResponse(requestNum, data) {
+    this.pendingResponses[requestNum] = data;
+    while (this.pendingResponses[this.currentResponseNum]) {
+      const toProcess = this.pendingResponses[this.currentResponseNum];
+      delete this.pendingResponses[this.currentResponseNum];
+      for (let i = 0; i < toProcess.length; ++i) {
+        if (toProcess[i]) {
+          exceptionGuard(() => {
+            this.onMessage_(toProcess[i]);
+          });
+        }
+      }
+      if (this.currentResponseNum === this.closeAfterResponse) {
+        if (this.onClose) {
+          this.onClose();
+          this.onClose = null;
+        }
+        break;
+      }
+      this.currentResponseNum++;
+    }
+  }
+}
+const FIREBASE_LONGPOLL_START_PARAM = "start";
+const FIREBASE_LONGPOLL_CLOSE_COMMAND = "close";
+const FIREBASE_LONGPOLL_COMMAND_CB_NAME = "pLPCommand";
+const FIREBASE_LONGPOLL_DATA_CB_NAME = "pRTLPCB";
+const FIREBASE_LONGPOLL_ID_PARAM = "id";
+const FIREBASE_LONGPOLL_PW_PARAM = "pw";
+const FIREBASE_LONGPOLL_SERIAL_PARAM = "ser";
+const FIREBASE_LONGPOLL_CALLBACK_ID_PARAM = "cb";
+const FIREBASE_LONGPOLL_SEGMENT_NUM_PARAM = "seg";
+const FIREBASE_LONGPOLL_SEGMENTS_IN_PACKET = "ts";
+const FIREBASE_LONGPOLL_DATA_PARAM = "d";
+const FIREBASE_LONGPOLL_DISCONN_FRAME_REQUEST_PARAM = "dframe";
+const MAX_URL_DATA_SIZE = 1870;
+const SEG_HEADER_SIZE = 30;
+const MAX_PAYLOAD_SIZE = MAX_URL_DATA_SIZE - SEG_HEADER_SIZE;
+const KEEPALIVE_REQUEST_INTERVAL = 25e3;
+const LP_CONNECT_TIMEOUT = 3e4;
+class BrowserPollConnection {
+  /**
+   * @param connId An identifier for this connection, used for logging
+   * @param repoInfo The info for the endpoint to send data to.
+   * @param applicationId The Firebase App ID for this project.
+   * @param appCheckToken The AppCheck token for this client.
+   * @param authToken The AuthToken to use for this connection.
+   * @param transportSessionId Optional transportSessionid if we are
+   * reconnecting for an existing transport session
+   * @param lastSessionId Optional lastSessionId if the PersistentConnection has
+   * already created a connection previously
+   */
+  constructor(connId, repoInfo, applicationId, appCheckToken, authToken, transportSessionId, lastSessionId) {
+    this.connId = connId;
+    this.repoInfo = repoInfo;
+    this.applicationId = applicationId;
+    this.appCheckToken = appCheckToken;
+    this.authToken = authToken;
+    this.transportSessionId = transportSessionId;
+    this.lastSessionId = lastSessionId;
+    this.bytesSent = 0;
+    this.bytesReceived = 0;
+    this.everConnected_ = false;
+    this.log_ = logWrapper(connId);
+    this.stats_ = statsManagerGetCollection(repoInfo);
+    this.urlFn = (params) => {
+      if (this.appCheckToken) {
+        params[APP_CHECK_TOKEN_PARAM] = this.appCheckToken;
+      }
+      return repoInfoConnectionURL(repoInfo, LONG_POLLING, params);
+    };
+  }
+  /**
+   * @param onMessage - Callback when messages arrive
+   * @param onDisconnect - Callback with connection lost.
+   */
+  open(onMessage, onDisconnect2) {
+    this.curSegmentNum = 0;
+    this.onDisconnect_ = onDisconnect2;
+    this.myPacketOrderer = new PacketReceiver(onMessage);
+    this.isClosed_ = false;
+    this.connectTimeoutTimer_ = setTimeout(() => {
+      this.log_("Timed out trying to connect.");
+      this.onClosed_();
+      this.connectTimeoutTimer_ = null;
+    }, Math.floor(LP_CONNECT_TIMEOUT));
+    executeWhenDOMReady(() => {
+      if (this.isClosed_) {
+        return;
+      }
+      this.scriptTagHolder = new FirebaseIFrameScriptHolder((...args) => {
+        const [command, arg1, arg2, arg3, arg4] = args;
+        this.incrementIncomingBytes_(args);
+        if (!this.scriptTagHolder) {
+          return;
+        }
+        if (this.connectTimeoutTimer_) {
+          clearTimeout(this.connectTimeoutTimer_);
+          this.connectTimeoutTimer_ = null;
+        }
+        this.everConnected_ = true;
+        if (command === FIREBASE_LONGPOLL_START_PARAM) {
+          this.id = arg1;
+          this.password = arg2;
+        } else if (command === FIREBASE_LONGPOLL_CLOSE_COMMAND) {
+          if (arg1) {
+            this.scriptTagHolder.sendNewPolls = false;
+            this.myPacketOrderer.closeAfter(arg1, () => {
+              this.onClosed_();
+            });
+          } else {
+            this.onClosed_();
+          }
+        } else {
+          throw new Error("Unrecognized command received: " + command);
+        }
+      }, (...args) => {
+        const [pN, data] = args;
+        this.incrementIncomingBytes_(args);
+        this.myPacketOrderer.handleResponse(pN, data);
+      }, () => {
+        this.onClosed_();
+      }, this.urlFn);
+      const urlParams = {};
+      urlParams[FIREBASE_LONGPOLL_START_PARAM] = "t";
+      urlParams[FIREBASE_LONGPOLL_SERIAL_PARAM] = Math.floor(Math.random() * 1e8);
+      if (this.scriptTagHolder.uniqueCallbackIdentifier) {
+        urlParams[FIREBASE_LONGPOLL_CALLBACK_ID_PARAM] = this.scriptTagHolder.uniqueCallbackIdentifier;
+      }
+      urlParams[VERSION_PARAM] = PROTOCOL_VERSION$1;
+      if (this.transportSessionId) {
+        urlParams[TRANSPORT_SESSION_PARAM] = this.transportSessionId;
+      }
+      if (this.lastSessionId) {
+        urlParams[LAST_SESSION_PARAM] = this.lastSessionId;
+      }
+      if (this.applicationId) {
+        urlParams[APPLICATION_ID_PARAM] = this.applicationId;
+      }
+      if (this.appCheckToken) {
+        urlParams[APP_CHECK_TOKEN_PARAM] = this.appCheckToken;
+      }
+      if (typeof location !== "undefined" && location.hostname && FORGE_DOMAIN_RE.test(location.hostname)) {
+        urlParams[REFERER_PARAM] = FORGE_REF;
+      }
+      const connectURL = this.urlFn(urlParams);
+      this.log_("Connecting via long-poll to " + connectURL);
+      this.scriptTagHolder.addTag(connectURL, () => {
+      });
+    });
+  }
+  /**
+   * Call this when a handshake has completed successfully and we want to consider the connection established
+   */
+  start() {
+    this.scriptTagHolder.startLongPoll(this.id, this.password);
+    this.addDisconnectPingFrame(this.id, this.password);
+  }
+  /**
+   * Forces long polling to be considered as a potential transport
+   */
+  static forceAllow() {
+    BrowserPollConnection.forceAllow_ = true;
+  }
+  /**
+   * Forces longpolling to not be considered as a potential transport
+   */
+  static forceDisallow() {
+    BrowserPollConnection.forceDisallow_ = true;
+  }
+  // Static method, use string literal so it can be accessed in a generic way
+  static isAvailable() {
+    if (BrowserPollConnection.forceAllow_) {
+      return true;
+    } else {
+      return !BrowserPollConnection.forceDisallow_ && typeof document !== "undefined" && document.createElement != null && !isChromeExtensionContentScript() && !isWindowsStoreApp();
+    }
+  }
+  /**
+   * No-op for polling
+   */
+  markConnectionHealthy() {
+  }
+  /**
+   * Stops polling and cleans up the iframe
+   */
+  shutdown_() {
+    this.isClosed_ = true;
+    if (this.scriptTagHolder) {
+      this.scriptTagHolder.close();
+      this.scriptTagHolder = null;
+    }
+    if (this.myDisconnFrame) {
+      document.body.removeChild(this.myDisconnFrame);
+      this.myDisconnFrame = null;
+    }
+    if (this.connectTimeoutTimer_) {
+      clearTimeout(this.connectTimeoutTimer_);
+      this.connectTimeoutTimer_ = null;
+    }
+  }
+  /**
+   * Triggered when this transport is closed
+   */
+  onClosed_() {
+    if (!this.isClosed_) {
+      this.log_("Longpoll is closing itself");
+      this.shutdown_();
+      if (this.onDisconnect_) {
+        this.onDisconnect_(this.everConnected_);
+        this.onDisconnect_ = null;
+      }
+    }
+  }
+  /**
+   * External-facing close handler. RealTime has requested we shut down. Kill our connection and tell the server
+   * that we've left.
+   */
+  close() {
+    if (!this.isClosed_) {
+      this.log_("Longpoll is being closed.");
+      this.shutdown_();
+    }
+  }
+  /**
+   * Send the JSON object down to the server. It will need to be stringified, base64 encoded, and then
+   * broken into chunks (since URLs have a small maximum length).
+   * @param data - The JSON data to transmit.
+   */
+  send(data) {
+    const dataStr = stringify(data);
+    this.bytesSent += dataStr.length;
+    this.stats_.incrementCounter("bytes_sent", dataStr.length);
+    const base64data = base64Encode(dataStr);
+    const dataSegs = splitStringBySize(base64data, MAX_PAYLOAD_SIZE);
+    for (let i = 0; i < dataSegs.length; i++) {
+      this.scriptTagHolder.enqueueSegment(this.curSegmentNum, dataSegs.length, dataSegs[i]);
+      this.curSegmentNum++;
+    }
+  }
+  /**
+   * This is how we notify the server that we're leaving.
+   * We aren't able to send requests with DHTML on a window close event, but we can
+   * trigger XHR requests in some browsers (everything but Opera basically).
+   */
+  addDisconnectPingFrame(id, pw) {
+    this.myDisconnFrame = document.createElement("iframe");
+    const urlParams = {};
+    urlParams[FIREBASE_LONGPOLL_DISCONN_FRAME_REQUEST_PARAM] = "t";
+    urlParams[FIREBASE_LONGPOLL_ID_PARAM] = id;
+    urlParams[FIREBASE_LONGPOLL_PW_PARAM] = pw;
+    this.myDisconnFrame.src = this.urlFn(urlParams);
+    this.myDisconnFrame.style.display = "none";
+    document.body.appendChild(this.myDisconnFrame);
+  }
+  /**
+   * Used to track the bytes received by this client
+   */
+  incrementIncomingBytes_(args) {
+    const bytesReceived = stringify(args).length;
+    this.bytesReceived += bytesReceived;
+    this.stats_.incrementCounter("bytes_received", bytesReceived);
+  }
+}
+class FirebaseIFrameScriptHolder {
+  /**
+   * @param commandCB - The callback to be called when control commands are received from the server.
+   * @param onMessageCB - The callback to be triggered when responses arrive from the server.
+   * @param onDisconnect - The callback to be triggered when this tag holder is closed
+   * @param urlFn - A function that provides the URL of the endpoint to send data to.
+   */
+  constructor(commandCB, onMessageCB, onDisconnect2, urlFn) {
+    this.onDisconnect = onDisconnect2;
+    this.urlFn = urlFn;
+    this.outstandingRequests = /* @__PURE__ */ new Set();
+    this.pendingSegs = [];
+    this.currentSerial = Math.floor(Math.random() * 1e8);
+    this.sendNewPolls = true;
+    {
+      this.uniqueCallbackIdentifier = LUIDGenerator();
+      window[FIREBASE_LONGPOLL_COMMAND_CB_NAME + this.uniqueCallbackIdentifier] = commandCB;
+      window[FIREBASE_LONGPOLL_DATA_CB_NAME + this.uniqueCallbackIdentifier] = onMessageCB;
+      this.myIFrame = FirebaseIFrameScriptHolder.createIFrame_();
+      let script = "";
+      if (this.myIFrame.src && this.myIFrame.src.substr(0, "javascript:".length) === "javascript:") {
+        const currentDomain = document.domain;
+        script = '<script>document.domain="' + currentDomain + '";<\/script>';
+      }
+      const iframeContents = "<html><body>" + script + "</body></html>";
+      try {
+        this.myIFrame.doc.open();
+        this.myIFrame.doc.write(iframeContents);
+        this.myIFrame.doc.close();
+      } catch (e) {
+        log("frame writing exception");
+        if (e.stack) {
+          log(e.stack);
+        }
+        log(e);
+      }
+    }
+  }
+  /**
+   * Each browser has its own funny way to handle iframes. Here we mush them all together into one object that I can
+   * actually use.
+   */
+  static createIFrame_() {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    if (document.body) {
+      document.body.appendChild(iframe);
+      try {
+        const a = iframe.contentWindow.document;
+        if (!a) {
+          log("No IE domain setting required");
+        }
+      } catch (e) {
+        const domain = document.domain;
+        iframe.src = "javascript:void((function(){document.open();document.domain='" + domain + "';document.close();})())";
+      }
+    } else {
+      throw "Document body has not initialized. Wait to initialize Firebase until after the document is ready.";
+    }
+    if (iframe.contentDocument) {
+      iframe.doc = iframe.contentDocument;
+    } else if (iframe.contentWindow) {
+      iframe.doc = iframe.contentWindow.document;
+    } else if (iframe.document) {
+      iframe.doc = iframe.document;
+    }
+    return iframe;
+  }
+  /**
+   * Cancel all outstanding queries and remove the frame.
+   */
+  close() {
+    this.alive = false;
+    if (this.myIFrame) {
+      this.myIFrame.doc.body.textContent = "";
+      setTimeout(() => {
+        if (this.myIFrame !== null) {
+          document.body.removeChild(this.myIFrame);
+          this.myIFrame = null;
+        }
+      }, Math.floor(0));
+    }
+    const onDisconnect2 = this.onDisconnect;
+    if (onDisconnect2) {
+      this.onDisconnect = null;
+      onDisconnect2();
+    }
+  }
+  /**
+   * Actually start the long-polling session by adding the first script tag(s) to the iframe.
+   * @param id - The ID of this connection
+   * @param pw - The password for this connection
+   */
+  startLongPoll(id, pw) {
+    this.myID = id;
+    this.myPW = pw;
+    this.alive = true;
+    while (this.newRequest_()) {
+    }
+  }
+  /**
+   * This is called any time someone might want a script tag to be added. It adds a script tag when there aren't
+   * too many outstanding requests and we are still alive.
+   *
+   * If there are outstanding packet segments to send, it sends one. If there aren't, it sends a long-poll anyways if
+   * needed.
+   */
+  newRequest_() {
+    if (this.alive && this.sendNewPolls && this.outstandingRequests.size < (this.pendingSegs.length > 0 ? 2 : 1)) {
+      this.currentSerial++;
+      const urlParams = {};
+      urlParams[FIREBASE_LONGPOLL_ID_PARAM] = this.myID;
+      urlParams[FIREBASE_LONGPOLL_PW_PARAM] = this.myPW;
+      urlParams[FIREBASE_LONGPOLL_SERIAL_PARAM] = this.currentSerial;
+      let theURL = this.urlFn(urlParams);
+      let curDataString = "";
+      let i = 0;
+      while (this.pendingSegs.length > 0) {
+        const nextSeg = this.pendingSegs[0];
+        if (nextSeg.d.length + SEG_HEADER_SIZE + curDataString.length <= MAX_URL_DATA_SIZE) {
+          const theSeg = this.pendingSegs.shift();
+          curDataString = curDataString + "&" + FIREBASE_LONGPOLL_SEGMENT_NUM_PARAM + i + "=" + theSeg.seg + "&" + FIREBASE_LONGPOLL_SEGMENTS_IN_PACKET + i + "=" + theSeg.ts + "&" + FIREBASE_LONGPOLL_DATA_PARAM + i + "=" + theSeg.d;
+          i++;
+        } else {
+          break;
+        }
+      }
+      theURL = theURL + curDataString;
+      this.addLongPollTag_(theURL, this.currentSerial);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /**
+   * Queue a packet for transmission to the server.
+   * @param segnum - A sequential id for this packet segment used for reassembly
+   * @param totalsegs - The total number of segments in this packet
+   * @param data - The data for this segment.
+   */
+  enqueueSegment(segnum, totalsegs, data) {
+    this.pendingSegs.push({ seg: segnum, ts: totalsegs, d: data });
+    if (this.alive) {
+      this.newRequest_();
+    }
+  }
+  /**
+   * Add a script tag for a regular long-poll request.
+   * @param url - The URL of the script tag.
+   * @param serial - The serial number of the request.
+   */
+  addLongPollTag_(url, serial) {
+    this.outstandingRequests.add(serial);
+    const doNewRequest = () => {
+      this.outstandingRequests.delete(serial);
+      this.newRequest_();
+    };
+    const keepaliveTimeout = setTimeout(doNewRequest, Math.floor(KEEPALIVE_REQUEST_INTERVAL));
+    const readyStateCB = () => {
+      clearTimeout(keepaliveTimeout);
+      doNewRequest();
+    };
+    this.addTag(url, readyStateCB);
+  }
+  /**
+   * Add an arbitrary script tag to the iframe.
+   * @param url - The URL for the script tag source.
+   * @param loadCB - A callback to be triggered once the script has loaded.
+   */
+  addTag(url, loadCB) {
+    {
+      setTimeout(() => {
+        try {
+          if (!this.sendNewPolls) {
+            return;
+          }
+          const newScript = this.myIFrame.doc.createElement("script");
+          newScript.type = "text/javascript";
+          newScript.async = true;
+          newScript.src = url;
+          newScript.onload = newScript.onreadystatechange = function() {
+            const rstate = newScript.readyState;
+            if (!rstate || rstate === "loaded" || rstate === "complete") {
+              newScript.onload = newScript.onreadystatechange = null;
+              if (newScript.parentNode) {
+                newScript.parentNode.removeChild(newScript);
+              }
+              loadCB();
+            }
+          };
+          newScript.onerror = () => {
+            log("Long-poll script failed to load: " + url);
+            this.sendNewPolls = false;
+            this.close();
+          };
+          this.myIFrame.doc.body.appendChild(newScript);
+        } catch (e) {
+        }
+      }, Math.floor(1));
+    }
+  }
+}
+const WEBSOCKET_MAX_FRAME_SIZE = 16384;
+const WEBSOCKET_KEEPALIVE_INTERVAL = 45e3;
+let WebSocketImpl = null;
+if (typeof MozWebSocket !== "undefined") {
+  WebSocketImpl = MozWebSocket;
+} else if (typeof WebSocket !== "undefined") {
+  WebSocketImpl = WebSocket;
+}
+class WebSocketConnection {
+  /**
+   * @param connId identifier for this transport
+   * @param repoInfo The info for the websocket endpoint.
+   * @param applicationId The Firebase App ID for this project.
+   * @param appCheckToken The App Check Token for this client.
+   * @param authToken The Auth Token for this client.
+   * @param transportSessionId Optional transportSessionId if this is connecting
+   * to an existing transport session
+   * @param lastSessionId Optional lastSessionId if there was a previous
+   * connection
+   */
+  constructor(connId, repoInfo, applicationId, appCheckToken, authToken, transportSessionId, lastSessionId) {
+    this.connId = connId;
+    this.applicationId = applicationId;
+    this.appCheckToken = appCheckToken;
+    this.authToken = authToken;
+    this.keepaliveTimer = null;
+    this.frames = null;
+    this.totalFrames = 0;
+    this.bytesSent = 0;
+    this.bytesReceived = 0;
+    this.log_ = logWrapper(this.connId);
+    this.stats_ = statsManagerGetCollection(repoInfo);
+    this.connURL = WebSocketConnection.connectionURL_(repoInfo, transportSessionId, lastSessionId, appCheckToken, applicationId);
+    this.nodeAdmin = repoInfo.nodeAdmin;
+  }
+  /**
+   * @param repoInfo - The info for the websocket endpoint.
+   * @param transportSessionId - Optional transportSessionId if this is connecting to an existing transport
+   *                                         session
+   * @param lastSessionId - Optional lastSessionId if there was a previous connection
+   * @returns connection url
+   */
+  static connectionURL_(repoInfo, transportSessionId, lastSessionId, appCheckToken, applicationId) {
+    const urlParams = {};
+    urlParams[VERSION_PARAM] = PROTOCOL_VERSION$1;
+    if (typeof location !== "undefined" && location.hostname && FORGE_DOMAIN_RE.test(location.hostname)) {
+      urlParams[REFERER_PARAM] = FORGE_REF;
+    }
+    if (transportSessionId) {
+      urlParams[TRANSPORT_SESSION_PARAM] = transportSessionId;
+    }
+    if (lastSessionId) {
+      urlParams[LAST_SESSION_PARAM] = lastSessionId;
+    }
+    if (appCheckToken) {
+      urlParams[APP_CHECK_TOKEN_PARAM] = appCheckToken;
+    }
+    if (applicationId) {
+      urlParams[APPLICATION_ID_PARAM] = applicationId;
+    }
+    return repoInfoConnectionURL(repoInfo, WEBSOCKET, urlParams);
+  }
+  /**
+   * @param onMessage - Callback when messages arrive
+   * @param onDisconnect - Callback with connection lost.
+   */
+  open(onMessage, onDisconnect2) {
+    this.onDisconnect = onDisconnect2;
+    this.onMessage = onMessage;
+    this.log_("Websocket connecting to " + this.connURL);
+    this.everConnected_ = false;
+    PersistentStorage.set("previous_websocket_failure", true);
+    try {
+      let options;
+      if (isNodeSdk()) ;
+      this.mySock = new WebSocketImpl(this.connURL, [], options);
+    } catch (e) {
+      this.log_("Error instantiating WebSocket.");
+      const error2 = e.message || e.data;
+      if (error2) {
+        this.log_(error2);
+      }
+      this.onClosed_();
+      return;
+    }
+    this.mySock.onopen = () => {
+      this.log_("Websocket connected.");
+      this.everConnected_ = true;
+    };
+    this.mySock.onclose = () => {
+      this.log_("Websocket connection was disconnected.");
+      this.mySock = null;
+      this.onClosed_();
+    };
+    this.mySock.onmessage = (m) => {
+      this.handleIncomingFrame(m);
+    };
+    this.mySock.onerror = (e) => {
+      this.log_("WebSocket error.  Closing connection.");
+      const error2 = e.message || e.data;
+      if (error2) {
+        this.log_(error2);
+      }
+      this.onClosed_();
+    };
+  }
+  /**
+   * No-op for websockets, we don't need to do anything once the connection is confirmed as open
+   */
+  start() {
+  }
+  static forceDisallow() {
+    WebSocketConnection.forceDisallow_ = true;
+  }
+  static isAvailable() {
+    let isOldAndroid = false;
+    if (typeof navigator !== "undefined" && navigator.userAgent) {
+      const oldAndroidRegex = /Android ([0-9]{0,}\.[0-9]{0,})/;
+      const oldAndroidMatch = navigator.userAgent.match(oldAndroidRegex);
+      if (oldAndroidMatch && oldAndroidMatch.length > 1) {
+        if (parseFloat(oldAndroidMatch[1]) < 4.4) {
+          isOldAndroid = true;
+        }
+      }
+    }
+    return !isOldAndroid && WebSocketImpl !== null && !WebSocketConnection.forceDisallow_;
+  }
+  /**
+   * Returns true if we previously failed to connect with this transport.
+   */
+  static previouslyFailed() {
+    return PersistentStorage.isInMemoryStorage || PersistentStorage.get("previous_websocket_failure") === true;
+  }
+  markConnectionHealthy() {
+    PersistentStorage.remove("previous_websocket_failure");
+  }
+  appendFrame_(data) {
+    this.frames.push(data);
+    if (this.frames.length === this.totalFrames) {
+      const fullMess = this.frames.join("");
+      this.frames = null;
+      const jsonMess = jsonEval(fullMess);
+      this.onMessage(jsonMess);
+    }
+  }
+  /**
+   * @param frameCount - The number of frames we are expecting from the server
+   */
+  handleNewFrameCount_(frameCount) {
+    this.totalFrames = frameCount;
+    this.frames = [];
+  }
+  /**
+   * Attempts to parse a frame count out of some text. If it can't, assumes a value of 1
+   * @returns Any remaining data to be process, or null if there is none
+   */
+  extractFrameCount_(data) {
+    assert(this.frames === null, "We already have a frame buffer");
+    if (data.length <= 6) {
+      const frameCount = Number(data);
+      if (!isNaN(frameCount)) {
+        this.handleNewFrameCount_(frameCount);
+        return null;
+      }
+    }
+    this.handleNewFrameCount_(1);
+    return data;
+  }
+  /**
+   * Process a websocket frame that has arrived from the server.
+   * @param mess - The frame data
+   */
+  handleIncomingFrame(mess) {
+    if (this.mySock === null) {
+      return;
+    }
+    const data = mess["data"];
+    this.bytesReceived += data.length;
+    this.stats_.incrementCounter("bytes_received", data.length);
+    this.resetKeepAlive();
+    if (this.frames !== null) {
+      this.appendFrame_(data);
+    } else {
+      const remainingData = this.extractFrameCount_(data);
+      if (remainingData !== null) {
+        this.appendFrame_(remainingData);
+      }
+    }
+  }
+  /**
+   * Send a message to the server
+   * @param data - The JSON object to transmit
+   */
+  send(data) {
+    this.resetKeepAlive();
+    const dataStr = stringify(data);
+    this.bytesSent += dataStr.length;
+    this.stats_.incrementCounter("bytes_sent", dataStr.length);
+    const dataSegs = splitStringBySize(dataStr, WEBSOCKET_MAX_FRAME_SIZE);
+    if (dataSegs.length > 1) {
+      this.sendString_(String(dataSegs.length));
+    }
+    for (let i = 0; i < dataSegs.length; i++) {
+      this.sendString_(dataSegs[i]);
+    }
+  }
+  shutdown_() {
+    this.isClosed_ = true;
+    if (this.keepaliveTimer) {
+      clearInterval(this.keepaliveTimer);
+      this.keepaliveTimer = null;
+    }
+    if (this.mySock) {
+      this.mySock.close();
+      this.mySock = null;
+    }
+  }
+  onClosed_() {
+    if (!this.isClosed_) {
+      this.log_("WebSocket is closing itself");
+      this.shutdown_();
+      if (this.onDisconnect) {
+        this.onDisconnect(this.everConnected_);
+        this.onDisconnect = null;
+      }
+    }
+  }
+  /**
+   * External-facing close handler.
+   * Close the websocket and kill the connection.
+   */
+  close() {
+    if (!this.isClosed_) {
+      this.log_("WebSocket is being closed");
+      this.shutdown_();
+    }
+  }
+  /**
+   * Kill the current keepalive timer and start a new one, to ensure that it always fires N seconds after
+   * the last activity.
+   */
+  resetKeepAlive() {
+    clearInterval(this.keepaliveTimer);
+    this.keepaliveTimer = setInterval(() => {
+      if (this.mySock) {
+        this.sendString_("0");
+      }
+      this.resetKeepAlive();
+    }, Math.floor(WEBSOCKET_KEEPALIVE_INTERVAL));
+  }
+  /**
+   * Send a string over the websocket.
+   *
+   * @param str - String to send.
+   */
+  sendString_(str) {
+    try {
+      this.mySock.send(str);
+    } catch (e) {
+      this.log_("Exception thrown from WebSocket.send():", e.message || e.data, "Closing connection.");
+      setTimeout(this.onClosed_.bind(this), 0);
+    }
+  }
+}
+WebSocketConnection.responsesRequiredToBeHealthy = 2;
+WebSocketConnection.healthyTimeout = 3e4;
+class TransportManager {
+  static get ALL_TRANSPORTS() {
+    return [BrowserPollConnection, WebSocketConnection];
+  }
+  /**
+   * Returns whether transport has been selected to ensure WebSocketConnection or BrowserPollConnection are not called after
+   * TransportManager has already set up transports_
+   */
+  static get IS_TRANSPORT_INITIALIZED() {
+    return this.globalTransportInitialized_;
+  }
+  /**
+   * @param repoInfo - Metadata around the namespace we're connecting to
+   */
+  constructor(repoInfo) {
+    this.initTransports_(repoInfo);
+  }
+  initTransports_(repoInfo) {
+    const isWebSocketsAvailable = WebSocketConnection && WebSocketConnection["isAvailable"]();
+    let isSkipPollConnection = isWebSocketsAvailable && !WebSocketConnection.previouslyFailed();
+    if (repoInfo.webSocketOnly) {
+      if (!isWebSocketsAvailable) {
+        warn("wss:// URL used, but browser isn't known to support websockets.  Trying anyway.");
+      }
+      isSkipPollConnection = true;
+    }
+    if (isSkipPollConnection) {
+      this.transports_ = [WebSocketConnection];
+    } else {
+      const transports = this.transports_ = [];
+      for (const transport of TransportManager.ALL_TRANSPORTS) {
+        if (transport && transport["isAvailable"]()) {
+          transports.push(transport);
+        }
+      }
+      TransportManager.globalTransportInitialized_ = true;
+    }
+  }
+  /**
+   * @returns The constructor for the initial transport to use
+   */
+  initialTransport() {
+    if (this.transports_.length > 0) {
+      return this.transports_[0];
+    } else {
+      throw new Error("No transports available");
+    }
+  }
+  /**
+   * @returns The constructor for the next transport, or null
+   */
+  upgradeTransport() {
+    if (this.transports_.length > 1) {
+      return this.transports_[1];
+    } else {
+      return null;
+    }
+  }
+}
+TransportManager.globalTransportInitialized_ = false;
+const UPGRADE_TIMEOUT = 6e4;
+const DELAY_BEFORE_SENDING_EXTRA_REQUESTS = 5e3;
+const BYTES_SENT_HEALTHY_OVERRIDE = 10 * 1024;
+const BYTES_RECEIVED_HEALTHY_OVERRIDE = 100 * 1024;
+const MESSAGE_TYPE = "t";
+const MESSAGE_DATA = "d";
+const CONTROL_SHUTDOWN = "s";
+const CONTROL_RESET = "r";
+const CONTROL_ERROR = "e";
+const CONTROL_PONG = "o";
+const SWITCH_ACK = "a";
+const END_TRANSMISSION = "n";
+const PING = "p";
+const SERVER_HELLO = "h";
+class Connection2 {
+  /**
+   * @param id - an id for this connection
+   * @param repoInfo_ - the info for the endpoint to connect to
+   * @param applicationId_ - the Firebase App ID for this project
+   * @param appCheckToken_ - The App Check Token for this device.
+   * @param authToken_ - The auth token for this session.
+   * @param onMessage_ - the callback to be triggered when a server-push message arrives
+   * @param onReady_ - the callback to be triggered when this connection is ready to send messages.
+   * @param onDisconnect_ - the callback to be triggered when a connection was lost
+   * @param onKill_ - the callback to be triggered when this connection has permanently shut down.
+   * @param lastSessionId - last session id in persistent connection. is used to clean up old session in real-time server
+   */
+  constructor(id, repoInfo_, applicationId_, appCheckToken_, authToken_, onMessage_, onReady_, onDisconnect_, onKill_, lastSessionId) {
+    this.id = id;
+    this.repoInfo_ = repoInfo_;
+    this.applicationId_ = applicationId_;
+    this.appCheckToken_ = appCheckToken_;
+    this.authToken_ = authToken_;
+    this.onMessage_ = onMessage_;
+    this.onReady_ = onReady_;
+    this.onDisconnect_ = onDisconnect_;
+    this.onKill_ = onKill_;
+    this.lastSessionId = lastSessionId;
+    this.connectionCount = 0;
+    this.pendingDataMessages = [];
+    this.state_ = 0;
+    this.log_ = logWrapper("c:" + this.id + ":");
+    this.transportManager_ = new TransportManager(repoInfo_);
+    this.log_("Connection created");
+    this.start_();
+  }
+  /**
+   * Starts a connection attempt
+   */
+  start_() {
+    const conn = this.transportManager_.initialTransport();
+    this.conn_ = new conn(this.nextTransportId_(), this.repoInfo_, this.applicationId_, this.appCheckToken_, this.authToken_, null, this.lastSessionId);
+    this.primaryResponsesRequired_ = conn["responsesRequiredToBeHealthy"] || 0;
+    const onMessageReceived = this.connReceiver_(this.conn_);
+    const onConnectionLost = this.disconnReceiver_(this.conn_);
+    this.tx_ = this.conn_;
+    this.rx_ = this.conn_;
+    this.secondaryConn_ = null;
+    this.isHealthy_ = false;
+    setTimeout(() => {
+      this.conn_ && this.conn_.open(onMessageReceived, onConnectionLost);
+    }, Math.floor(0));
+    const healthyTimeoutMS = conn["healthyTimeout"] || 0;
+    if (healthyTimeoutMS > 0) {
+      this.healthyTimeout_ = setTimeoutNonBlocking(() => {
+        this.healthyTimeout_ = null;
+        if (!this.isHealthy_) {
+          if (this.conn_ && this.conn_.bytesReceived > BYTES_RECEIVED_HEALTHY_OVERRIDE) {
+            this.log_("Connection exceeded healthy timeout but has received " + this.conn_.bytesReceived + " bytes.  Marking connection healthy.");
+            this.isHealthy_ = true;
+            this.conn_.markConnectionHealthy();
+          } else if (this.conn_ && this.conn_.bytesSent > BYTES_SENT_HEALTHY_OVERRIDE) {
+            this.log_("Connection exceeded healthy timeout but has sent " + this.conn_.bytesSent + " bytes.  Leaving connection alive.");
+          } else {
+            this.log_("Closing unhealthy connection after timeout.");
+            this.close();
+          }
+        }
+      }, Math.floor(healthyTimeoutMS));
+    }
+  }
+  nextTransportId_() {
+    return "c:" + this.id + ":" + this.connectionCount++;
+  }
+  disconnReceiver_(conn) {
+    return (everConnected) => {
+      if (conn === this.conn_) {
+        this.onConnectionLost_(everConnected);
+      } else if (conn === this.secondaryConn_) {
+        this.log_("Secondary connection lost.");
+        this.onSecondaryConnectionLost_();
+      } else {
+        this.log_("closing an old connection");
+      }
+    };
+  }
+  connReceiver_(conn) {
+    return (message) => {
+      if (this.state_ !== 2) {
+        if (conn === this.rx_) {
+          this.onPrimaryMessageReceived_(message);
+        } else if (conn === this.secondaryConn_) {
+          this.onSecondaryMessageReceived_(message);
+        } else {
+          this.log_("message on old connection");
+        }
+      }
+    };
+  }
+  /**
+   * @param dataMsg - An arbitrary data message to be sent to the server
+   */
+  sendRequest(dataMsg) {
+    const msg = { t: "d", d: dataMsg };
+    this.sendData_(msg);
+  }
+  tryCleanupConnection() {
+    if (this.tx_ === this.secondaryConn_ && this.rx_ === this.secondaryConn_) {
+      this.log_("cleaning up and promoting a connection: " + this.secondaryConn_.connId);
+      this.conn_ = this.secondaryConn_;
+      this.secondaryConn_ = null;
+    }
+  }
+  onSecondaryControl_(controlData) {
+    if (MESSAGE_TYPE in controlData) {
+      const cmd = controlData[MESSAGE_TYPE];
+      if (cmd === SWITCH_ACK) {
+        this.upgradeIfSecondaryHealthy_();
+      } else if (cmd === CONTROL_RESET) {
+        this.log_("Got a reset on secondary, closing it");
+        this.secondaryConn_.close();
+        if (this.tx_ === this.secondaryConn_ || this.rx_ === this.secondaryConn_) {
+          this.close();
+        }
+      } else if (cmd === CONTROL_PONG) {
+        this.log_("got pong on secondary.");
+        this.secondaryResponsesRequired_--;
+        this.upgradeIfSecondaryHealthy_();
+      }
+    }
+  }
+  onSecondaryMessageReceived_(parsedData) {
+    const layer = requireKey("t", parsedData);
+    const data = requireKey("d", parsedData);
+    if (layer === "c") {
+      this.onSecondaryControl_(data);
+    } else if (layer === "d") {
+      this.pendingDataMessages.push(data);
+    } else {
+      throw new Error("Unknown protocol layer: " + layer);
+    }
+  }
+  upgradeIfSecondaryHealthy_() {
+    if (this.secondaryResponsesRequired_ <= 0) {
+      this.log_("Secondary connection is healthy.");
+      this.isHealthy_ = true;
+      this.secondaryConn_.markConnectionHealthy();
+      this.proceedWithUpgrade_();
+    } else {
+      this.log_("sending ping on secondary.");
+      this.secondaryConn_.send({ t: "c", d: { t: PING, d: {} } });
+    }
+  }
+  proceedWithUpgrade_() {
+    this.secondaryConn_.start();
+    this.log_("sending client ack on secondary");
+    this.secondaryConn_.send({ t: "c", d: { t: SWITCH_ACK, d: {} } });
+    this.log_("Ending transmission on primary");
+    this.conn_.send({ t: "c", d: { t: END_TRANSMISSION, d: {} } });
+    this.tx_ = this.secondaryConn_;
+    this.tryCleanupConnection();
+  }
+  onPrimaryMessageReceived_(parsedData) {
+    const layer = requireKey("t", parsedData);
+    const data = requireKey("d", parsedData);
+    if (layer === "c") {
+      this.onControl_(data);
+    } else if (layer === "d") {
+      this.onDataMessage_(data);
+    }
+  }
+  onDataMessage_(message) {
+    this.onPrimaryResponse_();
+    this.onMessage_(message);
+  }
+  onPrimaryResponse_() {
+    if (!this.isHealthy_) {
+      this.primaryResponsesRequired_--;
+      if (this.primaryResponsesRequired_ <= 0) {
+        this.log_("Primary connection is healthy.");
+        this.isHealthy_ = true;
+        this.conn_.markConnectionHealthy();
+      }
+    }
+  }
+  onControl_(controlData) {
+    const cmd = requireKey(MESSAGE_TYPE, controlData);
+    if (MESSAGE_DATA in controlData) {
+      const payload = controlData[MESSAGE_DATA];
+      if (cmd === SERVER_HELLO) {
+        const handshakePayload = {
+          ...payload
+        };
+        if (this.repoInfo_.isUsingEmulator) {
+          handshakePayload.h = this.repoInfo_.host;
+        }
+        this.onHandshake_(handshakePayload);
+      } else if (cmd === END_TRANSMISSION) {
+        this.log_("recvd end transmission on primary");
+        this.rx_ = this.secondaryConn_;
+        for (let i = 0; i < this.pendingDataMessages.length; ++i) {
+          this.onDataMessage_(this.pendingDataMessages[i]);
+        }
+        this.pendingDataMessages = [];
+        this.tryCleanupConnection();
+      } else if (cmd === CONTROL_SHUTDOWN) {
+        this.onConnectionShutdown_(payload);
+      } else if (cmd === CONTROL_RESET) {
+        this.onReset_(payload);
+      } else if (cmd === CONTROL_ERROR) {
+        error("Server Error: " + payload);
+      } else if (cmd === CONTROL_PONG) {
+        this.log_("got pong on primary.");
+        this.onPrimaryResponse_();
+        this.sendPingOnPrimaryIfNecessary_();
+      } else {
+        error("Unknown control packet command: " + cmd);
+      }
+    }
+  }
+  /**
+   * @param handshake - The handshake data returned from the server
+   */
+  onHandshake_(handshake) {
+    const timestamp = handshake.ts;
+    const version2 = handshake.v;
+    const host = handshake.h;
+    this.sessionId = handshake.s;
+    this.repoInfo_.host = host;
+    if (this.state_ === 0) {
+      this.conn_.start();
+      this.onConnectionEstablished_(this.conn_, timestamp);
+      if (PROTOCOL_VERSION$1 !== version2) {
+        warn("Protocol version mismatch detected");
+      }
+      this.tryStartUpgrade_();
+    }
+  }
+  tryStartUpgrade_() {
+    const conn = this.transportManager_.upgradeTransport();
+    if (conn) {
+      this.startUpgrade_(conn);
+    }
+  }
+  startUpgrade_(conn) {
+    this.secondaryConn_ = new conn(this.nextTransportId_(), this.repoInfo_, this.applicationId_, this.appCheckToken_, this.authToken_, this.sessionId);
+    this.secondaryResponsesRequired_ = conn["responsesRequiredToBeHealthy"] || 0;
+    const onMessage = this.connReceiver_(this.secondaryConn_);
+    const onDisconnect2 = this.disconnReceiver_(this.secondaryConn_);
+    this.secondaryConn_.open(onMessage, onDisconnect2);
+    setTimeoutNonBlocking(() => {
+      if (this.secondaryConn_) {
+        this.log_("Timed out trying to upgrade.");
+        this.secondaryConn_.close();
+      }
+    }, Math.floor(UPGRADE_TIMEOUT));
+  }
+  onReset_(host) {
+    this.log_("Reset packet received.  New host: " + host);
+    this.repoInfo_.host = host;
+    if (this.state_ === 1) {
+      this.close();
+    } else {
+      this.closeConnections_();
+      this.start_();
+    }
+  }
+  onConnectionEstablished_(conn, timestamp) {
+    this.log_("Realtime connection established.");
+    this.conn_ = conn;
+    this.state_ = 1;
+    if (this.onReady_) {
+      this.onReady_(timestamp, this.sessionId);
+      this.onReady_ = null;
+    }
+    if (this.primaryResponsesRequired_ === 0) {
+      this.log_("Primary connection is healthy.");
+      this.isHealthy_ = true;
+    } else {
+      setTimeoutNonBlocking(() => {
+        this.sendPingOnPrimaryIfNecessary_();
+      }, Math.floor(DELAY_BEFORE_SENDING_EXTRA_REQUESTS));
+    }
+  }
+  sendPingOnPrimaryIfNecessary_() {
+    if (!this.isHealthy_ && this.state_ === 1) {
+      this.log_("sending ping on primary.");
+      this.sendData_({ t: "c", d: { t: PING, d: {} } });
+    }
+  }
+  onSecondaryConnectionLost_() {
+    const conn = this.secondaryConn_;
+    this.secondaryConn_ = null;
+    if (this.tx_ === conn || this.rx_ === conn) {
+      this.close();
+    }
+  }
+  /**
+   * @param everConnected - Whether or not the connection ever reached a server. Used to determine if
+   * we should flush the host cache
+   */
+  onConnectionLost_(everConnected) {
+    this.conn_ = null;
+    if (!everConnected && this.state_ === 0) {
+      this.log_("Realtime connection failed.");
+      if (this.repoInfo_.isCacheableHost()) {
+        PersistentStorage.remove("host:" + this.repoInfo_.host);
+        this.repoInfo_.internalHost = this.repoInfo_.host;
+      }
+    } else if (this.state_ === 1) {
+      this.log_("Realtime connection lost.");
+    }
+    this.close();
+  }
+  onConnectionShutdown_(reason) {
+    this.log_("Connection shutdown command received. Shutting down...");
+    if (this.onKill_) {
+      this.onKill_(reason);
+      this.onKill_ = null;
+    }
+    this.onDisconnect_ = null;
+    this.close();
+  }
+  sendData_(data) {
+    if (this.state_ !== 1) {
+      throw "Connection is not connected";
+    } else {
+      this.tx_.send(data);
+    }
+  }
+  /**
+   * Cleans up this connection, calling the appropriate callbacks
+   */
+  close() {
+    if (this.state_ !== 2) {
+      this.log_("Closing realtime connection.");
+      this.state_ = 2;
+      this.closeConnections_();
+      if (this.onDisconnect_) {
+        this.onDisconnect_();
+        this.onDisconnect_ = null;
+      }
+    }
+  }
+  closeConnections_() {
+    this.log_("Shutting down all connections");
+    if (this.conn_) {
+      this.conn_.close();
+      this.conn_ = null;
+    }
+    if (this.secondaryConn_) {
+      this.secondaryConn_.close();
+      this.secondaryConn_ = null;
+    }
+    if (this.healthyTimeout_) {
+      clearTimeout(this.healthyTimeout_);
+      this.healthyTimeout_ = null;
+    }
+  }
+}
+class ServerActions {
+  put(pathString, data, onComplete, hash2) {
+  }
+  merge(pathString, data, onComplete, hash2) {
+  }
+  /**
+   * Refreshes the auth token for the current connection.
+   * @param token - The authentication token
+   */
+  refreshAuthToken(token2) {
+  }
+  /**
+   * Refreshes the app check token for the current connection.
+   * @param token The app check token
+   */
+  refreshAppCheckToken(token2) {
+  }
+  onDisconnectPut(pathString, data, onComplete) {
+  }
+  onDisconnectMerge(pathString, data, onComplete) {
+  }
+  onDisconnectCancel(pathString, onComplete) {
+  }
+  reportStats(stats) {
+  }
+}
+class EventEmitter {
+  constructor(allowedEvents_) {
+    this.allowedEvents_ = allowedEvents_;
+    this.listeners_ = {};
+    assert(Array.isArray(allowedEvents_) && allowedEvents_.length > 0, "Requires a non-empty array");
+  }
+  /**
+   * To be called by derived classes to trigger events.
+   */
+  trigger(eventType, ...varArgs) {
+    if (Array.isArray(this.listeners_[eventType])) {
+      const listeners = [...this.listeners_[eventType]];
+      for (let i = 0; i < listeners.length; i++) {
+        listeners[i].callback.apply(listeners[i].context, varArgs);
+      }
+    }
+  }
+  on(eventType, callback, context) {
+    this.validateEventType_(eventType);
+    this.listeners_[eventType] = this.listeners_[eventType] || [];
+    this.listeners_[eventType].push({ callback, context });
+    const eventData = this.getInitialEvent(eventType);
+    if (eventData) {
+      callback.apply(context, eventData);
+    }
+  }
+  off(eventType, callback, context) {
+    this.validateEventType_(eventType);
+    const listeners = this.listeners_[eventType] || [];
+    for (let i = 0; i < listeners.length; i++) {
+      if (listeners[i].callback === callback && (!context || context === listeners[i].context)) {
+        listeners.splice(i, 1);
+        return;
+      }
+    }
+  }
+  validateEventType_(eventType) {
+    assert(this.allowedEvents_.find((et) => {
+      return et === eventType;
+    }), "Unknown event: " + eventType);
+  }
+}
+class OnlineMonitor extends EventEmitter {
+  static getInstance() {
+    return new OnlineMonitor();
+  }
+  constructor() {
+    super(["online"]);
+    this.online_ = true;
+    if (typeof window !== "undefined" && typeof window.addEventListener !== "undefined" && !isMobileCordova()) {
+      window.addEventListener("online", () => {
+        if (!this.online_) {
+          this.online_ = true;
+          this.trigger("online", true);
+        }
+      }, false);
+      window.addEventListener("offline", () => {
+        if (this.online_) {
+          this.online_ = false;
+          this.trigger("online", false);
+        }
+      }, false);
+    }
+  }
+  getInitialEvent(eventType) {
+    assert(eventType === "online", "Unknown event type: " + eventType);
+    return [this.online_];
+  }
+  currentlyOnline() {
+    return this.online_;
+  }
+}
+const MAX_PATH_DEPTH = 32;
+const MAX_PATH_LENGTH_BYTES = 768;
+class Path {
+  /**
+   * @param pathOrString - Path string to parse, or another path, or the raw
+   * tokens array
+   */
+  constructor(pathOrString, pieceNum) {
+    if (pieceNum === void 0) {
+      this.pieces_ = pathOrString.split("/");
+      let copyTo = 0;
+      for (let i = 0; i < this.pieces_.length; i++) {
+        if (this.pieces_[i].length > 0) {
+          this.pieces_[copyTo] = this.pieces_[i];
+          copyTo++;
+        }
+      }
+      this.pieces_.length = copyTo;
+      this.pieceNum_ = 0;
+    } else {
+      this.pieces_ = pathOrString;
+      this.pieceNum_ = pieceNum;
+    }
+  }
+  toString() {
+    let pathString = "";
+    for (let i = this.pieceNum_; i < this.pieces_.length; i++) {
+      if (this.pieces_[i] !== "") {
+        pathString += "/" + this.pieces_[i];
+      }
+    }
+    return pathString || "/";
+  }
+}
+function newEmptyPath() {
+  return new Path("");
+}
+function pathGetFront(path) {
+  if (path.pieceNum_ >= path.pieces_.length) {
+    return null;
+  }
+  return path.pieces_[path.pieceNum_];
+}
+function pathGetLength(path) {
+  return path.pieces_.length - path.pieceNum_;
+}
+function pathPopFront(path) {
+  let pieceNum = path.pieceNum_;
+  if (pieceNum < path.pieces_.length) {
+    pieceNum++;
+  }
+  return new Path(path.pieces_, pieceNum);
+}
+function pathGetBack(path) {
+  if (path.pieceNum_ < path.pieces_.length) {
+    return path.pieces_[path.pieces_.length - 1];
+  }
+  return null;
+}
+function pathToUrlEncodedString(path) {
+  let pathString = "";
+  for (let i = path.pieceNum_; i < path.pieces_.length; i++) {
+    if (path.pieces_[i] !== "") {
+      pathString += "/" + encodeURIComponent(String(path.pieces_[i]));
+    }
+  }
+  return pathString || "/";
+}
+function pathSlice(path, begin = 0) {
+  return path.pieces_.slice(path.pieceNum_ + begin);
+}
+function pathParent(path) {
+  if (path.pieceNum_ >= path.pieces_.length) {
+    return null;
+  }
+  const pieces = [];
+  for (let i = path.pieceNum_; i < path.pieces_.length - 1; i++) {
+    pieces.push(path.pieces_[i]);
+  }
+  return new Path(pieces, 0);
+}
+function pathChild(path, childPathObj) {
+  const pieces = [];
+  for (let i = path.pieceNum_; i < path.pieces_.length; i++) {
+    pieces.push(path.pieces_[i]);
+  }
+  if (childPathObj instanceof Path) {
+    for (let i = childPathObj.pieceNum_; i < childPathObj.pieces_.length; i++) {
+      pieces.push(childPathObj.pieces_[i]);
+    }
+  } else {
+    const childPieces = childPathObj.split("/");
+    for (let i = 0; i < childPieces.length; i++) {
+      if (childPieces[i].length > 0) {
+        pieces.push(childPieces[i]);
+      }
+    }
+  }
+  return new Path(pieces, 0);
+}
+function pathIsEmpty(path) {
+  return path.pieceNum_ >= path.pieces_.length;
+}
+function newRelativePath(outerPath, innerPath) {
+  const outer = pathGetFront(outerPath), inner = pathGetFront(innerPath);
+  if (outer === null) {
+    return innerPath;
+  } else if (outer === inner) {
+    return newRelativePath(pathPopFront(outerPath), pathPopFront(innerPath));
+  } else {
+    throw new Error("INTERNAL ERROR: innerPath (" + innerPath + ") is not within outerPath (" + outerPath + ")");
+  }
+}
+function pathEquals(path, other) {
+  if (pathGetLength(path) !== pathGetLength(other)) {
+    return false;
+  }
+  for (let i = path.pieceNum_, j = other.pieceNum_; i <= path.pieces_.length; i++, j++) {
+    if (path.pieces_[i] !== other.pieces_[j]) {
+      return false;
+    }
+  }
+  return true;
+}
+function pathContains(path, other) {
+  let i = path.pieceNum_;
+  let j = other.pieceNum_;
+  if (pathGetLength(path) > pathGetLength(other)) {
+    return false;
+  }
+  while (i < path.pieces_.length) {
+    if (path.pieces_[i] !== other.pieces_[j]) {
+      return false;
+    }
+    ++i;
+    ++j;
+  }
+  return true;
+}
+class ValidationPath {
+  /**
+   * @param path - Initial Path.
+   * @param errorPrefix_ - Prefix for any error messages.
+   */
+  constructor(path, errorPrefix_) {
+    this.errorPrefix_ = errorPrefix_;
+    this.parts_ = pathSlice(path, 0);
+    this.byteLength_ = Math.max(1, this.parts_.length);
+    for (let i = 0; i < this.parts_.length; i++) {
+      this.byteLength_ += stringLength(this.parts_[i]);
+    }
+    validationPathCheckValid(this);
+  }
+}
+function validationPathPush(validationPath, child2) {
+  if (validationPath.parts_.length > 0) {
+    validationPath.byteLength_ += 1;
+  }
+  validationPath.parts_.push(child2);
+  validationPath.byteLength_ += stringLength(child2);
+  validationPathCheckValid(validationPath);
+}
+function validationPathPop(validationPath) {
+  const last = validationPath.parts_.pop();
+  validationPath.byteLength_ -= stringLength(last);
+  if (validationPath.parts_.length > 0) {
+    validationPath.byteLength_ -= 1;
+  }
+}
+function validationPathCheckValid(validationPath) {
+  if (validationPath.byteLength_ > MAX_PATH_LENGTH_BYTES) {
+    throw new Error(validationPath.errorPrefix_ + "has a key path longer than " + MAX_PATH_LENGTH_BYTES + " bytes (" + validationPath.byteLength_ + ").");
+  }
+  if (validationPath.parts_.length > MAX_PATH_DEPTH) {
+    throw new Error(validationPath.errorPrefix_ + "path specified exceeds the maximum depth that can be written (" + MAX_PATH_DEPTH + ") or object contains a cycle " + validationPathToErrorString(validationPath));
+  }
+}
+function validationPathToErrorString(validationPath) {
+  if (validationPath.parts_.length === 0) {
+    return "";
+  }
+  return "in property '" + validationPath.parts_.join(".") + "'";
+}
+class VisibilityMonitor extends EventEmitter {
+  static getInstance() {
+    return new VisibilityMonitor();
+  }
+  constructor() {
+    super(["visible"]);
+    let hidden;
+    let visibilityChange;
+    if (typeof document !== "undefined" && typeof document.addEventListener !== "undefined") {
+      if (typeof document["hidden"] !== "undefined") {
+        visibilityChange = "visibilitychange";
+        hidden = "hidden";
+      } else if (typeof document["mozHidden"] !== "undefined") {
+        visibilityChange = "mozvisibilitychange";
+        hidden = "mozHidden";
+      } else if (typeof document["msHidden"] !== "undefined") {
+        visibilityChange = "msvisibilitychange";
+        hidden = "msHidden";
+      } else if (typeof document["webkitHidden"] !== "undefined") {
+        visibilityChange = "webkitvisibilitychange";
+        hidden = "webkitHidden";
+      }
+    }
+    this.visible_ = true;
+    if (visibilityChange) {
+      document.addEventListener(visibilityChange, () => {
+        const visible = !document[hidden];
+        if (visible !== this.visible_) {
+          this.visible_ = visible;
+          this.trigger("visible", visible);
+        }
+      }, false);
+    }
+  }
+  getInitialEvent(eventType) {
+    assert(eventType === "visible", "Unknown event type: " + eventType);
+    return [this.visible_];
+  }
+}
+const RECONNECT_MIN_DELAY = 1e3;
+const RECONNECT_MAX_DELAY_DEFAULT = 60 * 5 * 1e3;
+const RECONNECT_MAX_DELAY_FOR_ADMINS = 30 * 1e3;
+const RECONNECT_DELAY_MULTIPLIER = 1.3;
+const RECONNECT_DELAY_RESET_TIMEOUT = 3e4;
+const SERVER_KILL_INTERRUPT_REASON = "server_kill";
+const INVALID_TOKEN_THRESHOLD = 3;
+class PersistentConnection extends ServerActions {
+  /**
+   * @param repoInfo_ - Data about the namespace we are connecting to
+   * @param applicationId_ - The Firebase App ID for this project
+   * @param onDataUpdate_ - A callback for new data from the server
+   */
+  constructor(repoInfo_, applicationId_, onDataUpdate_, onConnectStatus_, onServerInfoUpdate_, authTokenProvider_, appCheckTokenProvider_, authOverride_) {
+    super();
+    this.repoInfo_ = repoInfo_;
+    this.applicationId_ = applicationId_;
+    this.onDataUpdate_ = onDataUpdate_;
+    this.onConnectStatus_ = onConnectStatus_;
+    this.onServerInfoUpdate_ = onServerInfoUpdate_;
+    this.authTokenProvider_ = authTokenProvider_;
+    this.appCheckTokenProvider_ = appCheckTokenProvider_;
+    this.authOverride_ = authOverride_;
+    this.id = PersistentConnection.nextPersistentConnectionId_++;
+    this.log_ = logWrapper("p:" + this.id + ":");
+    this.interruptReasons_ = {};
+    this.listens = /* @__PURE__ */ new Map();
+    this.outstandingPuts_ = [];
+    this.outstandingGets_ = [];
+    this.outstandingPutCount_ = 0;
+    this.outstandingGetCount_ = 0;
+    this.onDisconnectRequestQueue_ = [];
+    this.connected_ = false;
+    this.reconnectDelay_ = RECONNECT_MIN_DELAY;
+    this.maxReconnectDelay_ = RECONNECT_MAX_DELAY_DEFAULT;
+    this.securityDebugCallback_ = null;
+    this.lastSessionId = null;
+    this.establishConnectionTimer_ = null;
+    this.visible_ = false;
+    this.requestCBHash_ = {};
+    this.requestNumber_ = 0;
+    this.realtime_ = null;
+    this.authToken_ = null;
+    this.appCheckToken_ = null;
+    this.forceTokenRefresh_ = false;
+    this.invalidAuthTokenCount_ = 0;
+    this.invalidAppCheckTokenCount_ = 0;
+    this.firstConnection_ = true;
+    this.lastConnectionAttemptTime_ = null;
+    this.lastConnectionEstablishedTime_ = null;
+    if (authOverride_ && true) {
+      throw new Error("Auth override specified in options, but not supported on non Node.js platforms");
+    }
+    VisibilityMonitor.getInstance().on("visible", this.onVisible_, this);
+    if (repoInfo_.host.indexOf("fblocal") === -1) {
+      OnlineMonitor.getInstance().on("online", this.onOnline_, this);
+    }
+  }
+  sendRequest(action, body, onResponse) {
+    const curReqNum = ++this.requestNumber_;
+    const msg = { r: curReqNum, a: action, b: body };
+    this.log_(stringify(msg));
+    assert(this.connected_, "sendRequest call when we're not connected not allowed.");
+    this.realtime_.sendRequest(msg);
+    if (onResponse) {
+      this.requestCBHash_[curReqNum] = onResponse;
+    }
+  }
+  get(query2) {
+    this.initConnection_();
+    const deferred = new Deferred();
+    const request = {
+      p: query2._path.toString(),
+      q: query2._queryObject
+    };
+    const outstandingGet = {
+      action: "g",
+      request,
+      onComplete: (message) => {
+        const payload = message["d"];
+        if (message["s"] === "ok") {
+          deferred.resolve(payload);
+        } else {
+          deferred.reject(payload);
+        }
+      }
+    };
+    this.outstandingGets_.push(outstandingGet);
+    this.outstandingGetCount_++;
+    const index2 = this.outstandingGets_.length - 1;
+    if (this.connected_) {
+      this.sendGet_(index2);
+    }
+    return deferred.promise;
+  }
+  listen(query2, currentHashFn, tag, onComplete) {
+    this.initConnection_();
+    const queryId = query2._queryIdentifier;
+    const pathString = query2._path.toString();
+    this.log_("Listen called for " + pathString + " " + queryId);
+    if (!this.listens.has(pathString)) {
+      this.listens.set(pathString, /* @__PURE__ */ new Map());
+    }
+    assert(query2._queryParams.isDefault() || !query2._queryParams.loadsAllData(), "listen() called for non-default but complete query");
+    assert(!this.listens.get(pathString).has(queryId), `listen() called twice for same path/queryId.`);
+    const listenSpec = {
+      onComplete,
+      hashFn: currentHashFn,
+      query: query2,
+      tag
+    };
+    this.listens.get(pathString).set(queryId, listenSpec);
+    if (this.connected_) {
+      this.sendListen_(listenSpec);
+    }
+  }
+  sendGet_(index2) {
+    const get2 = this.outstandingGets_[index2];
+    this.sendRequest("g", get2.request, (message) => {
+      delete this.outstandingGets_[index2];
+      this.outstandingGetCount_--;
+      if (this.outstandingGetCount_ === 0) {
+        this.outstandingGets_ = [];
+      }
+      if (get2.onComplete) {
+        get2.onComplete(message);
+      }
+    });
+  }
+  sendListen_(listenSpec) {
+    const query2 = listenSpec.query;
+    const pathString = query2._path.toString();
+    const queryId = query2._queryIdentifier;
+    this.log_("Listen on " + pathString + " for " + queryId);
+    const req = {
+      /*path*/
+      p: pathString
+    };
+    const action = "q";
+    if (listenSpec.tag) {
+      req["q"] = query2._queryObject;
+      req["t"] = listenSpec.tag;
+    }
+    req[
+      /*hash*/
+      "h"
+    ] = listenSpec.hashFn();
+    this.sendRequest(action, req, (message) => {
+      const payload = message[
+        /*data*/
+        "d"
+      ];
+      const status = message[
+        /*status*/
+        "s"
+      ];
+      PersistentConnection.warnOnListenWarnings_(payload, query2);
+      const currentListenSpec = this.listens.get(pathString) && this.listens.get(pathString).get(queryId);
+      if (currentListenSpec === listenSpec) {
+        this.log_("listen response", message);
+        if (status !== "ok") {
+          this.removeListen_(pathString, queryId);
+        }
+        if (listenSpec.onComplete) {
+          listenSpec.onComplete(status, payload);
+        }
+      }
+    });
+  }
+  static warnOnListenWarnings_(payload, query2) {
+    if (payload && typeof payload === "object" && contains(payload, "w")) {
+      const warnings = safeGet(payload, "w");
+      if (Array.isArray(warnings) && ~warnings.indexOf("no_index")) {
+        const indexSpec = '".indexOn": "' + query2._queryParams.getIndex().toString() + '"';
+        const indexPath = query2._path.toString();
+        warn(`Using an unspecified index. Your data will be downloaded and filtered on the client. Consider adding ${indexSpec} at ${indexPath} to your security rules for better performance.`);
+      }
+    }
+  }
+  refreshAuthToken(token2) {
+    this.authToken_ = token2;
+    this.log_("Auth token refreshed");
+    if (this.authToken_) {
+      this.tryAuth();
+    } else {
+      if (this.connected_) {
+        this.sendRequest("unauth", {}, () => {
+        });
+      }
+    }
+    this.reduceReconnectDelayIfAdminCredential_(token2);
+  }
+  reduceReconnectDelayIfAdminCredential_(credential) {
+    const isFirebaseSecret = credential && credential.length === 40;
+    if (isFirebaseSecret || isAdmin(credential)) {
+      this.log_("Admin auth credential detected.  Reducing max reconnect time.");
+      this.maxReconnectDelay_ = RECONNECT_MAX_DELAY_FOR_ADMINS;
+    }
+  }
+  refreshAppCheckToken(token2) {
+    this.appCheckToken_ = token2;
+    this.log_("App check token refreshed");
+    if (this.appCheckToken_) {
+      this.tryAppCheck();
+    } else {
+      if (this.connected_) {
+        this.sendRequest("unappeck", {}, () => {
+        });
+      }
+    }
+  }
+  /**
+   * Attempts to authenticate with the given credentials. If the authentication attempt fails, it's triggered like
+   * a auth revoked (the connection is closed).
+   */
+  tryAuth() {
+    if (this.connected_ && this.authToken_) {
+      const token2 = this.authToken_;
+      const authMethod = isValidFormat(token2) ? "auth" : "gauth";
+      const requestData = { cred: token2 };
+      if (this.authOverride_ === null) {
+        requestData["noauth"] = true;
+      } else if (typeof this.authOverride_ === "object") {
+        requestData["authvar"] = this.authOverride_;
+      }
+      this.sendRequest(authMethod, requestData, (res) => {
+        const status = res[
+          /*status*/
+          "s"
+        ];
+        const data = res[
+          /*data*/
+          "d"
+        ] || "error";
+        if (this.authToken_ === token2) {
+          if (status === "ok") {
+            this.invalidAuthTokenCount_ = 0;
+          } else {
+            this.onAuthRevoked_(status, data);
+          }
+        }
+      });
+    }
+  }
+  /**
+   * Attempts to authenticate with the given token. If the authentication
+   * attempt fails, it's triggered like the token was revoked (the connection is
+   * closed).
+   */
+  tryAppCheck() {
+    if (this.connected_ && this.appCheckToken_) {
+      this.sendRequest("appcheck", { "token": this.appCheckToken_ }, (res) => {
+        const status = res[
+          /*status*/
+          "s"
+        ];
+        const data = res[
+          /*data*/
+          "d"
+        ] || "error";
+        if (status === "ok") {
+          this.invalidAppCheckTokenCount_ = 0;
+        } else {
+          this.onAppCheckRevoked_(status, data);
+        }
+      });
+    }
+  }
+  /**
+   * @inheritDoc
+   */
+  unlisten(query2, tag) {
+    const pathString = query2._path.toString();
+    const queryId = query2._queryIdentifier;
+    this.log_("Unlisten called for " + pathString + " " + queryId);
+    assert(query2._queryParams.isDefault() || !query2._queryParams.loadsAllData(), "unlisten() called for non-default but complete query");
+    const listen = this.removeListen_(pathString, queryId);
+    if (listen && this.connected_) {
+      this.sendUnlisten_(pathString, queryId, query2._queryObject, tag);
+    }
+  }
+  sendUnlisten_(pathString, queryId, queryObj, tag) {
+    this.log_("Unlisten on " + pathString + " for " + queryId);
+    const req = {
+      /*path*/
+      p: pathString
+    };
+    const action = "n";
+    if (tag) {
+      req["q"] = queryObj;
+      req["t"] = tag;
+    }
+    this.sendRequest(action, req);
+  }
+  onDisconnectPut(pathString, data, onComplete) {
+    this.initConnection_();
+    if (this.connected_) {
+      this.sendOnDisconnect_("o", pathString, data, onComplete);
+    } else {
+      this.onDisconnectRequestQueue_.push({
+        pathString,
+        action: "o",
+        data,
+        onComplete
+      });
+    }
+  }
+  onDisconnectMerge(pathString, data, onComplete) {
+    this.initConnection_();
+    if (this.connected_) {
+      this.sendOnDisconnect_("om", pathString, data, onComplete);
+    } else {
+      this.onDisconnectRequestQueue_.push({
+        pathString,
+        action: "om",
+        data,
+        onComplete
+      });
+    }
+  }
+  onDisconnectCancel(pathString, onComplete) {
+    this.initConnection_();
+    if (this.connected_) {
+      this.sendOnDisconnect_("oc", pathString, null, onComplete);
+    } else {
+      this.onDisconnectRequestQueue_.push({
+        pathString,
+        action: "oc",
+        data: null,
+        onComplete
+      });
+    }
+  }
+  sendOnDisconnect_(action, pathString, data, onComplete) {
+    const request = {
+      /*path*/
+      p: pathString,
+      /*data*/
+      d: data
+    };
+    this.log_("onDisconnect " + action, request);
+    this.sendRequest(action, request, (response) => {
+      if (onComplete) {
+        setTimeout(() => {
+          onComplete(response[
+            /*status*/
+            "s"
+          ], response[
+            /* data */
+            "d"
+          ]);
+        }, Math.floor(0));
+      }
+    });
+  }
+  put(pathString, data, onComplete, hash2) {
+    this.putInternal("p", pathString, data, onComplete, hash2);
+  }
+  merge(pathString, data, onComplete, hash2) {
+    this.putInternal("m", pathString, data, onComplete, hash2);
+  }
+  putInternal(action, pathString, data, onComplete, hash2) {
+    this.initConnection_();
+    const request = {
+      /*path*/
+      p: pathString,
+      /*data*/
+      d: data
+    };
+    if (hash2 !== void 0) {
+      request[
+        /*hash*/
+        "h"
+      ] = hash2;
+    }
+    this.outstandingPuts_.push({
+      action,
+      request,
+      onComplete
+    });
+    this.outstandingPutCount_++;
+    const index2 = this.outstandingPuts_.length - 1;
+    if (this.connected_) {
+      this.sendPut_(index2);
+    } else {
+      this.log_("Buffering put: " + pathString);
+    }
+  }
+  sendPut_(index2) {
+    const action = this.outstandingPuts_[index2].action;
+    const request = this.outstandingPuts_[index2].request;
+    const onComplete = this.outstandingPuts_[index2].onComplete;
+    this.outstandingPuts_[index2].queued = this.connected_;
+    this.sendRequest(action, request, (message) => {
+      this.log_(action + " response", message);
+      delete this.outstandingPuts_[index2];
+      this.outstandingPutCount_--;
+      if (this.outstandingPutCount_ === 0) {
+        this.outstandingPuts_ = [];
+      }
+      if (onComplete) {
+        onComplete(message[
+          /*status*/
+          "s"
+        ], message[
+          /* data */
+          "d"
+        ]);
+      }
+    });
+  }
+  reportStats(stats) {
+    if (this.connected_) {
+      const request = {
+        /*counters*/
+        c: stats
+      };
+      this.log_("reportStats", request);
+      this.sendRequest(
+        /*stats*/
+        "s",
+        request,
+        (result) => {
+          const status = result[
+            /*status*/
+            "s"
+          ];
+          if (status !== "ok") {
+            const errorReason = result[
+              /* data */
+              "d"
+            ];
+            this.log_("reportStats", "Error sending stats: " + errorReason);
+          }
+        }
+      );
+    }
+  }
+  onDataMessage_(message) {
+    if ("r" in message) {
+      this.log_("from server: " + stringify(message));
+      const reqNum = message["r"];
+      const onResponse = this.requestCBHash_[reqNum];
+      if (onResponse) {
+        delete this.requestCBHash_[reqNum];
+        onResponse(message[
+          /*body*/
+          "b"
+        ]);
+      }
+    } else if ("error" in message) {
+      throw "A server-side error has occurred: " + message["error"];
+    } else if ("a" in message) {
+      this.onDataPush_(message["a"], message["b"]);
+    }
+  }
+  onDataPush_(action, body) {
+    this.log_("handleServerMessage", action, body);
+    if (action === "d") {
+      this.onDataUpdate_(
+        body[
+          /*path*/
+          "p"
+        ],
+        body[
+          /*data*/
+          "d"
+        ],
+        /*isMerge*/
+        false,
+        body["t"]
+      );
+    } else if (action === "m") {
+      this.onDataUpdate_(
+        body[
+          /*path*/
+          "p"
+        ],
+        body[
+          /*data*/
+          "d"
+        ],
+        /*isMerge=*/
+        true,
+        body["t"]
+      );
+    } else if (action === "c") {
+      this.onListenRevoked_(body[
+        /*path*/
+        "p"
+      ], body[
+        /*query*/
+        "q"
+      ]);
+    } else if (action === "ac") {
+      this.onAuthRevoked_(body[
+        /*status code*/
+        "s"
+      ], body[
+        /* explanation */
+        "d"
+      ]);
+    } else if (action === "apc") {
+      this.onAppCheckRevoked_(body[
+        /*status code*/
+        "s"
+      ], body[
+        /* explanation */
+        "d"
+      ]);
+    } else if (action === "sd") {
+      this.onSecurityDebugPacket_(body);
+    } else {
+      error("Unrecognized action received from server: " + stringify(action) + "\nAre you using the latest client?");
+    }
+  }
+  onReady_(timestamp, sessionId) {
+    this.log_("connection ready");
+    this.connected_ = true;
+    this.lastConnectionEstablishedTime_ = (/* @__PURE__ */ new Date()).getTime();
+    this.handleTimestamp_(timestamp);
+    this.lastSessionId = sessionId;
+    if (this.firstConnection_) {
+      this.sendConnectStats_();
+    }
+    this.restoreState_();
+    this.firstConnection_ = false;
+    this.onConnectStatus_(true);
+  }
+  scheduleConnect_(timeout) {
+    assert(!this.realtime_, "Scheduling a connect when we're already connected/ing?");
+    if (this.establishConnectionTimer_) {
+      clearTimeout(this.establishConnectionTimer_);
+    }
+    this.establishConnectionTimer_ = setTimeout(() => {
+      this.establishConnectionTimer_ = null;
+      this.establishConnection_();
+    }, Math.floor(timeout));
+  }
+  initConnection_() {
+    if (!this.realtime_ && this.firstConnection_) {
+      this.scheduleConnect_(0);
+    }
+  }
+  onVisible_(visible) {
+    if (visible && !this.visible_ && this.reconnectDelay_ === this.maxReconnectDelay_) {
+      this.log_("Window became visible.  Reducing delay.");
+      this.reconnectDelay_ = RECONNECT_MIN_DELAY;
+      if (!this.realtime_) {
+        this.scheduleConnect_(0);
+      }
+    }
+    this.visible_ = visible;
+  }
+  onOnline_(online) {
+    if (online) {
+      this.log_("Browser went online.");
+      this.reconnectDelay_ = RECONNECT_MIN_DELAY;
+      if (!this.realtime_) {
+        this.scheduleConnect_(0);
+      }
+    } else {
+      this.log_("Browser went offline.  Killing connection.");
+      if (this.realtime_) {
+        this.realtime_.close();
+      }
+    }
+  }
+  onRealtimeDisconnect_() {
+    this.log_("data client disconnected");
+    this.connected_ = false;
+    this.realtime_ = null;
+    this.cancelSentTransactions_();
+    this.requestCBHash_ = {};
+    if (this.shouldReconnect_()) {
+      if (!this.visible_) {
+        this.log_("Window isn't visible.  Delaying reconnect.");
+        this.reconnectDelay_ = this.maxReconnectDelay_;
+        this.lastConnectionAttemptTime_ = (/* @__PURE__ */ new Date()).getTime();
+      } else if (this.lastConnectionEstablishedTime_) {
+        const timeSinceLastConnectSucceeded = (/* @__PURE__ */ new Date()).getTime() - this.lastConnectionEstablishedTime_;
+        if (timeSinceLastConnectSucceeded > RECONNECT_DELAY_RESET_TIMEOUT) {
+          this.reconnectDelay_ = RECONNECT_MIN_DELAY;
+        }
+        this.lastConnectionEstablishedTime_ = null;
+      }
+      const timeSinceLastConnectAttempt = Math.max(0, (/* @__PURE__ */ new Date()).getTime() - this.lastConnectionAttemptTime_);
+      let reconnectDelay = Math.max(0, this.reconnectDelay_ - timeSinceLastConnectAttempt);
+      reconnectDelay = Math.random() * reconnectDelay;
+      this.log_("Trying to reconnect in " + reconnectDelay + "ms");
+      this.scheduleConnect_(reconnectDelay);
+      this.reconnectDelay_ = Math.min(this.maxReconnectDelay_, this.reconnectDelay_ * RECONNECT_DELAY_MULTIPLIER);
+    }
+    this.onConnectStatus_(false);
+  }
+  async establishConnection_() {
+    if (this.shouldReconnect_()) {
+      this.log_("Making a connection attempt");
+      this.lastConnectionAttemptTime_ = (/* @__PURE__ */ new Date()).getTime();
+      this.lastConnectionEstablishedTime_ = null;
+      const onDataMessage = this.onDataMessage_.bind(this);
+      const onReady = this.onReady_.bind(this);
+      const onDisconnect2 = this.onRealtimeDisconnect_.bind(this);
+      const connId = this.id + ":" + PersistentConnection.nextConnectionId_++;
+      const lastSessionId = this.lastSessionId;
+      let canceled = false;
+      let connection = null;
+      const closeFn = function() {
+        if (connection) {
+          connection.close();
+        } else {
+          canceled = true;
+          onDisconnect2();
+        }
+      };
+      const sendRequestFn = function(msg) {
+        assert(connection, "sendRequest call when we're not connected not allowed.");
+        connection.sendRequest(msg);
+      };
+      this.realtime_ = {
+        close: closeFn,
+        sendRequest: sendRequestFn
+      };
+      const forceRefresh = this.forceTokenRefresh_;
+      this.forceTokenRefresh_ = false;
+      try {
+        const [authToken, appCheckToken] = await Promise.all([
+          this.authTokenProvider_.getToken(forceRefresh),
+          this.appCheckTokenProvider_.getToken(forceRefresh)
+        ]);
+        if (!canceled) {
+          log("getToken() completed. Creating connection.");
+          this.authToken_ = authToken && authToken.accessToken;
+          this.appCheckToken_ = appCheckToken && appCheckToken.token;
+          connection = new Connection2(
+            connId,
+            this.repoInfo_,
+            this.applicationId_,
+            this.appCheckToken_,
+            this.authToken_,
+            onDataMessage,
+            onReady,
+            onDisconnect2,
+            /* onKill= */
+            (reason) => {
+              warn(reason + " (" + this.repoInfo_.toString() + ")");
+              this.interrupt(SERVER_KILL_INTERRUPT_REASON);
+            },
+            lastSessionId
+          );
+        } else {
+          log("getToken() completed but was canceled");
+        }
+      } catch (error2) {
+        this.log_("Failed to get token: " + error2);
+        if (!canceled) {
+          if (this.repoInfo_.nodeAdmin) {
+            warn(error2);
+          }
+          closeFn();
+        }
+      }
+    }
+  }
+  interrupt(reason) {
+    log("Interrupting connection for reason: " + reason);
+    this.interruptReasons_[reason] = true;
+    if (this.realtime_) {
+      this.realtime_.close();
+    } else {
+      if (this.establishConnectionTimer_) {
+        clearTimeout(this.establishConnectionTimer_);
+        this.establishConnectionTimer_ = null;
+      }
+      if (this.connected_) {
+        this.onRealtimeDisconnect_();
+      }
+    }
+  }
+  resume(reason) {
+    log("Resuming connection for reason: " + reason);
+    delete this.interruptReasons_[reason];
+    if (isEmpty(this.interruptReasons_)) {
+      this.reconnectDelay_ = RECONNECT_MIN_DELAY;
+      if (!this.realtime_) {
+        this.scheduleConnect_(0);
+      }
+    }
+  }
+  handleTimestamp_(timestamp) {
+    const delta = timestamp - (/* @__PURE__ */ new Date()).getTime();
+    this.onServerInfoUpdate_({ serverTimeOffset: delta });
+  }
+  cancelSentTransactions_() {
+    for (let i = 0; i < this.outstandingPuts_.length; i++) {
+      const put = this.outstandingPuts_[i];
+      if (put && /*hash*/
+      "h" in put.request && put.queued) {
+        if (put.onComplete) {
+          put.onComplete("disconnect");
+        }
+        delete this.outstandingPuts_[i];
+        this.outstandingPutCount_--;
+      }
+    }
+    if (this.outstandingPutCount_ === 0) {
+      this.outstandingPuts_ = [];
+    }
+  }
+  onListenRevoked_(pathString, query2) {
+    let queryId;
+    if (!query2) {
+      queryId = "default";
+    } else {
+      queryId = query2.map((q) => ObjectToUniqueKey(q)).join("$");
+    }
+    const listen = this.removeListen_(pathString, queryId);
+    if (listen && listen.onComplete) {
+      listen.onComplete("permission_denied");
+    }
+  }
+  removeListen_(pathString, queryId) {
+    const normalizedPathString = new Path(pathString).toString();
+    let listen;
+    if (this.listens.has(normalizedPathString)) {
+      const map2 = this.listens.get(normalizedPathString);
+      listen = map2.get(queryId);
+      map2.delete(queryId);
+      if (map2.size === 0) {
+        this.listens.delete(normalizedPathString);
+      }
+    } else {
+      listen = void 0;
+    }
+    return listen;
+  }
+  onAuthRevoked_(statusCode, explanation) {
+    log("Auth token revoked: " + statusCode + "/" + explanation);
+    this.authToken_ = null;
+    this.forceTokenRefresh_ = true;
+    this.realtime_.close();
+    if (statusCode === "invalid_token" || statusCode === "permission_denied") {
+      this.invalidAuthTokenCount_++;
+      if (this.invalidAuthTokenCount_ >= INVALID_TOKEN_THRESHOLD) {
+        this.reconnectDelay_ = RECONNECT_MAX_DELAY_FOR_ADMINS;
+        this.authTokenProvider_.notifyForInvalidToken();
+      }
+    }
+  }
+  onAppCheckRevoked_(statusCode, explanation) {
+    log("App check token revoked: " + statusCode + "/" + explanation);
+    this.appCheckToken_ = null;
+    this.forceTokenRefresh_ = true;
+    if (statusCode === "invalid_token" || statusCode === "permission_denied") {
+      this.invalidAppCheckTokenCount_++;
+      if (this.invalidAppCheckTokenCount_ >= INVALID_TOKEN_THRESHOLD) {
+        this.appCheckTokenProvider_.notifyForInvalidToken();
+      }
+    }
+  }
+  onSecurityDebugPacket_(body) {
+    if (this.securityDebugCallback_) {
+      this.securityDebugCallback_(body);
+    } else {
+      if ("msg" in body) {
+        console.log("FIREBASE: " + body["msg"].replace("\n", "\nFIREBASE: "));
+      }
+    }
+  }
+  restoreState_() {
+    this.tryAuth();
+    this.tryAppCheck();
+    for (const queries of this.listens.values()) {
+      for (const listenSpec of queries.values()) {
+        this.sendListen_(listenSpec);
+      }
+    }
+    for (let i = 0; i < this.outstandingPuts_.length; i++) {
+      if (this.outstandingPuts_[i]) {
+        this.sendPut_(i);
+      }
+    }
+    while (this.onDisconnectRequestQueue_.length) {
+      const request = this.onDisconnectRequestQueue_.shift();
+      this.sendOnDisconnect_(request.action, request.pathString, request.data, request.onComplete);
+    }
+    for (let i = 0; i < this.outstandingGets_.length; i++) {
+      if (this.outstandingGets_[i]) {
+        this.sendGet_(i);
+      }
+    }
+  }
+  /**
+   * Sends client stats for first connection
+   */
+  sendConnectStats_() {
+    const stats = {};
+    let clientName = "js";
+    stats["sdk." + clientName + "." + SDK_VERSION.replace(/\./g, "-")] = 1;
+    if (isMobileCordova()) {
+      stats["framework.cordova"] = 1;
+    } else if (isReactNative()) {
+      stats["framework.reactnative"] = 1;
+    }
+    this.reportStats(stats);
+  }
+  shouldReconnect_() {
+    const online = OnlineMonitor.getInstance().currentlyOnline();
+    return isEmpty(this.interruptReasons_) && online;
+  }
+}
+PersistentConnection.nextPersistentConnectionId_ = 0;
+PersistentConnection.nextConnectionId_ = 0;
+class NamedNode {
+  constructor(name2, node) {
+    this.name = name2;
+    this.node = node;
+  }
+  static Wrap(name2, node) {
+    return new NamedNode(name2, node);
+  }
+}
+class Index {
+  /**
+   * @returns A standalone comparison function for
+   * this index
+   */
+  getCompare() {
+    return this.compare.bind(this);
+  }
+  /**
+   * Given a before and after value for a node, determine if the indexed value has changed. Even if they are different,
+   * it's possible that the changes are isolated to parts of the snapshot that are not indexed.
+   *
+   *
+   * @returns True if the portion of the snapshot being indexed changed between oldNode and newNode
+   */
+  indexedValueChanged(oldNode, newNode) {
+    const oldWrapped = new NamedNode(MIN_NAME, oldNode);
+    const newWrapped = new NamedNode(MIN_NAME, newNode);
+    return this.compare(oldWrapped, newWrapped) !== 0;
+  }
+  /**
+   * @returns a node wrapper that will sort equal to or less than
+   * any other node wrapper, using this index
+   */
+  minPost() {
+    return NamedNode.MIN;
+  }
+}
+let __EMPTY_NODE;
+class KeyIndex extends Index {
+  static get __EMPTY_NODE() {
+    return __EMPTY_NODE;
+  }
+  static set __EMPTY_NODE(val) {
+    __EMPTY_NODE = val;
+  }
+  compare(a, b) {
+    return nameCompare(a.name, b.name);
+  }
+  isDefinedOn(node) {
+    throw assertionError("KeyIndex.isDefinedOn not expected to be called.");
+  }
+  indexedValueChanged(oldNode, newNode) {
+    return false;
+  }
+  minPost() {
+    return NamedNode.MIN;
+  }
+  maxPost() {
+    return new NamedNode(MAX_NAME, __EMPTY_NODE);
+  }
+  makePost(indexValue, name2) {
+    assert(typeof indexValue === "string", "KeyIndex indexValue must always be a string.");
+    return new NamedNode(indexValue, __EMPTY_NODE);
+  }
+  /**
+   * @returns String representation for inclusion in a query spec
+   */
+  toString() {
+    return ".key";
+  }
+}
+const KEY_INDEX = new KeyIndex();
+class SortedMapIterator {
+  /**
+   * @param node - Node to iterate.
+   * @param isReverse_ - Whether or not to iterate in reverse
+   */
+  constructor(node, startKey, comparator, isReverse_, resultGenerator_ = null) {
+    this.isReverse_ = isReverse_;
+    this.resultGenerator_ = resultGenerator_;
+    this.nodeStack_ = [];
+    let cmp = 1;
+    while (!node.isEmpty()) {
+      node = node;
+      cmp = startKey ? comparator(node.key, startKey) : 1;
+      if (isReverse_) {
+        cmp *= -1;
+      }
+      if (cmp < 0) {
+        if (this.isReverse_) {
+          node = node.left;
+        } else {
+          node = node.right;
+        }
+      } else if (cmp === 0) {
+        this.nodeStack_.push(node);
+        break;
+      } else {
+        this.nodeStack_.push(node);
+        if (this.isReverse_) {
+          node = node.right;
+        } else {
+          node = node.left;
+        }
+      }
+    }
+  }
+  getNext() {
+    if (this.nodeStack_.length === 0) {
+      return null;
+    }
+    let node = this.nodeStack_.pop();
+    let result;
+    if (this.resultGenerator_) {
+      result = this.resultGenerator_(node.key, node.value);
+    } else {
+      result = { key: node.key, value: node.value };
+    }
+    if (this.isReverse_) {
+      node = node.left;
+      while (!node.isEmpty()) {
+        this.nodeStack_.push(node);
+        node = node.right;
+      }
+    } else {
+      node = node.right;
+      while (!node.isEmpty()) {
+        this.nodeStack_.push(node);
+        node = node.left;
+      }
+    }
+    return result;
+  }
+  hasNext() {
+    return this.nodeStack_.length > 0;
+  }
+  peek() {
+    if (this.nodeStack_.length === 0) {
+      return null;
+    }
+    const node = this.nodeStack_[this.nodeStack_.length - 1];
+    if (this.resultGenerator_) {
+      return this.resultGenerator_(node.key, node.value);
+    } else {
+      return { key: node.key, value: node.value };
+    }
+  }
+}
+class LLRBNode {
+  /**
+   * @param key - Key associated with this node.
+   * @param value - Value associated with this node.
+   * @param color - Whether this node is red.
+   * @param left - Left child.
+   * @param right - Right child.
+   */
+  constructor(key2, value, color, left, right) {
+    this.key = key2;
+    this.value = value;
+    this.color = color != null ? color : LLRBNode.RED;
+    this.left = left != null ? left : SortedMap.EMPTY_NODE;
+    this.right = right != null ? right : SortedMap.EMPTY_NODE;
+  }
+  /**
+   * Returns a copy of the current node, optionally replacing pieces of it.
+   *
+   * @param key - New key for the node, or null.
+   * @param value - New value for the node, or null.
+   * @param color - New color for the node, or null.
+   * @param left - New left child for the node, or null.
+   * @param right - New right child for the node, or null.
+   * @returns The node copy.
+   */
+  copy(key2, value, color, left, right) {
+    return new LLRBNode(key2 != null ? key2 : this.key, value != null ? value : this.value, color != null ? color : this.color, left != null ? left : this.left, right != null ? right : this.right);
+  }
+  /**
+   * @returns The total number of nodes in the tree.
+   */
+  count() {
+    return this.left.count() + 1 + this.right.count();
+  }
+  /**
+   * @returns True if the tree is empty.
+   */
+  isEmpty() {
+    return false;
+  }
+  /**
+   * Traverses the tree in key order and calls the specified action function
+   * for each node.
+   *
+   * @param action - Callback function to be called for each
+   *   node.  If it returns true, traversal is aborted.
+   * @returns The first truthy value returned by action, or the last falsey
+   *   value returned by action
+   */
+  inorderTraversal(action) {
+    return this.left.inorderTraversal(action) || !!action(this.key, this.value) || this.right.inorderTraversal(action);
+  }
+  /**
+   * Traverses the tree in reverse key order and calls the specified action function
+   * for each node.
+   *
+   * @param action - Callback function to be called for each
+   * node.  If it returns true, traversal is aborted.
+   * @returns True if traversal was aborted.
+   */
+  reverseTraversal(action) {
+    return this.right.reverseTraversal(action) || action(this.key, this.value) || this.left.reverseTraversal(action);
+  }
+  /**
+   * @returns The minimum node in the tree.
+   */
+  min_() {
+    if (this.left.isEmpty()) {
+      return this;
+    } else {
+      return this.left.min_();
+    }
+  }
+  /**
+   * @returns The maximum key in the tree.
+   */
+  minKey() {
+    return this.min_().key;
+  }
+  /**
+   * @returns The maximum key in the tree.
+   */
+  maxKey() {
+    if (this.right.isEmpty()) {
+      return this.key;
+    } else {
+      return this.right.maxKey();
+    }
+  }
+  /**
+   * @param key - Key to insert.
+   * @param value - Value to insert.
+   * @param comparator - Comparator.
+   * @returns New tree, with the key/value added.
+   */
+  insert(key2, value, comparator) {
+    let n = this;
+    const cmp = comparator(key2, n.key);
+    if (cmp < 0) {
+      n = n.copy(null, null, null, n.left.insert(key2, value, comparator), null);
+    } else if (cmp === 0) {
+      n = n.copy(null, value, null, null, null);
+    } else {
+      n = n.copy(null, null, null, null, n.right.insert(key2, value, comparator));
+    }
+    return n.fixUp_();
+  }
+  /**
+   * @returns New tree, with the minimum key removed.
+   */
+  removeMin_() {
+    if (this.left.isEmpty()) {
+      return SortedMap.EMPTY_NODE;
+    }
+    let n = this;
+    if (!n.left.isRed_() && !n.left.left.isRed_()) {
+      n = n.moveRedLeft_();
+    }
+    n = n.copy(null, null, null, n.left.removeMin_(), null);
+    return n.fixUp_();
+  }
+  /**
+   * @param key - The key of the item to remove.
+   * @param comparator - Comparator.
+   * @returns New tree, with the specified item removed.
+   */
+  remove(key2, comparator) {
+    let n, smallest;
+    n = this;
+    if (comparator(key2, n.key) < 0) {
+      if (!n.left.isEmpty() && !n.left.isRed_() && !n.left.left.isRed_()) {
+        n = n.moveRedLeft_();
+      }
+      n = n.copy(null, null, null, n.left.remove(key2, comparator), null);
+    } else {
+      if (n.left.isRed_()) {
+        n = n.rotateRight_();
+      }
+      if (!n.right.isEmpty() && !n.right.isRed_() && !n.right.left.isRed_()) {
+        n = n.moveRedRight_();
+      }
+      if (comparator(key2, n.key) === 0) {
+        if (n.right.isEmpty()) {
+          return SortedMap.EMPTY_NODE;
+        } else {
+          smallest = n.right.min_();
+          n = n.copy(smallest.key, smallest.value, null, null, n.right.removeMin_());
+        }
+      }
+      n = n.copy(null, null, null, null, n.right.remove(key2, comparator));
+    }
+    return n.fixUp_();
+  }
+  /**
+   * @returns Whether this is a RED node.
+   */
+  isRed_() {
+    return this.color;
+  }
+  /**
+   * @returns New tree after performing any needed rotations.
+   */
+  fixUp_() {
+    let n = this;
+    if (n.right.isRed_() && !n.left.isRed_()) {
+      n = n.rotateLeft_();
+    }
+    if (n.left.isRed_() && n.left.left.isRed_()) {
+      n = n.rotateRight_();
+    }
+    if (n.left.isRed_() && n.right.isRed_()) {
+      n = n.colorFlip_();
+    }
+    return n;
+  }
+  /**
+   * @returns New tree, after moveRedLeft.
+   */
+  moveRedLeft_() {
+    let n = this.colorFlip_();
+    if (n.right.left.isRed_()) {
+      n = n.copy(null, null, null, null, n.right.rotateRight_());
+      n = n.rotateLeft_();
+      n = n.colorFlip_();
+    }
+    return n;
+  }
+  /**
+   * @returns New tree, after moveRedRight.
+   */
+  moveRedRight_() {
+    let n = this.colorFlip_();
+    if (n.left.left.isRed_()) {
+      n = n.rotateRight_();
+      n = n.colorFlip_();
+    }
+    return n;
+  }
+  /**
+   * @returns New tree, after rotateLeft.
+   */
+  rotateLeft_() {
+    const nl = this.copy(null, null, LLRBNode.RED, null, this.right.left);
+    return this.right.copy(null, null, this.color, nl, null);
+  }
+  /**
+   * @returns New tree, after rotateRight.
+   */
+  rotateRight_() {
+    const nr = this.copy(null, null, LLRBNode.RED, this.left.right, null);
+    return this.left.copy(null, null, this.color, null, nr);
+  }
+  /**
+   * @returns Newt ree, after colorFlip.
+   */
+  colorFlip_() {
+    const left = this.left.copy(null, null, !this.left.color, null, null);
+    const right = this.right.copy(null, null, !this.right.color, null, null);
+    return this.copy(null, null, !this.color, left, right);
+  }
+  /**
+   * For testing.
+   *
+   * @returns True if all is well.
+   */
+  checkMaxDepth_() {
+    const blackDepth = this.check_();
+    return Math.pow(2, blackDepth) <= this.count() + 1;
+  }
+  check_() {
+    if (this.isRed_() && this.left.isRed_()) {
+      throw new Error("Red node has red child(" + this.key + "," + this.value + ")");
+    }
+    if (this.right.isRed_()) {
+      throw new Error("Right child of (" + this.key + "," + this.value + ") is red");
+    }
+    const blackDepth = this.left.check_();
+    if (blackDepth !== this.right.check_()) {
+      throw new Error("Black depths differ");
+    } else {
+      return blackDepth + (this.isRed_() ? 0 : 1);
+    }
+  }
+}
+LLRBNode.RED = true;
+LLRBNode.BLACK = false;
+class LLRBEmptyNode {
+  /**
+   * Returns a copy of the current node.
+   *
+   * @returns The node copy.
+   */
+  copy(key2, value, color, left, right) {
+    return this;
+  }
+  /**
+   * Returns a copy of the tree, with the specified key/value added.
+   *
+   * @param key - Key to be added.
+   * @param value - Value to be added.
+   * @param comparator - Comparator.
+   * @returns New tree, with item added.
+   */
+  insert(key2, value, comparator) {
+    return new LLRBNode(key2, value, null);
+  }
+  /**
+   * Returns a copy of the tree, with the specified key removed.
+   *
+   * @param key - The key to remove.
+   * @param comparator - Comparator.
+   * @returns New tree, with item removed.
+   */
+  remove(key2, comparator) {
+    return this;
+  }
+  /**
+   * @returns The total number of nodes in the tree.
+   */
+  count() {
+    return 0;
+  }
+  /**
+   * @returns True if the tree is empty.
+   */
+  isEmpty() {
+    return true;
+  }
+  /**
+   * Traverses the tree in key order and calls the specified action function
+   * for each node.
+   *
+   * @param action - Callback function to be called for each
+   * node.  If it returns true, traversal is aborted.
+   * @returns True if traversal was aborted.
+   */
+  inorderTraversal(action) {
+    return false;
+  }
+  /**
+   * Traverses the tree in reverse key order and calls the specified action function
+   * for each node.
+   *
+   * @param action - Callback function to be called for each
+   * node.  If it returns true, traversal is aborted.
+   * @returns True if traversal was aborted.
+   */
+  reverseTraversal(action) {
+    return false;
+  }
+  minKey() {
+    return null;
+  }
+  maxKey() {
+    return null;
+  }
+  check_() {
+    return 0;
+  }
+  /**
+   * @returns Whether this node is red.
+   */
+  isRed_() {
+    return false;
+  }
+}
+class SortedMap {
+  /**
+   * @param comparator_ - Key comparator.
+   * @param root_ - Optional root node for the map.
+   */
+  constructor(comparator_, root_ = SortedMap.EMPTY_NODE) {
+    this.comparator_ = comparator_;
+    this.root_ = root_;
+  }
+  /**
+   * Returns a copy of the map, with the specified key/value added or replaced.
+   * (TODO: We should perhaps rename this method to 'put')
+   *
+   * @param key - Key to be added.
+   * @param value - Value to be added.
+   * @returns New map, with item added.
+   */
+  insert(key2, value) {
+    return new SortedMap(this.comparator_, this.root_.insert(key2, value, this.comparator_).copy(null, null, LLRBNode.BLACK, null, null));
+  }
+  /**
+   * Returns a copy of the map, with the specified key removed.
+   *
+   * @param key - The key to remove.
+   * @returns New map, with item removed.
+   */
+  remove(key2) {
+    return new SortedMap(this.comparator_, this.root_.remove(key2, this.comparator_).copy(null, null, LLRBNode.BLACK, null, null));
+  }
+  /**
+   * Returns the value of the node with the given key, or null.
+   *
+   * @param key - The key to look up.
+   * @returns The value of the node with the given key, or null if the
+   * key doesn't exist.
+   */
+  get(key2) {
+    let cmp;
+    let node = this.root_;
+    while (!node.isEmpty()) {
+      cmp = this.comparator_(key2, node.key);
+      if (cmp === 0) {
+        return node.value;
+      } else if (cmp < 0) {
+        node = node.left;
+      } else if (cmp > 0) {
+        node = node.right;
+      }
+    }
+    return null;
+  }
+  /**
+   * Returns the key of the item *before* the specified key, or null if key is the first item.
+   * @param key - The key to find the predecessor of
+   * @returns The predecessor key.
+   */
+  getPredecessorKey(key2) {
+    let cmp, node = this.root_, rightParent = null;
+    while (!node.isEmpty()) {
+      cmp = this.comparator_(key2, node.key);
+      if (cmp === 0) {
+        if (!node.left.isEmpty()) {
+          node = node.left;
+          while (!node.right.isEmpty()) {
+            node = node.right;
+          }
+          return node.key;
+        } else if (rightParent) {
+          return rightParent.key;
+        } else {
+          return null;
+        }
+      } else if (cmp < 0) {
+        node = node.left;
+      } else if (cmp > 0) {
+        rightParent = node;
+        node = node.right;
+      }
+    }
+    throw new Error("Attempted to find predecessor key for a nonexistent key.  What gives?");
+  }
+  /**
+   * @returns True if the map is empty.
+   */
+  isEmpty() {
+    return this.root_.isEmpty();
+  }
+  /**
+   * @returns The total number of nodes in the map.
+   */
+  count() {
+    return this.root_.count();
+  }
+  /**
+   * @returns The minimum key in the map.
+   */
+  minKey() {
+    return this.root_.minKey();
+  }
+  /**
+   * @returns The maximum key in the map.
+   */
+  maxKey() {
+    return this.root_.maxKey();
+  }
+  /**
+   * Traverses the map in key order and calls the specified action function
+   * for each key/value pair.
+   *
+   * @param action - Callback function to be called
+   * for each key/value pair.  If action returns true, traversal is aborted.
+   * @returns The first truthy value returned by action, or the last falsey
+   *   value returned by action
+   */
+  inorderTraversal(action) {
+    return this.root_.inorderTraversal(action);
+  }
+  /**
+   * Traverses the map in reverse key order and calls the specified action function
+   * for each key/value pair.
+   *
+   * @param action - Callback function to be called
+   * for each key/value pair.  If action returns true, traversal is aborted.
+   * @returns True if the traversal was aborted.
+   */
+  reverseTraversal(action) {
+    return this.root_.reverseTraversal(action);
+  }
+  /**
+   * Returns an iterator over the SortedMap.
+   * @returns The iterator.
+   */
+  getIterator(resultGenerator) {
+    return new SortedMapIterator(this.root_, null, this.comparator_, false, resultGenerator);
+  }
+  getIteratorFrom(key2, resultGenerator) {
+    return new SortedMapIterator(this.root_, key2, this.comparator_, false, resultGenerator);
+  }
+  getReverseIteratorFrom(key2, resultGenerator) {
+    return new SortedMapIterator(this.root_, key2, this.comparator_, true, resultGenerator);
+  }
+  getReverseIterator(resultGenerator) {
+    return new SortedMapIterator(this.root_, null, this.comparator_, true, resultGenerator);
+  }
+}
+SortedMap.EMPTY_NODE = new LLRBEmptyNode();
+function NAME_ONLY_COMPARATOR(left, right) {
+  return nameCompare(left.name, right.name);
+}
+function NAME_COMPARATOR(left, right) {
+  return nameCompare(left, right);
+}
+let MAX_NODE$2;
+function setMaxNode$1(val) {
+  MAX_NODE$2 = val;
+}
+const priorityHashText = function(priority) {
+  if (typeof priority === "number") {
+    return "number:" + doubleToIEEE754String(priority);
+  } else {
+    return "string:" + priority;
+  }
+};
+const validatePriorityNode = function(priorityNode) {
+  if (priorityNode.isLeafNode()) {
+    const val = priorityNode.val();
+    assert(typeof val === "string" || typeof val === "number" || typeof val === "object" && contains(val, ".sv"), "Priority must be a string or number.");
+  } else {
+    assert(priorityNode === MAX_NODE$2 || priorityNode.isEmpty(), "priority of unexpected type.");
+  }
+  assert(priorityNode === MAX_NODE$2 || priorityNode.getPriority().isEmpty(), "Priority nodes can't have a priority of their own.");
+};
+let __childrenNodeConstructor;
+class LeafNode {
+  static set __childrenNodeConstructor(val) {
+    __childrenNodeConstructor = val;
+  }
+  static get __childrenNodeConstructor() {
+    return __childrenNodeConstructor;
+  }
+  /**
+   * @param value_ - The value to store in this leaf node. The object type is
+   * possible in the event of a deferred value
+   * @param priorityNode_ - The priority of this node.
+   */
+  constructor(value_, priorityNode_ = LeafNode.__childrenNodeConstructor.EMPTY_NODE) {
+    this.value_ = value_;
+    this.priorityNode_ = priorityNode_;
+    this.lazyHash_ = null;
+    assert(this.value_ !== void 0 && this.value_ !== null, "LeafNode shouldn't be created with null/undefined value.");
+    validatePriorityNode(this.priorityNode_);
+  }
+  /** @inheritDoc */
+  isLeafNode() {
+    return true;
+  }
+  /** @inheritDoc */
+  getPriority() {
+    return this.priorityNode_;
+  }
+  /** @inheritDoc */
+  updatePriority(newPriorityNode) {
+    return new LeafNode(this.value_, newPriorityNode);
+  }
+  /** @inheritDoc */
+  getImmediateChild(childName) {
+    if (childName === ".priority") {
+      return this.priorityNode_;
+    } else {
+      return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
+    }
+  }
+  /** @inheritDoc */
+  getChild(path) {
+    if (pathIsEmpty(path)) {
+      return this;
+    } else if (pathGetFront(path) === ".priority") {
+      return this.priorityNode_;
+    } else {
+      return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
+    }
+  }
+  hasChild() {
+    return false;
+  }
+  /** @inheritDoc */
+  getPredecessorChildName(childName, childNode) {
+    return null;
+  }
+  /** @inheritDoc */
+  updateImmediateChild(childName, newChildNode) {
+    if (childName === ".priority") {
+      return this.updatePriority(newChildNode);
+    } else if (newChildNode.isEmpty() && childName !== ".priority") {
+      return this;
+    } else {
+      return LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateImmediateChild(childName, newChildNode).updatePriority(this.priorityNode_);
+    }
+  }
+  /** @inheritDoc */
+  updateChild(path, newChildNode) {
+    const front = pathGetFront(path);
+    if (front === null) {
+      return newChildNode;
+    } else if (newChildNode.isEmpty() && front !== ".priority") {
+      return this;
+    } else {
+      assert(front !== ".priority" || pathGetLength(path) === 1, ".priority must be the last token in a path");
+      return this.updateImmediateChild(front, LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateChild(pathPopFront(path), newChildNode));
+    }
+  }
+  /** @inheritDoc */
+  isEmpty() {
+    return false;
+  }
+  /** @inheritDoc */
+  numChildren() {
+    return 0;
+  }
+  /** @inheritDoc */
+  forEachChild(index2, action) {
+    return false;
+  }
+  val(exportFormat) {
+    if (exportFormat && !this.getPriority().isEmpty()) {
+      return {
+        ".value": this.getValue(),
+        ".priority": this.getPriority().val()
+      };
+    } else {
+      return this.getValue();
+    }
+  }
+  /** @inheritDoc */
+  hash() {
+    if (this.lazyHash_ === null) {
+      let toHash = "";
+      if (!this.priorityNode_.isEmpty()) {
+        toHash += "priority:" + priorityHashText(this.priorityNode_.val()) + ":";
+      }
+      const type2 = typeof this.value_;
+      toHash += type2 + ":";
+      if (type2 === "number") {
+        toHash += doubleToIEEE754String(this.value_);
+      } else {
+        toHash += this.value_;
+      }
+      this.lazyHash_ = sha1(toHash);
+    }
+    return this.lazyHash_;
+  }
+  /**
+   * Returns the value of the leaf node.
+   * @returns The value of the node.
+   */
+  getValue() {
+    return this.value_;
+  }
+  compareTo(other) {
+    if (other === LeafNode.__childrenNodeConstructor.EMPTY_NODE) {
+      return 1;
+    } else if (other instanceof LeafNode.__childrenNodeConstructor) {
+      return -1;
+    } else {
+      assert(other.isLeafNode(), "Unknown node type");
+      return this.compareToLeafNode_(other);
+    }
+  }
+  /**
+   * Comparison specifically for two leaf nodes
+   */
+  compareToLeafNode_(otherLeaf) {
+    const otherLeafType = typeof otherLeaf.value_;
+    const thisLeafType = typeof this.value_;
+    const otherIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(otherLeafType);
+    const thisIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(thisLeafType);
+    assert(otherIndex >= 0, "Unknown leaf type: " + otherLeafType);
+    assert(thisIndex >= 0, "Unknown leaf type: " + thisLeafType);
+    if (otherIndex === thisIndex) {
+      if (thisLeafType === "object") {
+        return 0;
+      } else {
+        if (this.value_ < otherLeaf.value_) {
+          return -1;
+        } else if (this.value_ === otherLeaf.value_) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    } else {
+      return thisIndex - otherIndex;
+    }
+  }
+  withIndex() {
+    return this;
+  }
+  isIndexed() {
+    return true;
+  }
+  equals(other) {
+    if (other === this) {
+      return true;
+    } else if (other.isLeafNode()) {
+      const otherLeaf = other;
+      return this.value_ === otherLeaf.value_ && this.priorityNode_.equals(otherLeaf.priorityNode_);
+    } else {
+      return false;
+    }
+  }
+}
+LeafNode.VALUE_TYPE_ORDER = ["object", "boolean", "number", "string"];
+let nodeFromJSON$1;
+let MAX_NODE$1;
+function setNodeFromJSON(val) {
+  nodeFromJSON$1 = val;
+}
+function setMaxNode(val) {
+  MAX_NODE$1 = val;
+}
+class PriorityIndex extends Index {
+  compare(a, b) {
+    const aPriority = a.node.getPriority();
+    const bPriority = b.node.getPriority();
+    const indexCmp = aPriority.compareTo(bPriority);
+    if (indexCmp === 0) {
+      return nameCompare(a.name, b.name);
+    } else {
+      return indexCmp;
+    }
+  }
+  isDefinedOn(node) {
+    return !node.getPriority().isEmpty();
+  }
+  indexedValueChanged(oldNode, newNode) {
+    return !oldNode.getPriority().equals(newNode.getPriority());
+  }
+  minPost() {
+    return NamedNode.MIN;
+  }
+  maxPost() {
+    return new NamedNode(MAX_NAME, new LeafNode("[PRIORITY-POST]", MAX_NODE$1));
+  }
+  makePost(indexValue, name2) {
+    const priorityNode = nodeFromJSON$1(indexValue);
+    return new NamedNode(name2, new LeafNode("[PRIORITY-POST]", priorityNode));
+  }
+  /**
+   * @returns String representation for inclusion in a query spec
+   */
+  toString() {
+    return ".priority";
+  }
+}
+const PRIORITY_INDEX = new PriorityIndex();
+const LOG_2 = Math.log(2);
+class Base12Num {
+  constructor(length) {
+    const logBase2 = (num) => (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      parseInt(Math.log(num) / LOG_2, 10)
+    );
+    const bitMask2 = (bits) => parseInt(Array(bits + 1).join("1"), 2);
+    this.count = logBase2(length + 1);
+    this.current_ = this.count - 1;
+    const mask2 = bitMask2(this.count);
+    this.bits_ = length + 1 & mask2;
+  }
+  nextBitIsOne() {
+    const result = !(this.bits_ & 1 << this.current_);
+    this.current_--;
+    return result;
+  }
+}
+const buildChildSet = function(childList, cmp, keyFn, mapSortFn) {
+  childList.sort(cmp);
+  const buildBalancedTree = function(low, high) {
+    const length = high - low;
+    let namedNode;
+    let key2;
+    if (length === 0) {
+      return null;
+    } else if (length === 1) {
+      namedNode = childList[low];
+      key2 = keyFn ? keyFn(namedNode) : namedNode;
+      return new LLRBNode(key2, namedNode.node, LLRBNode.BLACK, null, null);
+    } else {
+      const middle = parseInt(length / 2, 10) + low;
+      const left = buildBalancedTree(low, middle);
+      const right = buildBalancedTree(middle + 1, high);
+      namedNode = childList[middle];
+      key2 = keyFn ? keyFn(namedNode) : namedNode;
+      return new LLRBNode(key2, namedNode.node, LLRBNode.BLACK, left, right);
+    }
+  };
+  const buildFrom12Array = function(base122) {
+    let node = null;
+    let root22 = null;
+    let index2 = childList.length;
+    const buildPennant = function(chunkSize, color) {
+      const low = index2 - chunkSize;
+      const high = index2;
+      index2 -= chunkSize;
+      const childTree = buildBalancedTree(low + 1, high);
+      const namedNode = childList[low];
+      const key2 = keyFn ? keyFn(namedNode) : namedNode;
+      attachPennant(new LLRBNode(key2, namedNode.node, color, null, childTree));
+    };
+    const attachPennant = function(pennant) {
+      if (node) {
+        node.left = pennant;
+        node = pennant;
+      } else {
+        root22 = pennant;
+        node = pennant;
+      }
+    };
+    for (let i = 0; i < base122.count; ++i) {
+      const isOne = base122.nextBitIsOne();
+      const chunkSize = Math.pow(2, base122.count - (i + 1));
+      if (isOne) {
+        buildPennant(chunkSize, LLRBNode.BLACK);
+      } else {
+        buildPennant(chunkSize, LLRBNode.BLACK);
+        buildPennant(chunkSize, LLRBNode.RED);
+      }
+    }
+    return root22;
+  };
+  const base12 = new Base12Num(childList.length);
+  const root2 = buildFrom12Array(base12);
+  return new SortedMap(mapSortFn || cmp, root2);
+};
+let _defaultIndexMap;
+const fallbackObject = {};
+class IndexMap {
+  /**
+   * The default IndexMap for nodes without a priority
+   */
+  static get Default() {
+    assert(fallbackObject && PRIORITY_INDEX, "ChildrenNode.ts has not been loaded");
+    _defaultIndexMap = _defaultIndexMap || new IndexMap({ ".priority": fallbackObject }, { ".priority": PRIORITY_INDEX });
+    return _defaultIndexMap;
+  }
+  constructor(indexes_, indexSet_) {
+    this.indexes_ = indexes_;
+    this.indexSet_ = indexSet_;
+  }
+  get(indexKey) {
+    const sortedMap = safeGet(this.indexes_, indexKey);
+    if (!sortedMap) {
+      throw new Error("No index defined for " + indexKey);
+    }
+    if (sortedMap instanceof SortedMap) {
+      return sortedMap;
+    } else {
+      return null;
+    }
+  }
+  hasIndex(indexDefinition) {
+    return contains(this.indexSet_, indexDefinition.toString());
+  }
+  addIndex(indexDefinition, existingChildren) {
+    assert(indexDefinition !== KEY_INDEX, "KeyIndex always exists and isn't meant to be added to the IndexMap.");
+    const childList = [];
+    let sawIndexedValue = false;
+    const iter = existingChildren.getIterator(NamedNode.Wrap);
+    let next = iter.getNext();
+    while (next) {
+      sawIndexedValue = sawIndexedValue || indexDefinition.isDefinedOn(next.node);
+      childList.push(next);
+      next = iter.getNext();
+    }
+    let newIndex;
+    if (sawIndexedValue) {
+      newIndex = buildChildSet(childList, indexDefinition.getCompare());
+    } else {
+      newIndex = fallbackObject;
+    }
+    const indexName = indexDefinition.toString();
+    const newIndexSet = { ...this.indexSet_ };
+    newIndexSet[indexName] = indexDefinition;
+    const newIndexes = { ...this.indexes_ };
+    newIndexes[indexName] = newIndex;
+    return new IndexMap(newIndexes, newIndexSet);
+  }
+  /**
+   * Ensure that this node is properly tracked in any indexes that we're maintaining
+   */
+  addToIndexes(namedNode, existingChildren) {
+    const newIndexes = map(this.indexes_, (indexedChildren, indexName) => {
+      const index2 = safeGet(this.indexSet_, indexName);
+      assert(index2, "Missing index implementation for " + indexName);
+      if (indexedChildren === fallbackObject) {
+        if (index2.isDefinedOn(namedNode.node)) {
+          const childList = [];
+          const iter = existingChildren.getIterator(NamedNode.Wrap);
+          let next = iter.getNext();
+          while (next) {
+            if (next.name !== namedNode.name) {
+              childList.push(next);
+            }
+            next = iter.getNext();
+          }
+          childList.push(namedNode);
+          return buildChildSet(childList, index2.getCompare());
+        } else {
+          return fallbackObject;
+        }
+      } else {
+        const existingSnap = existingChildren.get(namedNode.name);
+        let newChildren = indexedChildren;
+        if (existingSnap) {
+          newChildren = newChildren.remove(new NamedNode(namedNode.name, existingSnap));
+        }
+        return newChildren.insert(namedNode, namedNode.node);
+      }
+    });
+    return new IndexMap(newIndexes, this.indexSet_);
+  }
+  /**
+   * Create a new IndexMap instance with the given value removed
+   */
+  removeFromIndexes(namedNode, existingChildren) {
+    const newIndexes = map(this.indexes_, (indexedChildren) => {
+      if (indexedChildren === fallbackObject) {
+        return indexedChildren;
+      } else {
+        const existingSnap = existingChildren.get(namedNode.name);
+        if (existingSnap) {
+          return indexedChildren.remove(new NamedNode(namedNode.name, existingSnap));
+        } else {
+          return indexedChildren;
+        }
+      }
+    });
+    return new IndexMap(newIndexes, this.indexSet_);
+  }
+}
+let EMPTY_NODE;
+class ChildrenNode {
+  static get EMPTY_NODE() {
+    return EMPTY_NODE || (EMPTY_NODE = new ChildrenNode(new SortedMap(NAME_COMPARATOR), null, IndexMap.Default));
+  }
+  /**
+   * @param children_ - List of children of this node..
+   * @param priorityNode_ - The priority of this node (as a snapshot node).
+   */
+  constructor(children_, priorityNode_, indexMap_) {
+    this.children_ = children_;
+    this.priorityNode_ = priorityNode_;
+    this.indexMap_ = indexMap_;
+    this.lazyHash_ = null;
+    if (this.priorityNode_) {
+      validatePriorityNode(this.priorityNode_);
+    }
+    if (this.children_.isEmpty()) {
+      assert(!this.priorityNode_ || this.priorityNode_.isEmpty(), "An empty node cannot have a priority");
+    }
+  }
+  /** @inheritDoc */
+  isLeafNode() {
+    return false;
+  }
+  /** @inheritDoc */
+  getPriority() {
+    return this.priorityNode_ || EMPTY_NODE;
+  }
+  /** @inheritDoc */
+  updatePriority(newPriorityNode) {
+    if (this.children_.isEmpty()) {
+      return this;
+    } else {
+      return new ChildrenNode(this.children_, newPriorityNode, this.indexMap_);
+    }
+  }
+  /** @inheritDoc */
+  getImmediateChild(childName) {
+    if (childName === ".priority") {
+      return this.getPriority();
+    } else {
+      const child2 = this.children_.get(childName);
+      return child2 === null ? EMPTY_NODE : child2;
+    }
+  }
+  /** @inheritDoc */
+  getChild(path) {
+    const front = pathGetFront(path);
+    if (front === null) {
+      return this;
+    }
+    return this.getImmediateChild(front).getChild(pathPopFront(path));
+  }
+  /** @inheritDoc */
+  hasChild(childName) {
+    return this.children_.get(childName) !== null;
+  }
+  /** @inheritDoc */
+  updateImmediateChild(childName, newChildNode) {
+    assert(newChildNode, "We should always be passing snapshot nodes");
+    if (childName === ".priority") {
+      return this.updatePriority(newChildNode);
+    } else {
+      const namedNode = new NamedNode(childName, newChildNode);
+      let newChildren, newIndexMap;
+      if (newChildNode.isEmpty()) {
+        newChildren = this.children_.remove(childName);
+        newIndexMap = this.indexMap_.removeFromIndexes(namedNode, this.children_);
+      } else {
+        newChildren = this.children_.insert(childName, newChildNode);
+        newIndexMap = this.indexMap_.addToIndexes(namedNode, this.children_);
+      }
+      const newPriority = newChildren.isEmpty() ? EMPTY_NODE : this.priorityNode_;
+      return new ChildrenNode(newChildren, newPriority, newIndexMap);
+    }
+  }
+  /** @inheritDoc */
+  updateChild(path, newChildNode) {
+    const front = pathGetFront(path);
+    if (front === null) {
+      return newChildNode;
+    } else {
+      assert(pathGetFront(path) !== ".priority" || pathGetLength(path) === 1, ".priority must be the last token in a path");
+      const newImmediateChild = this.getImmediateChild(front).updateChild(pathPopFront(path), newChildNode);
+      return this.updateImmediateChild(front, newImmediateChild);
+    }
+  }
+  /** @inheritDoc */
+  isEmpty() {
+    return this.children_.isEmpty();
+  }
+  /** @inheritDoc */
+  numChildren() {
+    return this.children_.count();
+  }
+  /** @inheritDoc */
+  val(exportFormat) {
+    if (this.isEmpty()) {
+      return null;
+    }
+    const obj = {};
+    let numKeys = 0, maxKey = 0, allIntegerKeys = true;
+    this.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+      obj[key2] = childNode.val(exportFormat);
+      numKeys++;
+      if (allIntegerKeys && ChildrenNode.INTEGER_REGEXP_.test(key2)) {
+        maxKey = Math.max(maxKey, Number(key2));
+      } else {
+        allIntegerKeys = false;
+      }
+    });
+    if (!exportFormat && allIntegerKeys && maxKey < 2 * numKeys) {
+      const array2 = [];
+      for (const key2 in obj) {
+        array2[key2] = obj[key2];
+      }
+      return array2;
+    } else {
+      if (exportFormat && !this.getPriority().isEmpty()) {
+        obj[".priority"] = this.getPriority().val();
+      }
+      return obj;
+    }
+  }
+  /** @inheritDoc */
+  hash() {
+    if (this.lazyHash_ === null) {
+      let toHash = "";
+      if (!this.getPriority().isEmpty()) {
+        toHash += "priority:" + priorityHashText(this.getPriority().val()) + ":";
+      }
+      this.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+        const childHash = childNode.hash();
+        if (childHash !== "") {
+          toHash += ":" + key2 + ":" + childHash;
+        }
+      });
+      this.lazyHash_ = toHash === "" ? "" : sha1(toHash);
+    }
+    return this.lazyHash_;
+  }
+  /** @inheritDoc */
+  getPredecessorChildName(childName, childNode, index2) {
+    const idx = this.resolveIndex_(index2);
+    if (idx) {
+      const predecessor = idx.getPredecessorKey(new NamedNode(childName, childNode));
+      return predecessor ? predecessor.name : null;
+    } else {
+      return this.children_.getPredecessorKey(childName);
+    }
+  }
+  getFirstChildName(indexDefinition) {
+    const idx = this.resolveIndex_(indexDefinition);
+    if (idx) {
+      const minKey = idx.minKey();
+      return minKey && minKey.name;
+    } else {
+      return this.children_.minKey();
+    }
+  }
+  getFirstChild(indexDefinition) {
+    const minKey = this.getFirstChildName(indexDefinition);
+    if (minKey) {
+      return new NamedNode(minKey, this.children_.get(minKey));
+    } else {
+      return null;
+    }
+  }
+  /**
+   * Given an index, return the key name of the largest value we have, according to that index
+   */
+  getLastChildName(indexDefinition) {
+    const idx = this.resolveIndex_(indexDefinition);
+    if (idx) {
+      const maxKey = idx.maxKey();
+      return maxKey && maxKey.name;
+    } else {
+      return this.children_.maxKey();
+    }
+  }
+  getLastChild(indexDefinition) {
+    const maxKey = this.getLastChildName(indexDefinition);
+    if (maxKey) {
+      return new NamedNode(maxKey, this.children_.get(maxKey));
+    } else {
+      return null;
+    }
+  }
+  forEachChild(index2, action) {
+    const idx = this.resolveIndex_(index2);
+    if (idx) {
+      return idx.inorderTraversal((wrappedNode) => {
+        return action(wrappedNode.name, wrappedNode.node);
+      });
+    } else {
+      return this.children_.inorderTraversal(action);
+    }
+  }
+  getIterator(indexDefinition) {
+    return this.getIteratorFrom(indexDefinition.minPost(), indexDefinition);
+  }
+  getIteratorFrom(startPost, indexDefinition) {
+    const idx = this.resolveIndex_(indexDefinition);
+    if (idx) {
+      return idx.getIteratorFrom(startPost, (key2) => key2);
+    } else {
+      const iterator = this.children_.getIteratorFrom(startPost.name, NamedNode.Wrap);
+      let next = iterator.peek();
+      while (next != null && indexDefinition.compare(next, startPost) < 0) {
+        iterator.getNext();
+        next = iterator.peek();
+      }
+      return iterator;
+    }
+  }
+  getReverseIterator(indexDefinition) {
+    return this.getReverseIteratorFrom(indexDefinition.maxPost(), indexDefinition);
+  }
+  getReverseIteratorFrom(endPost, indexDefinition) {
+    const idx = this.resolveIndex_(indexDefinition);
+    if (idx) {
+      return idx.getReverseIteratorFrom(endPost, (key2) => {
+        return key2;
+      });
+    } else {
+      const iterator = this.children_.getReverseIteratorFrom(endPost.name, NamedNode.Wrap);
+      let next = iterator.peek();
+      while (next != null && indexDefinition.compare(next, endPost) > 0) {
+        iterator.getNext();
+        next = iterator.peek();
+      }
+      return iterator;
+    }
+  }
+  compareTo(other) {
+    if (this.isEmpty()) {
+      if (other.isEmpty()) {
+        return 0;
+      } else {
+        return -1;
+      }
+    } else if (other.isLeafNode() || other.isEmpty()) {
+      return 1;
+    } else if (other === MAX_NODE) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+  withIndex(indexDefinition) {
+    if (indexDefinition === KEY_INDEX || this.indexMap_.hasIndex(indexDefinition)) {
+      return this;
+    } else {
+      const newIndexMap = this.indexMap_.addIndex(indexDefinition, this.children_);
+      return new ChildrenNode(this.children_, this.priorityNode_, newIndexMap);
+    }
+  }
+  isIndexed(index2) {
+    return index2 === KEY_INDEX || this.indexMap_.hasIndex(index2);
+  }
+  equals(other) {
+    if (other === this) {
+      return true;
+    } else if (other.isLeafNode()) {
+      return false;
+    } else {
+      const otherChildrenNode = other;
+      if (!this.getPriority().equals(otherChildrenNode.getPriority())) {
+        return false;
+      } else if (this.children_.count() === otherChildrenNode.children_.count()) {
+        const thisIter = this.getIterator(PRIORITY_INDEX);
+        const otherIter = otherChildrenNode.getIterator(PRIORITY_INDEX);
+        let thisCurrent = thisIter.getNext();
+        let otherCurrent = otherIter.getNext();
+        while (thisCurrent && otherCurrent) {
+          if (thisCurrent.name !== otherCurrent.name || !thisCurrent.node.equals(otherCurrent.node)) {
+            return false;
+          }
+          thisCurrent = thisIter.getNext();
+          otherCurrent = otherIter.getNext();
+        }
+        return thisCurrent === null && otherCurrent === null;
+      } else {
+        return false;
+      }
+    }
+  }
+  /**
+   * Returns a SortedMap ordered by index, or null if the default (by-key) ordering can be used
+   * instead.
+   *
+   */
+  resolveIndex_(indexDefinition) {
+    if (indexDefinition === KEY_INDEX) {
+      return null;
+    } else {
+      return this.indexMap_.get(indexDefinition.toString());
+    }
+  }
+}
+ChildrenNode.INTEGER_REGEXP_ = /^(0|[1-9]\d*)$/;
+class MaxNode extends ChildrenNode {
+  constructor() {
+    super(new SortedMap(NAME_COMPARATOR), ChildrenNode.EMPTY_NODE, IndexMap.Default);
+  }
+  compareTo(other) {
+    if (other === this) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+  equals(other) {
+    return other === this;
+  }
+  getPriority() {
+    return this;
+  }
+  getImmediateChild(childName) {
+    return ChildrenNode.EMPTY_NODE;
+  }
+  isEmpty() {
+    return false;
+  }
+}
+const MAX_NODE = new MaxNode();
+Object.defineProperties(NamedNode, {
+  MIN: {
+    value: new NamedNode(MIN_NAME, ChildrenNode.EMPTY_NODE)
+  },
+  MAX: {
+    value: new NamedNode(MAX_NAME, MAX_NODE)
+  }
+});
+KeyIndex.__EMPTY_NODE = ChildrenNode.EMPTY_NODE;
+LeafNode.__childrenNodeConstructor = ChildrenNode;
+setMaxNode$1(MAX_NODE);
+setMaxNode(MAX_NODE);
+const USE_HINZE = true;
+function nodeFromJSON(json, priority = null) {
+  if (json === null) {
+    return ChildrenNode.EMPTY_NODE;
+  }
+  if (typeof json === "object" && ".priority" in json) {
+    priority = json[".priority"];
+  }
+  assert(priority === null || typeof priority === "string" || typeof priority === "number" || typeof priority === "object" && ".sv" in priority, "Invalid priority type found: " + typeof priority);
+  if (typeof json === "object" && ".value" in json && json[".value"] !== null) {
+    json = json[".value"];
+  }
+  if (typeof json !== "object" || ".sv" in json) {
+    const jsonLeaf = json;
+    return new LeafNode(jsonLeaf, nodeFromJSON(priority));
+  }
+  if (!(json instanceof Array) && USE_HINZE) {
+    const children = [];
+    let childrenHavePriority = false;
+    const hinzeJsonObj = json;
+    each(hinzeJsonObj, (key2, child2) => {
+      if (key2.substring(0, 1) !== ".") {
+        const childNode = nodeFromJSON(child2);
+        if (!childNode.isEmpty()) {
+          childrenHavePriority = childrenHavePriority || !childNode.getPriority().isEmpty();
+          children.push(new NamedNode(key2, childNode));
+        }
+      }
+    });
+    if (children.length === 0) {
+      return ChildrenNode.EMPTY_NODE;
+    }
+    const childSet = buildChildSet(children, NAME_ONLY_COMPARATOR, (namedNode) => namedNode.name, NAME_COMPARATOR);
+    if (childrenHavePriority) {
+      const sortedChildSet = buildChildSet(children, PRIORITY_INDEX.getCompare());
+      return new ChildrenNode(childSet, nodeFromJSON(priority), new IndexMap({ ".priority": sortedChildSet }, { ".priority": PRIORITY_INDEX }));
+    } else {
+      return new ChildrenNode(childSet, nodeFromJSON(priority), IndexMap.Default);
+    }
+  } else {
+    let node = ChildrenNode.EMPTY_NODE;
+    each(json, (key2, childData) => {
+      if (contains(json, key2)) {
+        if (key2.substring(0, 1) !== ".") {
+          const childNode = nodeFromJSON(childData);
+          if (childNode.isLeafNode() || !childNode.isEmpty()) {
+            node = node.updateImmediateChild(key2, childNode);
+          }
+        }
+      }
+    });
+    return node.updatePriority(nodeFromJSON(priority));
+  }
+}
+setNodeFromJSON(nodeFromJSON);
+class PathIndex extends Index {
+  constructor(indexPath_) {
+    super();
+    this.indexPath_ = indexPath_;
+    assert(!pathIsEmpty(indexPath_) && pathGetFront(indexPath_) !== ".priority", "Can't create PathIndex with empty path or .priority key");
+  }
+  extractChild(snap) {
+    return snap.getChild(this.indexPath_);
+  }
+  isDefinedOn(node) {
+    return !node.getChild(this.indexPath_).isEmpty();
+  }
+  compare(a, b) {
+    const aChild = this.extractChild(a.node);
+    const bChild = this.extractChild(b.node);
+    const indexCmp = aChild.compareTo(bChild);
+    if (indexCmp === 0) {
+      return nameCompare(a.name, b.name);
+    } else {
+      return indexCmp;
+    }
+  }
+  makePost(indexValue, name2) {
+    const valueNode = nodeFromJSON(indexValue);
+    const node = ChildrenNode.EMPTY_NODE.updateChild(this.indexPath_, valueNode);
+    return new NamedNode(name2, node);
+  }
+  maxPost() {
+    const node = ChildrenNode.EMPTY_NODE.updateChild(this.indexPath_, MAX_NODE);
+    return new NamedNode(MAX_NAME, node);
+  }
+  toString() {
+    return pathSlice(this.indexPath_, 0).join("/");
+  }
+}
+class ValueIndex extends Index {
+  compare(a, b) {
+    const indexCmp = a.node.compareTo(b.node);
+    if (indexCmp === 0) {
+      return nameCompare(a.name, b.name);
+    } else {
+      return indexCmp;
+    }
+  }
+  isDefinedOn(node) {
+    return true;
+  }
+  indexedValueChanged(oldNode, newNode) {
+    return !oldNode.equals(newNode);
+  }
+  minPost() {
+    return NamedNode.MIN;
+  }
+  maxPost() {
+    return NamedNode.MAX;
+  }
+  makePost(indexValue, name2) {
+    const valueNode = nodeFromJSON(indexValue);
+    return new NamedNode(name2, valueNode);
+  }
+  /**
+   * @returns String representation for inclusion in a query spec
+   */
+  toString() {
+    return ".value";
+  }
+}
+const VALUE_INDEX = new ValueIndex();
+function changeValue(snapshotNode) {
+  return { type: "value", snapshotNode };
+}
+function changeChildAdded(childName, snapshotNode) {
+  return { type: "child_added", snapshotNode, childName };
+}
+function changeChildRemoved(childName, snapshotNode) {
+  return { type: "child_removed", snapshotNode, childName };
+}
+function changeChildChanged(childName, snapshotNode, oldSnap) {
+  return {
+    type: "child_changed",
+    snapshotNode,
+    childName,
+    oldSnap
+  };
+}
+function changeChildMoved(childName, snapshotNode) {
+  return { type: "child_moved", snapshotNode, childName };
+}
+class IndexedFilter {
+  constructor(index_) {
+    this.index_ = index_;
+  }
+  updateChild(snap, key2, newChild, affectedPath, source, optChangeAccumulator) {
+    assert(snap.isIndexed(this.index_), "A node must be indexed if only a child is updated");
+    const oldChild = snap.getImmediateChild(key2);
+    if (oldChild.getChild(affectedPath).equals(newChild.getChild(affectedPath))) {
+      if (oldChild.isEmpty() === newChild.isEmpty()) {
+        return snap;
+      }
+    }
+    if (optChangeAccumulator != null) {
+      if (newChild.isEmpty()) {
+        if (snap.hasChild(key2)) {
+          optChangeAccumulator.trackChildChange(changeChildRemoved(key2, oldChild));
+        } else {
+          assert(snap.isLeafNode(), "A child remove without an old child only makes sense on a leaf node");
+        }
+      } else if (oldChild.isEmpty()) {
+        optChangeAccumulator.trackChildChange(changeChildAdded(key2, newChild));
+      } else {
+        optChangeAccumulator.trackChildChange(changeChildChanged(key2, newChild, oldChild));
+      }
+    }
+    if (snap.isLeafNode() && newChild.isEmpty()) {
+      return snap;
+    } else {
+      return snap.updateImmediateChild(key2, newChild).withIndex(this.index_);
+    }
+  }
+  updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+    if (optChangeAccumulator != null) {
+      if (!oldSnap.isLeafNode()) {
+        oldSnap.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+          if (!newSnap.hasChild(key2)) {
+            optChangeAccumulator.trackChildChange(changeChildRemoved(key2, childNode));
+          }
+        });
+      }
+      if (!newSnap.isLeafNode()) {
+        newSnap.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+          if (oldSnap.hasChild(key2)) {
+            const oldChild = oldSnap.getImmediateChild(key2);
+            if (!oldChild.equals(childNode)) {
+              optChangeAccumulator.trackChildChange(changeChildChanged(key2, childNode, oldChild));
+            }
+          } else {
+            optChangeAccumulator.trackChildChange(changeChildAdded(key2, childNode));
+          }
+        });
+      }
+    }
+    return newSnap.withIndex(this.index_);
+  }
+  updatePriority(oldSnap, newPriority) {
+    if (oldSnap.isEmpty()) {
+      return ChildrenNode.EMPTY_NODE;
+    } else {
+      return oldSnap.updatePriority(newPriority);
+    }
+  }
+  filtersNodes() {
+    return false;
+  }
+  getIndexedFilter() {
+    return this;
+  }
+  getIndex() {
+    return this.index_;
+  }
+}
+class RangedFilter {
+  constructor(params) {
+    this.indexedFilter_ = new IndexedFilter(params.getIndex());
+    this.index_ = params.getIndex();
+    this.startPost_ = RangedFilter.getStartPost_(params);
+    this.endPost_ = RangedFilter.getEndPost_(params);
+    this.startIsInclusive_ = !params.startAfterSet_;
+    this.endIsInclusive_ = !params.endBeforeSet_;
+  }
+  getStartPost() {
+    return this.startPost_;
+  }
+  getEndPost() {
+    return this.endPost_;
+  }
+  matches(node) {
+    const isWithinStart = this.startIsInclusive_ ? this.index_.compare(this.getStartPost(), node) <= 0 : this.index_.compare(this.getStartPost(), node) < 0;
+    const isWithinEnd = this.endIsInclusive_ ? this.index_.compare(node, this.getEndPost()) <= 0 : this.index_.compare(node, this.getEndPost()) < 0;
+    return isWithinStart && isWithinEnd;
+  }
+  updateChild(snap, key2, newChild, affectedPath, source, optChangeAccumulator) {
+    if (!this.matches(new NamedNode(key2, newChild))) {
+      newChild = ChildrenNode.EMPTY_NODE;
+    }
+    return this.indexedFilter_.updateChild(snap, key2, newChild, affectedPath, source, optChangeAccumulator);
+  }
+  updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+    if (newSnap.isLeafNode()) {
+      newSnap = ChildrenNode.EMPTY_NODE;
+    }
+    let filtered = newSnap.withIndex(this.index_);
+    filtered = filtered.updatePriority(ChildrenNode.EMPTY_NODE);
+    const self2 = this;
+    newSnap.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+      if (!self2.matches(new NamedNode(key2, childNode))) {
+        filtered = filtered.updateImmediateChild(key2, ChildrenNode.EMPTY_NODE);
+      }
+    });
+    return this.indexedFilter_.updateFullNode(oldSnap, filtered, optChangeAccumulator);
+  }
+  updatePriority(oldSnap, newPriority) {
+    return oldSnap;
+  }
+  filtersNodes() {
+    return true;
+  }
+  getIndexedFilter() {
+    return this.indexedFilter_;
+  }
+  getIndex() {
+    return this.index_;
+  }
+  static getStartPost_(params) {
+    if (params.hasStart()) {
+      const startName = params.getIndexStartName();
+      return params.getIndex().makePost(params.getIndexStartValue(), startName);
+    } else {
+      return params.getIndex().minPost();
+    }
+  }
+  static getEndPost_(params) {
+    if (params.hasEnd()) {
+      const endName = params.getIndexEndName();
+      return params.getIndex().makePost(params.getIndexEndValue(), endName);
+    } else {
+      return params.getIndex().maxPost();
+    }
+  }
+}
+class LimitedFilter {
+  constructor(params) {
+    this.withinDirectionalStart = (node) => this.reverse_ ? this.withinEndPost(node) : this.withinStartPost(node);
+    this.withinDirectionalEnd = (node) => this.reverse_ ? this.withinStartPost(node) : this.withinEndPost(node);
+    this.withinStartPost = (node) => {
+      const compareRes = this.index_.compare(this.rangedFilter_.getStartPost(), node);
+      return this.startIsInclusive_ ? compareRes <= 0 : compareRes < 0;
+    };
+    this.withinEndPost = (node) => {
+      const compareRes = this.index_.compare(node, this.rangedFilter_.getEndPost());
+      return this.endIsInclusive_ ? compareRes <= 0 : compareRes < 0;
+    };
+    this.rangedFilter_ = new RangedFilter(params);
+    this.index_ = params.getIndex();
+    this.limit_ = params.getLimit();
+    this.reverse_ = !params.isViewFromLeft();
+    this.startIsInclusive_ = !params.startAfterSet_;
+    this.endIsInclusive_ = !params.endBeforeSet_;
+  }
+  updateChild(snap, key2, newChild, affectedPath, source, optChangeAccumulator) {
+    if (!this.rangedFilter_.matches(new NamedNode(key2, newChild))) {
+      newChild = ChildrenNode.EMPTY_NODE;
+    }
+    if (snap.getImmediateChild(key2).equals(newChild)) {
+      return snap;
+    } else if (snap.numChildren() < this.limit_) {
+      return this.rangedFilter_.getIndexedFilter().updateChild(snap, key2, newChild, affectedPath, source, optChangeAccumulator);
+    } else {
+      return this.fullLimitUpdateChild_(snap, key2, newChild, source, optChangeAccumulator);
+    }
+  }
+  updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+    let filtered;
+    if (newSnap.isLeafNode() || newSnap.isEmpty()) {
+      filtered = ChildrenNode.EMPTY_NODE.withIndex(this.index_);
+    } else {
+      if (this.limit_ * 2 < newSnap.numChildren() && newSnap.isIndexed(this.index_)) {
+        filtered = ChildrenNode.EMPTY_NODE.withIndex(this.index_);
+        let iterator;
+        if (this.reverse_) {
+          iterator = newSnap.getReverseIteratorFrom(this.rangedFilter_.getEndPost(), this.index_);
+        } else {
+          iterator = newSnap.getIteratorFrom(this.rangedFilter_.getStartPost(), this.index_);
+        }
+        let count = 0;
+        while (iterator.hasNext() && count < this.limit_) {
+          const next = iterator.getNext();
+          if (!this.withinDirectionalStart(next)) {
+            continue;
+          } else if (!this.withinDirectionalEnd(next)) {
+            break;
+          } else {
+            filtered = filtered.updateImmediateChild(next.name, next.node);
+            count++;
+          }
+        }
+      } else {
+        filtered = newSnap.withIndex(this.index_);
+        filtered = filtered.updatePriority(ChildrenNode.EMPTY_NODE);
+        let iterator;
+        if (this.reverse_) {
+          iterator = filtered.getReverseIterator(this.index_);
+        } else {
+          iterator = filtered.getIterator(this.index_);
+        }
+        let count = 0;
+        while (iterator.hasNext()) {
+          const next = iterator.getNext();
+          const inRange2 = count < this.limit_ && this.withinDirectionalStart(next) && this.withinDirectionalEnd(next);
+          if (inRange2) {
+            count++;
+          } else {
+            filtered = filtered.updateImmediateChild(next.name, ChildrenNode.EMPTY_NODE);
+          }
+        }
+      }
+    }
+    return this.rangedFilter_.getIndexedFilter().updateFullNode(oldSnap, filtered, optChangeAccumulator);
+  }
+  updatePriority(oldSnap, newPriority) {
+    return oldSnap;
+  }
+  filtersNodes() {
+    return true;
+  }
+  getIndexedFilter() {
+    return this.rangedFilter_.getIndexedFilter();
+  }
+  getIndex() {
+    return this.index_;
+  }
+  fullLimitUpdateChild_(snap, childKey, childSnap, source, changeAccumulator) {
+    let cmp;
+    if (this.reverse_) {
+      const indexCmp = this.index_.getCompare();
+      cmp = (a, b) => indexCmp(b, a);
+    } else {
+      cmp = this.index_.getCompare();
+    }
+    const oldEventCache = snap;
+    assert(oldEventCache.numChildren() === this.limit_, "");
+    const newChildNamedNode = new NamedNode(childKey, childSnap);
+    const windowBoundary = this.reverse_ ? oldEventCache.getFirstChild(this.index_) : oldEventCache.getLastChild(this.index_);
+    const inRange2 = this.rangedFilter_.matches(newChildNamedNode);
+    if (oldEventCache.hasChild(childKey)) {
+      const oldChildSnap = oldEventCache.getImmediateChild(childKey);
+      let nextChild = source.getChildAfterChild(this.index_, windowBoundary, this.reverse_);
+      while (nextChild != null && (nextChild.name === childKey || oldEventCache.hasChild(nextChild.name))) {
+        nextChild = source.getChildAfterChild(this.index_, nextChild, this.reverse_);
+      }
+      const compareNext = nextChild == null ? 1 : cmp(nextChild, newChildNamedNode);
+      const remainsInWindow = inRange2 && !childSnap.isEmpty() && compareNext >= 0;
+      if (remainsInWindow) {
+        if (changeAccumulator != null) {
+          changeAccumulator.trackChildChange(changeChildChanged(childKey, childSnap, oldChildSnap));
+        }
+        return oldEventCache.updateImmediateChild(childKey, childSnap);
+      } else {
+        if (changeAccumulator != null) {
+          changeAccumulator.trackChildChange(changeChildRemoved(childKey, oldChildSnap));
+        }
+        const newEventCache = oldEventCache.updateImmediateChild(childKey, ChildrenNode.EMPTY_NODE);
+        const nextChildInRange = nextChild != null && this.rangedFilter_.matches(nextChild);
+        if (nextChildInRange) {
+          if (changeAccumulator != null) {
+            changeAccumulator.trackChildChange(changeChildAdded(nextChild.name, nextChild.node));
+          }
+          return newEventCache.updateImmediateChild(nextChild.name, nextChild.node);
+        } else {
+          return newEventCache;
+        }
+      }
+    } else if (childSnap.isEmpty()) {
+      return snap;
+    } else if (inRange2) {
+      if (cmp(windowBoundary, newChildNamedNode) >= 0) {
+        if (changeAccumulator != null) {
+          changeAccumulator.trackChildChange(changeChildRemoved(windowBoundary.name, windowBoundary.node));
+          changeAccumulator.trackChildChange(changeChildAdded(childKey, childSnap));
+        }
+        return oldEventCache.updateImmediateChild(childKey, childSnap).updateImmediateChild(windowBoundary.name, ChildrenNode.EMPTY_NODE);
+      } else {
+        return snap;
+      }
+    } else {
+      return snap;
+    }
+  }
+}
+class QueryParams {
+  constructor() {
+    this.limitSet_ = false;
+    this.startSet_ = false;
+    this.startNameSet_ = false;
+    this.startAfterSet_ = false;
+    this.endSet_ = false;
+    this.endNameSet_ = false;
+    this.endBeforeSet_ = false;
+    this.limit_ = 0;
+    this.viewFrom_ = "";
+    this.indexStartValue_ = null;
+    this.indexStartName_ = "";
+    this.indexEndValue_ = null;
+    this.indexEndName_ = "";
+    this.index_ = PRIORITY_INDEX;
+  }
+  hasStart() {
+    return this.startSet_;
+  }
+  /**
+   * @returns True if it would return from left.
+   */
+  isViewFromLeft() {
+    if (this.viewFrom_ === "") {
+      return this.startSet_;
+    } else {
+      return this.viewFrom_ === "l";
+    }
+  }
+  /**
+   * Only valid to call if hasStart() returns true
+   */
+  getIndexStartValue() {
+    assert(this.startSet_, "Only valid if start has been set");
+    return this.indexStartValue_;
+  }
+  /**
+   * Only valid to call if hasStart() returns true.
+   * Returns the starting key name for the range defined by these query parameters
+   */
+  getIndexStartName() {
+    assert(this.startSet_, "Only valid if start has been set");
+    if (this.startNameSet_) {
+      return this.indexStartName_;
+    } else {
+      return MIN_NAME;
+    }
+  }
+  hasEnd() {
+    return this.endSet_;
+  }
+  /**
+   * Only valid to call if hasEnd() returns true.
+   */
+  getIndexEndValue() {
+    assert(this.endSet_, "Only valid if end has been set");
+    return this.indexEndValue_;
+  }
+  /**
+   * Only valid to call if hasEnd() returns true.
+   * Returns the end key name for the range defined by these query parameters
+   */
+  getIndexEndName() {
+    assert(this.endSet_, "Only valid if end has been set");
+    if (this.endNameSet_) {
+      return this.indexEndName_;
+    } else {
+      return MAX_NAME;
+    }
+  }
+  hasLimit() {
+    return this.limitSet_;
+  }
+  /**
+   * @returns True if a limit has been set and it has been explicitly anchored
+   */
+  hasAnchoredLimit() {
+    return this.limitSet_ && this.viewFrom_ !== "";
+  }
+  /**
+   * Only valid to call if hasLimit() returns true
+   */
+  getLimit() {
+    assert(this.limitSet_, "Only valid if limit has been set");
+    return this.limit_;
+  }
+  getIndex() {
+    return this.index_;
+  }
+  loadsAllData() {
+    return !(this.startSet_ || this.endSet_ || this.limitSet_);
+  }
+  isDefault() {
+    return this.loadsAllData() && this.index_ === PRIORITY_INDEX;
+  }
+  copy() {
+    const copy = new QueryParams();
+    copy.limitSet_ = this.limitSet_;
+    copy.limit_ = this.limit_;
+    copy.startSet_ = this.startSet_;
+    copy.startAfterSet_ = this.startAfterSet_;
+    copy.indexStartValue_ = this.indexStartValue_;
+    copy.startNameSet_ = this.startNameSet_;
+    copy.indexStartName_ = this.indexStartName_;
+    copy.endSet_ = this.endSet_;
+    copy.endBeforeSet_ = this.endBeforeSet_;
+    copy.indexEndValue_ = this.indexEndValue_;
+    copy.endNameSet_ = this.endNameSet_;
+    copy.indexEndName_ = this.indexEndName_;
+    copy.index_ = this.index_;
+    copy.viewFrom_ = this.viewFrom_;
+    return copy;
+  }
+}
+function queryParamsGetNodeFilter(queryParams) {
+  if (queryParams.loadsAllData()) {
+    return new IndexedFilter(queryParams.getIndex());
+  } else if (queryParams.hasLimit()) {
+    return new LimitedFilter(queryParams);
+  } else {
+    return new RangedFilter(queryParams);
+  }
+}
+function queryParamsToRestQueryStringParameters(queryParams) {
+  const qs = {};
+  if (queryParams.isDefault()) {
+    return qs;
+  }
+  let orderBy;
+  if (queryParams.index_ === PRIORITY_INDEX) {
+    orderBy = "$priority";
+  } else if (queryParams.index_ === VALUE_INDEX) {
+    orderBy = "$value";
+  } else if (queryParams.index_ === KEY_INDEX) {
+    orderBy = "$key";
+  } else {
+    assert(queryParams.index_ instanceof PathIndex, "Unrecognized index type!");
+    orderBy = queryParams.index_.toString();
+  }
+  qs[
+    "orderBy"
+    /* REST_QUERY_CONSTANTS.ORDER_BY */
+  ] = stringify(orderBy);
+  if (queryParams.startSet_) {
+    const startParam = queryParams.startAfterSet_ ? "startAfter" : "startAt";
+    qs[startParam] = stringify(queryParams.indexStartValue_);
+    if (queryParams.startNameSet_) {
+      qs[startParam] += "," + stringify(queryParams.indexStartName_);
+    }
+  }
+  if (queryParams.endSet_) {
+    const endParam = queryParams.endBeforeSet_ ? "endBefore" : "endAt";
+    qs[endParam] = stringify(queryParams.indexEndValue_);
+    if (queryParams.endNameSet_) {
+      qs[endParam] += "," + stringify(queryParams.indexEndName_);
+    }
+  }
+  if (queryParams.limitSet_) {
+    if (queryParams.isViewFromLeft()) {
+      qs[
+        "limitToFirst"
+        /* REST_QUERY_CONSTANTS.LIMIT_TO_FIRST */
+      ] = queryParams.limit_;
+    } else {
+      qs[
+        "limitToLast"
+        /* REST_QUERY_CONSTANTS.LIMIT_TO_LAST */
+      ] = queryParams.limit_;
+    }
+  }
+  return qs;
+}
+function queryParamsGetQueryObject(queryParams) {
+  const obj = {};
+  if (queryParams.startSet_) {
+    obj[
+      "sp"
+      /* WIRE_PROTOCOL_CONSTANTS.INDEX_START_VALUE */
+    ] = queryParams.indexStartValue_;
+    if (queryParams.startNameSet_) {
+      obj[
+        "sn"
+        /* WIRE_PROTOCOL_CONSTANTS.INDEX_START_NAME */
+      ] = queryParams.indexStartName_;
+    }
+    obj[
+      "sin"
+      /* WIRE_PROTOCOL_CONSTANTS.INDEX_START_IS_INCLUSIVE */
+    ] = !queryParams.startAfterSet_;
+  }
+  if (queryParams.endSet_) {
+    obj[
+      "ep"
+      /* WIRE_PROTOCOL_CONSTANTS.INDEX_END_VALUE */
+    ] = queryParams.indexEndValue_;
+    if (queryParams.endNameSet_) {
+      obj[
+        "en"
+        /* WIRE_PROTOCOL_CONSTANTS.INDEX_END_NAME */
+      ] = queryParams.indexEndName_;
+    }
+    obj[
+      "ein"
+      /* WIRE_PROTOCOL_CONSTANTS.INDEX_END_IS_INCLUSIVE */
+    ] = !queryParams.endBeforeSet_;
+  }
+  if (queryParams.limitSet_) {
+    obj[
+      "l"
+      /* WIRE_PROTOCOL_CONSTANTS.LIMIT */
+    ] = queryParams.limit_;
+    let viewFrom = queryParams.viewFrom_;
+    if (viewFrom === "") {
+      if (queryParams.isViewFromLeft()) {
+        viewFrom = "l";
+      } else {
+        viewFrom = "r";
+      }
+    }
+    obj[
+      "vf"
+      /* WIRE_PROTOCOL_CONSTANTS.VIEW_FROM */
+    ] = viewFrom;
+  }
+  if (queryParams.index_ !== PRIORITY_INDEX) {
+    obj[
+      "i"
+      /* WIRE_PROTOCOL_CONSTANTS.INDEX */
+    ] = queryParams.index_.toString();
+  }
+  return obj;
+}
+class ReadonlyRestClient extends ServerActions {
+  reportStats(stats) {
+    throw new Error("Method not implemented.");
+  }
+  static getListenId_(query2, tag) {
+    if (tag !== void 0) {
+      return "tag$" + tag;
+    } else {
+      assert(query2._queryParams.isDefault(), "should have a tag if it's not a default query.");
+      return query2._path.toString();
+    }
+  }
+  /**
+   * @param repoInfo_ - Data about the namespace we are connecting to
+   * @param onDataUpdate_ - A callback for new data from the server
+   */
+  constructor(repoInfo_, onDataUpdate_, authTokenProvider_, appCheckTokenProvider_) {
+    super();
+    this.repoInfo_ = repoInfo_;
+    this.onDataUpdate_ = onDataUpdate_;
+    this.authTokenProvider_ = authTokenProvider_;
+    this.appCheckTokenProvider_ = appCheckTokenProvider_;
+    this.log_ = logWrapper("p:rest:");
+    this.listens_ = {};
+  }
+  /** @inheritDoc */
+  listen(query2, currentHashFn, tag, onComplete) {
+    const pathString = query2._path.toString();
+    this.log_("Listen called for " + pathString + " " + query2._queryIdentifier);
+    const listenId = ReadonlyRestClient.getListenId_(query2, tag);
+    const thisListen = {};
+    this.listens_[listenId] = thisListen;
+    const queryStringParameters = queryParamsToRestQueryStringParameters(query2._queryParams);
+    this.restRequest_(pathString + ".json", queryStringParameters, (error2, result) => {
+      let data = result;
+      if (error2 === 404) {
+        data = null;
+        error2 = null;
+      }
+      if (error2 === null) {
+        this.onDataUpdate_(
+          pathString,
+          data,
+          /*isMerge=*/
+          false,
+          tag
+        );
+      }
+      if (safeGet(this.listens_, listenId) === thisListen) {
+        let status;
+        if (!error2) {
+          status = "ok";
+        } else if (error2 === 401) {
+          status = "permission_denied";
+        } else {
+          status = "rest_error:" + error2;
+        }
+        onComplete(status, null);
+      }
+    });
+  }
+  /** @inheritDoc */
+  unlisten(query2, tag) {
+    const listenId = ReadonlyRestClient.getListenId_(query2, tag);
+    delete this.listens_[listenId];
+  }
+  get(query2) {
+    const queryStringParameters = queryParamsToRestQueryStringParameters(query2._queryParams);
+    const pathString = query2._path.toString();
+    const deferred = new Deferred();
+    this.restRequest_(pathString + ".json", queryStringParameters, (error2, result) => {
+      let data = result;
+      if (error2 === 404) {
+        data = null;
+        error2 = null;
+      }
+      if (error2 === null) {
+        this.onDataUpdate_(
+          pathString,
+          data,
+          /*isMerge=*/
+          false,
+          /*tag=*/
+          null
+        );
+        deferred.resolve(data);
+      } else {
+        deferred.reject(new Error(data));
+      }
+    });
+    return deferred.promise;
+  }
+  /** @inheritDoc */
+  refreshAuthToken(token2) {
+  }
+  /**
+   * Performs a REST request to the given path, with the provided query string parameters,
+   * and any auth credentials we have.
+   */
+  restRequest_(pathString, queryStringParameters = {}, callback) {
+    queryStringParameters["format"] = "export";
+    return Promise.all([
+      this.authTokenProvider_.getToken(
+        /*forceRefresh=*/
+        false
+      ),
+      this.appCheckTokenProvider_.getToken(
+        /*forceRefresh=*/
+        false
+      )
+    ]).then(([authToken, appCheckToken]) => {
+      if (authToken && authToken.accessToken) {
+        queryStringParameters["auth"] = authToken.accessToken;
+      }
+      if (appCheckToken && appCheckToken.token) {
+        queryStringParameters["ac"] = appCheckToken.token;
+      }
+      const url = (this.repoInfo_.secure ? "https://" : "http://") + this.repoInfo_.host + pathString + "?ns=" + this.repoInfo_.namespace + querystring(queryStringParameters);
+      this.log_("Sending REST request for " + url);
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (callback && xhr.readyState === 4) {
+          this.log_("REST Response for " + url + " received. status:", xhr.status, "response:", xhr.responseText);
+          let res = null;
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              res = jsonEval(xhr.responseText);
+            } catch (e) {
+              warn("Failed to parse JSON response for " + url + ": " + xhr.responseText);
+            }
+            callback(null, res);
+          } else {
+            if (xhr.status !== 401 && xhr.status !== 404) {
+              warn("Got unsuccessful REST response for " + url + " Status: " + xhr.status);
+            }
+            callback(xhr.status);
+          }
+          callback = null;
+        }
+      };
+      xhr.open(
+        "GET",
+        url,
+        /*asynchronous=*/
+        true
+      );
+      xhr.send();
+    });
+  }
+}
+class SnapshotHolder {
+  constructor() {
+    this.rootNode_ = ChildrenNode.EMPTY_NODE;
+  }
+  getNode(path) {
+    return this.rootNode_.getChild(path);
+  }
+  updateSnapshot(path, newSnapshotNode) {
+    this.rootNode_ = this.rootNode_.updateChild(path, newSnapshotNode);
+  }
+}
+function newSparseSnapshotTree() {
+  return {
+    value: null,
+    children: /* @__PURE__ */ new Map()
+  };
+}
+function sparseSnapshotTreeRemember(sparseSnapshotTree, path, data) {
+  if (pathIsEmpty(path)) {
+    sparseSnapshotTree.value = data;
+    sparseSnapshotTree.children.clear();
+  } else if (sparseSnapshotTree.value !== null) {
+    sparseSnapshotTree.value = sparseSnapshotTree.value.updateChild(path, data);
+  } else {
+    const childKey = pathGetFront(path);
+    if (!sparseSnapshotTree.children.has(childKey)) {
+      sparseSnapshotTree.children.set(childKey, newSparseSnapshotTree());
+    }
+    const child2 = sparseSnapshotTree.children.get(childKey);
+    path = pathPopFront(path);
+    sparseSnapshotTreeRemember(child2, path, data);
+  }
+}
+function sparseSnapshotTreeForEachTree(sparseSnapshotTree, prefixPath, func) {
+  if (sparseSnapshotTree.value !== null) {
+    func(prefixPath, sparseSnapshotTree.value);
+  } else {
+    sparseSnapshotTreeForEachChild(sparseSnapshotTree, (key2, tree) => {
+      const path = new Path(prefixPath.toString() + "/" + key2);
+      sparseSnapshotTreeForEachTree(tree, path, func);
+    });
+  }
+}
+function sparseSnapshotTreeForEachChild(sparseSnapshotTree, func) {
+  sparseSnapshotTree.children.forEach((tree, key2) => {
+    func(key2, tree);
+  });
+}
+class StatsListener {
+  constructor(collection_) {
+    this.collection_ = collection_;
+    this.last_ = null;
+  }
+  get() {
+    const newStats = this.collection_.get();
+    const delta = { ...newStats };
+    if (this.last_) {
+      each(this.last_, (stat, value) => {
+        delta[stat] = delta[stat] - value;
+      });
+    }
+    this.last_ = newStats;
+    return delta;
+  }
+}
+const FIRST_STATS_MIN_TIME = 10 * 1e3;
+const FIRST_STATS_MAX_TIME = 30 * 1e3;
+const REPORT_STATS_INTERVAL = 5 * 60 * 1e3;
+class StatsReporter {
+  constructor(collection, server_) {
+    this.server_ = server_;
+    this.statsToReport_ = {};
+    this.statsListener_ = new StatsListener(collection);
+    const timeout = FIRST_STATS_MIN_TIME + (FIRST_STATS_MAX_TIME - FIRST_STATS_MIN_TIME) * Math.random();
+    setTimeoutNonBlocking(this.reportStats_.bind(this), Math.floor(timeout));
+  }
+  reportStats_() {
+    const stats = this.statsListener_.get();
+    const reportedStats = {};
+    let haveStatsToReport = false;
+    each(stats, (stat, value) => {
+      if (value > 0 && contains(this.statsToReport_, stat)) {
+        reportedStats[stat] = value;
+        haveStatsToReport = true;
+      }
+    });
+    if (haveStatsToReport) {
+      this.server_.reportStats(reportedStats);
+    }
+    setTimeoutNonBlocking(this.reportStats_.bind(this), Math.floor(Math.random() * 2 * REPORT_STATS_INTERVAL));
+  }
+}
+var OperationType;
+(function(OperationType2) {
+  OperationType2[OperationType2["OVERWRITE"] = 0] = "OVERWRITE";
+  OperationType2[OperationType2["MERGE"] = 1] = "MERGE";
+  OperationType2[OperationType2["ACK_USER_WRITE"] = 2] = "ACK_USER_WRITE";
+  OperationType2[OperationType2["LISTEN_COMPLETE"] = 3] = "LISTEN_COMPLETE";
+})(OperationType || (OperationType = {}));
+function newOperationSourceUser() {
+  return {
+    fromUser: true,
+    fromServer: false,
+    queryId: null,
+    tagged: false
+  };
+}
+function newOperationSourceServer() {
+  return {
+    fromUser: false,
+    fromServer: true,
+    queryId: null,
+    tagged: false
+  };
+}
+function newOperationSourceServerTaggedQuery(queryId) {
+  return {
+    fromUser: false,
+    fromServer: true,
+    queryId,
+    tagged: true
+  };
+}
+class AckUserWrite {
+  /**
+   * @param affectedTree - A tree containing true for each affected path. Affected paths can't overlap.
+   */
+  constructor(path, affectedTree, revert) {
+    this.path = path;
+    this.affectedTree = affectedTree;
+    this.revert = revert;
+    this.type = OperationType.ACK_USER_WRITE;
+    this.source = newOperationSourceUser();
+  }
+  operationForChild(childName) {
+    if (!pathIsEmpty(this.path)) {
+      assert(pathGetFront(this.path) === childName, "operationForChild called for unrelated child.");
+      return new AckUserWrite(pathPopFront(this.path), this.affectedTree, this.revert);
+    } else if (this.affectedTree.value != null) {
+      assert(this.affectedTree.children.isEmpty(), "affectedTree should not have overlapping affected paths.");
+      return this;
+    } else {
+      const childTree = this.affectedTree.subtree(new Path(childName));
+      return new AckUserWrite(newEmptyPath(), childTree, this.revert);
+    }
+  }
+}
+class ListenComplete {
+  constructor(source, path) {
+    this.source = source;
+    this.path = path;
+    this.type = OperationType.LISTEN_COMPLETE;
+  }
+  operationForChild(childName) {
+    if (pathIsEmpty(this.path)) {
+      return new ListenComplete(this.source, newEmptyPath());
+    } else {
+      return new ListenComplete(this.source, pathPopFront(this.path));
+    }
+  }
+}
+class Overwrite {
+  constructor(source, path, snap) {
+    this.source = source;
+    this.path = path;
+    this.snap = snap;
+    this.type = OperationType.OVERWRITE;
+  }
+  operationForChild(childName) {
+    if (pathIsEmpty(this.path)) {
+      return new Overwrite(this.source, newEmptyPath(), this.snap.getImmediateChild(childName));
+    } else {
+      return new Overwrite(this.source, pathPopFront(this.path), this.snap);
+    }
+  }
+}
+class Merge {
+  constructor(source, path, children) {
+    this.source = source;
+    this.path = path;
+    this.children = children;
+    this.type = OperationType.MERGE;
+  }
+  operationForChild(childName) {
+    if (pathIsEmpty(this.path)) {
+      const childTree = this.children.subtree(new Path(childName));
+      if (childTree.isEmpty()) {
+        return null;
+      } else if (childTree.value) {
+        return new Overwrite(this.source, newEmptyPath(), childTree.value);
+      } else {
+        return new Merge(this.source, newEmptyPath(), childTree);
+      }
+    } else {
+      assert(pathGetFront(this.path) === childName, "Can't get a merge for a child not on the path of the operation");
+      return new Merge(this.source, pathPopFront(this.path), this.children);
+    }
+  }
+  toString() {
+    return "Operation(" + this.path + ": " + this.source.toString() + " merge: " + this.children.toString() + ")";
+  }
+}
+class CacheNode {
+  constructor(node_, fullyInitialized_, filtered_) {
+    this.node_ = node_;
+    this.fullyInitialized_ = fullyInitialized_;
+    this.filtered_ = filtered_;
+  }
+  /**
+   * Returns whether this node was fully initialized with either server data or a complete overwrite by the client
+   */
+  isFullyInitialized() {
+    return this.fullyInitialized_;
+  }
+  /**
+   * Returns whether this node is potentially missing children due to a filter applied to the node
+   */
+  isFiltered() {
+    return this.filtered_;
+  }
+  isCompleteForPath(path) {
+    if (pathIsEmpty(path)) {
+      return this.isFullyInitialized() && !this.filtered_;
+    }
+    const childKey = pathGetFront(path);
+    return this.isCompleteForChild(childKey);
+  }
+  isCompleteForChild(key2) {
+    return this.isFullyInitialized() && !this.filtered_ || this.node_.hasChild(key2);
+  }
+  getNode() {
+    return this.node_;
+  }
+}
+class EventGenerator {
+  constructor(query_) {
+    this.query_ = query_;
+    this.index_ = this.query_._queryParams.getIndex();
+  }
+}
+function eventGeneratorGenerateEventsForChanges(eventGenerator, changes, eventCache, eventRegistrations) {
+  const events = [];
+  const moves = [];
+  changes.forEach((change) => {
+    if (change.type === "child_changed" && eventGenerator.index_.indexedValueChanged(change.oldSnap, change.snapshotNode)) {
+      moves.push(changeChildMoved(change.childName, change.snapshotNode));
+    }
+  });
+  eventGeneratorGenerateEventsForType(eventGenerator, events, "child_removed", changes, eventRegistrations, eventCache);
+  eventGeneratorGenerateEventsForType(eventGenerator, events, "child_added", changes, eventRegistrations, eventCache);
+  eventGeneratorGenerateEventsForType(eventGenerator, events, "child_moved", moves, eventRegistrations, eventCache);
+  eventGeneratorGenerateEventsForType(eventGenerator, events, "child_changed", changes, eventRegistrations, eventCache);
+  eventGeneratorGenerateEventsForType(eventGenerator, events, "value", changes, eventRegistrations, eventCache);
+  return events;
+}
+function eventGeneratorGenerateEventsForType(eventGenerator, events, eventType, changes, registrations, eventCache) {
+  const filteredChanges = changes.filter((change) => change.type === eventType);
+  filteredChanges.sort((a, b) => eventGeneratorCompareChanges(eventGenerator, a, b));
+  filteredChanges.forEach((change) => {
+    const materializedChange = eventGeneratorMaterializeSingleChange(eventGenerator, change, eventCache);
+    registrations.forEach((registration) => {
+      if (registration.respondsTo(change.type)) {
+        events.push(registration.createEvent(materializedChange, eventGenerator.query_));
+      }
+    });
+  });
+}
+function eventGeneratorMaterializeSingleChange(eventGenerator, change, eventCache) {
+  if (change.type === "value" || change.type === "child_removed") {
+    return change;
+  } else {
+    change.prevName = eventCache.getPredecessorChildName(change.childName, change.snapshotNode, eventGenerator.index_);
+    return change;
+  }
+}
+function eventGeneratorCompareChanges(eventGenerator, a, b) {
+  if (a.childName == null || b.childName == null) {
+    throw assertionError("Should only compare child_ events.");
+  }
+  const aWrapped = new NamedNode(a.childName, a.snapshotNode);
+  const bWrapped = new NamedNode(b.childName, b.snapshotNode);
+  return eventGenerator.index_.compare(aWrapped, bWrapped);
+}
+function newViewCache(eventCache, serverCache) {
+  return { eventCache, serverCache };
+}
+function viewCacheUpdateEventSnap(viewCache, eventSnap, complete, filtered) {
+  return newViewCache(new CacheNode(eventSnap, complete, filtered), viewCache.serverCache);
+}
+function viewCacheUpdateServerSnap(viewCache, serverSnap, complete, filtered) {
+  return newViewCache(viewCache.eventCache, new CacheNode(serverSnap, complete, filtered));
+}
+function viewCacheGetCompleteEventSnap(viewCache) {
+  return viewCache.eventCache.isFullyInitialized() ? viewCache.eventCache.getNode() : null;
+}
+function viewCacheGetCompleteServerSnap(viewCache) {
+  return viewCache.serverCache.isFullyInitialized() ? viewCache.serverCache.getNode() : null;
+}
+let emptyChildrenSingleton;
+const EmptyChildren = () => {
+  if (!emptyChildrenSingleton) {
+    emptyChildrenSingleton = new SortedMap(stringCompare);
+  }
+  return emptyChildrenSingleton;
+};
+class ImmutableTree {
+  static fromObject(obj) {
+    let tree = new ImmutableTree(null);
+    each(obj, (childPath, childSnap) => {
+      tree = tree.set(new Path(childPath), childSnap);
+    });
+    return tree;
+  }
+  constructor(value, children = EmptyChildren()) {
+    this.value = value;
+    this.children = children;
+  }
+  /**
+   * True if the value is empty and there are no children
+   */
+  isEmpty() {
+    return this.value === null && this.children.isEmpty();
+  }
+  /**
+   * Given a path and predicate, return the first node and the path to that node
+   * where the predicate returns true.
+   *
+   * TODO Do a perf test -- If we're creating a bunch of `{path: value:}`
+   * objects on the way back out, it may be better to pass down a pathSoFar obj.
+   *
+   * @param relativePath - The remainder of the path
+   * @param predicate - The predicate to satisfy to return a node
+   */
+  findRootMostMatchingPathAndValue(relativePath, predicate) {
+    if (this.value != null && predicate(this.value)) {
+      return { path: newEmptyPath(), value: this.value };
+    } else {
+      if (pathIsEmpty(relativePath)) {
+        return null;
+      } else {
+        const front = pathGetFront(relativePath);
+        const child2 = this.children.get(front);
+        if (child2 !== null) {
+          const childExistingPathAndValue = child2.findRootMostMatchingPathAndValue(pathPopFront(relativePath), predicate);
+          if (childExistingPathAndValue != null) {
+            const fullPath = pathChild(new Path(front), childExistingPathAndValue.path);
+            return { path: fullPath, value: childExistingPathAndValue.value };
+          } else {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      }
+    }
+  }
+  /**
+   * Find, if it exists, the shortest subpath of the given path that points a defined
+   * value in the tree
+   */
+  findRootMostValueAndPath(relativePath) {
+    return this.findRootMostMatchingPathAndValue(relativePath, () => true);
+  }
+  /**
+   * @returns The subtree at the given path
+   */
+  subtree(relativePath) {
+    if (pathIsEmpty(relativePath)) {
+      return this;
+    } else {
+      const front = pathGetFront(relativePath);
+      const childTree = this.children.get(front);
+      if (childTree !== null) {
+        return childTree.subtree(pathPopFront(relativePath));
+      } else {
+        return new ImmutableTree(null);
+      }
+    }
+  }
+  /**
+   * Sets a value at the specified path.
+   *
+   * @param relativePath - Path to set value at.
+   * @param toSet - Value to set.
+   * @returns Resulting tree.
+   */
+  set(relativePath, toSet) {
+    if (pathIsEmpty(relativePath)) {
+      return new ImmutableTree(toSet, this.children);
+    } else {
+      const front = pathGetFront(relativePath);
+      const child2 = this.children.get(front) || new ImmutableTree(null);
+      const newChild = child2.set(pathPopFront(relativePath), toSet);
+      const newChildren = this.children.insert(front, newChild);
+      return new ImmutableTree(this.value, newChildren);
+    }
+  }
+  /**
+   * Removes the value at the specified path.
+   *
+   * @param relativePath - Path to value to remove.
+   * @returns Resulting tree.
+   */
+  remove(relativePath) {
+    if (pathIsEmpty(relativePath)) {
+      if (this.children.isEmpty()) {
+        return new ImmutableTree(null);
+      } else {
+        return new ImmutableTree(null, this.children);
+      }
+    } else {
+      const front = pathGetFront(relativePath);
+      const child2 = this.children.get(front);
+      if (child2) {
+        const newChild = child2.remove(pathPopFront(relativePath));
+        let newChildren;
+        if (newChild.isEmpty()) {
+          newChildren = this.children.remove(front);
+        } else {
+          newChildren = this.children.insert(front, newChild);
+        }
+        if (this.value === null && newChildren.isEmpty()) {
+          return new ImmutableTree(null);
+        } else {
+          return new ImmutableTree(this.value, newChildren);
+        }
+      } else {
+        return this;
+      }
+    }
+  }
+  /**
+   * Gets a value from the tree.
+   *
+   * @param relativePath - Path to get value for.
+   * @returns Value at path, or null.
+   */
+  get(relativePath) {
+    if (pathIsEmpty(relativePath)) {
+      return this.value;
+    } else {
+      const front = pathGetFront(relativePath);
+      const child2 = this.children.get(front);
+      if (child2) {
+        return child2.get(pathPopFront(relativePath));
+      } else {
+        return null;
+      }
+    }
+  }
+  /**
+   * Replace the subtree at the specified path with the given new tree.
+   *
+   * @param relativePath - Path to replace subtree for.
+   * @param newTree - New tree.
+   * @returns Resulting tree.
+   */
+  setTree(relativePath, newTree) {
+    if (pathIsEmpty(relativePath)) {
+      return newTree;
+    } else {
+      const front = pathGetFront(relativePath);
+      const child2 = this.children.get(front) || new ImmutableTree(null);
+      const newChild = child2.setTree(pathPopFront(relativePath), newTree);
+      let newChildren;
+      if (newChild.isEmpty()) {
+        newChildren = this.children.remove(front);
+      } else {
+        newChildren = this.children.insert(front, newChild);
+      }
+      return new ImmutableTree(this.value, newChildren);
+    }
+  }
+  /**
+   * Performs a depth first fold on this tree. Transforms a tree into a single
+   * value, given a function that operates on the path to a node, an optional
+   * current value, and a map of child names to folded subtrees
+   */
+  fold(fn) {
+    return this.fold_(newEmptyPath(), fn);
+  }
+  /**
+   * Recursive helper for public-facing fold() method
+   */
+  fold_(pathSoFar, fn) {
+    const accum = {};
+    this.children.inorderTraversal((childKey, childTree) => {
+      accum[childKey] = childTree.fold_(pathChild(pathSoFar, childKey), fn);
+    });
+    return fn(pathSoFar, this.value, accum);
+  }
+  /**
+   * Find the first matching value on the given path. Return the result of applying f to it.
+   */
+  findOnPath(path, f2) {
+    return this.findOnPath_(path, newEmptyPath(), f2);
+  }
+  findOnPath_(pathToFollow, pathSoFar, f2) {
+    const result = this.value ? f2(pathSoFar, this.value) : false;
+    if (result) {
+      return result;
+    } else {
+      if (pathIsEmpty(pathToFollow)) {
+        return null;
+      } else {
+        const front = pathGetFront(pathToFollow);
+        const nextChild = this.children.get(front);
+        if (nextChild) {
+          return nextChild.findOnPath_(pathPopFront(pathToFollow), pathChild(pathSoFar, front), f2);
+        } else {
+          return null;
+        }
+      }
+    }
+  }
+  foreachOnPath(path, f2) {
+    return this.foreachOnPath_(path, newEmptyPath(), f2);
+  }
+  foreachOnPath_(pathToFollow, currentRelativePath, f2) {
+    if (pathIsEmpty(pathToFollow)) {
+      return this;
+    } else {
+      if (this.value) {
+        f2(currentRelativePath, this.value);
+      }
+      const front = pathGetFront(pathToFollow);
+      const nextChild = this.children.get(front);
+      if (nextChild) {
+        return nextChild.foreachOnPath_(pathPopFront(pathToFollow), pathChild(currentRelativePath, front), f2);
+      } else {
+        return new ImmutableTree(null);
+      }
+    }
+  }
+  /**
+   * Calls the given function for each node in the tree that has a value.
+   *
+   * @param f - A function to be called with the path from the root of the tree to
+   * a node, and the value at that node. Called in depth-first order.
+   */
+  foreach(f2) {
+    this.foreach_(newEmptyPath(), f2);
+  }
+  foreach_(currentRelativePath, f2) {
+    this.children.inorderTraversal((childName, childTree) => {
+      childTree.foreach_(pathChild(currentRelativePath, childName), f2);
+    });
+    if (this.value) {
+      f2(currentRelativePath, this.value);
+    }
+  }
+  foreachChild(f2) {
+    this.children.inorderTraversal((childName, childTree) => {
+      if (childTree.value) {
+        f2(childName, childTree.value);
+      }
+    });
+  }
+}
+class CompoundWrite {
+  constructor(writeTree_) {
+    this.writeTree_ = writeTree_;
+  }
+  static empty() {
+    return new CompoundWrite(new ImmutableTree(null));
+  }
+}
+function compoundWriteAddWrite(compoundWrite, path, node) {
+  if (pathIsEmpty(path)) {
+    return new CompoundWrite(new ImmutableTree(node));
+  } else {
+    const rootmost = compoundWrite.writeTree_.findRootMostValueAndPath(path);
+    if (rootmost != null) {
+      const rootMostPath = rootmost.path;
+      let value = rootmost.value;
+      const relativePath = newRelativePath(rootMostPath, path);
+      value = value.updateChild(relativePath, node);
+      return new CompoundWrite(compoundWrite.writeTree_.set(rootMostPath, value));
+    } else {
+      const subtree = new ImmutableTree(node);
+      const newWriteTree2 = compoundWrite.writeTree_.setTree(path, subtree);
+      return new CompoundWrite(newWriteTree2);
+    }
+  }
+}
+function compoundWriteAddWrites(compoundWrite, path, updates) {
+  let newWrite = compoundWrite;
+  each(updates, (childKey, node) => {
+    newWrite = compoundWriteAddWrite(newWrite, pathChild(path, childKey), node);
+  });
+  return newWrite;
+}
+function compoundWriteRemoveWrite(compoundWrite, path) {
+  if (pathIsEmpty(path)) {
+    return CompoundWrite.empty();
+  } else {
+    const newWriteTree2 = compoundWrite.writeTree_.setTree(path, new ImmutableTree(null));
+    return new CompoundWrite(newWriteTree2);
+  }
+}
+function compoundWriteHasCompleteWrite(compoundWrite, path) {
+  return compoundWriteGetCompleteNode(compoundWrite, path) != null;
+}
+function compoundWriteGetCompleteNode(compoundWrite, path) {
+  const rootmost = compoundWrite.writeTree_.findRootMostValueAndPath(path);
+  if (rootmost != null) {
+    return compoundWrite.writeTree_.get(rootmost.path).getChild(newRelativePath(rootmost.path, path));
+  } else {
+    return null;
+  }
+}
+function compoundWriteGetCompleteChildren(compoundWrite) {
+  const children = [];
+  const node = compoundWrite.writeTree_.value;
+  if (node != null) {
+    if (!node.isLeafNode()) {
+      node.forEachChild(PRIORITY_INDEX, (childName, childNode) => {
+        children.push(new NamedNode(childName, childNode));
+      });
+    }
+  } else {
+    compoundWrite.writeTree_.children.inorderTraversal((childName, childTree) => {
+      if (childTree.value != null) {
+        children.push(new NamedNode(childName, childTree.value));
+      }
+    });
+  }
+  return children;
+}
+function compoundWriteChildCompoundWrite(compoundWrite, path) {
+  if (pathIsEmpty(path)) {
+    return compoundWrite;
+  } else {
+    const shadowingNode = compoundWriteGetCompleteNode(compoundWrite, path);
+    if (shadowingNode != null) {
+      return new CompoundWrite(new ImmutableTree(shadowingNode));
+    } else {
+      return new CompoundWrite(compoundWrite.writeTree_.subtree(path));
+    }
+  }
+}
+function compoundWriteIsEmpty(compoundWrite) {
+  return compoundWrite.writeTree_.isEmpty();
+}
+function compoundWriteApply(compoundWrite, node) {
+  return applySubtreeWrite(newEmptyPath(), compoundWrite.writeTree_, node);
+}
+function applySubtreeWrite(relativePath, writeTree, node) {
+  if (writeTree.value != null) {
+    return node.updateChild(relativePath, writeTree.value);
+  } else {
+    let priorityWrite = null;
+    writeTree.children.inorderTraversal((childKey, childTree) => {
+      if (childKey === ".priority") {
+        assert(childTree.value !== null, "Priority writes must always be leaf nodes");
+        priorityWrite = childTree.value;
+      } else {
+        node = applySubtreeWrite(pathChild(relativePath, childKey), childTree, node);
+      }
+    });
+    if (!node.getChild(relativePath).isEmpty() && priorityWrite !== null) {
+      node = node.updateChild(pathChild(relativePath, ".priority"), priorityWrite);
+    }
+    return node;
+  }
+}
+function writeTreeChildWrites(writeTree, path) {
+  return newWriteTreeRef(path, writeTree);
+}
+function writeTreeAddOverwrite(writeTree, path, snap, writeId, visible) {
+  assert(writeId > writeTree.lastWriteId, "Stacking an older write on top of newer ones");
+  if (visible === void 0) {
+    visible = true;
+  }
+  writeTree.allWrites.push({
+    path,
+    snap,
+    writeId,
+    visible
+  });
+  if (visible) {
+    writeTree.visibleWrites = compoundWriteAddWrite(writeTree.visibleWrites, path, snap);
+  }
+  writeTree.lastWriteId = writeId;
+}
+function writeTreeGetWrite(writeTree, writeId) {
+  for (let i = 0; i < writeTree.allWrites.length; i++) {
+    const record2 = writeTree.allWrites[i];
+    if (record2.writeId === writeId) {
+      return record2;
+    }
+  }
+  return null;
+}
+function writeTreeRemoveWrite(writeTree, writeId) {
+  const idx = writeTree.allWrites.findIndex((s) => {
+    return s.writeId === writeId;
+  });
+  assert(idx >= 0, "removeWrite called with nonexistent writeId.");
+  const writeToRemove = writeTree.allWrites[idx];
+  writeTree.allWrites.splice(idx, 1);
+  let removedWriteWasVisible = writeToRemove.visible;
+  let removedWriteOverlapsWithOtherWrites = false;
+  let i = writeTree.allWrites.length - 1;
+  while (removedWriteWasVisible && i >= 0) {
+    const currentWrite = writeTree.allWrites[i];
+    if (currentWrite.visible) {
+      if (i >= idx && writeTreeRecordContainsPath_(currentWrite, writeToRemove.path)) {
+        removedWriteWasVisible = false;
+      } else if (pathContains(writeToRemove.path, currentWrite.path)) {
+        removedWriteOverlapsWithOtherWrites = true;
+      }
+    }
+    i--;
+  }
+  if (!removedWriteWasVisible) {
+    return false;
+  } else if (removedWriteOverlapsWithOtherWrites) {
+    writeTreeResetTree_(writeTree);
+    return true;
+  } else {
+    if (writeToRemove.snap) {
+      writeTree.visibleWrites = compoundWriteRemoveWrite(writeTree.visibleWrites, writeToRemove.path);
+    } else {
+      const children = writeToRemove.children;
+      each(children, (childName) => {
+        writeTree.visibleWrites = compoundWriteRemoveWrite(writeTree.visibleWrites, pathChild(writeToRemove.path, childName));
+      });
+    }
+    return true;
+  }
+}
+function writeTreeRecordContainsPath_(writeRecord, path) {
+  if (writeRecord.snap) {
+    return pathContains(writeRecord.path, path);
+  } else {
+    for (const childName in writeRecord.children) {
+      if (writeRecord.children.hasOwnProperty(childName) && pathContains(pathChild(writeRecord.path, childName), path)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+function writeTreeResetTree_(writeTree) {
+  writeTree.visibleWrites = writeTreeLayerTree_(writeTree.allWrites, writeTreeDefaultFilter_, newEmptyPath());
+  if (writeTree.allWrites.length > 0) {
+    writeTree.lastWriteId = writeTree.allWrites[writeTree.allWrites.length - 1].writeId;
+  } else {
+    writeTree.lastWriteId = -1;
+  }
+}
+function writeTreeDefaultFilter_(write) {
+  return write.visible;
+}
+function writeTreeLayerTree_(writes, filter, treeRoot) {
+  let compoundWrite = CompoundWrite.empty();
+  for (let i = 0; i < writes.length; ++i) {
+    const write = writes[i];
+    if (filter(write)) {
+      const writePath = write.path;
+      let relativePath;
+      if (write.snap) {
+        if (pathContains(treeRoot, writePath)) {
+          relativePath = newRelativePath(treeRoot, writePath);
+          compoundWrite = compoundWriteAddWrite(compoundWrite, relativePath, write.snap);
+        } else if (pathContains(writePath, treeRoot)) {
+          relativePath = newRelativePath(writePath, treeRoot);
+          compoundWrite = compoundWriteAddWrite(compoundWrite, newEmptyPath(), write.snap.getChild(relativePath));
+        } else ;
+      } else if (write.children) {
+        if (pathContains(treeRoot, writePath)) {
+          relativePath = newRelativePath(treeRoot, writePath);
+          compoundWrite = compoundWriteAddWrites(compoundWrite, relativePath, write.children);
+        } else if (pathContains(writePath, treeRoot)) {
+          relativePath = newRelativePath(writePath, treeRoot);
+          if (pathIsEmpty(relativePath)) {
+            compoundWrite = compoundWriteAddWrites(compoundWrite, newEmptyPath(), write.children);
+          } else {
+            const child2 = safeGet(write.children, pathGetFront(relativePath));
+            if (child2) {
+              const deepNode = child2.getChild(pathPopFront(relativePath));
+              compoundWrite = compoundWriteAddWrite(compoundWrite, newEmptyPath(), deepNode);
+            }
+          }
+        } else ;
+      } else {
+        throw assertionError("WriteRecord should have .snap or .children");
+      }
+    }
+  }
+  return compoundWrite;
+}
+function writeTreeCalcCompleteEventCache(writeTree, treePath, completeServerCache, writeIdsToExclude, includeHiddenWrites) {
+  if (!writeIdsToExclude && !includeHiddenWrites) {
+    const shadowingNode = compoundWriteGetCompleteNode(writeTree.visibleWrites, treePath);
+    if (shadowingNode != null) {
+      return shadowingNode;
+    } else {
+      const subMerge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, treePath);
+      if (compoundWriteIsEmpty(subMerge)) {
+        return completeServerCache;
+      } else if (completeServerCache == null && !compoundWriteHasCompleteWrite(subMerge, newEmptyPath())) {
+        return null;
+      } else {
+        const layeredCache = completeServerCache || ChildrenNode.EMPTY_NODE;
+        return compoundWriteApply(subMerge, layeredCache);
+      }
+    }
+  } else {
+    const merge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, treePath);
+    if (!includeHiddenWrites && compoundWriteIsEmpty(merge)) {
+      return completeServerCache;
+    } else {
+      if (!includeHiddenWrites && completeServerCache == null && !compoundWriteHasCompleteWrite(merge, newEmptyPath())) {
+        return null;
+      } else {
+        const filter = function(write) {
+          return (write.visible || includeHiddenWrites) && (!writeIdsToExclude || !~writeIdsToExclude.indexOf(write.writeId)) && (pathContains(write.path, treePath) || pathContains(treePath, write.path));
+        };
+        const mergeAtPath = writeTreeLayerTree_(writeTree.allWrites, filter, treePath);
+        const layeredCache = completeServerCache || ChildrenNode.EMPTY_NODE;
+        return compoundWriteApply(mergeAtPath, layeredCache);
+      }
+    }
+  }
+}
+function writeTreeCalcCompleteEventChildren(writeTree, treePath, completeServerChildren) {
+  let completeChildren = ChildrenNode.EMPTY_NODE;
+  const topLevelSet = compoundWriteGetCompleteNode(writeTree.visibleWrites, treePath);
+  if (topLevelSet) {
+    if (!topLevelSet.isLeafNode()) {
+      topLevelSet.forEachChild(PRIORITY_INDEX, (childName, childSnap) => {
+        completeChildren = completeChildren.updateImmediateChild(childName, childSnap);
+      });
+    }
+    return completeChildren;
+  } else if (completeServerChildren) {
+    const merge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, treePath);
+    completeServerChildren.forEachChild(PRIORITY_INDEX, (childName, childNode) => {
+      const node = compoundWriteApply(compoundWriteChildCompoundWrite(merge, new Path(childName)), childNode);
+      completeChildren = completeChildren.updateImmediateChild(childName, node);
+    });
+    compoundWriteGetCompleteChildren(merge).forEach((namedNode) => {
+      completeChildren = completeChildren.updateImmediateChild(namedNode.name, namedNode.node);
+    });
+    return completeChildren;
+  } else {
+    const merge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, treePath);
+    compoundWriteGetCompleteChildren(merge).forEach((namedNode) => {
+      completeChildren = completeChildren.updateImmediateChild(namedNode.name, namedNode.node);
+    });
+    return completeChildren;
+  }
+}
+function writeTreeCalcEventCacheAfterServerOverwrite(writeTree, treePath, childPath, existingEventSnap, existingServerSnap) {
+  assert(existingEventSnap || existingServerSnap, "Either existingEventSnap or existingServerSnap must exist");
+  const path = pathChild(treePath, childPath);
+  if (compoundWriteHasCompleteWrite(writeTree.visibleWrites, path)) {
+    return null;
+  } else {
+    const childMerge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, path);
+    if (compoundWriteIsEmpty(childMerge)) {
+      return existingServerSnap.getChild(childPath);
+    } else {
+      return compoundWriteApply(childMerge, existingServerSnap.getChild(childPath));
+    }
+  }
+}
+function writeTreeCalcCompleteChild(writeTree, treePath, childKey, existingServerSnap) {
+  const path = pathChild(treePath, childKey);
+  const shadowingNode = compoundWriteGetCompleteNode(writeTree.visibleWrites, path);
+  if (shadowingNode != null) {
+    return shadowingNode;
+  } else {
+    if (existingServerSnap.isCompleteForChild(childKey)) {
+      const childMerge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, path);
+      return compoundWriteApply(childMerge, existingServerSnap.getNode().getImmediateChild(childKey));
+    } else {
+      return null;
+    }
+  }
+}
+function writeTreeShadowingWrite(writeTree, path) {
+  return compoundWriteGetCompleteNode(writeTree.visibleWrites, path);
+}
+function writeTreeCalcIndexedSlice(writeTree, treePath, completeServerData, startPost, count, reverse, index2) {
+  let toIterate;
+  const merge = compoundWriteChildCompoundWrite(writeTree.visibleWrites, treePath);
+  const shadowingNode = compoundWriteGetCompleteNode(merge, newEmptyPath());
+  if (shadowingNode != null) {
+    toIterate = shadowingNode;
+  } else if (completeServerData != null) {
+    toIterate = compoundWriteApply(merge, completeServerData);
+  } else {
+    return [];
+  }
+  toIterate = toIterate.withIndex(index2);
+  if (!toIterate.isEmpty() && !toIterate.isLeafNode()) {
+    const nodes = [];
+    const cmp = index2.getCompare();
+    const iter = reverse ? toIterate.getReverseIteratorFrom(startPost, index2) : toIterate.getIteratorFrom(startPost, index2);
+    let next = iter.getNext();
+    while (next && nodes.length < count) {
+      if (cmp(next, startPost) !== 0) {
+        nodes.push(next);
+      }
+      next = iter.getNext();
+    }
+    return nodes;
+  } else {
+    return [];
+  }
+}
+function newWriteTree() {
+  return {
+    visibleWrites: CompoundWrite.empty(),
+    allWrites: [],
+    lastWriteId: -1
+  };
+}
+function writeTreeRefCalcCompleteEventCache(writeTreeRef, completeServerCache, writeIdsToExclude, includeHiddenWrites) {
+  return writeTreeCalcCompleteEventCache(writeTreeRef.writeTree, writeTreeRef.treePath, completeServerCache, writeIdsToExclude, includeHiddenWrites);
+}
+function writeTreeRefCalcCompleteEventChildren(writeTreeRef, completeServerChildren) {
+  return writeTreeCalcCompleteEventChildren(writeTreeRef.writeTree, writeTreeRef.treePath, completeServerChildren);
+}
+function writeTreeRefCalcEventCacheAfterServerOverwrite(writeTreeRef, path, existingEventSnap, existingServerSnap) {
+  return writeTreeCalcEventCacheAfterServerOverwrite(writeTreeRef.writeTree, writeTreeRef.treePath, path, existingEventSnap, existingServerSnap);
+}
+function writeTreeRefShadowingWrite(writeTreeRef, path) {
+  return writeTreeShadowingWrite(writeTreeRef.writeTree, pathChild(writeTreeRef.treePath, path));
+}
+function writeTreeRefCalcIndexedSlice(writeTreeRef, completeServerData, startPost, count, reverse, index2) {
+  return writeTreeCalcIndexedSlice(writeTreeRef.writeTree, writeTreeRef.treePath, completeServerData, startPost, count, reverse, index2);
+}
+function writeTreeRefCalcCompleteChild(writeTreeRef, childKey, existingServerCache) {
+  return writeTreeCalcCompleteChild(writeTreeRef.writeTree, writeTreeRef.treePath, childKey, existingServerCache);
+}
+function writeTreeRefChild(writeTreeRef, childName) {
+  return newWriteTreeRef(pathChild(writeTreeRef.treePath, childName), writeTreeRef.writeTree);
+}
+function newWriteTreeRef(path, writeTree) {
+  return {
+    treePath: path,
+    writeTree
+  };
+}
+class ChildChangeAccumulator {
+  constructor() {
+    this.changeMap = /* @__PURE__ */ new Map();
+  }
+  trackChildChange(change) {
+    const type2 = change.type;
+    const childKey = change.childName;
+    assert(type2 === "child_added" || type2 === "child_changed" || type2 === "child_removed", "Only child changes supported for tracking");
+    assert(childKey !== ".priority", "Only non-priority child changes can be tracked.");
+    const oldChange = this.changeMap.get(childKey);
+    if (oldChange) {
+      const oldType = oldChange.type;
+      if (type2 === "child_added" && oldType === "child_removed") {
+        this.changeMap.set(childKey, changeChildChanged(childKey, change.snapshotNode, oldChange.snapshotNode));
+      } else if (type2 === "child_removed" && oldType === "child_added") {
+        this.changeMap.delete(childKey);
+      } else if (type2 === "child_removed" && oldType === "child_changed") {
+        this.changeMap.set(childKey, changeChildRemoved(childKey, oldChange.oldSnap));
+      } else if (type2 === "child_changed" && oldType === "child_added") {
+        this.changeMap.set(childKey, changeChildAdded(childKey, change.snapshotNode));
+      } else if (type2 === "child_changed" && oldType === "child_changed") {
+        this.changeMap.set(childKey, changeChildChanged(childKey, change.snapshotNode, oldChange.oldSnap));
+      } else {
+        throw assertionError("Illegal combination of changes: " + change + " occurred after " + oldChange);
+      }
+    } else {
+      this.changeMap.set(childKey, change);
+    }
+  }
+  getChanges() {
+    return Array.from(this.changeMap.values());
+  }
+}
+class NoCompleteChildSource_ {
+  getCompleteChild(childKey) {
+    return null;
+  }
+  getChildAfterChild(index2, child2, reverse) {
+    return null;
+  }
+}
+const NO_COMPLETE_CHILD_SOURCE = new NoCompleteChildSource_();
+class WriteTreeCompleteChildSource {
+  constructor(writes_, viewCache_, optCompleteServerCache_ = null) {
+    this.writes_ = writes_;
+    this.viewCache_ = viewCache_;
+    this.optCompleteServerCache_ = optCompleteServerCache_;
+  }
+  getCompleteChild(childKey) {
+    const node = this.viewCache_.eventCache;
+    if (node.isCompleteForChild(childKey)) {
+      return node.getNode().getImmediateChild(childKey);
+    } else {
+      const serverNode = this.optCompleteServerCache_ != null ? new CacheNode(this.optCompleteServerCache_, true, false) : this.viewCache_.serverCache;
+      return writeTreeRefCalcCompleteChild(this.writes_, childKey, serverNode);
+    }
+  }
+  getChildAfterChild(index2, child2, reverse) {
+    const completeServerData = this.optCompleteServerCache_ != null ? this.optCompleteServerCache_ : viewCacheGetCompleteServerSnap(this.viewCache_);
+    const nodes = writeTreeRefCalcIndexedSlice(this.writes_, completeServerData, child2, 1, reverse, index2);
+    if (nodes.length === 0) {
+      return null;
+    } else {
+      return nodes[0];
+    }
+  }
+}
+function newViewProcessor(filter) {
+  return { filter };
+}
+function viewProcessorAssertIndexed(viewProcessor, viewCache) {
+  assert(viewCache.eventCache.getNode().isIndexed(viewProcessor.filter.getIndex()), "Event snap not indexed");
+  assert(viewCache.serverCache.getNode().isIndexed(viewProcessor.filter.getIndex()), "Server snap not indexed");
+}
+function viewProcessorApplyOperation(viewProcessor, oldViewCache, operation, writesCache, completeCache) {
+  const accumulator = new ChildChangeAccumulator();
+  let newViewCache2, filterServerNode;
+  if (operation.type === OperationType.OVERWRITE) {
+    const overwrite = operation;
+    if (overwrite.source.fromUser) {
+      newViewCache2 = viewProcessorApplyUserOverwrite(viewProcessor, oldViewCache, overwrite.path, overwrite.snap, writesCache, completeCache, accumulator);
+    } else {
+      assert(overwrite.source.fromServer, "Unknown source.");
+      filterServerNode = overwrite.source.tagged || oldViewCache.serverCache.isFiltered() && !pathIsEmpty(overwrite.path);
+      newViewCache2 = viewProcessorApplyServerOverwrite(viewProcessor, oldViewCache, overwrite.path, overwrite.snap, writesCache, completeCache, filterServerNode, accumulator);
+    }
+  } else if (operation.type === OperationType.MERGE) {
+    const merge = operation;
+    if (merge.source.fromUser) {
+      newViewCache2 = viewProcessorApplyUserMerge(viewProcessor, oldViewCache, merge.path, merge.children, writesCache, completeCache, accumulator);
+    } else {
+      assert(merge.source.fromServer, "Unknown source.");
+      filterServerNode = merge.source.tagged || oldViewCache.serverCache.isFiltered();
+      newViewCache2 = viewProcessorApplyServerMerge(viewProcessor, oldViewCache, merge.path, merge.children, writesCache, completeCache, filterServerNode, accumulator);
+    }
+  } else if (operation.type === OperationType.ACK_USER_WRITE) {
+    const ackUserWrite = operation;
+    if (!ackUserWrite.revert) {
+      newViewCache2 = viewProcessorAckUserWrite(viewProcessor, oldViewCache, ackUserWrite.path, ackUserWrite.affectedTree, writesCache, completeCache, accumulator);
+    } else {
+      newViewCache2 = viewProcessorRevertUserWrite(viewProcessor, oldViewCache, ackUserWrite.path, writesCache, completeCache, accumulator);
+    }
+  } else if (operation.type === OperationType.LISTEN_COMPLETE) {
+    newViewCache2 = viewProcessorListenComplete(viewProcessor, oldViewCache, operation.path, writesCache, accumulator);
+  } else {
+    throw assertionError("Unknown operation type: " + operation.type);
+  }
+  const changes = accumulator.getChanges();
+  viewProcessorMaybeAddValueEvent(oldViewCache, newViewCache2, changes);
+  return { viewCache: newViewCache2, changes };
+}
+function viewProcessorMaybeAddValueEvent(oldViewCache, newViewCache2, accumulator) {
+  const eventSnap = newViewCache2.eventCache;
+  if (eventSnap.isFullyInitialized()) {
+    const isLeafOrEmpty = eventSnap.getNode().isLeafNode() || eventSnap.getNode().isEmpty();
+    const oldCompleteSnap = viewCacheGetCompleteEventSnap(oldViewCache);
+    if (accumulator.length > 0 || !oldViewCache.eventCache.isFullyInitialized() || isLeafOrEmpty && !eventSnap.getNode().equals(oldCompleteSnap) || !eventSnap.getNode().getPriority().equals(oldCompleteSnap.getPriority())) {
+      accumulator.push(changeValue(viewCacheGetCompleteEventSnap(newViewCache2)));
+    }
+  }
+}
+function viewProcessorGenerateEventCacheAfterServerEvent(viewProcessor, viewCache, changePath, writesCache, source, accumulator) {
+  const oldEventSnap = viewCache.eventCache;
+  if (writeTreeRefShadowingWrite(writesCache, changePath) != null) {
+    return viewCache;
+  } else {
+    let newEventCache, serverNode;
+    if (pathIsEmpty(changePath)) {
+      assert(viewCache.serverCache.isFullyInitialized(), "If change path is empty, we must have complete server data");
+      if (viewCache.serverCache.isFiltered()) {
+        const serverCache = viewCacheGetCompleteServerSnap(viewCache);
+        const completeChildren = serverCache instanceof ChildrenNode ? serverCache : ChildrenNode.EMPTY_NODE;
+        const completeEventChildren = writeTreeRefCalcCompleteEventChildren(writesCache, completeChildren);
+        newEventCache = viewProcessor.filter.updateFullNode(viewCache.eventCache.getNode(), completeEventChildren, accumulator);
+      } else {
+        const completeNode = writeTreeRefCalcCompleteEventCache(writesCache, viewCacheGetCompleteServerSnap(viewCache));
+        newEventCache = viewProcessor.filter.updateFullNode(viewCache.eventCache.getNode(), completeNode, accumulator);
+      }
+    } else {
+      const childKey = pathGetFront(changePath);
+      if (childKey === ".priority") {
+        assert(pathGetLength(changePath) === 1, "Can't have a priority with additional path components");
+        const oldEventNode = oldEventSnap.getNode();
+        serverNode = viewCache.serverCache.getNode();
+        const updatedPriority = writeTreeRefCalcEventCacheAfterServerOverwrite(writesCache, changePath, oldEventNode, serverNode);
+        if (updatedPriority != null) {
+          newEventCache = viewProcessor.filter.updatePriority(oldEventNode, updatedPriority);
+        } else {
+          newEventCache = oldEventSnap.getNode();
+        }
+      } else {
+        const childChangePath = pathPopFront(changePath);
+        let newEventChild;
+        if (oldEventSnap.isCompleteForChild(childKey)) {
+          serverNode = viewCache.serverCache.getNode();
+          const eventChildUpdate = writeTreeRefCalcEventCacheAfterServerOverwrite(writesCache, changePath, oldEventSnap.getNode(), serverNode);
+          if (eventChildUpdate != null) {
+            newEventChild = oldEventSnap.getNode().getImmediateChild(childKey).updateChild(childChangePath, eventChildUpdate);
+          } else {
+            newEventChild = oldEventSnap.getNode().getImmediateChild(childKey);
+          }
+        } else {
+          newEventChild = writeTreeRefCalcCompleteChild(writesCache, childKey, viewCache.serverCache);
+        }
+        if (newEventChild != null) {
+          newEventCache = viewProcessor.filter.updateChild(oldEventSnap.getNode(), childKey, newEventChild, childChangePath, source, accumulator);
+        } else {
+          newEventCache = oldEventSnap.getNode();
+        }
+      }
+    }
+    return viewCacheUpdateEventSnap(viewCache, newEventCache, oldEventSnap.isFullyInitialized() || pathIsEmpty(changePath), viewProcessor.filter.filtersNodes());
+  }
+}
+function viewProcessorApplyServerOverwrite(viewProcessor, oldViewCache, changePath, changedSnap, writesCache, completeCache, filterServerNode, accumulator) {
+  const oldServerSnap = oldViewCache.serverCache;
+  let newServerCache;
+  const serverFilter = filterServerNode ? viewProcessor.filter : viewProcessor.filter.getIndexedFilter();
+  if (pathIsEmpty(changePath)) {
+    newServerCache = serverFilter.updateFullNode(oldServerSnap.getNode(), changedSnap, null);
+  } else if (serverFilter.filtersNodes() && !oldServerSnap.isFiltered()) {
+    const newServerNode = oldServerSnap.getNode().updateChild(changePath, changedSnap);
+    newServerCache = serverFilter.updateFullNode(oldServerSnap.getNode(), newServerNode, null);
+  } else {
+    const childKey = pathGetFront(changePath);
+    if (!oldServerSnap.isCompleteForPath(changePath) && pathGetLength(changePath) > 1) {
+      return oldViewCache;
+    }
+    const childChangePath = pathPopFront(changePath);
+    const childNode = oldServerSnap.getNode().getImmediateChild(childKey);
+    const newChildNode = childNode.updateChild(childChangePath, changedSnap);
+    if (childKey === ".priority") {
+      newServerCache = serverFilter.updatePriority(oldServerSnap.getNode(), newChildNode);
+    } else {
+      newServerCache = serverFilter.updateChild(oldServerSnap.getNode(), childKey, newChildNode, childChangePath, NO_COMPLETE_CHILD_SOURCE, null);
+    }
+  }
+  const newViewCache2 = viewCacheUpdateServerSnap(oldViewCache, newServerCache, oldServerSnap.isFullyInitialized() || pathIsEmpty(changePath), serverFilter.filtersNodes());
+  const source = new WriteTreeCompleteChildSource(writesCache, newViewCache2, completeCache);
+  return viewProcessorGenerateEventCacheAfterServerEvent(viewProcessor, newViewCache2, changePath, writesCache, source, accumulator);
+}
+function viewProcessorApplyUserOverwrite(viewProcessor, oldViewCache, changePath, changedSnap, writesCache, completeCache, accumulator) {
+  const oldEventSnap = oldViewCache.eventCache;
+  let newViewCache2, newEventCache;
+  const source = new WriteTreeCompleteChildSource(writesCache, oldViewCache, completeCache);
+  if (pathIsEmpty(changePath)) {
+    newEventCache = viewProcessor.filter.updateFullNode(oldViewCache.eventCache.getNode(), changedSnap, accumulator);
+    newViewCache2 = viewCacheUpdateEventSnap(oldViewCache, newEventCache, true, viewProcessor.filter.filtersNodes());
+  } else {
+    const childKey = pathGetFront(changePath);
+    if (childKey === ".priority") {
+      newEventCache = viewProcessor.filter.updatePriority(oldViewCache.eventCache.getNode(), changedSnap);
+      newViewCache2 = viewCacheUpdateEventSnap(oldViewCache, newEventCache, oldEventSnap.isFullyInitialized(), oldEventSnap.isFiltered());
+    } else {
+      const childChangePath = pathPopFront(changePath);
+      const oldChild = oldEventSnap.getNode().getImmediateChild(childKey);
+      let newChild;
+      if (pathIsEmpty(childChangePath)) {
+        newChild = changedSnap;
+      } else {
+        const childNode = source.getCompleteChild(childKey);
+        if (childNode != null) {
+          if (pathGetBack(childChangePath) === ".priority" && childNode.getChild(pathParent(childChangePath)).isEmpty()) {
+            newChild = childNode;
+          } else {
+            newChild = childNode.updateChild(childChangePath, changedSnap);
+          }
+        } else {
+          newChild = ChildrenNode.EMPTY_NODE;
+        }
+      }
+      if (!oldChild.equals(newChild)) {
+        const newEventSnap = viewProcessor.filter.updateChild(oldEventSnap.getNode(), childKey, newChild, childChangePath, source, accumulator);
+        newViewCache2 = viewCacheUpdateEventSnap(oldViewCache, newEventSnap, oldEventSnap.isFullyInitialized(), viewProcessor.filter.filtersNodes());
+      } else {
+        newViewCache2 = oldViewCache;
+      }
+    }
+  }
+  return newViewCache2;
+}
+function viewProcessorCacheHasChild(viewCache, childKey) {
+  return viewCache.eventCache.isCompleteForChild(childKey);
+}
+function viewProcessorApplyUserMerge(viewProcessor, viewCache, path, changedChildren, writesCache, serverCache, accumulator) {
+  let curViewCache = viewCache;
+  changedChildren.foreach((relativePath, childNode) => {
+    const writePath = pathChild(path, relativePath);
+    if (viewProcessorCacheHasChild(viewCache, pathGetFront(writePath))) {
+      curViewCache = viewProcessorApplyUserOverwrite(viewProcessor, curViewCache, writePath, childNode, writesCache, serverCache, accumulator);
+    }
+  });
+  changedChildren.foreach((relativePath, childNode) => {
+    const writePath = pathChild(path, relativePath);
+    if (!viewProcessorCacheHasChild(viewCache, pathGetFront(writePath))) {
+      curViewCache = viewProcessorApplyUserOverwrite(viewProcessor, curViewCache, writePath, childNode, writesCache, serverCache, accumulator);
+    }
+  });
+  return curViewCache;
+}
+function viewProcessorApplyMerge(viewProcessor, node, merge) {
+  merge.foreach((relativePath, childNode) => {
+    node = node.updateChild(relativePath, childNode);
+  });
+  return node;
+}
+function viewProcessorApplyServerMerge(viewProcessor, viewCache, path, changedChildren, writesCache, serverCache, filterServerNode, accumulator) {
+  if (viewCache.serverCache.getNode().isEmpty() && !viewCache.serverCache.isFullyInitialized()) {
+    return viewCache;
+  }
+  let curViewCache = viewCache;
+  let viewMergeTree;
+  if (pathIsEmpty(path)) {
+    viewMergeTree = changedChildren;
+  } else {
+    viewMergeTree = new ImmutableTree(null).setTree(path, changedChildren);
+  }
+  const serverNode = viewCache.serverCache.getNode();
+  viewMergeTree.children.inorderTraversal((childKey, childTree) => {
+    if (serverNode.hasChild(childKey)) {
+      const serverChild = viewCache.serverCache.getNode().getImmediateChild(childKey);
+      const newChild = viewProcessorApplyMerge(viewProcessor, serverChild, childTree);
+      curViewCache = viewProcessorApplyServerOverwrite(viewProcessor, curViewCache, new Path(childKey), newChild, writesCache, serverCache, filterServerNode, accumulator);
+    }
+  });
+  viewMergeTree.children.inorderTraversal((childKey, childMergeTree) => {
+    const isUnknownDeepMerge = !viewCache.serverCache.isCompleteForChild(childKey) && childMergeTree.value === null;
+    if (!serverNode.hasChild(childKey) && !isUnknownDeepMerge) {
+      const serverChild = viewCache.serverCache.getNode().getImmediateChild(childKey);
+      const newChild = viewProcessorApplyMerge(viewProcessor, serverChild, childMergeTree);
+      curViewCache = viewProcessorApplyServerOverwrite(viewProcessor, curViewCache, new Path(childKey), newChild, writesCache, serverCache, filterServerNode, accumulator);
+    }
+  });
+  return curViewCache;
+}
+function viewProcessorAckUserWrite(viewProcessor, viewCache, ackPath, affectedTree, writesCache, completeCache, accumulator) {
+  if (writeTreeRefShadowingWrite(writesCache, ackPath) != null) {
+    return viewCache;
+  }
+  const filterServerNode = viewCache.serverCache.isFiltered();
+  const serverCache = viewCache.serverCache;
+  if (affectedTree.value != null) {
+    if (pathIsEmpty(ackPath) && serverCache.isFullyInitialized() || serverCache.isCompleteForPath(ackPath)) {
+      return viewProcessorApplyServerOverwrite(viewProcessor, viewCache, ackPath, serverCache.getNode().getChild(ackPath), writesCache, completeCache, filterServerNode, accumulator);
+    } else if (pathIsEmpty(ackPath)) {
+      let changedChildren = new ImmutableTree(null);
+      serverCache.getNode().forEachChild(KEY_INDEX, (name2, node) => {
+        changedChildren = changedChildren.set(new Path(name2), node);
+      });
+      return viewProcessorApplyServerMerge(viewProcessor, viewCache, ackPath, changedChildren, writesCache, completeCache, filterServerNode, accumulator);
+    } else {
+      return viewCache;
+    }
+  } else {
+    let changedChildren = new ImmutableTree(null);
+    affectedTree.foreach((mergePath, value) => {
+      const serverCachePath = pathChild(ackPath, mergePath);
+      if (serverCache.isCompleteForPath(serverCachePath)) {
+        changedChildren = changedChildren.set(mergePath, serverCache.getNode().getChild(serverCachePath));
+      }
+    });
+    return viewProcessorApplyServerMerge(viewProcessor, viewCache, ackPath, changedChildren, writesCache, completeCache, filterServerNode, accumulator);
+  }
+}
+function viewProcessorListenComplete(viewProcessor, viewCache, path, writesCache, accumulator) {
+  const oldServerNode = viewCache.serverCache;
+  const newViewCache2 = viewCacheUpdateServerSnap(viewCache, oldServerNode.getNode(), oldServerNode.isFullyInitialized() || pathIsEmpty(path), oldServerNode.isFiltered());
+  return viewProcessorGenerateEventCacheAfterServerEvent(viewProcessor, newViewCache2, path, writesCache, NO_COMPLETE_CHILD_SOURCE, accumulator);
+}
+function viewProcessorRevertUserWrite(viewProcessor, viewCache, path, writesCache, completeServerCache, accumulator) {
+  let complete;
+  if (writeTreeRefShadowingWrite(writesCache, path) != null) {
+    return viewCache;
+  } else {
+    const source = new WriteTreeCompleteChildSource(writesCache, viewCache, completeServerCache);
+    const oldEventCache = viewCache.eventCache.getNode();
+    let newEventCache;
+    if (pathIsEmpty(path) || pathGetFront(path) === ".priority") {
+      let newNode;
+      if (viewCache.serverCache.isFullyInitialized()) {
+        newNode = writeTreeRefCalcCompleteEventCache(writesCache, viewCacheGetCompleteServerSnap(viewCache));
+      } else {
+        const serverChildren = viewCache.serverCache.getNode();
+        assert(serverChildren instanceof ChildrenNode, "serverChildren would be complete if leaf node");
+        newNode = writeTreeRefCalcCompleteEventChildren(writesCache, serverChildren);
+      }
+      newNode = newNode;
+      newEventCache = viewProcessor.filter.updateFullNode(oldEventCache, newNode, accumulator);
+    } else {
+      const childKey = pathGetFront(path);
+      let newChild = writeTreeRefCalcCompleteChild(writesCache, childKey, viewCache.serverCache);
+      if (newChild == null && viewCache.serverCache.isCompleteForChild(childKey)) {
+        newChild = oldEventCache.getImmediateChild(childKey);
+      }
+      if (newChild != null) {
+        newEventCache = viewProcessor.filter.updateChild(oldEventCache, childKey, newChild, pathPopFront(path), source, accumulator);
+      } else if (viewCache.eventCache.getNode().hasChild(childKey)) {
+        newEventCache = viewProcessor.filter.updateChild(oldEventCache, childKey, ChildrenNode.EMPTY_NODE, pathPopFront(path), source, accumulator);
+      } else {
+        newEventCache = oldEventCache;
+      }
+      if (newEventCache.isEmpty() && viewCache.serverCache.isFullyInitialized()) {
+        complete = writeTreeRefCalcCompleteEventCache(writesCache, viewCacheGetCompleteServerSnap(viewCache));
+        if (complete.isLeafNode()) {
+          newEventCache = viewProcessor.filter.updateFullNode(newEventCache, complete, accumulator);
+        }
+      }
+    }
+    complete = viewCache.serverCache.isFullyInitialized() || writeTreeRefShadowingWrite(writesCache, newEmptyPath()) != null;
+    return viewCacheUpdateEventSnap(viewCache, newEventCache, complete, viewProcessor.filter.filtersNodes());
+  }
+}
+class View {
+  constructor(query_, initialViewCache) {
+    this.query_ = query_;
+    this.eventRegistrations_ = [];
+    const params = this.query_._queryParams;
+    const indexFilter = new IndexedFilter(params.getIndex());
+    const filter = queryParamsGetNodeFilter(params);
+    this.processor_ = newViewProcessor(filter);
+    const initialServerCache = initialViewCache.serverCache;
+    const initialEventCache = initialViewCache.eventCache;
+    const serverSnap = indexFilter.updateFullNode(ChildrenNode.EMPTY_NODE, initialServerCache.getNode(), null);
+    const eventSnap = filter.updateFullNode(ChildrenNode.EMPTY_NODE, initialEventCache.getNode(), null);
+    const newServerCache = new CacheNode(serverSnap, initialServerCache.isFullyInitialized(), indexFilter.filtersNodes());
+    const newEventCache = new CacheNode(eventSnap, initialEventCache.isFullyInitialized(), filter.filtersNodes());
+    this.viewCache_ = newViewCache(newEventCache, newServerCache);
+    this.eventGenerator_ = new EventGenerator(this.query_);
+  }
+  get query() {
+    return this.query_;
+  }
+}
+function viewGetServerCache(view) {
+  return view.viewCache_.serverCache.getNode();
+}
+function viewGetCompleteServerCache(view, path) {
+  const cache2 = viewCacheGetCompleteServerSnap(view.viewCache_);
+  if (cache2) {
+    if (view.query._queryParams.loadsAllData() || !pathIsEmpty(path) && !cache2.getImmediateChild(pathGetFront(path)).isEmpty()) {
+      return cache2.getChild(path);
+    }
+  }
+  return null;
+}
+function viewIsEmpty(view) {
+  return view.eventRegistrations_.length === 0;
+}
+function viewAddEventRegistration(view, eventRegistration) {
+  view.eventRegistrations_.push(eventRegistration);
+}
+function viewRemoveEventRegistration(view, eventRegistration, cancelError) {
+  const cancelEvents = [];
+  if (cancelError) {
+    assert(eventRegistration == null, "A cancel should cancel all event registrations.");
+    const path = view.query._path;
+    view.eventRegistrations_.forEach((registration) => {
+      const maybeEvent = registration.createCancelEvent(cancelError, path);
+      if (maybeEvent) {
+        cancelEvents.push(maybeEvent);
+      }
+    });
+  }
+  if (eventRegistration) {
+    let remaining = [];
+    for (let i = 0; i < view.eventRegistrations_.length; ++i) {
+      const existing = view.eventRegistrations_[i];
+      if (!existing.matches(eventRegistration)) {
+        remaining.push(existing);
+      } else if (eventRegistration.hasAnyCallback()) {
+        remaining = remaining.concat(view.eventRegistrations_.slice(i + 1));
+        break;
+      }
+    }
+    view.eventRegistrations_ = remaining;
+  } else {
+    view.eventRegistrations_ = [];
+  }
+  return cancelEvents;
+}
+function viewApplyOperation(view, operation, writesCache, completeServerCache) {
+  if (operation.type === OperationType.MERGE && operation.source.queryId !== null) {
+    assert(viewCacheGetCompleteServerSnap(view.viewCache_), "We should always have a full cache before handling merges");
+    assert(viewCacheGetCompleteEventSnap(view.viewCache_), "Missing event cache, even though we have a server cache");
+  }
+  const oldViewCache = view.viewCache_;
+  const result = viewProcessorApplyOperation(view.processor_, oldViewCache, operation, writesCache, completeServerCache);
+  viewProcessorAssertIndexed(view.processor_, result.viewCache);
+  assert(result.viewCache.serverCache.isFullyInitialized() || !oldViewCache.serverCache.isFullyInitialized(), "Once a server snap is complete, it should never go back");
+  view.viewCache_ = result.viewCache;
+  return viewGenerateEventsForChanges_(view, result.changes, result.viewCache.eventCache.getNode(), null);
+}
+function viewGetInitialEvents(view, registration) {
+  const eventSnap = view.viewCache_.eventCache;
+  const initialChanges = [];
+  if (!eventSnap.getNode().isLeafNode()) {
+    const eventNode = eventSnap.getNode();
+    eventNode.forEachChild(PRIORITY_INDEX, (key2, childNode) => {
+      initialChanges.push(changeChildAdded(key2, childNode));
+    });
+  }
+  if (eventSnap.isFullyInitialized()) {
+    initialChanges.push(changeValue(eventSnap.getNode()));
+  }
+  return viewGenerateEventsForChanges_(view, initialChanges, eventSnap.getNode(), registration);
+}
+function viewGenerateEventsForChanges_(view, changes, eventCache, eventRegistration) {
+  const registrations = eventRegistration ? [eventRegistration] : view.eventRegistrations_;
+  return eventGeneratorGenerateEventsForChanges(view.eventGenerator_, changes, eventCache, registrations);
+}
+let referenceConstructor$1;
+class SyncPoint {
+  constructor() {
+    this.views = /* @__PURE__ */ new Map();
+  }
+}
+function syncPointSetReferenceConstructor(val) {
+  assert(!referenceConstructor$1, "__referenceConstructor has already been defined");
+  referenceConstructor$1 = val;
+}
+function syncPointGetReferenceConstructor() {
+  assert(referenceConstructor$1, "Reference.ts has not been loaded");
+  return referenceConstructor$1;
+}
+function syncPointIsEmpty(syncPoint) {
+  return syncPoint.views.size === 0;
+}
+function syncPointApplyOperation(syncPoint, operation, writesCache, optCompleteServerCache) {
+  const queryId = operation.source.queryId;
+  if (queryId !== null) {
+    const view = syncPoint.views.get(queryId);
+    assert(view != null, "SyncTree gave us an op for an invalid query.");
+    return viewApplyOperation(view, operation, writesCache, optCompleteServerCache);
+  } else {
+    let events = [];
+    for (const view of syncPoint.views.values()) {
+      events = events.concat(viewApplyOperation(view, operation, writesCache, optCompleteServerCache));
+    }
+    return events;
+  }
+}
+function syncPointGetView(syncPoint, query2, writesCache, serverCache, serverCacheComplete) {
+  const queryId = query2._queryIdentifier;
+  const view = syncPoint.views.get(queryId);
+  if (!view) {
+    let eventCache = writeTreeRefCalcCompleteEventCache(writesCache, serverCacheComplete ? serverCache : null);
+    let eventCacheComplete = false;
+    if (eventCache) {
+      eventCacheComplete = true;
+    } else if (serverCache instanceof ChildrenNode) {
+      eventCache = writeTreeRefCalcCompleteEventChildren(writesCache, serverCache);
+      eventCacheComplete = false;
+    } else {
+      eventCache = ChildrenNode.EMPTY_NODE;
+      eventCacheComplete = false;
+    }
+    const viewCache = newViewCache(new CacheNode(eventCache, eventCacheComplete, false), new CacheNode(serverCache, serverCacheComplete, false));
+    return new View(query2, viewCache);
+  }
+  return view;
+}
+function syncPointAddEventRegistration(syncPoint, query2, eventRegistration, writesCache, serverCache, serverCacheComplete) {
+  const view = syncPointGetView(syncPoint, query2, writesCache, serverCache, serverCacheComplete);
+  if (!syncPoint.views.has(query2._queryIdentifier)) {
+    syncPoint.views.set(query2._queryIdentifier, view);
+  }
+  viewAddEventRegistration(view, eventRegistration);
+  return viewGetInitialEvents(view, eventRegistration);
+}
+function syncPointRemoveEventRegistration(syncPoint, query2, eventRegistration, cancelError) {
+  const queryId = query2._queryIdentifier;
+  const removed = [];
+  let cancelEvents = [];
+  const hadCompleteView = syncPointHasCompleteView(syncPoint);
+  if (queryId === "default") {
+    for (const [viewQueryId, view] of syncPoint.views.entries()) {
+      cancelEvents = cancelEvents.concat(viewRemoveEventRegistration(view, eventRegistration, cancelError));
+      if (viewIsEmpty(view)) {
+        syncPoint.views.delete(viewQueryId);
+        if (!view.query._queryParams.loadsAllData()) {
+          removed.push(view.query);
+        }
+      }
+    }
+  } else {
+    const view = syncPoint.views.get(queryId);
+    if (view) {
+      cancelEvents = cancelEvents.concat(viewRemoveEventRegistration(view, eventRegistration, cancelError));
+      if (viewIsEmpty(view)) {
+        syncPoint.views.delete(queryId);
+        if (!view.query._queryParams.loadsAllData()) {
+          removed.push(view.query);
+        }
+      }
+    }
+  }
+  if (hadCompleteView && !syncPointHasCompleteView(syncPoint)) {
+    removed.push(new (syncPointGetReferenceConstructor())(query2._repo, query2._path));
+  }
+  return { removed, events: cancelEvents };
+}
+function syncPointGetQueryViews(syncPoint) {
+  const result = [];
+  for (const view of syncPoint.views.values()) {
+    if (!view.query._queryParams.loadsAllData()) {
+      result.push(view);
+    }
+  }
+  return result;
+}
+function syncPointGetCompleteServerCache(syncPoint, path) {
+  let serverCache = null;
+  for (const view of syncPoint.views.values()) {
+    serverCache = serverCache || viewGetCompleteServerCache(view, path);
+  }
+  return serverCache;
+}
+function syncPointViewForQuery(syncPoint, query2) {
+  const params = query2._queryParams;
+  if (params.loadsAllData()) {
+    return syncPointGetCompleteView(syncPoint);
+  } else {
+    const queryId = query2._queryIdentifier;
+    return syncPoint.views.get(queryId);
+  }
+}
+function syncPointViewExistsForQuery(syncPoint, query2) {
+  return syncPointViewForQuery(syncPoint, query2) != null;
+}
+function syncPointHasCompleteView(syncPoint) {
+  return syncPointGetCompleteView(syncPoint) != null;
+}
+function syncPointGetCompleteView(syncPoint) {
+  for (const view of syncPoint.views.values()) {
+    if (view.query._queryParams.loadsAllData()) {
+      return view;
+    }
+  }
+  return null;
+}
+let referenceConstructor;
+function syncTreeSetReferenceConstructor(val) {
+  assert(!referenceConstructor, "__referenceConstructor has already been defined");
+  referenceConstructor = val;
+}
+function syncTreeGetReferenceConstructor() {
+  assert(referenceConstructor, "Reference.ts has not been loaded");
+  return referenceConstructor;
+}
+let syncTreeNextQueryTag_ = 1;
+class SyncTree {
+  /**
+   * @param listenProvider_ - Used by SyncTree to start / stop listening
+   *   to server data.
+   */
+  constructor(listenProvider_) {
+    this.listenProvider_ = listenProvider_;
+    this.syncPointTree_ = new ImmutableTree(null);
+    this.pendingWriteTree_ = newWriteTree();
+    this.tagToQueryMap = /* @__PURE__ */ new Map();
+    this.queryToTagMap = /* @__PURE__ */ new Map();
+  }
+}
+function syncTreeApplyUserOverwrite(syncTree, path, newData, writeId, visible) {
+  writeTreeAddOverwrite(syncTree.pendingWriteTree_, path, newData, writeId, visible);
+  if (!visible) {
+    return [];
+  } else {
+    return syncTreeApplyOperationToSyncPoints_(syncTree, new Overwrite(newOperationSourceUser(), path, newData));
+  }
+}
+function syncTreeAckUserWrite(syncTree, writeId, revert = false) {
+  const write = writeTreeGetWrite(syncTree.pendingWriteTree_, writeId);
+  const needToReevaluate = writeTreeRemoveWrite(syncTree.pendingWriteTree_, writeId);
+  if (!needToReevaluate) {
+    return [];
+  } else {
+    let affectedTree = new ImmutableTree(null);
+    if (write.snap != null) {
+      affectedTree = affectedTree.set(newEmptyPath(), true);
+    } else {
+      each(write.children, (pathString) => {
+        affectedTree = affectedTree.set(new Path(pathString), true);
+      });
+    }
+    return syncTreeApplyOperationToSyncPoints_(syncTree, new AckUserWrite(write.path, affectedTree, revert));
+  }
+}
+function syncTreeApplyServerOverwrite(syncTree, path, newData) {
+  return syncTreeApplyOperationToSyncPoints_(syncTree, new Overwrite(newOperationSourceServer(), path, newData));
+}
+function syncTreeApplyServerMerge(syncTree, path, changedChildren) {
+  const changeTree = ImmutableTree.fromObject(changedChildren);
+  return syncTreeApplyOperationToSyncPoints_(syncTree, new Merge(newOperationSourceServer(), path, changeTree));
+}
+function syncTreeApplyListenComplete(syncTree, path) {
+  return syncTreeApplyOperationToSyncPoints_(syncTree, new ListenComplete(newOperationSourceServer(), path));
+}
+function syncTreeApplyTaggedListenComplete(syncTree, path, tag) {
+  const queryKey = syncTreeQueryKeyForTag_(syncTree, tag);
+  if (queryKey) {
+    const r = syncTreeParseQueryKey_(queryKey);
+    const queryPath = r.path, queryId = r.queryId;
+    const relativePath = newRelativePath(queryPath, path);
+    const op = new ListenComplete(newOperationSourceServerTaggedQuery(queryId), relativePath);
+    return syncTreeApplyTaggedOperation_(syncTree, queryPath, op);
+  } else {
+    return [];
+  }
+}
+function syncTreeRemoveEventRegistration(syncTree, query2, eventRegistration, cancelError, skipListenerDedup = false) {
+  const path = query2._path;
+  const maybeSyncPoint = syncTree.syncPointTree_.get(path);
+  let cancelEvents = [];
+  if (maybeSyncPoint && (query2._queryIdentifier === "default" || syncPointViewExistsForQuery(maybeSyncPoint, query2))) {
+    const removedAndEvents = syncPointRemoveEventRegistration(maybeSyncPoint, query2, eventRegistration, cancelError);
+    if (syncPointIsEmpty(maybeSyncPoint)) {
+      syncTree.syncPointTree_ = syncTree.syncPointTree_.remove(path);
+    }
+    const removed = removedAndEvents.removed;
+    cancelEvents = removedAndEvents.events;
+    if (!skipListenerDedup) {
+      const removingDefault = -1 !== removed.findIndex((query3) => {
+        return query3._queryParams.loadsAllData();
+      });
+      const covered = syncTree.syncPointTree_.findOnPath(path, (relativePath, parentSyncPoint) => syncPointHasCompleteView(parentSyncPoint));
+      if (removingDefault && !covered) {
+        const subtree = syncTree.syncPointTree_.subtree(path);
+        if (!subtree.isEmpty()) {
+          const newViews = syncTreeCollectDistinctViewsForSubTree_(subtree);
+          for (let i = 0; i < newViews.length; ++i) {
+            const view = newViews[i], newQuery = view.query;
+            const listener = syncTreeCreateListenerForView_(syncTree, view);
+            syncTree.listenProvider_.startListening(syncTreeQueryForListening_(newQuery), syncTreeTagForQuery(syncTree, newQuery), listener.hashFn, listener.onComplete);
+          }
+        }
+      }
+      if (!covered && removed.length > 0 && !cancelError) {
+        if (removingDefault) {
+          const defaultTag = null;
+          syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(query2), defaultTag);
+        } else {
+          removed.forEach((queryToRemove) => {
+            const tagToRemove = syncTree.queryToTagMap.get(syncTreeMakeQueryKey_(queryToRemove));
+            syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(queryToRemove), tagToRemove);
+          });
+        }
+      }
+    }
+    syncTreeRemoveTags_(syncTree, removed);
+  }
+  return cancelEvents;
+}
+function syncTreeApplyTaggedQueryOverwrite(syncTree, path, snap, tag) {
+  const queryKey = syncTreeQueryKeyForTag_(syncTree, tag);
+  if (queryKey != null) {
+    const r = syncTreeParseQueryKey_(queryKey);
+    const queryPath = r.path, queryId = r.queryId;
+    const relativePath = newRelativePath(queryPath, path);
+    const op = new Overwrite(newOperationSourceServerTaggedQuery(queryId), relativePath, snap);
+    return syncTreeApplyTaggedOperation_(syncTree, queryPath, op);
+  } else {
+    return [];
+  }
+}
+function syncTreeApplyTaggedQueryMerge(syncTree, path, changedChildren, tag) {
+  const queryKey = syncTreeQueryKeyForTag_(syncTree, tag);
+  if (queryKey) {
+    const r = syncTreeParseQueryKey_(queryKey);
+    const queryPath = r.path, queryId = r.queryId;
+    const relativePath = newRelativePath(queryPath, path);
+    const changeTree = ImmutableTree.fromObject(changedChildren);
+    const op = new Merge(newOperationSourceServerTaggedQuery(queryId), relativePath, changeTree);
+    return syncTreeApplyTaggedOperation_(syncTree, queryPath, op);
+  } else {
+    return [];
+  }
+}
+function syncTreeAddEventRegistration(syncTree, query2, eventRegistration, skipSetupListener = false) {
+  const path = query2._path;
+  let serverCache = null;
+  let foundAncestorDefaultView = false;
+  syncTree.syncPointTree_.foreachOnPath(path, (pathToSyncPoint, sp) => {
+    const relativePath = newRelativePath(pathToSyncPoint, path);
+    serverCache = serverCache || syncPointGetCompleteServerCache(sp, relativePath);
+    foundAncestorDefaultView = foundAncestorDefaultView || syncPointHasCompleteView(sp);
+  });
+  let syncPoint = syncTree.syncPointTree_.get(path);
+  if (!syncPoint) {
+    syncPoint = new SyncPoint();
+    syncTree.syncPointTree_ = syncTree.syncPointTree_.set(path, syncPoint);
+  } else {
+    foundAncestorDefaultView = foundAncestorDefaultView || syncPointHasCompleteView(syncPoint);
+    serverCache = serverCache || syncPointGetCompleteServerCache(syncPoint, newEmptyPath());
+  }
+  let serverCacheComplete;
+  if (serverCache != null) {
+    serverCacheComplete = true;
+  } else {
+    serverCacheComplete = false;
+    serverCache = ChildrenNode.EMPTY_NODE;
+    const subtree = syncTree.syncPointTree_.subtree(path);
+    subtree.foreachChild((childName, childSyncPoint) => {
+      const completeCache = syncPointGetCompleteServerCache(childSyncPoint, newEmptyPath());
+      if (completeCache) {
+        serverCache = serverCache.updateImmediateChild(childName, completeCache);
+      }
+    });
+  }
+  const viewAlreadyExists = syncPointViewExistsForQuery(syncPoint, query2);
+  if (!viewAlreadyExists && !query2._queryParams.loadsAllData()) {
+    const queryKey = syncTreeMakeQueryKey_(query2);
+    assert(!syncTree.queryToTagMap.has(queryKey), "View does not exist, but we have a tag");
+    const tag = syncTreeGetNextQueryTag_();
+    syncTree.queryToTagMap.set(queryKey, tag);
+    syncTree.tagToQueryMap.set(tag, queryKey);
+  }
+  const writesCache = writeTreeChildWrites(syncTree.pendingWriteTree_, path);
+  let events = syncPointAddEventRegistration(syncPoint, query2, eventRegistration, writesCache, serverCache, serverCacheComplete);
+  if (!viewAlreadyExists && !foundAncestorDefaultView && !skipSetupListener) {
+    const view = syncPointViewForQuery(syncPoint, query2);
+    events = events.concat(syncTreeSetupListener_(syncTree, query2, view));
+  }
+  return events;
+}
+function syncTreeCalcCompleteEventCache(syncTree, path, writeIdsToExclude) {
+  const includeHiddenSets = true;
+  const writeTree = syncTree.pendingWriteTree_;
+  const serverCache = syncTree.syncPointTree_.findOnPath(path, (pathSoFar, syncPoint) => {
+    const relativePath = newRelativePath(pathSoFar, path);
+    const serverCache2 = syncPointGetCompleteServerCache(syncPoint, relativePath);
+    if (serverCache2) {
+      return serverCache2;
+    }
+  });
+  return writeTreeCalcCompleteEventCache(writeTree, path, serverCache, writeIdsToExclude, includeHiddenSets);
+}
+function syncTreeApplyOperationToSyncPoints_(syncTree, operation) {
+  return syncTreeApplyOperationHelper_(
+    operation,
+    syncTree.syncPointTree_,
+    /*serverCache=*/
+    null,
+    writeTreeChildWrites(syncTree.pendingWriteTree_, newEmptyPath())
+  );
+}
+function syncTreeApplyOperationHelper_(operation, syncPointTree, serverCache, writesCache) {
+  if (pathIsEmpty(operation.path)) {
+    return syncTreeApplyOperationDescendantsHelper_(operation, syncPointTree, serverCache, writesCache);
+  } else {
+    const syncPoint = syncPointTree.get(newEmptyPath());
+    if (serverCache == null && syncPoint != null) {
+      serverCache = syncPointGetCompleteServerCache(syncPoint, newEmptyPath());
+    }
+    let events = [];
+    const childName = pathGetFront(operation.path);
+    const childOperation = operation.operationForChild(childName);
+    const childTree = syncPointTree.children.get(childName);
+    if (childTree && childOperation) {
+      const childServerCache = serverCache ? serverCache.getImmediateChild(childName) : null;
+      const childWritesCache = writeTreeRefChild(writesCache, childName);
+      events = events.concat(syncTreeApplyOperationHelper_(childOperation, childTree, childServerCache, childWritesCache));
+    }
+    if (syncPoint) {
+      events = events.concat(syncPointApplyOperation(syncPoint, operation, writesCache, serverCache));
+    }
+    return events;
+  }
+}
+function syncTreeApplyOperationDescendantsHelper_(operation, syncPointTree, serverCache, writesCache) {
+  const syncPoint = syncPointTree.get(newEmptyPath());
+  if (serverCache == null && syncPoint != null) {
+    serverCache = syncPointGetCompleteServerCache(syncPoint, newEmptyPath());
+  }
+  let events = [];
+  syncPointTree.children.inorderTraversal((childName, childTree) => {
+    const childServerCache = serverCache ? serverCache.getImmediateChild(childName) : null;
+    const childWritesCache = writeTreeRefChild(writesCache, childName);
+    const childOperation = operation.operationForChild(childName);
+    if (childOperation) {
+      events = events.concat(syncTreeApplyOperationDescendantsHelper_(childOperation, childTree, childServerCache, childWritesCache));
+    }
+  });
+  if (syncPoint) {
+    events = events.concat(syncPointApplyOperation(syncPoint, operation, writesCache, serverCache));
+  }
+  return events;
+}
+function syncTreeCreateListenerForView_(syncTree, view) {
+  const query2 = view.query;
+  const tag = syncTreeTagForQuery(syncTree, query2);
+  return {
+    hashFn: () => {
+      const cache2 = viewGetServerCache(view) || ChildrenNode.EMPTY_NODE;
+      return cache2.hash();
+    },
+    onComplete: (status) => {
+      if (status === "ok") {
+        if (tag) {
+          return syncTreeApplyTaggedListenComplete(syncTree, query2._path, tag);
+        } else {
+          return syncTreeApplyListenComplete(syncTree, query2._path);
+        }
+      } else {
+        const error2 = errorForServerCode(status, query2);
+        return syncTreeRemoveEventRegistration(
+          syncTree,
+          query2,
+          /*eventRegistration*/
+          null,
+          error2
+        );
+      }
+    }
+  };
+}
+function syncTreeTagForQuery(syncTree, query2) {
+  const queryKey = syncTreeMakeQueryKey_(query2);
+  return syncTree.queryToTagMap.get(queryKey);
+}
+function syncTreeMakeQueryKey_(query2) {
+  return query2._path.toString() + "$" + query2._queryIdentifier;
+}
+function syncTreeQueryKeyForTag_(syncTree, tag) {
+  return syncTree.tagToQueryMap.get(tag);
+}
+function syncTreeParseQueryKey_(queryKey) {
+  const splitIndex = queryKey.indexOf("$");
+  assert(splitIndex !== -1 && splitIndex < queryKey.length - 1, "Bad queryKey.");
+  return {
+    queryId: queryKey.substr(splitIndex + 1),
+    path: new Path(queryKey.substr(0, splitIndex))
+  };
+}
+function syncTreeApplyTaggedOperation_(syncTree, queryPath, operation) {
+  const syncPoint = syncTree.syncPointTree_.get(queryPath);
+  assert(syncPoint, "Missing sync point for query tag that we're tracking");
+  const writesCache = writeTreeChildWrites(syncTree.pendingWriteTree_, queryPath);
+  return syncPointApplyOperation(syncPoint, operation, writesCache, null);
+}
+function syncTreeCollectDistinctViewsForSubTree_(subtree) {
+  return subtree.fold((relativePath, maybeChildSyncPoint, childMap) => {
+    if (maybeChildSyncPoint && syncPointHasCompleteView(maybeChildSyncPoint)) {
+      const completeView = syncPointGetCompleteView(maybeChildSyncPoint);
+      return [completeView];
+    } else {
+      let views = [];
+      if (maybeChildSyncPoint) {
+        views = syncPointGetQueryViews(maybeChildSyncPoint);
+      }
+      each(childMap, (_key, childViews) => {
+        views = views.concat(childViews);
+      });
+      return views;
+    }
+  });
+}
+function syncTreeQueryForListening_(query2) {
+  if (query2._queryParams.loadsAllData() && !query2._queryParams.isDefault()) {
+    return new (syncTreeGetReferenceConstructor())(query2._repo, query2._path);
+  } else {
+    return query2;
+  }
+}
+function syncTreeRemoveTags_(syncTree, queries) {
+  for (let j = 0; j < queries.length; ++j) {
+    const removedQuery = queries[j];
+    if (!removedQuery._queryParams.loadsAllData()) {
+      const removedQueryKey = syncTreeMakeQueryKey_(removedQuery);
+      const removedQueryTag = syncTree.queryToTagMap.get(removedQueryKey);
+      syncTree.queryToTagMap.delete(removedQueryKey);
+      syncTree.tagToQueryMap.delete(removedQueryTag);
+    }
+  }
+}
+function syncTreeGetNextQueryTag_() {
+  return syncTreeNextQueryTag_++;
+}
+function syncTreeSetupListener_(syncTree, query2, view) {
+  const path = query2._path;
+  const tag = syncTreeTagForQuery(syncTree, query2);
+  const listener = syncTreeCreateListenerForView_(syncTree, view);
+  const events = syncTree.listenProvider_.startListening(syncTreeQueryForListening_(query2), tag, listener.hashFn, listener.onComplete);
+  const subtree = syncTree.syncPointTree_.subtree(path);
+  if (tag) {
+    assert(!syncPointHasCompleteView(subtree.value), "If we're adding a query, it shouldn't be shadowed");
+  } else {
+    const queriesToStop = subtree.fold((relativePath, maybeChildSyncPoint, childMap) => {
+      if (!pathIsEmpty(relativePath) && maybeChildSyncPoint && syncPointHasCompleteView(maybeChildSyncPoint)) {
+        return [syncPointGetCompleteView(maybeChildSyncPoint).query];
+      } else {
+        let queries = [];
+        if (maybeChildSyncPoint) {
+          queries = queries.concat(syncPointGetQueryViews(maybeChildSyncPoint).map((view2) => view2.query));
+        }
+        each(childMap, (_key, childQueries) => {
+          queries = queries.concat(childQueries);
+        });
+        return queries;
+      }
+    });
+    for (let i = 0; i < queriesToStop.length; ++i) {
+      const queryToStop = queriesToStop[i];
+      syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(queryToStop), syncTreeTagForQuery(syncTree, queryToStop));
+    }
+  }
+  return events;
+}
+class ExistingValueProvider {
+  constructor(node_) {
+    this.node_ = node_;
+  }
+  getImmediateChild(childName) {
+    const child2 = this.node_.getImmediateChild(childName);
+    return new ExistingValueProvider(child2);
+  }
+  node() {
+    return this.node_;
+  }
+}
+class DeferredValueProvider {
+  constructor(syncTree, path) {
+    this.syncTree_ = syncTree;
+    this.path_ = path;
+  }
+  getImmediateChild(childName) {
+    const childPath = pathChild(this.path_, childName);
+    return new DeferredValueProvider(this.syncTree_, childPath);
+  }
+  node() {
+    return syncTreeCalcCompleteEventCache(this.syncTree_, this.path_);
+  }
+}
+const generateWithValues = function(values) {
+  values = values || {};
+  values["timestamp"] = values["timestamp"] || (/* @__PURE__ */ new Date()).getTime();
+  return values;
+};
+const resolveDeferredLeafValue = function(value, existingVal, serverValues) {
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+  assert(".sv" in value, "Unexpected leaf node or priority contents");
+  if (typeof value[".sv"] === "string") {
+    return resolveScalarDeferredValue(value[".sv"], existingVal, serverValues);
+  } else if (typeof value[".sv"] === "object") {
+    return resolveComplexDeferredValue(value[".sv"], existingVal);
+  } else {
+    assert(false, "Unexpected server value: " + JSON.stringify(value, null, 2));
+  }
+};
+const resolveScalarDeferredValue = function(op, existing, serverValues) {
+  switch (op) {
+    case "timestamp":
+      return serverValues["timestamp"];
+    default:
+      assert(false, "Unexpected server value: " + op);
+  }
+};
+const resolveComplexDeferredValue = function(op, existing, unused) {
+  if (!op.hasOwnProperty("increment")) {
+    assert(false, "Unexpected server value: " + JSON.stringify(op, null, 2));
+  }
+  const delta = op["increment"];
+  if (typeof delta !== "number") {
+    assert(false, "Unexpected increment value: " + delta);
+  }
+  const existingNode = existing.node();
+  assert(existingNode !== null && typeof existingNode !== "undefined", "Expected ChildrenNode.EMPTY_NODE for nulls");
+  if (!existingNode.isLeafNode()) {
+    return delta;
+  }
+  const leaf = existingNode;
+  const existingVal = leaf.getValue();
+  if (typeof existingVal !== "number") {
+    return delta;
+  }
+  return existingVal + delta;
+};
+const resolveDeferredValueTree = function(path, node, syncTree, serverValues) {
+  return resolveDeferredValue(node, new DeferredValueProvider(syncTree, path), serverValues);
+};
+const resolveDeferredValueSnapshot = function(node, existing, serverValues) {
+  return resolveDeferredValue(node, new ExistingValueProvider(existing), serverValues);
+};
+function resolveDeferredValue(node, existingVal, serverValues) {
+  const rawPri = node.getPriority().val();
+  const priority = resolveDeferredLeafValue(rawPri, existingVal.getImmediateChild(".priority"), serverValues);
+  let newNode;
+  if (node.isLeafNode()) {
+    const leafNode = node;
+    const value = resolveDeferredLeafValue(leafNode.getValue(), existingVal, serverValues);
+    if (value !== leafNode.getValue() || priority !== leafNode.getPriority().val()) {
+      return new LeafNode(value, nodeFromJSON(priority));
+    } else {
+      return node;
+    }
+  } else {
+    const childrenNode = node;
+    newNode = childrenNode;
+    if (priority !== childrenNode.getPriority().val()) {
+      newNode = newNode.updatePriority(new LeafNode(priority));
+    }
+    childrenNode.forEachChild(PRIORITY_INDEX, (childName, childNode) => {
+      const newChildNode = resolveDeferredValue(childNode, existingVal.getImmediateChild(childName), serverValues);
+      if (newChildNode !== childNode) {
+        newNode = newNode.updateImmediateChild(childName, newChildNode);
+      }
+    });
+    return newNode;
+  }
+}
+class Tree {
+  /**
+   * @param name - Optional name of the node.
+   * @param parent - Optional parent node.
+   * @param node - Optional node to wrap.
+   */
+  constructor(name2 = "", parent = null, node = { children: {}, childCount: 0 }) {
+    this.name = name2;
+    this.parent = parent;
+    this.node = node;
+  }
+}
+function treeSubTree(tree, pathObj) {
+  let path = pathObj instanceof Path ? pathObj : new Path(pathObj);
+  let child2 = tree, next = pathGetFront(path);
+  while (next !== null) {
+    const childNode = safeGet(child2.node.children, next) || {
+      children: {},
+      childCount: 0
+    };
+    child2 = new Tree(next, child2, childNode);
+    path = pathPopFront(path);
+    next = pathGetFront(path);
+  }
+  return child2;
+}
+function treeGetValue(tree) {
+  return tree.node.value;
+}
+function treeSetValue(tree, value) {
+  tree.node.value = value;
+  treeUpdateParents(tree);
+}
+function treeHasChildren(tree) {
+  return tree.node.childCount > 0;
+}
+function treeIsEmpty(tree) {
+  return treeGetValue(tree) === void 0 && !treeHasChildren(tree);
+}
+function treeForEachChild(tree, action) {
+  each(tree.node.children, (child2, childTree) => {
+    action(new Tree(child2, tree, childTree));
+  });
+}
+function treeForEachDescendant(tree, action, includeSelf, childrenFirst) {
+  if (includeSelf && true) {
+    action(tree);
+  }
+  treeForEachChild(tree, (child2) => {
+    treeForEachDescendant(child2, action, true);
+  });
+}
+function treeForEachAncestor(tree, action, includeSelf) {
+  let node = tree.parent;
+  while (node !== null) {
+    if (action(node)) {
+      return true;
+    }
+    node = node.parent;
+  }
+  return false;
+}
+function treeGetPath(tree) {
+  return new Path(tree.parent === null ? tree.name : treeGetPath(tree.parent) + "/" + tree.name);
+}
+function treeUpdateParents(tree) {
+  if (tree.parent !== null) {
+    treeUpdateChild(tree.parent, tree.name, tree);
+  }
+}
+function treeUpdateChild(tree, childName, child2) {
+  const childEmpty = treeIsEmpty(child2);
+  const childExists = contains(tree.node.children, childName);
+  if (childEmpty && childExists) {
+    delete tree.node.children[childName];
+    tree.node.childCount--;
+    treeUpdateParents(tree);
+  } else if (!childEmpty && !childExists) {
+    tree.node.children[childName] = child2.node;
+    tree.node.childCount++;
+    treeUpdateParents(tree);
+  }
+}
+const INVALID_KEY_REGEX_ = /[\[\].#$\/\u0000-\u001F\u007F]/;
+const INVALID_PATH_REGEX_ = /[\[\].#$\u0000-\u001F\u007F]/;
+const MAX_LEAF_SIZE_ = 10 * 1024 * 1024;
+const isValidKey = function(key2) {
+  return typeof key2 === "string" && key2.length !== 0 && !INVALID_KEY_REGEX_.test(key2);
+};
+const isValidPathString = function(pathString) {
+  return typeof pathString === "string" && pathString.length !== 0 && !INVALID_PATH_REGEX_.test(pathString);
+};
+const isValidRootPathString = function(pathString) {
+  if (pathString) {
+    pathString = pathString.replace(/^\/*\.info(\/|$)/, "/");
+  }
+  return isValidPathString(pathString);
+};
+const validateFirebaseData = function(errorPrefix2, data, path_) {
+  const path = path_ instanceof Path ? new ValidationPath(path_, errorPrefix2) : path_;
+  if (data === void 0) {
+    throw new Error(errorPrefix2 + "contains undefined " + validationPathToErrorString(path));
+  }
+  if (typeof data === "function") {
+    throw new Error(errorPrefix2 + "contains a function " + validationPathToErrorString(path) + " with contents = " + data.toString());
+  }
+  if (isInvalidJSONNumber(data)) {
+    throw new Error(errorPrefix2 + "contains " + data.toString() + " " + validationPathToErrorString(path));
+  }
+  if (typeof data === "string" && data.length > MAX_LEAF_SIZE_ / 3 && stringLength(data) > MAX_LEAF_SIZE_) {
+    throw new Error(errorPrefix2 + "contains a string greater than " + MAX_LEAF_SIZE_ + " utf8 bytes " + validationPathToErrorString(path) + " ('" + data.substring(0, 50) + "...')");
+  }
+  if (data && typeof data === "object") {
+    let hasDotValue = false;
+    let hasActualChild = false;
+    each(data, (key2, value) => {
+      if (key2 === ".value") {
+        hasDotValue = true;
+      } else if (key2 !== ".priority" && key2 !== ".sv") {
+        hasActualChild = true;
+        if (!isValidKey(key2)) {
+          throw new Error(errorPrefix2 + " contains an invalid key (" + key2 + ") " + validationPathToErrorString(path) + `.  Keys must be non-empty strings and can't contain ".", "#", "$", "/", "[", or "]"`);
+        }
+      }
+      validationPathPush(path, key2);
+      validateFirebaseData(errorPrefix2, value, path);
+      validationPathPop(path);
+    });
+    if (hasDotValue && hasActualChild) {
+      throw new Error(errorPrefix2 + ' contains ".value" child ' + validationPathToErrorString(path) + " in addition to actual children.");
+    }
+  }
+};
+const validatePathString = function(fnName, argumentName, pathString, optional2) {
+  if (!isValidPathString(pathString)) {
+    throw new Error(errorPrefix(fnName, argumentName) + 'was an invalid path = "' + pathString + `". Paths must be non-empty strings and can't contain ".", "#", "$", "[", or "]"`);
+  }
+};
+const validateRootPathString = function(fnName, argumentName, pathString, optional2) {
+  if (pathString) {
+    pathString = pathString.replace(/^\/*\.info(\/|$)/, "/");
+  }
+  validatePathString(fnName, argumentName, pathString);
+};
+const validateUrl = function(fnName, parsedUrl) {
+  const pathString = parsedUrl.path.toString();
+  if (!(typeof parsedUrl.repoInfo.host === "string") || parsedUrl.repoInfo.host.length === 0 || !isValidKey(parsedUrl.repoInfo.namespace) && parsedUrl.repoInfo.host.split(":")[0] !== "localhost" || pathString.length !== 0 && !isValidRootPathString(pathString)) {
+    throw new Error(errorPrefix(fnName, "url") + `must be a valid firebase URL and the path can't contain ".", "#", "$", "[", or "]".`);
+  }
+};
+class EventQueue {
+  constructor() {
+    this.eventLists_ = [];
+    this.recursionDepth_ = 0;
+  }
+}
+function eventQueueQueueEvents(eventQueue, eventDataList) {
+  let currList = null;
+  for (let i = 0; i < eventDataList.length; i++) {
+    const data = eventDataList[i];
+    const path = data.getPath();
+    if (currList !== null && !pathEquals(path, currList.path)) {
+      eventQueue.eventLists_.push(currList);
+      currList = null;
+    }
+    if (currList === null) {
+      currList = { events: [], path };
+    }
+    currList.events.push(data);
+  }
+  if (currList) {
+    eventQueue.eventLists_.push(currList);
+  }
+}
+function eventQueueRaiseEventsAtPath(eventQueue, path, eventDataList) {
+  eventQueueQueueEvents(eventQueue, eventDataList);
+  eventQueueRaiseQueuedEventsMatchingPredicate(eventQueue, (eventPath) => pathEquals(eventPath, path));
+}
+function eventQueueRaiseEventsForChangedPath(eventQueue, changedPath, eventDataList) {
+  eventQueueQueueEvents(eventQueue, eventDataList);
+  eventQueueRaiseQueuedEventsMatchingPredicate(eventQueue, (eventPath) => pathContains(eventPath, changedPath) || pathContains(changedPath, eventPath));
+}
+function eventQueueRaiseQueuedEventsMatchingPredicate(eventQueue, predicate) {
+  eventQueue.recursionDepth_++;
+  let sentAll = true;
+  for (let i = 0; i < eventQueue.eventLists_.length; i++) {
+    const eventList = eventQueue.eventLists_[i];
+    if (eventList) {
+      const eventPath = eventList.path;
+      if (predicate(eventPath)) {
+        eventListRaise(eventQueue.eventLists_[i]);
+        eventQueue.eventLists_[i] = null;
+      } else {
+        sentAll = false;
+      }
+    }
+  }
+  if (sentAll) {
+    eventQueue.eventLists_ = [];
+  }
+  eventQueue.recursionDepth_--;
+}
+function eventListRaise(eventList) {
+  for (let i = 0; i < eventList.events.length; i++) {
+    const eventData = eventList.events[i];
+    if (eventData !== null) {
+      eventList.events[i] = null;
+      const eventFn = eventData.getEventRunner();
+      if (logger) {
+        log("event: " + eventData.toString());
+      }
+      exceptionGuard(eventFn);
+    }
+  }
+}
+const INTERRUPT_REASON = "repo_interrupt";
+const MAX_TRANSACTION_RETRIES = 25;
+class Repo {
+  constructor(repoInfo_, forceRestClient_, authTokenProvider_, appCheckProvider_) {
+    this.repoInfo_ = repoInfo_;
+    this.forceRestClient_ = forceRestClient_;
+    this.authTokenProvider_ = authTokenProvider_;
+    this.appCheckProvider_ = appCheckProvider_;
+    this.dataUpdateCount = 0;
+    this.statsListener_ = null;
+    this.eventQueue_ = new EventQueue();
+    this.nextWriteId_ = 1;
+    this.interceptServerDataCallback_ = null;
+    this.onDisconnect_ = newSparseSnapshotTree();
+    this.transactionQueueTree_ = new Tree();
+    this.persistentConnection_ = null;
+    this.key = this.repoInfo_.toURLString();
+  }
+  /**
+   * @returns The URL corresponding to the root of this Firebase.
+   */
+  toString() {
+    return (this.repoInfo_.secure ? "https://" : "http://") + this.repoInfo_.host;
+  }
+}
+function repoStart(repo, appId, authOverride) {
+  repo.stats_ = statsManagerGetCollection(repo.repoInfo_);
+  if (repo.forceRestClient_ || beingCrawled()) {
+    repo.server_ = new ReadonlyRestClient(repo.repoInfo_, (pathString, data, isMerge, tag) => {
+      repoOnDataUpdate(repo, pathString, data, isMerge, tag);
+    }, repo.authTokenProvider_, repo.appCheckProvider_);
+    setTimeout(() => repoOnConnectStatus(
+      repo,
+      /* connectStatus= */
+      true
+    ), 0);
+  } else {
+    if (typeof authOverride !== "undefined" && authOverride !== null) {
+      if (typeof authOverride !== "object") {
+        throw new Error("Only objects are supported for option databaseAuthVariableOverride");
+      }
+      try {
+        stringify(authOverride);
+      } catch (e) {
+        throw new Error("Invalid authOverride provided: " + e);
+      }
+    }
+    repo.persistentConnection_ = new PersistentConnection(repo.repoInfo_, appId, (pathString, data, isMerge, tag) => {
+      repoOnDataUpdate(repo, pathString, data, isMerge, tag);
+    }, (connectStatus) => {
+      repoOnConnectStatus(repo, connectStatus);
+    }, (updates) => {
+      repoOnServerInfoUpdate(repo, updates);
+    }, repo.authTokenProvider_, repo.appCheckProvider_, authOverride);
+    repo.server_ = repo.persistentConnection_;
+  }
+  repo.authTokenProvider_.addTokenChangeListener((token2) => {
+    repo.server_.refreshAuthToken(token2);
+  });
+  repo.appCheckProvider_.addTokenChangeListener((result) => {
+    repo.server_.refreshAppCheckToken(result.token);
+  });
+  repo.statsReporter_ = statsManagerGetOrCreateReporter(repo.repoInfo_, () => new StatsReporter(repo.stats_, repo.server_));
+  repo.infoData_ = new SnapshotHolder();
+  repo.infoSyncTree_ = new SyncTree({
+    startListening: (query2, tag, currentHashFn, onComplete) => {
+      let infoEvents = [];
+      const node = repo.infoData_.getNode(query2._path);
+      if (!node.isEmpty()) {
+        infoEvents = syncTreeApplyServerOverwrite(repo.infoSyncTree_, query2._path, node);
+        setTimeout(() => {
+          onComplete("ok");
+        }, 0);
+      }
+      return infoEvents;
+    },
+    stopListening: () => {
+    }
+  });
+  repoUpdateInfo(repo, "connected", false);
+  repo.serverSyncTree_ = new SyncTree({
+    startListening: (query2, tag, currentHashFn, onComplete) => {
+      repo.server_.listen(query2, currentHashFn, tag, (status, data) => {
+        const events = onComplete(status, data);
+        eventQueueRaiseEventsForChangedPath(repo.eventQueue_, query2._path, events);
+      });
+      return [];
+    },
+    stopListening: (query2, tag) => {
+      repo.server_.unlisten(query2, tag);
+    }
+  });
+}
+function repoServerTime(repo) {
+  const offsetNode = repo.infoData_.getNode(new Path(".info/serverTimeOffset"));
+  const offset2 = offsetNode.val() || 0;
+  return (/* @__PURE__ */ new Date()).getTime() + offset2;
+}
+function repoGenerateServerValues(repo) {
+  return generateWithValues({
+    timestamp: repoServerTime(repo)
+  });
+}
+function repoOnDataUpdate(repo, pathString, data, isMerge, tag) {
+  repo.dataUpdateCount++;
+  const path = new Path(pathString);
+  data = repo.interceptServerDataCallback_ ? repo.interceptServerDataCallback_(pathString, data) : data;
+  let events = [];
+  if (tag) {
+    if (isMerge) {
+      const taggedChildren = map(data, (raw) => nodeFromJSON(raw));
+      events = syncTreeApplyTaggedQueryMerge(repo.serverSyncTree_, path, taggedChildren, tag);
+    } else {
+      const taggedSnap = nodeFromJSON(data);
+      events = syncTreeApplyTaggedQueryOverwrite(repo.serverSyncTree_, path, taggedSnap, tag);
+    }
+  } else if (isMerge) {
+    const changedChildren = map(data, (raw) => nodeFromJSON(raw));
+    events = syncTreeApplyServerMerge(repo.serverSyncTree_, path, changedChildren);
+  } else {
+    const snap = nodeFromJSON(data);
+    events = syncTreeApplyServerOverwrite(repo.serverSyncTree_, path, snap);
+  }
+  let affectedPath = path;
+  if (events.length > 0) {
+    affectedPath = repoRerunTransactions(repo, path);
+  }
+  eventQueueRaiseEventsForChangedPath(repo.eventQueue_, affectedPath, events);
+}
+function repoOnConnectStatus(repo, connectStatus) {
+  repoUpdateInfo(repo, "connected", connectStatus);
+  if (connectStatus === false) {
+    repoRunOnDisconnectEvents(repo);
+  }
+}
+function repoOnServerInfoUpdate(repo, updates) {
+  each(updates, (key2, value) => {
+    repoUpdateInfo(repo, key2, value);
+  });
+}
+function repoUpdateInfo(repo, pathString, value) {
+  const path = new Path("/.info/" + pathString);
+  const newNode = nodeFromJSON(value);
+  repo.infoData_.updateSnapshot(path, newNode);
+  const events = syncTreeApplyServerOverwrite(repo.infoSyncTree_, path, newNode);
+  eventQueueRaiseEventsForChangedPath(repo.eventQueue_, path, events);
+}
+function repoGetNextWriteId(repo) {
+  return repo.nextWriteId_++;
+}
+function repoRunOnDisconnectEvents(repo) {
+  repoLog(repo, "onDisconnectEvents");
+  const serverValues = repoGenerateServerValues(repo);
+  const resolvedOnDisconnectTree = newSparseSnapshotTree();
+  sparseSnapshotTreeForEachTree(repo.onDisconnect_, newEmptyPath(), (path, node) => {
+    const resolved = resolveDeferredValueTree(path, node, repo.serverSyncTree_, serverValues);
+    sparseSnapshotTreeRemember(resolvedOnDisconnectTree, path, resolved);
+  });
+  let events = [];
+  sparseSnapshotTreeForEachTree(resolvedOnDisconnectTree, newEmptyPath(), (path, snap) => {
+    events = events.concat(syncTreeApplyServerOverwrite(repo.serverSyncTree_, path, snap));
+    const affectedPath = repoAbortTransactions(repo, path);
+    repoRerunTransactions(repo, affectedPath);
+  });
+  repo.onDisconnect_ = newSparseSnapshotTree();
+  eventQueueRaiseEventsForChangedPath(repo.eventQueue_, newEmptyPath(), events);
+}
+function repoAddEventCallbackForQuery(repo, query2, eventRegistration) {
+  let events;
+  if (pathGetFront(query2._path) === ".info") {
+    events = syncTreeAddEventRegistration(repo.infoSyncTree_, query2, eventRegistration);
+  } else {
+    events = syncTreeAddEventRegistration(repo.serverSyncTree_, query2, eventRegistration);
+  }
+  eventQueueRaiseEventsAtPath(repo.eventQueue_, query2._path, events);
+}
+function repoRemoveEventCallbackForQuery(repo, query2, eventRegistration) {
+  let events;
+  if (pathGetFront(query2._path) === ".info") {
+    events = syncTreeRemoveEventRegistration(repo.infoSyncTree_, query2, eventRegistration);
+  } else {
+    events = syncTreeRemoveEventRegistration(repo.serverSyncTree_, query2, eventRegistration);
+  }
+  eventQueueRaiseEventsAtPath(repo.eventQueue_, query2._path, events);
+}
+function repoInterrupt(repo) {
+  if (repo.persistentConnection_) {
+    repo.persistentConnection_.interrupt(INTERRUPT_REASON);
+  }
+}
+function repoLog(repo, ...varArgs) {
+  let prefix = "";
+  if (repo.persistentConnection_) {
+    prefix = repo.persistentConnection_.id + ":";
+  }
+  log(prefix, ...varArgs);
+}
+function repoGetLatestState(repo, path, excludeSets) {
+  return syncTreeCalcCompleteEventCache(repo.serverSyncTree_, path, excludeSets) || ChildrenNode.EMPTY_NODE;
+}
+function repoSendReadyTransactions(repo, node = repo.transactionQueueTree_) {
+  if (!node) {
+    repoPruneCompletedTransactionsBelowNode(repo, node);
+  }
+  if (treeGetValue(node)) {
+    const queue2 = repoBuildTransactionQueue(repo, node);
+    assert(queue2.length > 0, "Sending zero length transaction queue");
+    const allRun = queue2.every(
+      (transaction) => transaction.status === 0
+      /* TransactionStatus.RUN */
+    );
+    if (allRun) {
+      repoSendTransactionQueue(repo, treeGetPath(node), queue2);
+    }
+  } else if (treeHasChildren(node)) {
+    treeForEachChild(node, (childNode) => {
+      repoSendReadyTransactions(repo, childNode);
+    });
+  }
+}
+function repoSendTransactionQueue(repo, path, queue2) {
+  const setsToIgnore = queue2.map((txn) => {
+    return txn.currentWriteId;
+  });
+  const latestState = repoGetLatestState(repo, path, setsToIgnore);
+  let snapToSend = latestState;
+  const latestHash = latestState.hash();
+  for (let i = 0; i < queue2.length; i++) {
+    const txn = queue2[i];
+    assert(txn.status === 0, "tryToSendTransactionQueue_: items in queue should all be run.");
+    txn.status = 1;
+    txn.retryCount++;
+    const relativePath = newRelativePath(path, txn.path);
+    snapToSend = snapToSend.updateChild(relativePath, txn.currentOutputSnapshotRaw);
+  }
+  const dataToSend = snapToSend.val(true);
+  const pathToSend = path;
+  repo.server_.put(pathToSend.toString(), dataToSend, (status) => {
+    repoLog(repo, "transaction put response", {
+      path: pathToSend.toString(),
+      status
+    });
+    let events = [];
+    if (status === "ok") {
+      const callbacks = [];
+      for (let i = 0; i < queue2.length; i++) {
+        queue2[i].status = 2;
+        events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, queue2[i].currentWriteId));
+        if (queue2[i].onComplete) {
+          callbacks.push(() => queue2[i].onComplete(null, true, queue2[i].currentOutputSnapshotResolved));
+        }
+        queue2[i].unwatcher();
+      }
+      repoPruneCompletedTransactionsBelowNode(repo, treeSubTree(repo.transactionQueueTree_, path));
+      repoSendReadyTransactions(repo, repo.transactionQueueTree_);
+      eventQueueRaiseEventsForChangedPath(repo.eventQueue_, path, events);
+      for (let i = 0; i < callbacks.length; i++) {
+        exceptionGuard(callbacks[i]);
+      }
+    } else {
+      if (status === "datastale") {
+        for (let i = 0; i < queue2.length; i++) {
+          if (queue2[i].status === 3) {
+            queue2[i].status = 4;
+          } else {
+            queue2[i].status = 0;
+          }
+        }
+      } else {
+        warn("transaction at " + pathToSend.toString() + " failed: " + status);
+        for (let i = 0; i < queue2.length; i++) {
+          queue2[i].status = 4;
+          queue2[i].abortReason = status;
+        }
+      }
+      repoRerunTransactions(repo, path);
+    }
+  }, latestHash);
+}
+function repoRerunTransactions(repo, changedPath) {
+  const rootMostTransactionNode = repoGetAncestorTransactionNode(repo, changedPath);
+  const path = treeGetPath(rootMostTransactionNode);
+  const queue2 = repoBuildTransactionQueue(repo, rootMostTransactionNode);
+  repoRerunTransactionQueue(repo, queue2, path);
+  return path;
+}
+function repoRerunTransactionQueue(repo, queue2, path) {
+  if (queue2.length === 0) {
+    return;
+  }
+  const callbacks = [];
+  let events = [];
+  const txnsToRerun = queue2.filter((q) => {
+    return q.status === 0;
+  });
+  const setsToIgnore = txnsToRerun.map((q) => {
+    return q.currentWriteId;
+  });
+  for (let i = 0; i < queue2.length; i++) {
+    const transaction = queue2[i];
+    const relativePath = newRelativePath(path, transaction.path);
+    let abortTransaction = false, abortReason;
+    assert(relativePath !== null, "rerunTransactionsUnderNode_: relativePath should not be null.");
+    if (transaction.status === 4) {
+      abortTransaction = true;
+      abortReason = transaction.abortReason;
+      events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, transaction.currentWriteId, true));
+    } else if (transaction.status === 0) {
+      if (transaction.retryCount >= MAX_TRANSACTION_RETRIES) {
+        abortTransaction = true;
+        abortReason = "maxretry";
+        events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, transaction.currentWriteId, true));
+      } else {
+        const currentNode = repoGetLatestState(repo, transaction.path, setsToIgnore);
+        transaction.currentInputSnapshot = currentNode;
+        const newData = queue2[i].update(currentNode.val());
+        if (newData !== void 0) {
+          validateFirebaseData("transaction failed: Data returned ", newData, transaction.path);
+          let newDataNode = nodeFromJSON(newData);
+          const hasExplicitPriority = typeof newData === "object" && newData != null && contains(newData, ".priority");
+          if (!hasExplicitPriority) {
+            newDataNode = newDataNode.updatePriority(currentNode.getPriority());
+          }
+          const oldWriteId = transaction.currentWriteId;
+          const serverValues = repoGenerateServerValues(repo);
+          const newNodeResolved = resolveDeferredValueSnapshot(newDataNode, currentNode, serverValues);
+          transaction.currentOutputSnapshotRaw = newDataNode;
+          transaction.currentOutputSnapshotResolved = newNodeResolved;
+          transaction.currentWriteId = repoGetNextWriteId(repo);
+          setsToIgnore.splice(setsToIgnore.indexOf(oldWriteId), 1);
+          events = events.concat(syncTreeApplyUserOverwrite(repo.serverSyncTree_, transaction.path, newNodeResolved, transaction.currentWriteId, transaction.applyLocally));
+          events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, oldWriteId, true));
+        } else {
+          abortTransaction = true;
+          abortReason = "nodata";
+          events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, transaction.currentWriteId, true));
+        }
+      }
+    }
+    eventQueueRaiseEventsForChangedPath(repo.eventQueue_, path, events);
+    events = [];
+    if (abortTransaction) {
+      queue2[i].status = 2;
+      (function(unwatcher) {
+        setTimeout(unwatcher, Math.floor(0));
+      })(queue2[i].unwatcher);
+      if (queue2[i].onComplete) {
+        if (abortReason === "nodata") {
+          callbacks.push(() => queue2[i].onComplete(null, false, queue2[i].currentInputSnapshot));
+        } else {
+          callbacks.push(() => queue2[i].onComplete(new Error(abortReason), false, null));
+        }
+      }
+    }
+  }
+  repoPruneCompletedTransactionsBelowNode(repo, repo.transactionQueueTree_);
+  for (let i = 0; i < callbacks.length; i++) {
+    exceptionGuard(callbacks[i]);
+  }
+  repoSendReadyTransactions(repo, repo.transactionQueueTree_);
+}
+function repoGetAncestorTransactionNode(repo, path) {
+  let front;
+  let transactionNode = repo.transactionQueueTree_;
+  front = pathGetFront(path);
+  while (front !== null && treeGetValue(transactionNode) === void 0) {
+    transactionNode = treeSubTree(transactionNode, front);
+    path = pathPopFront(path);
+    front = pathGetFront(path);
+  }
+  return transactionNode;
+}
+function repoBuildTransactionQueue(repo, transactionNode) {
+  const transactionQueue = [];
+  repoAggregateTransactionQueuesForNode(repo, transactionNode, transactionQueue);
+  transactionQueue.sort((a, b) => a.order - b.order);
+  return transactionQueue;
+}
+function repoAggregateTransactionQueuesForNode(repo, node, queue2) {
+  const nodeQueue = treeGetValue(node);
+  if (nodeQueue) {
+    for (let i = 0; i < nodeQueue.length; i++) {
+      queue2.push(nodeQueue[i]);
+    }
+  }
+  treeForEachChild(node, (child2) => {
+    repoAggregateTransactionQueuesForNode(repo, child2, queue2);
+  });
+}
+function repoPruneCompletedTransactionsBelowNode(repo, node) {
+  const queue2 = treeGetValue(node);
+  if (queue2) {
+    let to = 0;
+    for (let from = 0; from < queue2.length; from++) {
+      if (queue2[from].status !== 2) {
+        queue2[to] = queue2[from];
+        to++;
+      }
+    }
+    queue2.length = to;
+    treeSetValue(node, queue2.length > 0 ? queue2 : void 0);
+  }
+  treeForEachChild(node, (childNode) => {
+    repoPruneCompletedTransactionsBelowNode(repo, childNode);
+  });
+}
+function repoAbortTransactions(repo, path) {
+  const affectedPath = treeGetPath(repoGetAncestorTransactionNode(repo, path));
+  const transactionNode = treeSubTree(repo.transactionQueueTree_, path);
+  treeForEachAncestor(transactionNode, (node) => {
+    repoAbortTransactionsOnNode(repo, node);
+  });
+  repoAbortTransactionsOnNode(repo, transactionNode);
+  treeForEachDescendant(transactionNode, (node) => {
+    repoAbortTransactionsOnNode(repo, node);
+  });
+  return affectedPath;
+}
+function repoAbortTransactionsOnNode(repo, node) {
+  const queue2 = treeGetValue(node);
+  if (queue2) {
+    const callbacks = [];
+    let events = [];
+    let lastSent = -1;
+    for (let i = 0; i < queue2.length; i++) {
+      if (queue2[i].status === 3) ;
+      else if (queue2[i].status === 1) {
+        assert(lastSent === i - 1, "All SENT items should be at beginning of queue.");
+        lastSent = i;
+        queue2[i].status = 3;
+        queue2[i].abortReason = "set";
+      } else {
+        assert(queue2[i].status === 0, "Unexpected transaction status in abort");
+        queue2[i].unwatcher();
+        events = events.concat(syncTreeAckUserWrite(repo.serverSyncTree_, queue2[i].currentWriteId, true));
+        if (queue2[i].onComplete) {
+          callbacks.push(queue2[i].onComplete.bind(null, new Error("set"), false, null));
+        }
+      }
+    }
+    if (lastSent === -1) {
+      treeSetValue(node, void 0);
+    } else {
+      queue2.length = lastSent + 1;
+    }
+    eventQueueRaiseEventsForChangedPath(repo.eventQueue_, treeGetPath(node), events);
+    for (let i = 0; i < callbacks.length; i++) {
+      exceptionGuard(callbacks[i]);
+    }
+  }
+}
+function decodePath(pathString) {
+  let pathStringDecoded = "";
+  const pieces = pathString.split("/");
+  for (let i = 0; i < pieces.length; i++) {
+    if (pieces[i].length > 0) {
+      let piece = pieces[i];
+      try {
+        piece = decodeURIComponent(piece.replace(/\+/g, " "));
+      } catch (e) {
+      }
+      pathStringDecoded += "/" + piece;
+    }
+  }
+  return pathStringDecoded;
+}
+function decodeQuery(queryString) {
+  const results = {};
+  if (queryString.charAt(0) === "?") {
+    queryString = queryString.substring(1);
+  }
+  for (const segment of queryString.split("&")) {
+    if (segment.length === 0) {
+      continue;
+    }
+    const kv = segment.split("=");
+    if (kv.length === 2) {
+      results[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+    } else {
+      warn(`Invalid query segment '${segment}' in query '${queryString}'`);
+    }
+  }
+  return results;
+}
+const parseRepoInfo = function(dataURL, nodeAdmin) {
+  const parsedUrl = parseDatabaseURL(dataURL), namespace = parsedUrl.namespace;
+  if (parsedUrl.domain === "firebase.com") {
+    fatal(parsedUrl.host + " is no longer supported. Please use <YOUR FIREBASE>.firebaseio.com instead");
+  }
+  if ((!namespace || namespace === "undefined") && parsedUrl.domain !== "localhost") {
+    fatal("Cannot parse Firebase url. Please use https://<YOUR FIREBASE>.firebaseio.com");
+  }
+  if (!parsedUrl.secure) {
+    warnIfPageIsSecure();
+  }
+  const webSocketOnly = parsedUrl.scheme === "ws" || parsedUrl.scheme === "wss";
+  return {
+    repoInfo: new RepoInfo(
+      parsedUrl.host,
+      parsedUrl.secure,
+      namespace,
+      webSocketOnly,
+      nodeAdmin,
+      /*persistenceKey=*/
+      "",
+      /*includeNamespaceInQueryParams=*/
+      namespace !== parsedUrl.subdomain
+    ),
+    path: new Path(parsedUrl.pathString)
+  };
+};
+const parseDatabaseURL = function(dataURL) {
+  let host = "", domain = "", subdomain = "", pathString = "", namespace = "";
+  let secure = true, scheme = "https", port = 443;
+  if (typeof dataURL === "string") {
+    let colonInd = dataURL.indexOf("//");
+    if (colonInd >= 0) {
+      scheme = dataURL.substring(0, colonInd - 1);
+      dataURL = dataURL.substring(colonInd + 2);
+    }
+    let slashInd = dataURL.indexOf("/");
+    if (slashInd === -1) {
+      slashInd = dataURL.length;
+    }
+    let questionMarkInd = dataURL.indexOf("?");
+    if (questionMarkInd === -1) {
+      questionMarkInd = dataURL.length;
+    }
+    host = dataURL.substring(0, Math.min(slashInd, questionMarkInd));
+    if (slashInd < questionMarkInd) {
+      pathString = decodePath(dataURL.substring(slashInd, questionMarkInd));
+    }
+    const queryParams = decodeQuery(dataURL.substring(Math.min(dataURL.length, questionMarkInd)));
+    colonInd = host.indexOf(":");
+    if (colonInd >= 0) {
+      secure = scheme === "https" || scheme === "wss";
+      port = parseInt(host.substring(colonInd + 1), 10);
+    } else {
+      colonInd = host.length;
+    }
+    const hostWithoutPort = host.slice(0, colonInd);
+    if (hostWithoutPort.toLowerCase() === "localhost") {
+      domain = "localhost";
+    } else if (hostWithoutPort.split(".").length <= 2) {
+      domain = hostWithoutPort;
+    } else {
+      const dotInd = host.indexOf(".");
+      subdomain = host.substring(0, dotInd).toLowerCase();
+      domain = host.substring(dotInd + 1);
+      namespace = subdomain;
+    }
+    if ("ns" in queryParams) {
+      namespace = queryParams["ns"];
+    }
+  }
+  return {
+    host,
+    port,
+    domain,
+    subdomain,
+    secure,
+    scheme,
+    pathString,
+    namespace
+  };
+};
+class DataEvent {
+  /**
+   * @param eventType - One of: value, child_added, child_changed, child_moved, child_removed
+   * @param eventRegistration - The function to call to with the event data. User provided
+   * @param snapshot - The data backing the event
+   * @param prevName - Optional, the name of the previous child for child_* events.
+   */
+  constructor(eventType, eventRegistration, snapshot, prevName) {
+    this.eventType = eventType;
+    this.eventRegistration = eventRegistration;
+    this.snapshot = snapshot;
+    this.prevName = prevName;
+  }
+  getPath() {
+    const ref2 = this.snapshot.ref;
+    if (this.eventType === "value") {
+      return ref2._path;
+    } else {
+      return ref2.parent._path;
+    }
+  }
+  getEventType() {
+    return this.eventType;
+  }
+  getEventRunner() {
+    return this.eventRegistration.getEventRunner(this);
+  }
+  toString() {
+    return this.getPath().toString() + ":" + this.eventType + ":" + stringify(this.snapshot.exportVal());
+  }
+}
+class CancelEvent {
+  constructor(eventRegistration, error2, path) {
+    this.eventRegistration = eventRegistration;
+    this.error = error2;
+    this.path = path;
+  }
+  getPath() {
+    return this.path;
+  }
+  getEventType() {
+    return "cancel";
+  }
+  getEventRunner() {
+    return this.eventRegistration.getEventRunner(this);
+  }
+  toString() {
+    return this.path.toString() + ":cancel";
+  }
+}
+class CallbackContext {
+  constructor(snapshotCallback, cancelCallback) {
+    this.snapshotCallback = snapshotCallback;
+    this.cancelCallback = cancelCallback;
+  }
+  onValue(expDataSnapshot, previousChildName) {
+    this.snapshotCallback.call(null, expDataSnapshot, previousChildName);
+  }
+  onCancel(error2) {
+    assert(this.hasCancelCallback, "Raising a cancel event on a listener with no cancel callback");
+    return this.cancelCallback.call(null, error2);
+  }
+  get hasCancelCallback() {
+    return !!this.cancelCallback;
+  }
+  matches(other) {
+    return this.snapshotCallback === other.snapshotCallback || this.snapshotCallback.userCallback !== void 0 && this.snapshotCallback.userCallback === other.snapshotCallback.userCallback && this.snapshotCallback.context === other.snapshotCallback.context;
+  }
+}
+class QueryImpl {
+  /**
+   * @hideconstructor
+   */
+  constructor(_repo, _path, _queryParams, _orderByCalled) {
+    this._repo = _repo;
+    this._path = _path;
+    this._queryParams = _queryParams;
+    this._orderByCalled = _orderByCalled;
+  }
+  get key() {
+    if (pathIsEmpty(this._path)) {
+      return null;
+    } else {
+      return pathGetBack(this._path);
+    }
+  }
+  get ref() {
+    return new ReferenceImpl(this._repo, this._path);
+  }
+  get _queryIdentifier() {
+    const obj = queryParamsGetQueryObject(this._queryParams);
+    const id = ObjectToUniqueKey(obj);
+    return id === "{}" ? "default" : id;
+  }
+  /**
+   * An object representation of the query parameters used by this Query.
+   */
+  get _queryObject() {
+    return queryParamsGetQueryObject(this._queryParams);
+  }
+  isEqual(other) {
+    other = getModularInstance(other);
+    if (!(other instanceof QueryImpl)) {
+      return false;
+    }
+    const sameRepo = this._repo === other._repo;
+    const samePath = pathEquals(this._path, other._path);
+    const sameQueryIdentifier = this._queryIdentifier === other._queryIdentifier;
+    return sameRepo && samePath && sameQueryIdentifier;
+  }
+  toJSON() {
+    return this.toString();
+  }
+  toString() {
+    return this._repo.toString() + pathToUrlEncodedString(this._path);
+  }
+}
+class ReferenceImpl extends QueryImpl {
+  /** @hideconstructor */
+  constructor(repo, path) {
+    super(repo, path, new QueryParams(), false);
+  }
+  get parent() {
+    const parentPath = pathParent(this._path);
+    return parentPath === null ? null : new ReferenceImpl(this._repo, parentPath);
+  }
+  get root() {
+    let ref2 = this;
+    while (ref2.parent !== null) {
+      ref2 = ref2.parent;
+    }
+    return ref2;
+  }
+}
+class DataSnapshot {
+  /**
+   * @param _node - A SnapshotNode to wrap.
+   * @param ref - The location this snapshot came from.
+   * @param _index - The iteration order for this snapshot
+   * @hideconstructor
+   */
+  constructor(_node, ref2, _index) {
+    this._node = _node;
+    this.ref = ref2;
+    this._index = _index;
+  }
+  /**
+   * Gets the priority value of the data in this `DataSnapshot`.
+   *
+   * Applications need not use priority but can order collections by
+   * ordinary properties (see
+   * {@link https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data |Sorting and filtering data}
+   * ).
+   */
+  get priority() {
+    return this._node.getPriority().val();
+  }
+  /**
+   * The key (last part of the path) of the location of this `DataSnapshot`.
+   *
+   * The last token in a Database location is considered its key. For example,
+   * "ada" is the key for the /users/ada/ node. Accessing the key on any
+   * `DataSnapshot` will return the key for the location that generated it.
+   * However, accessing the key on the root URL of a Database will return
+   * `null`.
+   */
+  get key() {
+    return this.ref.key;
+  }
+  /** Returns the number of child properties of this `DataSnapshot`. */
+  get size() {
+    return this._node.numChildren();
+  }
+  /**
+   * Gets another `DataSnapshot` for the location at the specified relative path.
+   *
+   * Passing a relative path to the `child()` method of a DataSnapshot returns
+   * another `DataSnapshot` for the location at the specified relative path. The
+   * relative path can either be a simple child name (for example, "ada") or a
+   * deeper, slash-separated path (for example, "ada/name/first"). If the child
+   * location has no data, an empty `DataSnapshot` (that is, a `DataSnapshot`
+   * whose value is `null`) is returned.
+   *
+   * @param path - A relative path to the location of child data.
+   */
+  child(path) {
+    const childPath = new Path(path);
+    const childRef = child(this.ref, path);
+    return new DataSnapshot(this._node.getChild(childPath), childRef, PRIORITY_INDEX);
+  }
+  /**
+   * Returns true if this `DataSnapshot` contains any data. It is slightly more
+   * efficient than using `snapshot.val() !== null`.
+   */
+  exists() {
+    return !this._node.isEmpty();
+  }
+  /**
+   * Exports the entire contents of the DataSnapshot as a JavaScript object.
+   *
+   * The `exportVal()` method is similar to `val()`, except priority information
+   * is included (if available), making it suitable for backing up your data.
+   *
+   * @returns The DataSnapshot's contents as a JavaScript value (Object,
+   *   Array, string, number, boolean, or `null`).
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  exportVal() {
+    return this._node.val(true);
+  }
+  /**
+   * Enumerates the top-level children in the `IteratedDataSnapshot`.
+   *
+   * Because of the way JavaScript objects work, the ordering of data in the
+   * JavaScript object returned by `val()` is not guaranteed to match the
+   * ordering on the server nor the ordering of `onChildAdded()` events. That is
+   * where `forEach()` comes in handy. It guarantees the children of a
+   * `DataSnapshot` will be iterated in their query order.
+   *
+   * If no explicit `orderBy*()` method is used, results are returned
+   * ordered by key (unless priorities are used, in which case, results are
+   * returned by priority).
+   *
+   * @param action - A function that will be called for each child DataSnapshot.
+   * The callback can return true to cancel further enumeration.
+   * @returns true if enumeration was canceled due to your callback returning
+   * true.
+   */
+  forEach(action) {
+    if (this._node.isLeafNode()) {
+      return false;
+    }
+    const childrenNode = this._node;
+    return !!childrenNode.forEachChild(this._index, (key2, node) => {
+      return action(new DataSnapshot(node, child(this.ref, key2), PRIORITY_INDEX));
+    });
+  }
+  /**
+   * Returns true if the specified child path has (non-null) data.
+   *
+   * @param path - A relative path to the location of a potential child.
+   * @returns `true` if data exists at the specified child path; else
+   *  `false`.
+   */
+  hasChild(path) {
+    const childPath = new Path(path);
+    return !this._node.getChild(childPath).isEmpty();
+  }
+  /**
+   * Returns whether or not the `DataSnapshot` has any non-`null` child
+   * properties.
+   *
+   * You can use `hasChildren()` to determine if a `DataSnapshot` has any
+   * children. If it does, you can enumerate them using `forEach()`. If it
+   * doesn't, then either this snapshot contains a primitive value (which can be
+   * retrieved with `val()`) or it is empty (in which case, `val()` will return
+   * `null`).
+   *
+   * @returns true if this snapshot has any children; else false.
+   */
+  hasChildren() {
+    if (this._node.isLeafNode()) {
+      return false;
+    } else {
+      return !this._node.isEmpty();
+    }
+  }
+  /**
+   * Returns a JSON-serializable representation of this object.
+   */
+  toJSON() {
+    return this.exportVal();
+  }
+  /**
+   * Extracts a JavaScript value from a `DataSnapshot`.
+   *
+   * Depending on the data in a `DataSnapshot`, the `val()` method may return a
+   * scalar type (string, number, or boolean), an array, or an object. It may
+   * also return null, indicating that the `DataSnapshot` is empty (contains no
+   * data).
+   *
+   * @returns The DataSnapshot's contents as a JavaScript value (Object,
+   *   Array, string, number, boolean, or `null`).
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  val() {
+    return this._node.val();
+  }
+}
+function ref(db2, path) {
+  db2 = getModularInstance(db2);
+  db2._checkNotDeleted("ref");
+  return child(db2._root, path);
+}
+function child(parent, path) {
+  parent = getModularInstance(parent);
+  if (pathGetFront(parent._path) === null) {
+    validateRootPathString("child", "path", path);
+  } else {
+    validatePathString("child", "path", path);
+  }
+  return new ReferenceImpl(parent._repo, pathChild(parent._path, path));
+}
+class ValueEventRegistration {
+  constructor(callbackContext) {
+    this.callbackContext = callbackContext;
+  }
+  respondsTo(eventType) {
+    return eventType === "value";
+  }
+  createEvent(change, query2) {
+    const index2 = query2._queryParams.getIndex();
+    return new DataEvent("value", this, new DataSnapshot(change.snapshotNode, new ReferenceImpl(query2._repo, query2._path), index2));
+  }
+  getEventRunner(eventData) {
+    if (eventData.getEventType() === "cancel") {
+      return () => this.callbackContext.onCancel(eventData.error);
+    } else {
+      return () => this.callbackContext.onValue(eventData.snapshot, null);
+    }
+  }
+  createCancelEvent(error2, path) {
+    if (this.callbackContext.hasCancelCallback) {
+      return new CancelEvent(this, error2, path);
+    } else {
+      return null;
+    }
+  }
+  matches(other) {
+    if (!(other instanceof ValueEventRegistration)) {
+      return false;
+    } else if (!other.callbackContext || !this.callbackContext) {
+      return true;
+    } else {
+      return other.callbackContext.matches(this.callbackContext);
+    }
+  }
+  hasAnyCallback() {
+    return this.callbackContext !== null;
+  }
+}
+function addEventListener(query2, eventType, callback, cancelCallbackOrListenOptions, options) {
+  let cancelCallback;
+  if (typeof cancelCallbackOrListenOptions === "object") {
+    cancelCallback = void 0;
+    options = cancelCallbackOrListenOptions;
+  }
+  if (typeof cancelCallbackOrListenOptions === "function") {
+    cancelCallback = cancelCallbackOrListenOptions;
+  }
+  if (options && options.onlyOnce) {
+    const userCallback = callback;
+    const onceCallback = (dataSnapshot, previousChildName) => {
+      repoRemoveEventCallbackForQuery(query2._repo, query2, container);
+      userCallback(dataSnapshot, previousChildName);
+    };
+    onceCallback.userCallback = callback.userCallback;
+    onceCallback.context = callback.context;
+    callback = onceCallback;
+  }
+  const callbackContext = new CallbackContext(callback, cancelCallback || void 0);
+  const container = new ValueEventRegistration(callbackContext);
+  repoAddEventCallbackForQuery(query2._repo, query2, container);
+  return () => repoRemoveEventCallbackForQuery(query2._repo, query2, container);
+}
+function onValue(query2, callback, cancelCallbackOrListenOptions, options) {
+  return addEventListener(query2, "value", callback, cancelCallbackOrListenOptions, options);
+}
+syncPointSetReferenceConstructor(ReferenceImpl);
+syncTreeSetReferenceConstructor(ReferenceImpl);
+const FIREBASE_DATABASE_EMULATOR_HOST_VAR = "FIREBASE_DATABASE_EMULATOR_HOST";
+const repos = {};
+let useRestClient = false;
+function repoManagerApplyEmulatorSettings(repo, hostAndPort, emulatorOptions, tokenProvider) {
+  const portIndex = hostAndPort.lastIndexOf(":");
+  const host = hostAndPort.substring(0, portIndex);
+  const useSsl = isCloudWorkstation(host);
+  repo.repoInfo_ = new RepoInfo(
+    hostAndPort,
+    /* secure= */
+    useSsl,
+    repo.repoInfo_.namespace,
+    repo.repoInfo_.webSocketOnly,
+    repo.repoInfo_.nodeAdmin,
+    repo.repoInfo_.persistenceKey,
+    repo.repoInfo_.includeNamespaceInQueryParams,
+    /*isUsingEmulator=*/
+    true,
+    emulatorOptions
+  );
+  if (tokenProvider) {
+    repo.authTokenProvider_ = tokenProvider;
+  }
+}
+function repoManagerDatabaseFromApp(app2, authProvider, appCheckProvider, url, nodeAdmin) {
+  let dbUrl = url || app2.options.databaseURL;
+  if (dbUrl === void 0) {
+    if (!app2.options.projectId) {
+      fatal("Can't determine Firebase Database URL. Be sure to include  a Project ID when calling firebase.initializeApp().");
+    }
+    log("Using default host for project ", app2.options.projectId);
+    dbUrl = `${app2.options.projectId}-default-rtdb.firebaseio.com`;
+  }
+  let parsedUrl = parseRepoInfo(dbUrl, nodeAdmin);
+  let repoInfo = parsedUrl.repoInfo;
+  let dbEmulatorHost = void 0;
+  if (typeof process$1 !== "undefined" && define_process_env_default) {
+    dbEmulatorHost = define_process_env_default[FIREBASE_DATABASE_EMULATOR_HOST_VAR];
+  }
+  if (dbEmulatorHost) {
+    dbUrl = `http://${dbEmulatorHost}?ns=${repoInfo.namespace}`;
+    parsedUrl = parseRepoInfo(dbUrl, nodeAdmin);
+    repoInfo = parsedUrl.repoInfo;
+  } else {
+    !parsedUrl.repoInfo.secure;
+  }
+  const authTokenProvider = new FirebaseAuthTokenProvider(app2.name, app2.options, authProvider);
+  validateUrl("Invalid Firebase Database URL", parsedUrl);
+  if (!pathIsEmpty(parsedUrl.path)) {
+    fatal("Database URL must point to the root of a Firebase Database (not including a child path).");
+  }
+  const repo = repoManagerCreateRepo(repoInfo, app2, authTokenProvider, new AppCheckTokenProvider(app2, appCheckProvider));
+  return new Database(repo, app2);
+}
+function repoManagerDeleteRepo(repo, appName) {
+  const appRepos = repos[appName];
+  if (!appRepos || appRepos[repo.key] !== repo) {
+    fatal(`Database ${appName}(${repo.repoInfo_}) has already been deleted.`);
+  }
+  repoInterrupt(repo);
+  delete appRepos[repo.key];
+}
+function repoManagerCreateRepo(repoInfo, app2, authTokenProvider, appCheckProvider) {
+  let appRepos = repos[app2.name];
+  if (!appRepos) {
+    appRepos = {};
+    repos[app2.name] = appRepos;
+  }
+  let repo = appRepos[repoInfo.toURLString()];
+  if (repo) {
+    fatal("Database initialized multiple times. Please make sure the format of the database URL matches with each database() call.");
+  }
+  repo = new Repo(repoInfo, useRestClient, authTokenProvider, appCheckProvider);
+  appRepos[repoInfo.toURLString()] = repo;
+  return repo;
+}
+class Database {
+  /** @hideconstructor */
+  constructor(_repoInternal, app2) {
+    this._repoInternal = _repoInternal;
+    this.app = app2;
+    this["type"] = "database";
+    this._instanceStarted = false;
+  }
+  get _repo() {
+    if (!this._instanceStarted) {
+      repoStart(this._repoInternal, this.app.options.appId, this.app.options["databaseAuthVariableOverride"]);
+      this._instanceStarted = true;
+    }
+    return this._repoInternal;
+  }
+  get _root() {
+    if (!this._rootInternal) {
+      this._rootInternal = new ReferenceImpl(this._repo, newEmptyPath());
+    }
+    return this._rootInternal;
+  }
+  _delete() {
+    if (this._rootInternal !== null) {
+      repoManagerDeleteRepo(this._repo, this.app.name);
+      this._repoInternal = null;
+      this._rootInternal = null;
+    }
+    return Promise.resolve();
+  }
+  _checkNotDeleted(apiName) {
+    if (this._rootInternal === null) {
+      fatal("Cannot call " + apiName + " on a deleted database.");
+    }
+  }
+}
+function getDatabase(app2 = getApp(), url) {
+  const db2 = _getProvider(app2, "database").getImmediate({
+    identifier: url
+  });
+  if (!db2._instanceStarted) {
+    const emulator = getDefaultEmulatorHostnameAndPort("database");
+    if (emulator) {
+      connectDatabaseEmulator(db2, ...emulator);
+    }
+  }
+  return db2;
+}
+function connectDatabaseEmulator(db2, host, port, options = {}) {
+  db2 = getModularInstance(db2);
+  db2._checkNotDeleted("useEmulator");
+  const hostAndPort = `${host}:${port}`;
+  const repo = db2._repoInternal;
+  if (db2._instanceStarted) {
+    if (hostAndPort === db2._repoInternal.repoInfo_.host && deepEqual(options, repo.repoInfo_.emulatorOptions)) {
+      return;
+    }
+    fatal("connectDatabaseEmulator() cannot initialize or alter the emulator configuration after the database instance has started.");
+  }
+  let tokenProvider = void 0;
+  if (repo.repoInfo_.nodeAdmin) {
+    if (options.mockUserToken) {
+      fatal('mockUserToken is not supported by the Admin SDK. For client access with mock users, please use the "firebase" package instead of "firebase-admin".');
+    }
+    tokenProvider = new EmulatorTokenProvider(EmulatorTokenProvider.OWNER);
+  } else if (options.mockUserToken) {
+    const token2 = typeof options.mockUserToken === "string" ? options.mockUserToken : createMockUserToken(options.mockUserToken, db2.app.options.projectId);
+    tokenProvider = new EmulatorTokenProvider(token2);
+  }
+  if (isCloudWorkstation(host)) {
+    void pingServer(host);
+    updateEmulatorBanner("Database", true);
+  }
+  repoManagerApplyEmulatorSettings(repo, hostAndPort, options, tokenProvider);
+}
+function registerDatabase(variant) {
+  setSDKVersion(SDK_VERSION$1);
+  _registerComponent(new Component(
+    "database",
+    (container, { instanceIdentifier: url }) => {
+      const app2 = container.getProvider("app").getImmediate();
+      const authProvider = container.getProvider("auth-internal");
+      const appCheckProvider = container.getProvider("app-check-internal");
+      return repoManagerDatabaseFromApp(app2, authProvider, appCheckProvider, url);
+    },
+    "PUBLIC"
+    /* ComponentType.PUBLIC */
+  ).setMultipleInstances(true));
+  registerVersion(name, version, variant);
+  registerVersion(name, version, "esm2020");
+}
+PersistentConnection.prototype.simpleListen = function(pathString, onComplete) {
+  this.sendRequest("q", { p: pathString }, onComplete);
+};
+PersistentConnection.prototype.echo = function(data, onEcho) {
+  this.sendRequest("echo", { d: data }, onEcho);
+};
+registerDatabase();
+const firebaseConfig = {
+  apiKey: "AIzaSyAgSDoo6_t-xMKbIMCxU4olV1TMV7-Dxbo",
+  authDomain: "timlg-protocol.firebaseapp.com",
+  databaseURL: "https://timlg-protocol-default-rtdb.firebaseio.com",
+  projectId: "timlg-protocol",
+  storageBucket: "timlg-protocol.firebasestorage.app",
+  messagingSenderId: "879942122806",
+  appId: "1:879942122806:web:21937c34b7134c73b10797",
+  measurementId: "G-K436WR4C8H"
+};
+console.log("AUDIT_LOG: Initializing Firebase Cloud Sync...");
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+function AuditDashboard() {
+  const [stats, setStats] = reactExports.useState(null);
+  const [loading, setLoading2] = reactExports.useState(true);
+  const [error2, setError] = reactExports.useState(null);
+  const [lastUpdated, setLastUpdated] = reactExports.useState(null);
+  const COLORS = {
+    bg: "#0a0a0c",
+    cardBg: "rgba(45, 104, 234, 0.05)",
+    cardBorder: "rgba(45, 104, 234, 0.3)",
+    blue: "#2D68EA",
+    green: "#10B981",
+    muted: "rgba(255, 255, 255, 0.5)",
+    text: "#ffffff"
+  };
+  reactExports.useEffect(() => {
+    setLoading2(true);
+    const statsRef = ref(db, "audit_stats");
+    const unsubscribe = onValue(statsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setStats(data);
+        setLastUpdated(new Date(data.lastUpdated));
+        setError(null);
+      } else {
+        setError("No audit data found in cloud registry.");
+      }
+      setLoading2(false);
+    }, (err) => {
+      console.error("Firebase subscription error:", err);
+      setError("Cloud Sync Failed: " + err.message);
+      setLoading2(false);
+    });
+    document.body.style.overflow = "hidden";
+    return () => {
+      unsubscribe();
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+  if (loading && !stats) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: COLORS.bg, color: COLORS.blue }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "audit-spinner", style: { width: 40, height: 40, border: `3px solid ${COLORS.cardBorder}`, borderTop: `3px solid ${COLORS.blue}`, borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 20 } }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: 900, letterSpacing: "0.2em" }, children: "SYNCHRONIZING GLOBAL AUDIT..." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }` })
+    ] });
+  }
+  const rounds = stats?.recentRounds || [];
+  const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    background: COLORS.bg,
+    height: "100vh",
+    maxHeight: "100vh",
+    width: "100vw",
+    overflow: "hidden",
+    fontFamily: "Inter, system-ui, sans-serif",
+    color: COLORS.text,
+    display: "flex",
+    flexDirection: "column"
+  }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "24px 30px",
+      borderBottom: `1px solid ${COLORS.cardBorder}`,
+      flexShrink: 0
+    }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "40px", height: "40px", background: COLORS.blue, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 15px ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 26, color: "#fff" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.2em" }, children: "NETWORK INTEGRITY" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", letterSpacing: "-0.02em" }, children: [
+            "LIVE AUDIT TERMINAL ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS.muted, fontWeight: "400" }, children: "v3.0" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px" }, children: [
+        lastUpdated && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4, fontWeight: "700" }, children: [
+          "PROTO SYNC: ",
+          lastUpdated.toLocaleTimeString(),
+          error2 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: "10px", color: "#EF4444" }, children: " (Offline)" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: "rgba(45, 104, 234, 0.1)", padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS.blue}` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS.blue, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS.blue}`, animation: "pulse 2s infinite" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, opacity: 0.9 }, children: "CLOUD SYNC" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: COLORS.cardBg, padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS.cardBorder}` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS.green, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS.green}` } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", fontWeight: "800", opacity: 0.9 }, children: "SYSTEMS NOMINAL" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+                        @keyframes pulse {
+                            0% { transform: scale(0.95); opacity: 0.5; }
+                            50% { transform: scale(1.05); opacity: 1; }
+                            100% { transform: scale(0.95); opacity: 0.5; }
+                        }
+                    ` })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flexGrow: 1, overflowY: "auto", padding: "24px 30px", display: "flex", flexDirection: "column", gap: "24px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", flexShrink: 0 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, backdropFilter: "blur(10px)" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "GLOBAL ROUND ACTIVITY" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "ROUNDS TRACKED (RECENT)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "32px", fontWeight: "900", color: COLORS.blue, letterSpacing: "-0.02em" }, children: [
+            stats?.dailyRounds || 0,
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS.text }, children: "ROUNDS" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "14px", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Currently Active" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900" }, children: activeRoundsCount })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}` }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "GLOBAL RECENT PERFORMANCE" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Tickets Created", value: stats?.dailyTickets.toLocaleString() || "0", COLORS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Tickets Revealed", value: stats?.dailyReveals.toLocaleString() || "0", COLORS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Winning Tickets", value: stats?.dailyWins.toLocaleString() || "0", COLORS })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}` }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "12px" }, children: "AUDIT CONFIGURATION" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Stake Amount", value: (stats?.config?.stake || 0).toFixed(1) + " TIMLG", COLORS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Reward Fee", value: (stats?.config?.fee || 0).toFixed(1) + "%", COLORS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ParamRow, { label: "Sweep Grace", value: (stats?.config?.grace || 0).toLocaleString() + " slots", COLORS })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", minHeight: 0, flexGrow: 1 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4 }, children: [
+            "Displaying snapshot of ",
+            rounds.length,
+            " recent rounds"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: COLORS.cardBg,
+          borderRadius: "16px",
+          border: `1px solid ${COLORS.cardBorder}`,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          flexGrow: 1
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "REVEALS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: [
+                "#",
+                r.id.toString().padStart(6, "0")
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Pulse", active: r.pulsePublished, COLORS }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sweep", active: r.swept, COLORS })
+              ] }) })
+            ] }, r.id)) })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+                            .audit-scroll::-webkit-scrollbar { width: 6px; }
+                            .audit-scroll::-webkit-scrollbar-track { background: transparent; }
+                            .audit-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); borderRadius: 10px; }
+                            .audit-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.1); }
+                        ` })
+        ] })
+      ] })
+    ] })
+  ] });
+}
+function ParamRow({ label, value, COLORS }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "600" }, children: label }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: COLORS.blue }, children: value })
+  ] });
+}
+function IntegrityPill({ label, active, COLORS }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", padding: "2px 6px", borderRadius: "4px", background: active ? "rgba(16, 185, 129, 0.1)" : "rgba(255,255,255,0.05)", color: active ? COLORS.green : "rgba(255,255,255,0.2)", border: `1px solid ${active ? "rgba(16, 185, 129, 0.2)" : "rgba(255,255,255,0.05)"}` }, children: label });
+}
 function WalletSankey({ stats, chainState }) {
   const { breakdown, total } = stats || {};
   if (!total || !breakdown) return null;
@@ -48987,7 +59822,7 @@ function toAnchorWallet(phantom, pubkey2) {
 }
 function useAnchorProgram({ rpcUrl, programId, pubkey: pubkey2, idl: idl2 }) {
   const phantom = reactExports.useMemo(() => getPhantomProvider$1(), []);
-  const connection = reactExports.useMemo(() => new Connection(rpcUrl, "confirmed"), [rpcUrl]);
+  const connection = reactExports.useMemo(() => new Connection$1(rpcUrl, "confirmed"), [rpcUrl]);
   const [program, setProgram] = reactExports.useState(null);
   const [walletReady, setWalletReady] = reactExports.useState(false);
   reactExports.useEffect(() => {
@@ -49106,7 +59941,7 @@ function toBigInt(v) {
 function useProtocolState({ rpcUrl, connection: connectionOverride, programId, pubkey: pubkey2 }) {
   const connection = reactExports.useMemo(() => {
     if (connectionOverride) return connectionOverride;
-    return new Connection(rpcUrl, "processed");
+    return new Connection$1(rpcUrl, "processed");
   }, [connectionOverride, rpcUrl]);
   const coder = reactExports.useMemo(() => new BorshAccountsCoder(idl), []);
   const [chainState, setChainState] = reactExports.useState(null);
@@ -49299,7 +60134,7 @@ function useUserTickets({
   const [rows, setRows] = reactExports.useState([]);
   const [loading, setLoading2] = reactExports.useState(false);
   const [processingId, setProcessingId] = reactExports.useState(null);
-  const [error, setError] = reactExports.useState(null);
+  const [error2, setError] = reactExports.useState(null);
   const [lastUpdatedAt, setLastUpdatedAt] = reactExports.useState(null);
   const [retryInSec, setRetryInSec] = reactExports.useState(0);
   const inFlightRef = reactExports.useRef(false);
@@ -49979,7 +60814,7 @@ function useUserTickets({
     rows,
     loading,
     processingId,
-    error,
+    error: error2,
     lastUpdatedAt,
     retryInSec,
     forceRefresh: () => refresh("manual"),
@@ -49997,14 +60832,14 @@ function useUserTickets({
     }
   };
 }
-const PUBLIC_RPC = "https://api.devnet.solana.com";
+const PUBLIC_RPC = "https://devnet.helius-rpc.com/?api-key=df9e7f13-259a-42be-af08-7cee2aacd36f";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
 const TIMLG_MINT = "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy";
 const MIN_SOL = Number("0.05");
 const MIN_TIMLG = Number("1");
-const PROTOCOL_VERSION = "3.0.1-NUCLEAR";
+const PROTOCOL_VERSION = "3.0.2-NUCLEAR";
 function getPhantomProvider() {
   if (typeof window === "undefined") return null;
   return window?.phantom?.solana ?? window?.solana ?? null;
@@ -50031,7 +60866,7 @@ function App() {
     setRpcTestMsg("Connecting...");
     try {
       const target = rpcInput?.trim() || PUBLIC_RPC;
-      const conn = new Connection(target, "confirmed");
+      const conn = new Connection$1(target, "confirmed");
       const slot = await conn.getSlot();
       setUserRpc(rpcInput?.trim());
       localStorage.setItem("TIMLG_USER_RPC", rpcInput?.trim());
@@ -50064,9 +60899,14 @@ function App() {
       console.log(`[system] Protocol version mismatch (${saved} != ${PROTOCOL_VERSION}). Clearing cache...`);
       localStorage.removeItem("timlg_receipts");
       localStorage.removeItem("performance_stats");
+      localStorage.removeItem("TIMLG_USER_RPC");
       localStorage.setItem("TIMLG_PROTOCOL_VERSION", PROTOCOL_VERSION);
     }
   }, []);
+  const [activeTab, setActiveTab] = reactExports.useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("mode") === "audit" ? "audit" : "play";
+  });
   const isDemo = reactExports.useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("demo") === "true";
@@ -50102,12 +60942,13 @@ function App() {
   });
   reactExports.useEffect(() => {
     const observer = new ResizeObserver(() => {
+      if (activeTab === "audit") return;
       const height = document.body.scrollHeight;
       window.parent.postMessage({ type: "BETA_RESIZE", height }, "*");
     });
     observer.observe(document.body);
     return () => observer.disconnect();
-  }, []);
+  }, [activeTab]);
   reactExports.useEffect(() => {
     async function checkProgramStatus() {
       try {
@@ -50353,7 +61194,6 @@ function App() {
         return;
       }
       setPhantomDetected(Boolean(p?.isPhantom));
-      setStatus("Connecting…");
       const providerInfo = {
         isPhantom: p?.isPhantom,
         isSolflare: p?.isSolflare,
@@ -50659,606 +61499,609 @@ Domain: timlg.org`;
   const [showInfo, setShowInfo] = reactExports.useState(false);
   const [isCompact, setIsCompact] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-app", children: [
-    !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
-      marginBottom: 16,
-      background: "rgba(171, 159, 242, 0.08)",
-      borderColor: "rgba(171, 159, 242, 0.3)",
-      display: "flex",
-      alignItems: "center",
-      gap: "16px",
-      padding: "20px"
-    }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-        width: "52px",
-        height: "52px",
-        background: "#fff",
-        borderRadius: "12px",
+    activeTab === "play" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
+        marginBottom: 16,
+        background: "rgba(171, 159, 242, 0.08)",
+        borderColor: "rgba(171, 159, 242, 0.3)",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 4px 10px rgba(171, 159, 242, 0.2)",
-        flexShrink: 0
-      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 34 }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "15px", fontWeight: "900", color: "#111", marginBottom: "4px" }, children: "Phantom Wallet Not Detected" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "13px", color: "#555", lineHeight: "1.4" }, children: "To participate in the devnet beta, you need the Phantom wallet installed." })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "a",
-        {
-          href: "https://phantom.app/",
-          target: "_blank",
-          rel: "noreferrer",
-          style: {
-            background: "#AB9FF2",
-            color: "#fff",
-            padding: "10px 18px",
-            borderRadius: "10px",
-            fontSize: "12px",
-            fontWeight: "900",
-            textDecoration: "none",
-            boxShadow: "0 4px 12px rgba(171, 159, 242, 0.3)",
-            transition: "transform 0.2s"
-          },
-          onMouseEnter: (e) => e.currentTarget.style.transform = "translateY(-1px)",
-          onMouseLeave: (e) => e.currentTarget.style.transform = "translateY(0)",
-          children: "INSTALL PHANTOM"
-        }
-      )
-    ] }),
-    !walletStr && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
-      marginBottom: 8,
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      padding: "16px 20px"
-    }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-        width: "28px",
-        height: "28px",
-        borderRadius: "50%",
-        background: "#2D68EA",
-        color: "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexShrink: 0,
-        fontSize: "14px",
-        fontWeight: "bold"
-      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserGuideIcon, { size: 16, color: "#fff" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", color: "#111", lineHeight: "1.4" }, children: [
-        "To learn how to play and use the interface, check the",
-        " ",
-        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/devnet_guide/", target: "_top", style: { color: "#2D68EA", fontWeight: "800", textDecoration: "none" }, children: "User Guide" })
-      ] })
-    ] }),
-    phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__title", style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 18, color: walletStr ? "#AB9FF2" : "#111" }),
-            "Wallet"
-          ] }),
-          walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-            background: "rgba(16, 185, 129, 0.1)",
-            color: "#10B981",
-            padding: "2px 8px",
-            borderRadius: "20px",
-            fontSize: "11px",
-            fontWeight: "800",
-            fontFamily: "monospace",
-            border: "1px solid rgba(16, 185, 129, 0.2)"
-          }, children: shortPk$1(walletStr) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              style: {
-                height: "24px",
-                padding: "0 12px",
-                borderRadius: "20px",
-                fontSize: "10px",
-                fontWeight: "800",
-                background: walletStr ? "rgba(0,0,0,0.05)" : "#2D68EA",
-                color: walletStr ? "#666" : "#fff",
-                border: walletStr ? "1px solid rgba(0,0,0,0.1)" : "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                transition: "all 0.2s"
-              },
-              onClick: walletStr ? disconnectPhantom : connectPhantom,
-              onMouseEnter: (e) => {
-                if (walletStr) {
-                  e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
-                  e.currentTarget.style.color = "#EF4444";
-                  e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.2)";
-                }
-              },
-              onMouseLeave: (e) => {
-                if (walletStr) {
-                  e.currentTarget.style.background = "rgba(0,0,0,0.05)";
-                  e.currentTarget.style.color = "#666";
-                  e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
-                }
-              },
-              children: walletStr ? "Disconnect" : "Connect Wallet"
-            }
-          ),
-          isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 16, marginLeft: 20 }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "SOL" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "TIMLG" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) })
-            ] })
-          ] })
+        gap: "16px",
+        padding: "20px"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          width: "52px",
+          height: "52px",
+          background: "#fff",
+          borderRadius: "12px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 4px 10px rgba(171, 159, 242, 0.2)",
+          flexShrink: 0
+        }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 34 }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flex: 1 }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "15px", fontWeight: "900", color: "#111", marginBottom: "4px" }, children: "Phantom Wallet Not Detected" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "13px", color: "#555", lineHeight: "1.4" }, children: "To participate in the devnet beta, you need the Phantom wallet installed." })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-          !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              className: "beta-tooltip",
-              onClick: () => setShowInfo(!showInfo),
-              type: "button",
-              style: {
-                cursor: "pointer",
-                border: "1px solid rgba(0,0,0,0.1)",
-                color: showInfo ? "#fff" : "#666",
-                background: showInfo ? "#2D68EA" : "#fff",
-                width: "28px",
-                height: "28px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "14px",
-                fontWeight: "bold",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                transition: "all 0.2s ease"
-              },
-              children: showInfo ? "✕" : "i"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              className: "beta-tooltip",
-              onClick: () => {
-                const next = !isCompact;
-                setIsCompact(next);
-                if (next) {
-                  setShowSankey(false);
-                  setShowInfo(false);
-                }
-              },
-              type: "button",
-              style: {
-                cursor: "pointer",
-                border: "1px solid rgba(0,0,0,0.1)",
-                color: "#666",
-                background: isCompact ? "#f0f0f0" : "#fff",
-                width: "28px",
-                height: "28px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "12px",
-                fontWeight: "bold",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                transition: "all 0.2s ease"
-              },
-              title: isCompact ? "Expand" : "Compact",
-              children: isCompact ? "▼" : "▲"
-            }
-          )
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "a",
+          {
+            href: "https://phantom.app/",
+            target: "_blank",
+            rel: "noreferrer",
+            style: {
+              background: "#AB9FF2",
+              color: "#fff",
+              padding: "10px 18px",
+              borderRadius: "10px",
+              fontSize: "12px",
+              fontWeight: "900",
+              textDecoration: "none",
+              boxShadow: "0 4px 12px rgba(171, 159, 242, 0.3)",
+              transition: "transform 0.2s"
+            },
+            onMouseEnter: (e) => e.currentTarget.style.transform = "translateY(-1px)",
+            onMouseLeave: (e) => e.currentTarget.style.transform = "translateY(0)",
+            children: "INSTALL PHANTOM"
+          }
+        )
+      ] }),
+      !walletStr && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
+        marginBottom: 8,
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        padding: "16px 20px"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          width: "28px",
+          height: "28px",
+          borderRadius: "50%",
+          background: "#2D68EA",
+          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          fontSize: "14px",
+          fontWeight: "bold"
+        }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserGuideIcon, { size: 16, color: "#fff" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "13px", color: "#111", lineHeight: "1.4" }, children: [
+          "To learn how to play and use the interface, check the",
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/devnet_guide/", target: "_top", style: { color: "#2D68EA", fontWeight: "800", textDecoration: "none" }, children: "User Guide" })
         ] })
       ] }),
-      !isCompact && showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
-        marginTop: 10,
-        marginBottom: 16,
-        fontSize: "12px",
-        background: "rgba(255,255,255,0.4)",
-        padding: "16px",
-        borderRadius: "14px",
-        border: "1px solid rgba(0,0,0,0.06)"
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "ENVIRONMENT" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "RPC:" }),
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "Devnet" })
+      phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "beta-header", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__title", style: { display: "flex", alignItems: "center", gap: "6px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(PhantomIcon, { size: 18, color: walletStr ? "#AB9FF2" : "#111" }),
+              "Wallet"
+            ] }),
+            walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+              background: "rgba(16, 185, 129, 0.1)",
+              color: "#10B981",
+              padding: "2px 8px",
+              borderRadius: "20px",
+              fontSize: "11px",
+              fontWeight: "800",
+              fontFamily: "monospace",
+              border: "1px solid rgba(16, 185, 129, 0.2)"
+            }, children: shortPk$1(walletStr) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                style: {
+                  height: "24px",
+                  padding: "0 12px",
+                  borderRadius: "20px",
+                  fontSize: "10px",
+                  fontWeight: "800",
+                  background: walletStr ? "rgba(0,0,0,0.05)" : "#2D68EA",
+                  color: walletStr ? "#666" : "#fff",
+                  border: walletStr ? "1px solid rgba(0,0,0,0.1)" : "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  transition: "all 0.2s"
+                },
+                onClick: walletStr ? disconnectPhantom : connectPhantom,
+                onMouseEnter: (e) => {
+                  if (walletStr) {
+                    e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
+                    e.currentTarget.style.color = "#EF4444";
+                    e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.2)";
+                  }
+                },
+                onMouseLeave: (e) => {
+                  if (walletStr) {
+                    e.currentTarget.style.background = "rgba(0,0,0,0.05)";
+                    e.currentTarget.style.color = "#666";
+                    e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
+                  }
+                },
+                children: walletStr ? "Disconnect" : "Connect Wallet"
+              }
+            ),
+            isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 16, marginLeft: 20 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "SOL" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERSION:" }),
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "0.1.3-verifiable" })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "TIMLG" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "900", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) })
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "TRUST & SECURITY" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERIFICATION:" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/verified-build?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
-                  background: programStatus.verified ? "rgba(45, 104, 234, 0.1)" : "rgba(0,0,0,0.05)",
-                  color: programStatus.verified ? "#2D68EA" : "#555",
-                  padding: "3px 8px",
-                  borderRadius: "5px",
-                  fontWeight: "800",
-                  border: "1px solid",
-                  borderColor: programStatus.verified ? "#2D68EA" : "#bbb",
-                  fontSize: "10px"
-                }, children: programStatus.verified ? "ON-CHAIN ✅" : "VERIFY ON EXPLORER ↗" }) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "SECURITY.TXT:" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/security?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
-                  background: programStatus.security ? "rgba(16, 185, 129, 0.1)" : "rgba(0,0,0,0.05)",
-                  color: programStatus.security ? "#10B981" : "#555",
-                  padding: "3px 8px",
-                  borderRadius: "5px",
-                  fontWeight: "800",
-                  border: "1px solid",
-                  borderColor: programStatus.security ? "#10B981" : "#bbb",
-                  fontSize: "10px"
-                }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
-              ] })
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", borderTop: "2px solid rgba(0,0,0,0.05)", paddingTop: "18px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "12px", fontSize: "12px", letterSpacing: "0.1em" }, children: "NETWORK CONFIGURATION (CUSTOM RPC)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "12px", alignItems: "stretch" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+            !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
               {
+                className: "beta-tooltip",
+                onClick: () => setShowInfo(!showInfo),
+                type: "button",
                 style: {
-                  flex: 1,
-                  background: "rgba(255,255,255,0.7)",
-                  border: "1px solid rgba(0,0,0,0.18)",
-                  borderRadius: "10px",
-                  padding: "12px 16px",
-                  fontSize: "13px",
-                  color: "#000",
-                  outline: "none",
-                  fontFamily: "monospace",
-                  boxShadow: "inset 0 1px 4px rgba(0,0,0,0.06)"
+                  cursor: "pointer",
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  color: showInfo ? "#fff" : "#666",
+                  background: showInfo ? "#2D68EA" : "#fff",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  transition: "all 0.2s ease"
                 },
-                placeholder: `Default: ${PUBLIC_RPC}`,
-                value: rpcInput,
-                onChange: (e) => setRpcInput(e.target.value)
+                children: showInfo ? "✕" : "i"
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
-                onClick: testAndSaveRpc,
-                disabled: rpcTestStatus === "testing",
+                className: "beta-tooltip",
+                onClick: () => {
+                  const next = !isCompact;
+                  setIsCompact(next);
+                  if (next) {
+                    setShowSankey(false);
+                    setShowInfo(false);
+                  }
+                },
+                type: "button",
                 style: {
-                  padding: "0 24px",
-                  background: rpcTestStatus === "success" ? "#27ae60" : rpcTestStatus === "error" ? "#e74c3c" : "#111",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontSize: "12px",
-                  fontWeight: "900",
                   cursor: "pointer",
-                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                  opacity: rpcTestStatus === "testing" ? 0.6 : 1,
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  color: "#666",
+                  background: isCompact ? "#f0f0f0" : "#fff",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  minWidth: "140px",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  transition: "all 0.2s ease"
                 },
-                children: rpcTestStatus === "testing" ? "TESTING..." : "SAVE & TEST"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-            marginTop: "10px",
-            fontSize: "12px",
-            color: rpcTestStatus === "error" ? "#e74c3c" : rpcTestStatus === "success" ? "#27ae60" : "#555",
-            fontWeight: rpcTestStatus ? "700" : "500",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: rpcTestStatus ? 1 : 0.7 }, children: rpcTestMsg || `Status: All systems functional over ${userRpc ? "private" : "public"} link.` }),
-            userRpc && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => {
-                  setRpcInput("");
-                  setUserRpc("");
-                  localStorage.removeItem("TIMLG_USER_RPC");
-                },
-                style: { background: "none", border: "none", color: "#2D68EA", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" },
-                children: "RESET TO DEFAULT"
+                title: isCompact ? "Expand" : "Compact",
+                children: isCompact ? "▼" : "▲"
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "12px", letterSpacing: "0.08em", fontSize: "11px" }, children: "PROTOCOL ASSETS" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "120px 1fr", gap: "10px 16px", fontSize: "12px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "PROGRAM ID" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
-              PROGRAM_ID,
-              " ↗"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "TIMLG MINT" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
-              TIMLG_MINT,
-              " ↗"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "FAUCET API" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontStyle: "italic" }, children: FAUCET_URL })
-          ] })
-        ] })
-      ] }),
-      walletStr && !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        display: "grid",
-        gridTemplateColumns: "1.8fr 1.2fr",
-        gap: "16px",
-        marginTop: "16px",
-        position: "relative",
-        zIndex: 1
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-          background: "rgba(255,255,255,0.6)",
-          borderRadius: "16px",
+        !isCompact && showInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-info-panel", style: {
+          marginTop: 10,
+          marginBottom: 16,
+          fontSize: "12px",
+          background: "rgba(255,255,255,0.4)",
           padding: "16px",
-          border: "1px solid rgba(0,0,0,0.03)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px"
+          borderRadius: "14px",
+          border: "1px solid rgba(0,0,0,0.06)"
         }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "YOUR ASSETS" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "ACTIONS" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(0,0,0,0.05)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 26, color: "#111" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, fontWeight: "600" }, children: "Solana Native" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "ENVIRONMENT" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "RPC:" }),
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "Devnet" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERSION:" }),
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.9 }, children: "0.1.3-verifiable" })
                 ] })
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                className: "beta-btn",
-                style: { width: "110px", height: "32px", borderRadius: "10px", fontWeight: "700", background: "rgba(255,255,255,0.5)", border: "1px solid rgba(0,0,0,0.1)", color: "#555", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
-                onClick: airdrop1Sol,
-                disabled: !walletStr || isDemo || solLoading,
-                type: "button",
-                children: solLoading ? "..." : "AIRDROP SOL"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#EFF6FF", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(45, 104, 234, 0.08)", border: "1px solid rgba(45, 104, 234, 0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(45, 104, 234, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 32, color: "#2D68EA" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: "#2D68EA", fontWeight: "700" }, children: "Protocol Token" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", color: "#2D68EA", opacity: 0.8 }, children: "TIMLG" })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "TRUST & SECURITY" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERIFICATION:" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/verified-build?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
+                    background: programStatus.verified ? "rgba(45, 104, 234, 0.1)" : "rgba(0,0,0,0.05)",
+                    color: programStatus.verified ? "#2D68EA" : "#555",
+                    padding: "3px 8px",
+                    borderRadius: "5px",
+                    fontWeight: "800",
+                    border: "1px solid",
+                    borderColor: programStatus.verified ? "#2D68EA" : "#bbb",
+                    fontSize: "10px"
+                  }, children: programStatus.verified ? "ON-CHAIN ✅" : "VERIFY ON EXPLORER ↗" }) })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "SECURITY.TXT:" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}/security?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { textDecoration: "none" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
+                    background: programStatus.security ? "rgba(16, 185, 129, 0.1)" : "rgba(0,0,0,0.05)",
+                    color: programStatus.security ? "#10B981" : "#555",
+                    padding: "3px 8px",
+                    borderRadius: "5px",
+                    fontWeight: "800",
+                    border: "1px solid",
+                    borderColor: programStatus.security ? "#10B981" : "#bbb",
+                    fontSize: "10px"
+                  }, children: programStatus.security ? "INCLUDED ✅" : "POLICIES ℹ️" }) })
                 ] })
               ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }, children: [
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", borderTop: "2px solid rgba(0,0,0,0.05)", paddingTop: "18px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "12px", fontSize: "12px", letterSpacing: "0.1em" }, children: "NETWORK CONFIGURATION (CUSTOM RPC)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "12px", alignItems: "stretch" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  style: {
+                    flex: 1,
+                    background: "rgba(255,255,255,0.7)",
+                    border: "1px solid rgba(0,0,0,0.18)",
+                    borderRadius: "10px",
+                    padding: "12px 16px",
+                    fontSize: "13px",
+                    color: "#000",
+                    outline: "none",
+                    fontFamily: "monospace",
+                    boxShadow: "inset 0 1px 4px rgba(0,0,0,0.06)"
+                  },
+                  placeholder: `Default: ${PUBLIC_RPC}`,
+                  value: rpcInput,
+                  onChange: (e) => setRpcInput(e.target.value)
+                }
+              ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "button",
                 {
-                  className: "beta-btn",
-                  style: { width: "110px", height: "30px", borderRadius: "8px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
-                  onClick: claimTIMLG,
-                  disabled: !walletStr || isDemo || faucetLoading,
-                  type: "button",
-                  children: faucetLoading ? "..." : "GET TIMLG"
+                  onClick: testAndSaveRpc,
+                  disabled: rpcTestStatus === "testing",
+                  style: {
+                    padding: "0 24px",
+                    background: rpcTestStatus === "success" ? "#27ae60" : rpcTestStatus === "error" ? "#e74c3c" : "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "10px",
+                    fontSize: "12px",
+                    fontWeight: "900",
+                    cursor: "pointer",
+                    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                    opacity: rpcTestStatus === "testing" ? 0.6 : 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minWidth: "140px",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                  },
+                  children: rpcTestStatus === "testing" ? "TESTING..." : "SAVE & TEST"
                 }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: "#2D68EA", opacity: 0.5, letterSpacing: "0.05em" }, children: "INVITE CODE" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    style: {
-                      background: "#EFF6FF",
-                      borderRadius: "8px",
-                      padding: "6px 12px",
-                      color: "#2D68EA",
-                      fontWeight: "900",
-                      fontSize: "12px",
-                      letterSpacing: "0.05em",
-                      width: "100px",
-                      textAlign: "center",
-                      border: "1px solid rgba(45, 104, 234, 0.1)",
-                      outline: "none"
-                    },
-                    value: invite,
-                    onChange: (e) => setInvite(e.target.value),
-                    placeholder: "CODE"
-                  }
-                )
-              ] })
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-          background: "rgba(255,255,255,0.4)",
-          borderRadius: "16px",
-          padding: "14px",
-          border: "1px solid rgba(0,0,0,0.03)",
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column"
-        }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "img",
-            {
-              src: tokenLogo,
-              style: { position: "absolute", top: "50%", left: "50%", width: "160px", opacity: 0.05, pointerEvents: "none", transform: "translate(-50%, -50%) rotate(-15deg)", zIndex: 0 },
-              alt: "",
-              "aria-hidden": "true"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "12px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
-          !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", flex: 1 }, children: [
+              )
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-              background: stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.06)" : "rgba(239, 68, 68, 0.06)",
-              border: `1px solid ${stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-              borderRadius: "12px",
-              padding: "10px 14px",
+              marginTop: "10px",
+              fontSize: "12px",
+              color: rpcTestStatus === "error" ? "#e74c3c" : rpcTestStatus === "success" ? "#27ae60" : "#555",
+              fontWeight: rpcTestStatus ? "700" : "500",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center"
             }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PROFIT" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "22px", fontWeight: "900", color: stats.netProfit >= 0 ? "#059669" : "#DC2626", letterSpacing: "-0.02em" }, children: [
-                  stats.netProfit > 0 ? "+" : "",
-                  stats.netProfit.toLocaleString(void 0, { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.7 }, children: "TIMLG" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-                width: "32px",
-                height: "32px",
-                borderRadius: "50%",
-                background: stats.netProfit >= 0 ? "#10B981" : "#EF4444",
-                color: "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "14px",
-                fontWeight: "900"
-              }, children: stats.netProfit >= 0 ? "↗" : "↘" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "WIN RATE" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats.winRate >= 50 ? "#10B981" : "#EF4444" }, children: [
-                  stats.winRate.toFixed(0),
-                  "%"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, title: "Longest sequence of consecutive rounds with at least one win", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "BEST STREAK" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.streak })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "VOLUME" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.total })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                className: "beta-btn",
-                style: {
-                  width: "100%",
-                  padding: "5px",
-                  fontSize: "9px",
-                  borderRadius: "10px",
-                  background: showSankey ? "rgba(45, 104, 234, 0.1)" : "#fff",
-                  borderColor: showSankey ? "#2D68EA" : "rgba(0,0,0,0.1)",
-                  color: "#2D68EA",
-                  fontWeight: "800",
-                  marginTop: "auto"
-                },
-                onClick: () => setShowSankey(!showSankey),
-                children: showSankey ? "HIDE FLOW ANALYSIS ▲" : "VIEW FLOW ANALYSIS ▼"
-              }
-            )
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: rpcTestStatus ? 1 : 0.7 }, children: rpcTestMsg || `Status: All systems functional over ${userRpc ? "private" : "public"} link.` }),
+              userRpc && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => {
+                    setRpcInput("");
+                    setUserRpc("");
+                    localStorage.removeItem("TIMLG_USER_RPC");
+                  },
+                  style: { background: "none", border: "none", color: "#2D68EA", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" },
+                  children: "RESET TO DEFAULT"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "12px", letterSpacing: "0.08em", fontSize: "11px" }, children: "PROTOCOL ASSETS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "120px 1fr", gap: "10px 16px", fontSize: "12px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "PROGRAM ID" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${PROGRAM_ID}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+                PROGRAM_ID,
+                " ↗"
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "TIMLG MINT" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://explorer.solana.com/address/${TIMLG_MINT}?cluster=devnet`, target: "_blank", rel: "noreferrer", style: { color: "#2D68EA", textDecoration: "none", wordBreak: "break-all" }, children: [
+                TIMLG_MINT,
+                " ↗"
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "600" }, children: "FAUCET API" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontStyle: "italic" }, children: FAUCET_URL })
+            ] })
           ] })
+        ] }),
+        walletStr && !isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          display: "grid",
+          gridTemplateColumns: "1.8fr 1.2fr",
+          gap: "16px",
+          marginTop: "16px",
+          position: "relative",
+          zIndex: 1
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            background: "rgba(255,255,255,0.6)",
+            borderRadius: "16px",
+            padding: "16px",
+            border: "1px solid rgba(0,0,0,0.03)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "YOUR ASSETS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "ACTIONS" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(0,0,0,0.05)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SolanaIcon, { size: 26, color: "#111" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, fontWeight: "600" }, children: "Solana Native" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  className: "beta-btn",
+                  style: { width: "110px", height: "32px", borderRadius: "10px", fontWeight: "700", background: "rgba(255,255,255,0.5)", border: "1px solid rgba(0,0,0,0.1)", color: "#555", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
+                  onClick: airdrop1Sol,
+                  disabled: !walletStr || isDemo || solLoading,
+                  type: "button",
+                  children: solLoading ? "..." : "AIRDROP SOL"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#EFF6FF", borderRadius: "12px", padding: "12px", boxShadow: "inset 0 0 0 1px rgba(45, 104, 234, 0.08)", border: "1px solid rgba(45, 104, 234, 0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "42px", height: "42px", borderRadius: "50%", background: "#fff", border: "1px solid rgba(45, 104, 234, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 32, color: "#2D68EA" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: "#2D68EA", fontWeight: "700" }, children: "Protocol Token" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#2D68EA" }, children: displayTIMLG == null ? "—" : Number(displayTIMLG).toFixed(2) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", color: "#2D68EA", opacity: 0.8 }, children: "TIMLG" })
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "beta-btn",
+                    style: { width: "110px", height: "30px", borderRadius: "8px", fontWeight: "700", background: "#4C82FB", color: "#fff", border: "none", boxShadow: "0 4px 10px rgba(76, 130, 251, 0.2)", fontSize: "10px", display: "flex", alignItems: "center", justifyContent: "center" },
+                    onClick: claimTIMLG,
+                    disabled: !walletStr || isDemo || faucetLoading,
+                    type: "button",
+                    children: faucetLoading ? "..." : "GET TIMLG"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "900", color: "#2D68EA", opacity: 0.5, letterSpacing: "0.05em" }, children: "INVITE CODE" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      style: {
+                        background: "#EFF6FF",
+                        borderRadius: "8px",
+                        padding: "6px 12px",
+                        color: "#2D68EA",
+                        fontWeight: "900",
+                        fontSize: "12px",
+                        letterSpacing: "0.05em",
+                        width: "100px",
+                        textAlign: "center",
+                        border: "1px solid rgba(45, 104, 234, 0.1)",
+                        outline: "none"
+                      },
+                      value: invite,
+                      onChange: (e) => setInvite(e.target.value),
+                      placeholder: "CODE"
+                    }
+                  )
+                ] })
+              ] })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            background: "rgba(255,255,255,0.4)",
+            borderRadius: "16px",
+            padding: "14px",
+            border: "1px solid rgba(0,0,0,0.03)",
+            position: "relative",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "img",
+              {
+                src: tokenLogo,
+                style: { position: "absolute", top: "50%", left: "50%", width: "160px", opacity: 0.05, pointerEvents: "none", transform: "translate(-50%, -50%) rotate(-15deg)", zIndex: 0 },
+                alt: "",
+                "aria-hidden": "true"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "12px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
+            !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", flex: 1 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+                background: stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.06)" : "rgba(239, 68, 68, 0.06)",
+                border: `1px solid ${stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
+                borderRadius: "12px",
+                padding: "10px 14px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PROFIT" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "22px", fontWeight: "900", color: stats.netProfit >= 0 ? "#059669" : "#DC2626", letterSpacing: "-0.02em" }, children: [
+                    stats.netProfit > 0 ? "+" : "",
+                    stats.netProfit.toLocaleString(void 0, { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
+                    " ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.7 }, children: "TIMLG" })
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  background: stats.netProfit >= 0 ? "#10B981" : "#EF4444",
+                  color: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "14px",
+                  fontWeight: "900"
+                }, children: stats.netProfit >= 0 ? "↗" : "↘" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "WIN RATE" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats.winRate >= 50 ? "#10B981" : "#EF4444" }, children: [
+                    stats.winRate.toFixed(0),
+                    "%"
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, title: "Longest sequence of consecutive rounds with at least one win", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "BEST STREAK" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.streak })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "#F9FAFB", borderRadius: "10px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid rgba(0,0,0,0.03)" }, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4 }, children: "VOLUME" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900", color: "#111" }, children: stats.total })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  className: "beta-btn",
+                  style: {
+                    width: "100%",
+                    padding: "5px",
+                    fontSize: "9px",
+                    borderRadius: "10px",
+                    background: showSankey ? "rgba(45, 104, 234, 0.1)" : "#fff",
+                    borderColor: showSankey ? "#2D68EA" : "rgba(0,0,0,0.1)",
+                    color: "#2D68EA",
+                    fontWeight: "800",
+                    marginTop: "auto"
+                  },
+                  onClick: () => setShowSankey(!showSankey),
+                  children: showSankey ? "HIDE FLOW ANALYSIS ▲" : "VIEW FLOW ANALYSIS ▼"
+                }
+              )
+            ] })
+          ] })
+        ] }),
+        showSankey && stats && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__sankey-wrap", style: {
+          marginTop: 16,
+          paddingTop: 16,
+          borderTop: "1px solid rgba(0,0,0,0.05)",
+          position: "relative",
+          zIndex: 1
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, fontWeight: 900, opacity: 0.5, textTransform: "uppercase", marginBottom: 8 }, children: "Participation Volume Flow" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(WalletSankey, { stats, chainState })
         ] })
-      ] }),
-      showSankey && stats && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-walletbar__sankey-wrap", style: {
-        marginTop: 16,
-        paddingTop: 16,
-        borderTop: "1px solid rgba(0,0,0,0.05)",
-        position: "relative",
-        zIndex: 1
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, fontWeight: 900, opacity: 0.5, textTransform: "uppercase", marginBottom: 8 }, children: "Participation Volume Flow" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(WalletSankey, { stats, chainState })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "beta-main", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          PlayCard,
+          {
+            rpcUrl: RPC_URL,
+            connection,
+            program,
+            walletReady,
+            programPk,
+            timlgMint: TIMLG_MINT,
+            pubkey: pubkey2,
+            appendLog,
+            chainState,
+            refreshProtocolState,
+            statusLine: protocolStatus,
+            onActionComplete: refreshTickets,
+            nist,
+            logs,
+            onClearLog: clearLogs,
+            guess,
+            setGuess,
+            doCommitGlobal,
+            globalLoading: loading
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          MyTickets,
+          {
+            program,
+            connection,
+            programPk,
+            pubkey: pubkey2,
+            mintPk,
+            appendLog,
+            actionsEnabled: true,
+            limit: 1e3,
+            rows: ticketRows,
+            loading: ticketsLoading,
+            processingId: ticketsProcessingId,
+            error: ticketsError,
+            doRevealTicket,
+            doClaimTicket,
+            doRefundTicket,
+            doSettleRound,
+            doCloseTicket,
+            currentSlot: chainState?.currentSlot,
+            claimGraceSlots: chainState?.config?.claimGraceSlots,
+            activeRoundId: chainState?.roundId ?? null,
+            nist,
+            refreshNonce: ticketVersion,
+            onAfterAction: refreshTickets,
+            guess,
+            doCommitGlobal,
+            globalLoading: loading,
+            programPkStr: PROGRAM_ID
+          }
+        ) })
       ] })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "beta-main", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        PlayCard,
-        {
-          rpcUrl: RPC_URL,
-          connection,
-          program,
-          walletReady,
-          programPk,
-          timlgMint: TIMLG_MINT,
-          pubkey: pubkey2,
-          appendLog,
-          chainState,
-          refreshProtocolState,
-          statusLine: protocolStatus,
-          onActionComplete: refreshTickets,
-          nist,
-          logs,
-          onClearLog: clearLogs,
-          guess,
-          setGuess,
-          doCommitGlobal,
-          globalLoading: loading
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        MyTickets,
-        {
-          program,
-          connection,
-          programPk,
-          pubkey: pubkey2,
-          mintPk,
-          appendLog,
-          actionsEnabled: true,
-          limit: 1e3,
-          rows: ticketRows,
-          loading: ticketsLoading,
-          processingId: ticketsProcessingId,
-          error: ticketsError,
-          doRevealTicket,
-          doClaimTicket,
-          doRefundTicket,
-          doSettleRound,
-          doCloseTicket,
-          currentSlot: chainState?.currentSlot,
-          claimGraceSlots: chainState?.config?.claimGraceSlots,
-          activeRoundId: chainState?.roundId ?? null,
-          nist,
-          refreshNonce: ticketVersion,
-          onAfterAction: refreshTickets,
-          guess,
-          doCommitGlobal,
-          globalLoading: loading,
-          programPkStr: PROGRAM_ID
-        }
-      ) })
-    ] })
+    ] }),
+    activeTab === "audit" && /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "beta-main", children: /* @__PURE__ */ jsxRuntimeExports.jsx(AuditDashboard, { program, connection, programPk }) })
   ] });
 }
 class ErrorBoundary extends React.Component {
@@ -51266,11 +62109,11 @@ class ErrorBoundary extends React.Component {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
   }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error2) {
+    return { hasError: true, error: error2 };
   }
-  componentDidCatch(error, errorInfo) {
-    console.error("ErrorBoundary caught an error", error, errorInfo);
+  componentDidCatch(error2, errorInfo) {
+    console.error("ErrorBoundary caught an error", error2, errorInfo);
     this.setState({ errorInfo });
   }
   render() {

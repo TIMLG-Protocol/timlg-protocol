@@ -7,6 +7,8 @@
     style="width:100%; height:100%; border:none; overflow:hidden;"
     scrolling="no"
     title="Devnet Beta App"
+    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+    allow="clipboard-read; clipboard-write; camera"
     onload="document.getElementById('beta-loader-msg').style.display='none'"
   ></iframe>
 </div>

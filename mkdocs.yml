@@ -75,6 +75,7 @@ nav:
   - Devnet Beta:
       - App: beta.md
       - Guide: devnet_guide.md
+  - Live Audit: audit.md
   - Whitepaper:
       - Overview: whitepaper/index.md
       - Changelog: whitepaper/changelog.md
