@@ -1,7 +1,22 @@
 /* IMPORTANT:
    This app is embedded inside MkDocs pages.
-   Do NOT style body/:root globally or you'll break the whole website.
+   Do NOT style body/:root globally if there's any risk of injection.
+   However, as an iframe content, we need a background for Fullscreen mode.
 */
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  /* Light mode default */
+  color: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    /* Dark mode fallback for fullscreen */
+  }
+}
 
 :where(#beta-root, #root),
 :where(#beta-root, #root) * {

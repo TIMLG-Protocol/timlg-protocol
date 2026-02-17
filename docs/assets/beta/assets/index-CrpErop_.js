@@ -60832,7 +60832,7 @@ function useUserTickets({
     }
   };
 }
-const PUBLIC_RPC = "https://api.devnet.solana.com";
+const PUBLIC_RPC = "https://devnet.helius-rpc.com/?api-key=df9e7f13-259a-42be-af08-7cee2aacd36f";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
@@ -61498,7 +61498,13 @@ Domain: timlg.org`;
   }, [walletStr, sol, timlg]);
   const [showInfo, setShowInfo] = reactExports.useState(false);
   const [isCompact, setIsCompact] = reactExports.useState(false);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-app", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-app", style: {
+    background: activeTab === "play" ? "#ffffff" : "#0a0b10",
+    color: activeTab === "play" ? "#111111" : "#eeeeee",
+    minHeight: activeTab === "play" ? "auto" : "100vh",
+    display: "flex",
+    flexDirection: "column"
+  }, children: [
     activeTab === "play" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       !phantomDetected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", style: {
         marginBottom: 16,
