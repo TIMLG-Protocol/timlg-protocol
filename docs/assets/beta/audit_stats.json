@@ -1,15 +1,35 @@
 {
-  "dailyRounds": 21,
+  "dailyRounds": 23,
   "dailyTickets": 0,
   "dailyReveals": 0,
   "dailyWins": 0,
-  "lastUpdated": "2026-02-17T12:50:20.748Z",
+  "lastUpdated": "2026-02-17T12:53:03.253Z",
   "config": {
     "stake": 1,
     "fee": 0,
     "grace": 900
   },
   "recentRounds": [
+    {
+      "id": 20718,
+      "state": 0,
+      "createdSlot": 442773093,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0
+    },
+    {
+      "id": 20717,
+      "state": 0,
+      "createdSlot": 442772832,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0
+    },
     {
       "id": 20716,
       "state": 0,
@@ -82,9 +102,9 @@
     },
     {
       "id": 20709,
-      "state": 0,
+      "state": 1,
       "createdSlot": 442771635,
-      "pulsePublished": false,
+      "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
@@ -92,9 +112,9 @@
     },
     {
       "id": 20708,
-      "state": 0,
+      "state": 1,
       "createdSlot": 442771482,
-      "pulsePublished": false,
+      "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
@@ -102,9 +122,9 @@
     },
     {
       "id": 20707,
-      "state": 0,
+      "state": 1,
       "createdSlot": 442771296,
-      "pulsePublished": false,
+      "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
@@ -112,9 +132,9 @@
     },
     {
       "id": 20706,
-      "state": 0,
+      "state": 1,
       "createdSlot": 442771154,
-      "pulsePublished": false,
+      "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
@@ -122,7 +142,7 @@
     },
     {
       "id": 20705,
-      "state": 1,
+      "state": 2,
       "createdSlot": 442771012,
       "pulsePublished": true,
       "swept": false,
@@ -132,7 +152,7 @@
     },
     {
       "id": 20704,
-      "state": 1,
+      "state": 2,
       "createdSlot": 442770861,
       "pulsePublished": true,
       "swept": false,
@@ -175,7 +195,7 @@
       "state": 2,
       "createdSlot": 442770177,
       "pulsePublished": true,
-      "swept": false,
+      "swept": true,
       "tickets": 0,
       "reveals": 0,
       "wins": 0
@@ -185,7 +205,7 @@
       "state": 2,
       "createdSlot": 442770012,
       "pulsePublished": true,
-      "swept": false,
+      "swept": true,
       "tickets": 0,
       "reveals": 0,
       "wins": 0
@@ -195,7 +215,7 @@
       "state": 2,
       "createdSlot": 442769865,
       "pulsePublished": true,
-      "swept": false,
+      "swept": true,
       "tickets": 0,
       "reveals": 0,
       "wins": 0
