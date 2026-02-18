@@ -60204,7 +60204,7 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
     let stopped = false;
     const tick = async () => {
       if (stopped) return;
-      if (document.visibilityState === "visible") await refreshNow();
+      await refreshNow();
     };
     const isCommitOpen = chainState?.round && chainState?.currentSlot != null && chainState.round._logic.commitClose != null && BigInt(chainState.currentSlot) < chainState.round._logic.commitClose;
     const isActive = chainState?.round && (isCommitOpen || !chainState.round.pulseSet || !chainState.round.isFinalized);
@@ -60547,7 +60547,7 @@ function useUserTickets({
     let stopped = false;
     const tick = async () => {
       if (stopped) return;
-      if (document.visibilityState === "visible") await refresh("poll");
+      await refresh("poll");
       timer = setTimeout(tick, BASE_POLL_MS);
     };
     const initialDelay = 800 + Math.floor(Math.random() * 1200);
