@@ -60982,7 +60982,7 @@ function useUserTickets({
     }
   };
 }
-const PUBLIC_RPC = "https://devnet.helius-rpc.com/?api-key=df9e7f13-259a-42be-af08-7cee2aacd36f";
+const PUBLIC_RPC = "https://api.devnet.solana.com";
 const DEFAULT_INVITE = "BETA2026";
 const PROGRAM_ID = "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const FAUCET_URL = "https://timlg-faucet.vercel.app/api/faucet";
