@@ -1,204 +1,8836 @@
 {
-  "dailyRounds": 19,
-  "dailyTickets": 0,
-  "dailyReveals": 0,
-  "dailyWins": 0,
-  "lastUpdated": "2026-02-17T13:23:34.471Z",
+  "dailyRounds": 1067,
+  "dailyTickets": 13,
+  "dailyReveals": 8,
+  "dailyWins": 4,
+  "totalPayouts": 4,
+  "totalBurned": 6,
+  "winRate": 30.76923076923077,
+  "netFlux": -2,
+  "lastUpdated": "2026-02-18T17:10:14.547Z",
+  "treasury": {
+    "solFees": 3.28646912,
+    "solFeesAddress": "ARDmTjW4Bg2tLPWkVdzGqWj35b7w2uxzGzUEnRow4RTh",
+    "solOperator": 23.11555284,
+    "solOperatorAddress": "3ubbYD5VrSpQQW1GLWubkH9owvZK5GZVjvBnoADZSxpo",
+    "timlgFees": 0.17,
+    "timlgFeesAddress": "BN9dy6KqF7w9fhEq6vMXdEn8iLGE4zsYD2q1WMNDhUri",
+    "timlgSweeps": 52,
+    "timlgSweepsAddress": "DLNp9vswML68FqxgdrvBmxw3KQHjgTPR8hnwZGWLmC95",
+    "replicationPool": 0,
+    "replicationPoolAddress": "3de5sQnjcPbg5yzSwXiD3JWjrKUg3krtJ7Fu4T985CFr"
+  },
   "config": {
     "stake": 1,
     "fee": 0,
+    "solServiceFee": 0,
     "grace": 900
   },
   "recentRounds": [
     {
-      "id": 20749,
+      "id": 22413,
       "state": 0,
-      "createdSlot": 442777877,
+      "createdSlot": 443039482,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BXD4ocURu371NWQYHsBjm6qCv5ptLS5PmgtXszUgtgAM?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20748,
+      "id": 22413,
       "state": 0,
-      "createdSlot": 442777737,
+      "createdSlot": 443039482,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BXD4ocURu371NWQYHsBjm6qCv5ptLS5PmgtXszUgtgAM?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20747,
+      "id": 22412,
       "state": 0,
-      "createdSlot": 442777605,
+      "createdSlot": 443039342,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8aTueWsdEwxuoCHMCNu1NinvtqLSuEnZyf6C8KPN6F5S?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20746,
+      "id": 22412,
       "state": 0,
-      "createdSlot": 442777466,
+      "createdSlot": 443039342,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8aTueWsdEwxuoCHMCNu1NinvtqLSuEnZyf6C8KPN6F5S?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20745,
+      "id": 22411,
       "state": 0,
-      "createdSlot": 442777332,
+      "createdSlot": 443039217,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8m5HVkmucPpjKWU8hFcEqRPhRBPRrqAdfkMZftcTpqPg?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20744,
+      "id": 22411,
       "state": 0,
-      "createdSlot": 442777187,
+      "createdSlot": 443039217,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8m5HVkmucPpjKWU8hFcEqRPhRBPRrqAdfkMZftcTpqPg?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20743,
+      "id": 22410,
       "state": 0,
-      "createdSlot": 442776922,
+      "createdSlot": 443038965,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BrEDSKgFPY12JTpM71S49uxiJgtgHcVGGwSMCcdTEJPM?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20742,
+      "id": 22410,
       "state": 0,
-      "createdSlot": 442776780,
+      "createdSlot": 443038965,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BrEDSKgFPY12JTpM71S49uxiJgtgHcVGGwSMCcdTEJPM?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20741,
+      "id": 22409,
       "state": 0,
-      "createdSlot": 442776761,
+      "createdSlot": 443038807,
       "pulsePublished": false,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/1KaDnpyofF82A2X1J7kejpct9AhJ7r2XZPoxtTgNPoS?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20740,
+      "id": 22409,
+      "state": 0,
+      "createdSlot": 443038807,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/1KaDnpyofF82A2X1J7kejpct9AhJ7r2XZPoxtTgNPoS?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22408,
+      "state": 0,
+      "createdSlot": 443038794,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9YDS1Yty1vh31k6kYW497tZZJ75i6YzGo776C167ECqj?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22408,
+      "state": 0,
+      "createdSlot": 443038794,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9YDS1Yty1vh31k6kYW497tZZJ75i6YzGo776C167ECqj?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22407,
+      "state": 0,
+      "createdSlot": 443038783,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/GX9B84CYj3rV78Zf5QnjXBatqM9F6WmjtZVp8Zksvnpw?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22407,
+      "state": 0,
+      "createdSlot": 443038783,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/GX9B84CYj3rV78Zf5QnjXBatqM9F6WmjtZVp8Zksvnpw?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22406,
+      "state": 0,
+      "createdSlot": 443038433,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8cBLSPAgbsNZvyuYUSw8u8t7n4qCxxFsPZCzJCBJjXUB?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22406,
+      "state": 0,
+      "createdSlot": 443038433,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8cBLSPAgbsNZvyuYUSw8u8t7n4qCxxFsPZCzJCBJjXUB?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22405,
+      "state": 0,
+      "createdSlot": 443038309,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8599uU1y8Wz75gVxiKLeM9vo2i1enRtHzNoD5ynDV4Cx?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22405,
+      "state": 0,
+      "createdSlot": 443038309,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/8599uU1y8Wz75gVxiKLeM9vo2i1enRtHzNoD5ynDV4Cx?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22404,
       "state": 1,
-      "createdSlot": 442776555,
+      "createdSlot": 443038032,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/wGQeRxhxQpj2hHgeEPmhbee6Q3WwLcVk9D61q1H8By2?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20739,
+      "id": 22404,
       "state": 1,
-      "createdSlot": 442776300,
+      "createdSlot": 443038032,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/wGQeRxhxQpj2hHgeEPmhbee6Q3WwLcVk9D61q1H8By2?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20738,
+      "id": 22403,
       "state": 1,
-      "createdSlot": 442776128,
+      "createdSlot": 443037912,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/627Rke4ZnJLybrbF5qQHMysftEZzKY72jR8EFFqPQFZE?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20737,
+      "id": 22403,
       "state": 1,
-      "createdSlot": 442775974,
+      "createdSlot": 443037912,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/627Rke4ZnJLybrbF5qQHMysftEZzKY72jR8EFFqPQFZE?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20736,
-      "state": 2,
-      "createdSlot": 442775969,
+      "id": 22402,
+      "state": 1,
+      "createdSlot": 443037792,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/AUp2DVkJJMLDDbmMPWaWweM32QScNRFv6fpucyveTATC?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20735,
-      "state": 2,
-      "createdSlot": 442775663,
+      "id": 22402,
+      "state": 1,
+      "createdSlot": 443037792,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/AUp2DVkJJMLDDbmMPWaWweM32QScNRFv6fpucyveTATC?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20734,
-      "state": 2,
-      "createdSlot": 442775521,
+      "id": 22401,
+      "state": 1,
+      "createdSlot": 443037567,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/3vsknVwzgyTsH12PbCZvLnmTaD9pjaiik1NntGQGuBkB?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20733,
-      "state": 2,
-      "createdSlot": 442775378,
+      "id": 22401,
+      "state": 1,
+      "createdSlot": 443037567,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/3vsknVwzgyTsH12PbCZvLnmTaD9pjaiik1NntGQGuBkB?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20732,
-      "state": 2,
-      "createdSlot": 442775204,
+      "id": 22400,
+      "state": 1,
+      "createdSlot": 443037426,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/D6EgLE3VHCUw16fYJ3mox3mHwcJtB3phFrb8qznTepdB?cluster=devnet",
+      "pulseUrl": null
     },
     {
-      "id": 20731,
-      "state": 2,
-      "createdSlot": 442775183,
+      "id": 22400,
+      "state": 1,
+      "createdSlot": 443037426,
       "pulsePublished": true,
       "swept": false,
       "tickets": 0,
       "reveals": 0,
-      "wins": 0
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/D6EgLE3VHCUw16fYJ3mox3mHwcJtB3phFrb8qznTepdB?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22399,
+      "state": 2,
+      "createdSlot": 443037308,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/3VZ66xMMkncaoNm4RL9sZrJHVEhLPTfTuNKkMy6TWcbG?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22399,
+      "state": 2,
+      "createdSlot": 443037308,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/3VZ66xMMkncaoNm4RL9sZrJHVEhLPTfTuNKkMy6TWcbG?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22398,
+      "state": 2,
+      "createdSlot": 443037175,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/JBY3ALuAHzKu1x8cai7HfuY2qDDFbh27Vj9fPmMRPu5t?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22398,
+      "state": 2,
+      "createdSlot": 443037175,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/JBY3ALuAHzKu1x8cai7HfuY2qDDFbh27Vj9fPmMRPu5t?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22397,
+      "state": 2,
+      "createdSlot": 443036983,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/7EFhJrC6yL5U44MwqwpKUgAanv4gMZApNjrYHPiX5iBr?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22397,
+      "state": 2,
+      "createdSlot": 443036983,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/7EFhJrC6yL5U44MwqwpKUgAanv4gMZApNjrYHPiX5iBr?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22396,
+      "state": 2,
+      "createdSlot": 443036859,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9qmZEQkwnFhSvMfEHjo8ouzbBTDNGkgR8KdRPQTF9tLq?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22396,
+      "state": 2,
+      "createdSlot": 443036859,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9qmZEQkwnFhSvMfEHjo8ouzbBTDNGkgR8KdRPQTF9tLq?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22395,
+      "state": 2,
+      "createdSlot": 443036734,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/J592jckUAdpbpfvEWWt4PG1NXzMJgFFjH9wByRqUWZJ6?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22395,
+      "state": 2,
+      "createdSlot": 443036734,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/J592jckUAdpbpfvEWWt4PG1NXzMJgFFjH9wByRqUWZJ6?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22394,
+      "state": 2,
+      "createdSlot": 443036486,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/33gJFe2Aqcw6PkpuPEQ1ZbW4wLKnYKDsejYM33jvRPET?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22394,
+      "state": 2,
+      "createdSlot": 443036486,
+      "pulsePublished": true,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/33gJFe2Aqcw6PkpuPEQ1ZbW4wLKnYKDsejYM33jvRPET?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22393,
+      "state": 2,
+      "createdSlot": 443036361,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/Gc1VYvdchsYDt4Y4LP25JYxRUa1MntiRYdSJNgWjLUhc?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22393,
+      "state": 2,
+      "createdSlot": 443036361,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/Gc1VYvdchsYDt4Y4LP25JYxRUa1MntiRYdSJNgWjLUhc?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22392,
+      "state": 2,
+      "createdSlot": 443036155,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 3,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9xzKYHLozNegRxmz4h5Fec6h3ZpNGwoy9mGeuXeBMiNp?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22392,
+      "state": 2,
+      "createdSlot": 443036155,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 3,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/9xzKYHLozNegRxmz4h5Fec6h3ZpNGwoy9mGeuXeBMiNp?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22391,
+      "state": 2,
+      "createdSlot": 443036032,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/98xKSocrVtEi7QPH9k78G1gYSu71StRUzdzEiyrm18pB?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22391,
+      "state": 2,
+      "createdSlot": 443036032,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/98xKSocrVtEi7QPH9k78G1gYSu71StRUzdzEiyrm18pB?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22390,
+      "state": 2,
+      "createdSlot": 443035896,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/FabFXz8hZ5wP96CYw6Lsaim7EQEeP2f7sgNBryCT9xx6?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22390,
+      "state": 2,
+      "createdSlot": 443035896,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/FabFXz8hZ5wP96CYw6Lsaim7EQEeP2f7sgNBryCT9xx6?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22389,
+      "state": 2,
+      "createdSlot": 443035686,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/73F83FxCXSr6D2xWCht98LPzWjrvZkrsv4ZrW4e1P6RX?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22389,
+      "state": 2,
+      "createdSlot": 443035686,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/73F83FxCXSr6D2xWCht98LPzWjrvZkrsv4ZrW4e1P6RX?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22388,
+      "state": 2,
+      "createdSlot": 443035665,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/F4XHNdFtHWz5uTk32T8v452tjRJoA5mD4knx1fk5XNYL?cluster=devnet",
+      "pulseUrl": null
+    },
+    {
+      "id": 22387,
+      "state": 2,
+      "createdSlot": 443035397,
+      "pulsePublished": true,
+      "swept": true,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "explorerUrl": "https://explorer.solana.com/address/GgEUwg1hs9vQvg9x7SmYcjbvLnPSC4GshatZ2FdD4QNU?cluster=devnet",
+      "pulseUrl": null
     }
-  ]
+  ],
+  "processedIds": [
+    21086,
+    21085,
+    21084,
+    21083,
+    21082,
+    21081,
+    21080,
+    21079,
+    21078,
+    21077,
+    21090,
+    21089,
+    21091,
+    21093,
+    21092,
+    21095,
+    21094,
+    21097,
+    21096,
+    21099,
+    21098,
+    21100,
+    21101,
+    21102,
+    21103,
+    21105,
+    21104,
+    21106,
+    21107,
+    21109,
+    21110,
+    21111,
+    21112,
+    21114,
+    21115,
+    21116,
+    21117,
+    21119,
+    21120,
+    21121,
+    21122,
+    21123,
+    21124,
+    21125,
+    21126,
+    21128,
+    21129,
+    21130,
+    21131,
+    21133,
+    21134,
+    21135,
+    21136,
+    21137,
+    21138,
+    21139,
+    21140,
+    21142,
+    21143,
+    21144,
+    21145,
+    21147,
+    21148,
+    21149,
+    21151,
+    21152,
+    21153,
+    21155,
+    21156,
+    21157,
+    21159,
+    21160,
+    21161,
+    21162,
+    21164,
+    21165,
+    21166,
+    21168,
+    21169,
+    21170,
+    21172,
+    21173,
+    21174,
+    21175,
+    21177,
+    21178,
+    21179,
+    21181,
+    21182,
+    21183,
+    21184,
+    21185,
+    21186,
+    21187,
+    21188,
+    21189,
+    21190,
+    21191,
+    21192,
+    21194,
+    21195,
+    21196,
+    21197,
+    21199,
+    21200,
+    21201,
+    21202,
+    21203,
+    21204,
+    21205,
+    21206,
+    21207,
+    21208,
+    21209,
+    21210,
+    21211,
+    21212,
+    21213,
+    21214,
+    21216,
+    21217,
+    21218,
+    21220,
+    21221,
+    21222,
+    21223,
+    21225,
+    21226,
+    21227
+  ],
+  "archive": {
+    "21239": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21240": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21241": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21242": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21243": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21244": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21245": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21246": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21247": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21248": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21249": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21250": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21251": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21252": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21253": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21256": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21258": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21259": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21260": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21261": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21262": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21263": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21264": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21265": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21267": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21268": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21269": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21271": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21272": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21273": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21274": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21275": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21276": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21277": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21279": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21280": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21281": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21282": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21283": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21284": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21285": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21286": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21288": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21289": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21290": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21291": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21292": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21293": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21294": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21296": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21297": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21298": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21300": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21301": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21302": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21303": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21304": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21305": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21306": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21307": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21308": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21309": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21310": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21311": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21313": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21314": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21315": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21316": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21318": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21319": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21320": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21322": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21323": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21324": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21326": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21327": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21328": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21329": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21330": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21331": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21332": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21333": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21335": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21336": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21337": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21339": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21340": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21341": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21342": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21343": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21344": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21345": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21346": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21347": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21348": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21349": {
+      "burns": 1,
+      "isFinal": true,
+      "payouts": 3,
+      "reveals": 4,
+      "tickets": 4,
+      "wins": 3
+    },
+    "21350": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21351": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21352": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21353": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21354": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21355": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21356": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21358": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21359": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21360": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21361": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21363": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21364": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21365": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21366": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21367": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21368": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21369": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21370": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21372": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21373": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21374": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21376": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21377": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21378": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21381": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21382": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21383": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21384": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21385": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21386": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21387": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21388": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21389": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21390": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21391": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21392": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21393": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21394": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21395": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21396": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21397": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21398": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21399": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21400": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21401": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21402": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21403": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21404": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21405": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21406": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21407": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21408": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21409": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21410": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21411": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21412": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21413": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21414": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21415": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21416": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21417": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21418": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21419": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21421": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21422": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21423": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21425": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21426": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21427": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21429": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21430": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21431": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21432": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21434": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21435": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21436": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21438": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21439": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21440": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21441": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21442": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21443": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21444": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21445": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21446": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21447": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21448": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21449": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21450": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21451": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21452": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21453": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21454": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21455": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21456": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21457": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21458": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21459": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21460": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21461": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21462": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21464": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21465": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21466": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21467": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21468": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21469": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21470": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21471": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21473": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21474": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21475": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21476": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21477": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21478": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21479": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21480": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21481": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21482": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21483": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21484": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21486": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21487": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21488": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21490": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21491": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21492": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21493": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21495": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21496": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21497": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21498": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21499": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21500": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21501": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21502": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21504": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21505": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21506": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21508": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21509": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21510": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21511": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21513": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21514": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21515": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21517": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21518": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21519": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21520": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21522": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21523": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21524": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21526": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21527": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21528": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21529": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21530": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21531": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21532": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21533": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21535": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21536": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21537": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21539": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21540": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21541": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21543": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21544": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21545": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21546": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21547": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21548": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21549": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21550": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21552": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21553": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21554": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21555": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21556": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21557": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21558": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21559": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21561": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21562": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21563": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21564": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21565": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21566": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21567": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21568": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21569": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21570": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21572": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21573": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21574": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21575": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21576": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21577": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21578": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21579": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21580": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21582": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21583": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21584": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21585": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21586": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21587": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21588": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21589": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21591": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21592": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21593": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21595": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21596": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21597": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21599": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21600": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21601": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21602": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21603": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21604": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21605": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21606": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21607": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21608": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21609": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21610": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21612": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21613": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21614": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21615": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21617": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21618": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21619": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21621": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21622": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21623": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21625": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21626": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21627": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21629": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21630": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21631": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21632": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21634": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21635": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21636": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21637": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21638": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21639": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21640": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21641": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21642": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21643": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21644": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21645": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21646": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21647": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21648": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21649": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21650": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21652": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21653": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21654": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21655": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21656": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21657": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21658": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21659": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21661": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21662": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21663": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21665": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21666": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21667": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21669": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21670": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21671": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21672": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21673": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21674": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21675": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21676": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21678": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21679": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21680": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21681": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21682": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21683": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21684": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21686": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21687": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21688": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21690": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21691": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21692": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21693": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21695": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21696": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21697": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21698": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21699": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21700": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21701": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21703": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21704": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21705": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21706": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21707": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21708": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21709": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21710": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21711": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21712": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21713": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21714": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21715": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21716": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21717": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21718": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21719": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21720": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21721": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21722": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21724": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21725": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21726": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21727": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21728": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21729": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21730": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21731": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21733": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21734": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21735": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21737": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21738": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21739": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21740": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21741": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21742": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21743": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21744": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21746": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21747": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21748": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21750": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21751": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21752": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21753": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21755": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21756": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21757": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21758": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21759": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21760": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21761": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21762": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21764": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21765": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21766": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21768": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21769": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21770": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21771": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21773": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21774": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21775": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21776": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21777": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21778": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21779": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21780": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21782": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21783": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21784": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21786": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21787": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21788": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21789": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21791": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21792": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21793": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21794": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21795": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21796": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21797": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21799": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21800": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21801": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21802": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21803": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21804": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21805": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21806": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21807": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21808": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21809": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21810": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21812": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21813": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21814": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21815": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21816": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21817": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21818": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21819": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21820": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21821": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21822": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21823": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21824": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21825": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21826": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21827": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21828": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21830": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21831": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21832": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21833": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21834": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21835": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21836": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21837": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21838": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21839": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21840": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21841": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21843": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21844": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21845": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21847": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21848": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21849": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21850": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21852": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21853": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21854": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21856": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21857": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21858": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21859": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21861": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21862": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21863": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21865": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21866": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21867": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21869": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21870": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21871": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21872": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21874": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21875": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21876": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21878": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21879": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21880": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21881": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21882": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21883": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21884": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21885": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21887": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21888": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21889": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21891": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21892": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21893": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21894": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21895": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21896": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21897": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21898": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21899": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21900": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21901": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21902": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21904": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21905": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21906": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21908": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21909": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21910": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21911": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21912": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21913": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21914": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21915": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21917": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21918": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21919": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21921": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21922": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21923": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21925": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21926": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21927": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21928": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21929": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21930": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21931": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21932": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21933": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21934": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21935": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21937": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21938": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21939": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21940": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21941": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21942": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21943": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21944": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21945": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21946": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21947": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21949": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21950": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21951": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21952": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21953": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21954": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21955": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21956": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21957": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21958": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21959": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21960": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21962": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21963": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21964": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21965": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21966": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21967": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21968": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21969": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21970": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21971": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21972": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21974": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21975": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21976": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21978": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21979": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21980": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21981": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21982": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21983": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21984": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21985": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21986": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21987": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21988": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21989": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21991": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21992": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21993": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21995": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21996": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21997": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "21999": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22000": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22001": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22002": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22003": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22004": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22005": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22006": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22007": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22008": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22009": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22010": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22012": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22013": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22014": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22016": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22017": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22018": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22020": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22021": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22022": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22023": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22025": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22026": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22027": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22028": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22029": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22030": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22031": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22032": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22034": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22035": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22036": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22037": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22038": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22040": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22041": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22042": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22043": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22044": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22045": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22046": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22047": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22048": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22049": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22050": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22051": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22052": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22053": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22055": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22056": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22058": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22059": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22060": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22061": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22062": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22063": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22064": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22065": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22067": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22068": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22069": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22070": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22072": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22073": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22074": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22076": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22077": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22078": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22080": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22081": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22082": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22083": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22085": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22086": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22087": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22088": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22089": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22090": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22091": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22092": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22093": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22094": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22095": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22096": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22097": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22099": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22100": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22101": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22102": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22104": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22105": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22106": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22108": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22109": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22110": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22111": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22113": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22114": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22115": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22116": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22117": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22118": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22119": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22120": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22122": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22123": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22124": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22125": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22126": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22127": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22128": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22129": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22130": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22131": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22132": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22133": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22135": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22136": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22137": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22139": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22140": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22141": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22142": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22144": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22145": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22146": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22148": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22149": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22150": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22152": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22153": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22154": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22155": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22156": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22157": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22158": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22159": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22160": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22162": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22163": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22164": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22165": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22166": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22167": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22168": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22169": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22170": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22171": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22172": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22173": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22174": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22175": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22176": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22177": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22178": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22179": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22180": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22181": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22182": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22183": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22184": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22186": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22187": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22188": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22189": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22191": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22192": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22193": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22194": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22196": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22197": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22198": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22201": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22202": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22203": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22204": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22205": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22206": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22207": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22208": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22209": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22210": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22211": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22212": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22214": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22215": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22216": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22217": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22219": {
+      "burns": 2,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 2,
+      "wins": 0
+    },
+    "22220": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22221": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22223": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22224": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22225": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22226": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22227": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22228": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22229": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22230": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22232": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22233": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22234": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22236": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22237": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22238": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22239": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22241": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22242": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22243": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22245": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22246": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22247": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22249": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22250": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22251": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22252": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22253": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22254": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22255": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22256": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22257": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22258": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22259": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22260": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22261": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22262": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22263": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22264": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22265": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22266": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22267": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22268": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22269": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22270": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22272": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22273": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22274": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22276": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22277": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22278": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22279": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22281": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22282": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22283": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22285": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22286": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22287": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22288": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22289": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22290": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22291": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22292": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22293": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22294": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22295": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22296": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22297": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22298": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22299": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22300": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22301": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22302": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22303": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22304": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22305": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22306": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22307": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22308": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22309": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22310": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22311": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22312": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22313": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22314": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22315": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22317": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22318": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22319": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22320": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22321": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22322": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22323": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22324": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22326": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22327": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22328": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22329": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22331": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22332": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22333": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22335": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22336": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22337": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22338": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22339": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22340": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22341": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22342": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22343": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22344": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22345": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22346": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22347": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22348": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22349": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22350": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22351": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22352": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22353": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22354": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22355": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22356": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22358": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22359": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22360": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22361": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22363": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22364": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22365": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22366": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22367": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22368": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22369": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22370": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22371": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22372": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22373": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22374": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22375": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22376": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22377": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22378": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22379": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22380": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22382": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22383": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22384": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22385": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22386": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22387": {
+      "burns": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "reveals": 0,
+      "tickets": 0,
+      "wins": 0
+    },
+    "22388": {
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 0
+    },
+    "22389": {
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 0
+    },
+    "22390": {
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 0
+    },
+    "22391": {
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 0
+    },
+    "22392": {
+      "tickets": 3,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 3
+    },
+    "22393": {
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "isFinal": true,
+      "payouts": 0,
+      "burns": 0
+    }
+  }
 }
