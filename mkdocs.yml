@@ -6,7 +6,6 @@ repo_name: richarddmm/timlg-protocol
 
 theme:
   name: material
-  custom_dir: docs/overrides
   language: en
   features:
     - navigation.tabs
@@ -46,7 +45,6 @@ plugins:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
   - javascripts/mermaid-init.js
-  - javascripts/persistent-iframe.js
 
 markdown_extensions:
   - admonition
@@ -71,7 +69,6 @@ extra_css:
   - stylesheets/beta.css
   - stylesheets/roadmap.css
   - stylesheets/status.css
-  - stylesheets/persistent-iframe.css
 
 nav:
   - Home: index.md
