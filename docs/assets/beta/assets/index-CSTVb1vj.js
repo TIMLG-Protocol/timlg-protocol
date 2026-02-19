@@ -45466,6 +45466,42 @@ function ActivityLog({
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.3, color: "#6c7086" }, children: "$ waiting for system events..." }) }) })
   ] });
 }
+function formatDuration(seconds) {
+  if (seconds <= 0) return "0s";
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+function Countdown({ target, label, onEnd }) {
+  const [timeLeft, setTimeLeft] = reactExports.useState(0);
+  const intervalRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    const tick = () => {
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+      setTimeLeft(diff);
+      if (diff <= 0) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        if (onEnd) onEnd();
+      }
+    };
+    tick();
+    intervalRef.current = setInterval(tick, 1e3);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [target, onEnd]);
+  if (timeLeft <= 0) return /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
+    label,
+    " ",
+    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: "0s" })
+  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.8 }, children: [
+    label && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginRight: 4 }, children: label }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(timeLeft / 1e3) })
+  ] });
+}
 const BullIconHead = ({ size = 18, color = "#9CA3AF" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "5 0.5 90 87.5", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
   "path",
   {
@@ -45601,7 +45637,9 @@ function PlayCard({
   guess,
   setGuess,
   doCommitGlobal,
-  globalLoading
+  globalLoading,
+  visualSlot
+  // ✅ Received from App
 }) {
   const log2 = typeof appendLog === "function" ? appendLog : () => {
   };
@@ -45620,7 +45658,7 @@ function PlayCard({
   const [now, setNow] = reactExports.useState(Date.now());
   const [nonceVersion, setNonceVersion] = reactExports.useState(0);
   reactExports.useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 1e3);
+    const timer = setInterval(() => setNow(Date.now()), 100);
     return () => clearInterval(timer);
   }, []);
   const refreshNow = refreshProtocolState;
@@ -45763,36 +45801,16 @@ function PlayCard({
       setLoading(false);
     }
   }
-  const [secondsLeft, setSecondsLeft] = reactExports.useState(null);
-  const deadlineSlotStr = selectedRound?.commitClose;
-  reactExports.useEffect(() => {
+  const commitTargetTs = reactExports.useMemo(() => {
     const cd = selectedRound?._logic?.commitClose;
-    const cs = chainState?.currentSlot;
-    if (cd == null || cs == null) {
-      setSecondsLeft(null);
-      return;
-    }
-    const diff = Number(cd - 10n - BigInt(cs));
-    if (diff <= 0) {
-      setSecondsLeft(0);
-      return;
-    }
-    let initialSecs = Math.max(0, Math.floor(diff * 0.4));
-    setSecondsLeft(initialSecs);
-    const timer = setInterval(() => {
-      setSecondsLeft((s) => s != null && s > 0 ? s - 1 : 0);
-    }, 1e3);
-    return () => clearInterval(timer);
-  }, [deadlineSlotStr, targetPulseIndex]);
-  reactExports.useEffect(() => {
-    const cd = selectedRound?._logic?.commitClose;
-    const cs = chainState?.currentSlot;
-    if (cd == null || cs == null || secondsLeft == null || secondsLeft <= 0) return;
-    const slotBasedEstimate = Math.max(0, Math.floor(Number(cd - 10n - BigInt(cs)) * 0.4));
-    if (Math.abs(slotBasedEstimate - secondsLeft) > 3) {
-      setSecondsLeft(slotBasedEstimate);
-    }
-  }, [chainState?.currentSlot]);
+    const cs = visualSlot || chainState?.currentSlot;
+    const ts = chainState?.ts;
+    if (cd == null || cs == null || ts == null) return null;
+    const diff = Number(cd - 10n - BigInt(Math.floor(cs)));
+    if (diff <= 0) return 0;
+    const anchorTime = ts || Date.now();
+    return anchorTime + diff * 400;
+  }, [selectedRound?._logic?.commitClose, visualSlot, chainState?.currentSlot, chainState?.ts]);
   const curSlot = chainState?.currentSlot;
   const commitDl = selectedRound?._logic?.commitClose;
   const revealDl = selectedRound?._logic?.revealDeadline;
@@ -45876,17 +45894,15 @@ function PlayCard({
         gap: "8px",
         flex: "1 0 0",
         textAlign: "right"
-      }, children: canCommit && secondsLeft != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: {
+      }, children: canCommit && commitTargetTs && commitTargetTs > Date.now() && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
           fontSize: "18px",
           fontWeight: "900",
-          color: secondsLeft < 15 ? "#EF4444" : "#111",
+          color: "#111",
+          // Let Countdown handle colors if needed, or simple black
           letterSpacing: "-0.04em",
           fontFamily: "monospace"
-        }, children: [
-          secondsLeft,
-          "s"
-        ] }),
+        }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: commitTargetTs }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.4, width: "50px", textAlign: "left" }, children: "REMAINING" })
       ] }) })
     ] }),
@@ -46583,6 +46599,10 @@ function RoundTimeline({ activeRound, tickets, claimGraceSlots, currentSlot }) {
     if (cSlot === 0n) return null;
     const getRel = (s) => {
       if (s == null) return null;
+      if (typeof s === "number") {
+        const diff = s - Number(cSlot);
+        return diff >= 0 ? diff : 0;
+      }
       try {
         const val = toBigInt2(s);
         if (val === 0n) return null;
@@ -47655,12 +47675,29 @@ const toBigInt$1 = (v) => {
     throw e;
   }
 };
-const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection, tickets }) {
+const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, roundId: roundId2, rPda, onClose, currentSlot, programPk, claimGraceSlots, connection, tickets, currentSlotTs }) {
   reactExports.useEffect(() => {
     console.log("RoundDetailModal mounted", { roundId: roundId2, programPk, rPda, hasRound: !!round2 });
   }, []);
   const [derivedPda, setDerivedPda] = reactExports.useState(null);
   const [accountStatus, setAccountStatus] = reactExports.useState(null);
+  const [visualSlot, setVisualSlot] = reactExports.useState(currentSlot);
+  reactExports.useEffect(() => {
+    if (currentSlot == null || currentSlotTs == null) {
+      setVisualSlot(currentSlot);
+      return;
+    }
+    const update = () => {
+      const now = Date.now();
+      const elapsed = now - currentSlotTs;
+      const projected = Number(currentSlot) + elapsed / 400;
+      const capped = Math.min(projected, Number(currentSlot) + 20);
+      setVisualSlot(capped);
+    };
+    const timer = setInterval(update, 1e3);
+    update();
+    return () => clearInterval(timer);
+  }, [currentSlot, currentSlotTs]);
   reactExports.useEffect(() => {
     if (!rPda && programPk && roundId2) {
       try {
@@ -47833,7 +47870,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px", fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(currentSlot) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(BigInt(Math.floor(visualSlot || currentSlot || 0))) || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
@@ -47870,7 +47907,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
             activeRound,
             tickets,
             claimGraceSlots,
-            currentSlot
+            currentSlot: visualSlot || currentSlot
           }
         )
       ] })
@@ -47892,13 +47929,6 @@ const idl = {
   errors,
   types
 };
-function formatDuration(seconds) {
-  if (seconds <= 0) return "0s";
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  if (m > 0) return `${m}m ${s}s`;
-  return `${s}s`;
-}
 function MyTickets({
   program,
   connection,
@@ -47912,6 +47942,8 @@ function MyTickets({
   refreshNonce = 0,
   limit = 20,
   currentSlot,
+  currentSlotTs,
+  // ✅ Anchor
   activeRoundId,
   nist,
   claimGraceSlots = 0,
@@ -48324,7 +48356,7 @@ function MyTickets({
           const commitDl = round2?._logic?.commitClose ?? 0n;
           const revealDl = round2?._logic?.revealDeadline ?? 0n;
           const pulseTarget = round2?._logic?.pulseIndexTarget ?? 0n;
-          const cSlot = currentSlot ? BigInt(currentSlot) : 0n;
+          const cSlot = currentSlot ? BigInt(Math.floor(currentSlot)) : 0n;
           const finalized = Boolean(round2?.isFinalized);
           const pulseSet = Boolean(round2?.pulseSet);
           const tokenSettled = Boolean(round2?.tokenSettled);
@@ -48344,10 +48376,9 @@ function MyTickets({
               if (sweepEligible > 0n && cSlot < sweepEligible) {
                 rStatus = "CLAIM WINDOW";
                 const diff = Number(sweepEligible - cSlot);
-                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Claim ends: ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-                ] });
+                const anchorTime = currentSlotTs || Date.now();
+                const timeUntil = anchorTime + diff * 400;
+                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: timeUntil, label: "Claim ends:" });
               } else {
                 rStatus = "ARCHIVED";
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Done" });
@@ -48356,10 +48387,9 @@ function MyTickets({
               rStatus = "OPEN";
               const diff = Number(commitDl - cSlot);
               if (commitDl > 0n && diff > 0) {
-                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Commit ends: ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-                ] });
+                const anchorTime = currentSlotTs || Date.now();
+                const timeUntil = anchorTime + diff * 400;
+                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: timeUntil, label: "Commit ends:" });
               } else {
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Window Open" });
               }
@@ -48370,10 +48400,13 @@ function MyTickets({
               rStatus = "WAITING PULSE";
               if (revealDl > 0n && cSlot > revealDl) {
                 const diff = Number(refundEligible - cSlot);
-                headerTimer = diff > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Refunds in: ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pulse Delayed" });
+                if (diff > 0) {
+                  const anchorTime = currentSlotTs || Date.now();
+                  const timeUntil = anchorTime + diff * 400;
+                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: timeUntil, label: "Refunds in:" });
+                } else {
+                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "Pulse Delayed" });
+                }
               } else {
                 let shown = false;
                 if (pulseTarget && nist?.pulse?.pulseIndex) {
@@ -48384,10 +48417,7 @@ function MyTickets({
                     const targetTs = lastTs + (tarIdx - curIdx) * 6e4 + 12e4;
                     const diffMs = targetTs - Date.now();
                     if (diffMs > 0) {
-                      headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                        "Pulse in ~",
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diffMs / 1e3) })
-                      ] });
+                      headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: targetTs, label: "Pulse in ~" });
                       shown = true;
                     }
                   }
@@ -48397,11 +48427,15 @@ function MyTickets({
             } else if (revealDl > 0n) {
               if (cSlot <= revealDl) {
                 rStatus = "REVEAL OPEN";
-                const diff = Number(revealDl - cSlot);
-                headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { opacity: 0.5 }, children: [
-                  "Reveal ends: ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: formatDuration(diff * 0.45) })
-                ] });
+                if (round2._logic.revealDeadlineTimestamp) {
+                  const endTs = Number(round2._logic.revealDeadlineTimestamp) * 1e3;
+                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: endTs, label: "Reveal ends:" });
+                } else {
+                  const diff = Number(revealDl - cSlot);
+                  const anchorTime = currentSlotTs || Date.now();
+                  const timeUntil = anchorTime + diff * 400;
+                  headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx(Countdown, { target: timeUntil, label: "Reveal ends:" });
+                }
               } else {
                 rStatus = "AWAITING SETTLE";
                 headerTimer = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#888", fontWeight: 400 }, children: "Auto-Settling..." });
@@ -48802,6 +48836,7 @@ function MyTickets({
         programPk,
         rPda: null,
         currentSlot,
+        currentSlotTs,
         claimGraceSlots,
         connection,
         tickets: groupedRounds.find((r) => r.roundId === selectedRound.roundId)?.tickets || selectedRound.tickets,
@@ -60190,7 +60225,9 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
         rewardFeeBps,
         // ✅ Added
         rewardFeePoolPda,
-        deriveTicketPda: (rid, userPk, nonce) => pdaTicket(programId, rid, userPk, nonce)
+        deriveTicketPda: (rid, userPk, nonce) => pdaTicket(programId, rid, userPk, nonce),
+        ts: Date.now()
+        // ✅ Timestamp of this fetch
       });
       const target = latestRoundObjRef.current?.pulseId ?? "N/A";
       setStatusLine(`Pipeline: ${Object.keys(activeRoundsRef.current).length} rounds. Latest Target: ${target}`);
@@ -60207,8 +60244,13 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
       await refreshNow();
     };
     const isCommitOpen = chainState?.round && chainState?.currentSlot != null && chainState.round._logic.commitClose != null && BigInt(chainState.currentSlot) < chainState.round._logic.commitClose;
-    const isActive = chainState?.round && (isCommitOpen || !chainState.round.pulseSet || !chainState.round.isFinalized);
-    const ms = isActive ? 5e3 : 12e3;
+    let isUrgent = false;
+    if (isCommitOpen && chainState?.round?._logic?.commitClose) {
+      const slotsLeft = Number(chainState.round._logic.commitClose) - chainState.currentSlot;
+      if (slotsLeft < 150) isUrgent = true;
+    }
+    const isActive = chainState?.round && (isUrgent || !chainState.round.pulseSet || !chainState.round.isFinalized);
+    const ms = isActive ? 5e3 : 3e4;
     tick();
     const id = setInterval(tick, ms);
     return () => {
@@ -60226,7 +60268,8 @@ const roundCache = /* @__PURE__ */ new Map();
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
-const BASE_POLL_MS = 15e3;
+const BASE_POLL_MS = 3e4;
+const FAST_POLL_MS = 1e4;
 const MAX_BACKOFF_MS = 6e4;
 function bnToNumber(v, fallback = 0) {
   try {
@@ -60507,7 +60550,45 @@ function useUserTickets({
           const finalStatus = claimed ? "CLAIMED" : uiStatus;
           return { ...row, round: round2, guess, win, revealed, claimed, processed, pulseSet, swept, tokenSettled, uiStatus: finalStatus };
         }).filter(Boolean);
-        setRows(next);
+        const claimedTickets = next.filter((r) => r.uiStatus === "CLAIMED");
+        if (claimedTickets.length > 0) {
+          try {
+            const stored = JSON.parse(localStorage.getItem("chronos_history_" + userPubkey.toBase58()) || "[]");
+            const history = Array.isArray(stored) ? stored : [];
+            const newHistory = [...history];
+            claimedTickets.forEach((t) => {
+              const tPkStr = typeof t.ticketPk === "string" ? t.ticketPk : t.ticketPk.toBase58();
+              if (!newHistory.find((h) => {
+                const hPkStr = typeof h.ticketPk === "string" ? h.ticketPk : h.ticketPk?.toBase58?.() || String(h.ticketPk);
+                return hPkStr === tPkStr;
+              })) {
+                newHistory.push({
+                  ...t,
+                  ticketPk: tPkStr,
+                  roundId: t.roundId,
+                  uiStatus: "CLAIMED",
+                  timestamp: Date.now()
+                });
+              }
+            });
+            localStorage.setItem("chronos_history_" + userPubkey.toBase58(), JSON.stringify(newHistory, (key2, value) => {
+              return typeof value === "bigint" ? value.toString() : value;
+            }));
+          } catch (e) {
+            console.warn("Persistence error:", e);
+          }
+        }
+        let localHistoryRaw = [];
+        try {
+          localHistoryRaw = JSON.parse(localStorage.getItem("chronos_history_" + userPubkey.toBase58()) || "[]");
+          if (!Array.isArray(localHistoryRaw)) localHistoryRaw = [];
+        } catch (e) {
+          localHistoryRaw = [];
+        }
+        const liveIds = new Set(next.map((t) => t.ticketPk.toBase58()));
+        const historyToShow = localHistoryRaw.filter((h) => h && h.ticketPk && !liveIds.has(h.ticketPk));
+        const combinedRows = [...next, ...historyToShow].sort((a, b) => b.roundId - a.roundId);
+        setRows(combinedRows);
         setLastUpdatedAt(Date.now());
         backoffMsRef.current = BASE_POLL_MS;
         nextAllowedAtRef.current = 0;
@@ -60548,11 +60629,15 @@ function useUserTickets({
     const tick = async () => {
       if (stopped) return;
       await refresh("poll");
-      timer = setTimeout(tick, BASE_POLL_MS);
+      const hasPending2 = rows.some((r) => r.uiStatus === "PENDING" || r.uiStatus === "CLAIM");
+      const nextMs = hasPending2 ? FAST_POLL_MS : BASE_POLL_MS;
+      timer = setTimeout(tick, nextMs);
     };
+    const hasPending = rows.some((r) => r.uiStatus === "PENDING" || r.uiStatus === "CLAIM");
+    const pollMs = hasPending ? FAST_POLL_MS : BASE_POLL_MS;
     const initialDelay = 800 + Math.floor(Math.random() * 1200);
     timer = setTimeout(() => refresh("init"), initialDelay);
-    const timer2 = setTimeout(tick, BASE_POLL_MS);
+    const timer2 = setTimeout(tick, pollMs);
     return () => {
       stopped = true;
       if (timer) clearTimeout(timer);
@@ -60975,7 +61060,11 @@ function useUserTickets({
     doCloseTicket,
     injectOptimisticTicket: (newRow) => {
       setRows((prev) => {
-        const exists = prev.some((r) => r.ticketPk.toBase58() === newRow.ticketPk.toBase58());
+        const exists = prev.some((r) => {
+          const rPkStr = typeof r.ticketPk === "string" ? r.ticketPk : r.ticketPk?.toBase58?.() || String(r.ticketPk);
+          const nPkStr = typeof newRow.ticketPk === "string" ? newRow.ticketPk : newRow.ticketPk?.toBase58?.() || String(newRow.ticketPk);
+          return rPkStr === nPkStr;
+        });
         if (exists) return prev;
         return [newRow, ...prev];
       });
@@ -61071,7 +61160,7 @@ function App() {
     idl
   });
   const nist = useNistPulse({ chainId: 2 });
-  const { chainState, statusLine: protocolStatus, refreshNow: refreshProtocolState } = useProtocolState({
+  const { chainState, statusLine: protocolStatus, refreshNow: refreshProtocolState, visualSlot } = useProtocolState({
     rpcUrl: RPC_URL,
     connection,
     // Re-use the existing connection object
@@ -62243,7 +62332,8 @@ Domain: timlg.org`;
             doRefundTicket,
             doSettleRound,
             doCloseTicket,
-            currentSlot: chainState?.currentSlot,
+            currentSlot: visualSlot || chainState?.currentSlot,
+            currentSlotTs: chainState?.ts,
             claimGraceSlots: chainState?.config?.claimGraceSlots,
             activeRoundId: chainState?.roundId ?? null,
             nist,
