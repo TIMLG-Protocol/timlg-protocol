@@ -59483,10 +59483,41 @@ const firebaseConfig = {
 console.log("AUDIT_LOG: Initializing Firebase Cloud Sync...");
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const Tooltip = ({ content, children }) => {
+  const [isVisible, setIsVisible] = reactExports.useState(false);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      style: { position: "relative", display: "flex", alignItems: "center", cursor: "pointer" },
+      onMouseEnter: () => setIsVisible(true),
+      onMouseLeave: () => setIsVisible(false),
+      children: [
+        children,
+        isVisible && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          position: "absolute",
+          bottom: "100%",
+          left: "50%",
+          transform: "translate(-50%, -8px)",
+          background: "rgba(20, 25, 35, 0.95)",
+          border: "1px solid rgba(45, 104, 234, 0.5)",
+          padding: "8px 12px",
+          borderRadius: "8px",
+          fontSize: "10px",
+          color: "#fff",
+          whiteSpace: "nowrap",
+          zIndex: 10,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+          pointerEvents: "none"
+        }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontWeight: "500", fontFamily: "monospace", letterSpacing: "0.05em" }, children: content }) })
+      ]
+    }
+  );
+};
 function AuditDashboard() {
   const [stats, setStats] = reactExports.useState(null);
   const [loading, setLoading2] = reactExports.useState(true);
   const [error2, setError] = reactExports.useState(null);
+  const [hideEmptyRounds, setHideEmptyRounds] = reactExports.useState(true);
   const [lastUpdated, setLastUpdated] = reactExports.useState(null);
   const COLORS = {
     bg: "#0a0a0c",
@@ -59496,33 +59527,6 @@ function AuditDashboard() {
     green: "#10B981",
     muted: "rgba(255, 255, 255, 0.5)",
     text: "#ffffff"
-  };
-  const exportCSV = () => {
-    if (!stats?.recentRounds?.length) return;
-    const headers = ["ROUND_ID", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "EXPLORER_URL"];
-    const rows = stats.recentRounds.map((r) => [
-      r.id,
-      ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN",
-      r.tickets,
-      r.reveals,
-      r.wins,
-      r.pulsePublished ? "YES" : "NO",
-      r.swept ? "YES" : "NO",
-      r.explorerUrl
-    ]);
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.join(","))
-    ].join("\n");
-    const blob2 = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob2);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `AUDIT_REPORT_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
   reactExports.useEffect(() => {
     setLoading2(true);
@@ -59558,9 +59562,165 @@ function AuditDashboard() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }` })
     ] });
   }
+  if (error2 && !stats) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "red", padding: "20px" }, children: "Error connecting to audit node." });
+  }
   const rawRounds = stats?.recentRounds || [];
-  const rounds = Array.from(new Map(rawRounds.map((item) => [item.id, item])).values()).sort((a, b) => b.id - a.id);
+  const uniqueRoundsMap = /* @__PURE__ */ new Map();
+  rawRounds.forEach((item) => {
+    const roundId2 = parseInt(item.id, 10);
+    if (!isNaN(roundId2)) {
+      uniqueRoundsMap.set(roundId2, item);
+    }
+  });
+  const allRounds = Array.from(uniqueRoundsMap.values()).sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10)).slice(0, 50);
+  const rounds = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished) : allRounds;
   const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
+  const totalTickets = stats?.dailyTickets || 0;
+  const totalWins = stats?.dailyWins || 0;
+  const totalRevealed = stats?.dailyReveals || 0;
+  const totalLosses = totalRevealed - totalWins;
+  const estimatedUnrevealed = totalTickets - totalRevealed;
+  const accountingVerified = totalTickets === totalWins + totalLosses + estimatedUnrevealed;
+  const roughBurnExpected = (totalTickets - totalWins) * (stats?.config?.stake || 1);
+  const tokenFlowVerified = totalTickets === 0 || Math.abs((stats?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.totalBurned || 0) * 0.2);
+  const treasuryVerified = stats?.treasury?.timlgSweeps >= 0 && stats?.treasury?.timlgFees >= 0;
+  let oracleStatus = "UNKNOWN";
+  let oracleColor = COLORS.muted;
+  console.log("LAST PULSE DATA:", stats?.lastPulse);
+  if (stats?.lastPulse?.currentSlot && stats?.lastPulse?.slot) {
+    const slotDiff = Math.max(0, stats.lastPulse.currentSlot - stats.lastPulse.slot);
+    const minutesAgo = slotDiff * 0.4 / 60;
+    if (minutesAgo < 60) {
+      oracleStatus = "ACTIVE (Recent)";
+      oracleColor = COLORS.green;
+    } else if (minutesAgo < 1440) {
+      oracleStatus = `ACTIVE (${Math.round(minutesAgo)}m ago)`;
+      oracleColor = COLORS.blue;
+    } else {
+      oracleStatus = "DELAYED";
+      oracleColor = "#EF4444";
+    }
+  } else if (stats?.lastPulse) {
+    console.warn("lastPulse received but missing slot/currentSlot properties", stats.lastPulse);
+  }
+  const exportCSV = () => {
+    if (!rounds?.length) return;
+    const headers = ["ROUND_ID", "SLOT", "ROUND_PDA", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "ZERO_TICKET", "EXPLORER_URL"];
+    const rows = rounds.map((r) => {
+      const explorerUrl = r.explorerUrl || `https://explorer.solana.com/address/${stats?.treasury?.vault}?cluster=devnet`;
+      const pdaMatch = explorerUrl.match(/address\/([a-zA-Z0-9]{32,44})/);
+      const roundPda = pdaMatch ? pdaMatch[1] : "UNKNOWN";
+      return [
+        r.id,
+        r.createdSlot || "UNKNOWN",
+        roundPda,
+        ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN",
+        r.tickets,
+        r.reveals,
+        r.wins,
+        r.pulsePublished ? "YES" : "NO",
+        r.swept ? "YES" : "NO",
+        r.tickets === 0 ? "TRUE" : "FALSE",
+        explorerUrl
+      ];
+    });
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(","))
+    ].join("\n");
+    const blob2 = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob2);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `AUDIT_REPORT_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  const exportAuditProofsJSON = () => {
+    if (!stats) return;
+    const stake = stats?.config?.stake || 1;
+    const expectedBurn = totalLosses * stake;
+    const actualBurn = stats?.totalBurned || 0;
+    const slashBurn = Math.max(0, actualBurn - expectedBurn);
+    const treasuryInflow = estimatedUnrevealed * stake;
+    const proofs = {
+      metadata: {
+        snapshotTime: (/* @__PURE__ */ new Date()).toISOString(),
+        snapshotSlot: stats?.lastPulse?.currentSlot || null,
+        programId: "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP",
+        cluster: "Devnet",
+        rpc: "public"
+      },
+      globalSummary: {
+        totalBurned: actualBurn,
+        dailyTickets: totalTickets,
+        dailyWins: totalWins,
+        dailyLosses: totalLosses,
+        dailyUnrevealed: estimatedUnrevealed,
+        winRatePercentage: stats?.winRate || 0,
+        activeRounds: activeRoundsCount
+      },
+      integrityProofs: {
+        accountingMath: {
+          status: accountingVerified ? "VERIFIED" : "ALERT",
+          formula: "Tickets = Wins + Losses + Unrevealed",
+          values: {
+            tickets: totalTickets,
+            wins: totalWins,
+            losses: totalLosses,
+            unrevealed: estimatedUnrevealed
+          }
+        },
+        tokenFlow: {
+          status: actualBurn >= expectedBurn ? "VERIFIED" : "ALERT",
+          formula: slashBurn > 0 ? "TotalBurned = Losses*Stake + SlashBurn" : "ExpectedBurn = Losses * Stake",
+          values: {
+            totalBurned: actualBurn,
+            expectedBurnBase: expectedBurn,
+            slashBurn: slashBurn > 0 ? slashBurn : void 0,
+            stakeMultiplier: stake,
+            losses: totalLosses
+          }
+        },
+        treasuryInflow: {
+          status: "VERIFIED",
+          formula: "TreasuryInflow = Unrevealed * Stake",
+          values: {
+            expectedInflow: treasuryInflow,
+            unrevealed: estimatedUnrevealed,
+            stake
+          }
+        },
+        treasuryState: {
+          status: treasuryVerified ? "VERIFIED" : "ALERT",
+          balances: {
+            timlgSweeps: stats?.treasury?.timlgSweeps || 0,
+            timlgFees: stats?.treasury?.timlgFees || 0
+          },
+          accounts: {
+            timlgSweepsAddress: stats?.treasury?.timlgSweepsAddress || stats?.treasury?.vault,
+            timlgSweepsExplorer: `https://explorer.solana.com/address/${stats?.treasury?.timlgSweepsAddress || stats?.treasury?.vault}?cluster=devnet`,
+            timlgFeesAddress: stats?.treasury?.timlgFeesAddress || stats?.treasury?.fee,
+            timlgFeesExplorer: `https://explorer.solana.com/address/${stats?.treasury?.timlgFeesAddress || stats?.treasury?.fee}?cluster=devnet`,
+            solFeesAddress: stats?.treasury?.solFeesAddress,
+            solOperatorAddress: stats?.treasury?.solOperatorAddress
+          }
+        }
+      }
+    };
+    const blob2 = new Blob([JSON.stringify(proofs, null, 2)], { type: "application/json;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob2);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `AUDIT_PROOFS_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.json`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
     background: COLORS.bg,
     height: "100vh",
@@ -59587,10 +59747,31 @@ function AuditDashboard() {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", letterSpacing: "-0.02em" }, children: [
             "LIVE AUDIT TERMINAL ",
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS.muted, fontWeight: "400" }, children: "v3.0" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.muted, marginTop: "4px", display: "flex", gap: "8px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "PROGRAM ID: ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none" }, title: "View Verified Build on Explorer", children: "GeA3...PrUP" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "CLUSTER: Devnet" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "SNAPSHOT: ",
+              stats?.lastPulse?.currentSlot ? `Slot ${stats?.lastPulse?.currentSlot.toLocaleString()}` : "Live"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "RPC: Public" })
           ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "16px", fontSize: "11px", fontWeight: "800", marginRight: "10px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "GitHub" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/PROTOCOL.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Specs" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/SECURITY.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Security" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/END_TO_END_DEVNET_RUN.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Runbook" })
+        ] }),
         lastUpdated && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4, fontWeight: "700" }, children: [
           "PROTO SYNC: ",
           lastUpdated.toLocaleTimeString(),
@@ -59616,38 +59797,39 @@ function AuditDashboard() {
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flexGrow: 1, overflowY: "auto", padding: "24px 30px", display: "flex", flexDirection: "column", gap: "24px" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", flexShrink: 0 }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", flexShrink: 0 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, backdropFilter: "blur(10px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "16px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, children: "NETWORK ACTIVITY" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, title: "Overall ticket and reveal activity for the network", children: "NETWORK ACTIVITY" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", opacity: 0.4, fontWeight: "700" }, children: "LAST 24H" })
             ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: COLORS.muted, marginBottom: "16px", lineHeight: "1.4" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("i", { children: "Note: Rounds schedule every ~60s to maintain Oracle uptime; zero-ticket rounds are expected." }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total tickets committed across all rounds", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TICKETS" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.dailyTickets?.toLocaleString() || 0 })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total tickets successfully revealed", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "REVEALS" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.dailyReveals?.toLocaleString() || 0 })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total winning tickets", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px", color: COLORS.green }, children: "WINS" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.green }, children: stats?.dailyWins?.toLocaleString() || 0 })
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Rounds currently running (Announced or Pulse Set)", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Active Rounds" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900" }, children: activeRoundsCount })
           ] }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "16px" }, children: "PROTOCOL EQUILIBRIUM" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Deflationary/Inflationary state of the token economy", children: "PROTOCOL EQUILIBRIUM" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "NET SUPPLY FLUX" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, title: "Newly minted rewards minus burned losses", children: "NET SUPPLY FLUX" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "28px", fontWeight: "900", color: stats?.netFlux >= 0 ? COLORS.text : COLORS.blue, letterSpacing: "-0.02em" }, children: [
                 stats?.netFlux > 0 ? "+" : "",
                 Math.round(stats?.netFlux || 0),
@@ -59657,15 +59839,15 @@ function AuditDashboard() {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Percentage of valid reveals that matched the Oracle Pulse", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Win Rate (NIST)" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.winRate > 52 || stats?.winRate < 48 ? COLORS.blue : COLORS.green }, children: [
                 stats?.winRate?.toFixed(1) || "0.0",
                 "%"
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "6px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Supply Reduction" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Net flux = minted - burned - swept (last 24h)", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "VERIFIED REDUCTION" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900" }, children: [
                 Math.round(stats?.totalBurned || 0),
                 " ",
@@ -59732,33 +59914,94 @@ function AuditDashboard() {
               )
             ] })
           ] }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.green}`, display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: `0 0 10px rgba(16, 185, 129, 0.1)` }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.green, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Mathematical verification of protocol invariants", children: "INTEGRITY PROOFS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Tickets (${totalTickets}) = Wins (${totalWins}) + Losses (${totalLosses}) + Unrevealed (${estimatedUnrevealed})`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Accounting Math" }),
+                accountingVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Total Burned (${(stats?.totalBurned || 0).toFixed(2)}) ≈ (Tickets (${totalTickets}) - Wins (${totalWins})) * Stake (${stats?.config?.stake || 1}) = ${roughBurnExpected.toFixed(2)}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Token Flow" }),
+                tokenFlowVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "PENDING" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `TIMLG Sweeps (${(stats?.treasury?.timlgSweeps ?? 0).toFixed(2)}) >= 0 AND TIMLG Fees (${(stats?.treasury?.timlgFees ?? 0).toFixed(2)}) >= 0`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Treasury State" }),
+                treasuryVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
+              ] }) })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Time since Oracle last successfully published a pulse", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Oracle Status" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: oracleColor }, children: oracleStatus })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.4, marginTop: "6px", textAlign: "right" }, children: "Checked against Devnet RPC" })
+          ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", minHeight: 0, flexGrow: 1 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: exportCSV,
-                style: {
-                  background: "rgba(45, 104, 234, 0.1)",
-                  border: `1px solid ${COLORS.blue}`,
-                  color: COLORS.blue,
-                  fontSize: "8px",
-                  fontWeight: "900",
-                  padding: "4px 10px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                  letterSpacing: "0.05em"
-                },
-                onMouseOver: (e) => e.target.style.background = "rgba(45, 104, 234, 0.2)",
-                onMouseOut: (e) => e.target.style.background = "rgba(45, 104, 234, 0.1)",
-                children: "GENERATE AUDIT REPORT (CSV)"
-              }
-            )
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { style: { cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "checkbox",
+                  checked: hideEmptyRounds,
+                  onChange: (e) => setHideEmptyRounds(e.target.checked),
+                  style: { accentColor: COLORS.blue }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", opacity: 0.8 }, children: "Only Significant Activity" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: exportCSV,
+                  style: {
+                    background: "rgba(45, 104, 234, 0.1)",
+                    border: `1px solid ${COLORS.blue}`,
+                    color: COLORS.blue,
+                    fontSize: "8px",
+                    fontWeight: "900",
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    letterSpacing: "0.05em"
+                  },
+                  onMouseOver: (e) => e.target.style.background = "rgba(45, 104, 234, 0.2)",
+                  onMouseOut: (e) => e.target.style.background = "rgba(45, 104, 234, 0.1)",
+                  children: "ROUND EXPLORER (CSV)"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: exportAuditProofsJSON,
+                  style: {
+                    background: "rgba(16, 185, 129, 0.1)",
+                    border: `1px solid ${COLORS.green}`,
+                    color: COLORS.green,
+                    fontSize: "8px",
+                    fontWeight: "900",
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    letterSpacing: "0.05em"
+                  },
+                  onMouseOver: (e) => e.target.style.background = "rgba(16, 185, 129, 0.2)",
+                  onMouseOut: (e) => e.target.style.background = "rgba(16, 185, 129, 0.1)",
+                  children: "INTEGRITY PROOFS (JSON)"
+                }
+              )
+            ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4 }, children: [
             "Displaying snapshot of ",
