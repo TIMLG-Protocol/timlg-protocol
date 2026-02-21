@@ -59488,7 +59488,7 @@ const Tooltip = ({ content, children }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
-      style: { position: "relative", display: "flex", alignItems: "center", cursor: "pointer" },
+      style: { position: "relative", display: "flex", alignItems: "center", cursor: "pointer", width: "100%" },
       onMouseEnter: () => setIsVisible(true),
       onMouseLeave: () => setIsVisible(false),
       children: [
@@ -59513,12 +59513,82 @@ const Tooltip = ({ content, children }) => {
     }
   );
 };
+const VerificationModal = ({ isOpen, onClose, title, formula, data, slot, explorerLinks }) => {
+  if (!isOpen) return null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    background: "rgba(0,0,0,0.85)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1e3,
+    backdropFilter: "blur(4px)"
+  }, onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    background: "#0f1115",
+    border: "1px solid rgba(45, 104, 234, 0.4)",
+    borderRadius: "20px",
+    padding: "30px",
+    maxWidth: "500px",
+    width: "90%",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.5)"
+  }, onClick: (e) => e.stopPropagation(), children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "18px", color: "#fff" }, children: title }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, style: { background: "none", border: "none", color: "#fff", fontSize: "24px", cursor: "pointer", opacity: 0.5 }, children: "×" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(45, 104, 234, 0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(45, 104, 234, 0.2)", marginBottom: "20px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", color: "#5c8aea", fontWeight: "900", marginBottom: "8px", letterSpacing: "0.1em" }, children: "VERIFICATION FORMULA" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontFamily: "monospace", fontSize: "13px", color: "#fff", wordBreak: "break-all" }, children: formula })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", color: "rgba(255,255,255,0.4)", fontWeight: "900", letterSpacing: "0.1em" }, children: [
+        "SNAPSHOT DATA (Slot ",
+        slot || "N/A",
+        ")"
+      ] }),
+      data.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "13px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: item.label }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontFamily: "monospace", fontWeight: "700" }, children: item.value })
+      ] }, i))
+    ] }),
+    explorerLinks && explorerLinks.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { borderTop: "1px solid rgba(255,255,255,0.1)", pt: "15px", display: "flex", flexDirection: "column", gap: "8px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", color: "rgba(255,255,255,0.4)", fontWeight: "900", letterSpacing: "0.1em", marginTop: "15px" }, children: "ON-CHAIN EVIDENCE" }),
+      explorerLinks.map((link, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: link.url, target: "_blank", rel: "noreferrer", style: { fontSize: "12px", color: "#5c8aea", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }, children: [
+        "🔗 ",
+        link.label
+      ] }, i))
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, style: {
+      width: "100%",
+      padding: "12px",
+      background: "#2D68EA",
+      color: "#fff",
+      border: "none",
+      borderRadius: "10px",
+      marginTop: "25px",
+      fontWeight: "700",
+      cursor: "pointer"
+    }, children: "CLOSE PROOF" })
+  ] }) });
+};
 function AuditDashboard() {
   const [stats, setStats] = reactExports.useState(null);
   const [loading, setLoading2] = reactExports.useState(true);
   const [error2, setError] = reactExports.useState(null);
   const [hideEmptyRounds, setHideEmptyRounds] = reactExports.useState(true);
   const [lastUpdated, setLastUpdated] = reactExports.useState(null);
+  const [exportRangeMode, setExportRangeMode] = reactExports.useState("CURRENT");
+  const [exportLastX, setExportLastX] = reactExports.useState(100);
+  const [exportStartId, setExportStartId] = reactExports.useState("");
+  const [exportEndId, setExportEndId] = reactExports.useState("");
+  const [exportSingleId, setExportSingleId] = reactExports.useState("");
+  const [isExporting, setIsExporting] = reactExports.useState(false);
+  const [activeModal, setActiveModal] = reactExports.useState(null);
+  const MAX_EXPORT_ROUNDS = 1e3;
   const COLORS = {
     bg: "#0a0a0c",
     cardBg: "rgba(45, 104, 234, 0.05)",
@@ -59583,7 +59653,8 @@ function AuditDashboard() {
   const estimatedUnrevealed = totalTickets - totalRevealed;
   const accountingVerified = totalTickets === totalWins + totalLosses + estimatedUnrevealed;
   const roughBurnExpected = (totalTickets - totalWins) * (stats?.config?.stake || 1);
-  const tokenFlowVerified = totalTickets === 0 || Math.abs((stats?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.totalBurned || 0) * 0.2);
+  (stats?.totalPayouts || 0) * 0.0101;
+  const tokenFlowVerified = totalTickets === 0 || Math.abs((stats?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.totalBurned || 0) * 0.1);
   const treasuryVerified = stats?.treasury?.timlgSweeps >= 0 && stats?.treasury?.timlgFees >= 0;
   let oracleStatus = "UNKNOWN";
   let oracleColor = COLORS.muted;
@@ -59604,40 +59675,101 @@ function AuditDashboard() {
   } else if (stats?.lastPulse) {
     console.warn("lastPulse received but missing slot/currentSlot properties", stats.lastPulse);
   }
-  const exportCSV = () => {
-    if (!rounds?.length) return;
-    const headers = ["ROUND_ID", "SLOT", "ROUND_PDA", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "ZERO_TICKET", "EXPLORER_URL"];
-    const rows = rounds.map((r) => {
-      const explorerUrl = r.explorerUrl || `https://explorer.solana.com/address/${stats?.treasury?.vault}?cluster=devnet`;
-      const pdaMatch = explorerUrl.match(/address\/([a-zA-Z0-9]{32,44})/);
-      const roundPda = pdaMatch ? pdaMatch[1] : "UNKNOWN";
-      return [
-        r.id,
-        r.createdSlot || "UNKNOWN",
-        roundPda,
-        ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN",
-        r.tickets,
-        r.reveals,
-        r.wins,
-        r.pulsePublished ? "YES" : "NO",
-        r.swept ? "YES" : "NO",
-        r.tickets === 0 ? "TRUE" : "FALSE",
-        explorerUrl
-      ];
-    });
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.join(","))
-    ].join("\n");
-    const blob2 = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob2);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `AUDIT_REPORT_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const exportCSV = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      let roundsToExport = [];
+      if (exportRangeMode === "CURRENT") {
+        roundsToExport = rounds;
+      } else {
+        const allAvailableRounds = /* @__PURE__ */ new Map();
+        if (stats?.archive) {
+          Object.entries(stats.archive).forEach(([id, r]) => {
+            allAvailableRounds.set(parseInt(id, 10), r);
+          });
+        }
+        rawRounds.forEach((r) => {
+          allAvailableRounds.set(parseInt(r.id, 10), r);
+        });
+        if (exportRangeMode === "LAST_X") {
+          roundsToExport = Array.from(allAvailableRounds.values()).sort((a, b) => b.id - a.id).slice(0, exportLastX);
+        } else if (exportRangeMode === "RANGE") {
+          const start = parseInt(exportStartId, 10);
+          const end = parseInt(exportEndId, 10);
+          if (isNaN(start) || isNaN(end)) {
+            alert("Please enter valid numeric Round IDs for the range.");
+            return;
+          }
+          const min = Math.min(start, end);
+          const max = Math.max(start, end);
+          roundsToExport = Array.from(allAvailableRounds.values()).filter((r) => r.id >= min && r.id <= max).sort((a, b) => b.id - a.id);
+        } else if (exportRangeMode === "SINGLE") {
+          const sid = parseInt(exportSingleId, 10);
+          if (isNaN(sid)) {
+            alert("Please enter a valid numeric Round ID.");
+            return;
+          }
+          const match = allAvailableRounds.get(sid);
+          if (match) roundsToExport = [match];
+        }
+      }
+      if (!roundsToExport?.length) {
+        alert("No rounds found in the selected range.");
+        return;
+      }
+      if (roundsToExport.length > MAX_EXPORT_ROUNDS) {
+        alert(`Export too large (${roundsToExport.length} rounds). Please select a smaller range (Max: ${MAX_EXPORT_ROUNDS} rounds).`);
+        return;
+      }
+      const headers = ["ROUND_ID", "SLOT", "ROUND_PDA", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "ZERO_TICKET", "COMMIT_OPEN", "COMMIT_CLOSE", "PULSE_SLOT", "REVEAL_DL", "FINALIZED_AT", "SETTLED_AT", "SWEPT_AT", "PULSE_HASH", "PULSE_TX", "SWEEP_TX", "EXPLORER_URL"];
+      const rows = roundsToExport.map((r) => {
+        const explorerUrl = r.explorerUrl || `https://explorer.solana.com/address/${stats?.treasury?.vault}?cluster=devnet`;
+        const pdaMatch = explorerUrl.match(/address\/([a-zA-Z0-9]{32,44})/);
+        const roundPda = pdaMatch ? pdaMatch[1] : "UNKNOWN";
+        return [
+          r.id,
+          r.createdSlot || "UNKNOWN",
+          roundPda,
+          ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN",
+          r.tickets,
+          r.reveals,
+          r.wins,
+          r.pulsePublished ? "YES" : "NO",
+          r.swept ? "YES" : "NO",
+          r.tickets === 0 ? "TRUE" : "FALSE",
+          r.commitOpen || "",
+          r.commitClose || "",
+          r.pulseSlot || "",
+          r.revealDeadline || "",
+          r.finalizedAt || "",
+          r.settledAt || "",
+          r.sweptAt || "",
+          r.pulseHash || "",
+          r.pulseTx || "",
+          r.sweepTx || "",
+          explorerUrl
+        ];
+      });
+      const csvContent = [
+        headers.join(","),
+        ...rows.map((row) => row.join(","))
+      ].join("\n");
+      const blob2 = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob2);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `AUDIT_REPORT_${exportRangeMode}_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert("Unexpected error during export.");
+    } finally {
+      setIsExporting(false);
+    }
   };
   const exportAuditProofsJSON = () => {
     if (!stats) return;
@@ -59645,7 +59777,7 @@ function AuditDashboard() {
     const expectedBurn = totalLosses * stake;
     const actualBurn = stats?.totalBurned || 0;
     const slashBurn = Math.max(0, actualBurn - expectedBurn);
-    const treasuryInflow = estimatedUnrevealed * stake;
+    const treasuryInflow2 = estimatedUnrevealed * stake;
     const proofs = {
       metadata: {
         snapshotTime: (/* @__PURE__ */ new Date()).toISOString(),
@@ -59689,7 +59821,7 @@ function AuditDashboard() {
           status: "VERIFIED",
           formula: "TreasuryInflow = Unrevealed * Stake",
           values: {
-            expectedInflow: treasuryInflow,
+            expectedInflow: treasuryInflow2,
             unrevealed: estimatedUnrevealed,
             stake
           }
@@ -59708,7 +59840,28 @@ function AuditDashboard() {
             solFeesAddress: stats?.treasury?.solFeesAddress,
             solOperatorAddress: stats?.treasury?.solOperatorAddress
           }
-        }
+        },
+        roundsMetadata: rounds.map((r) => ({
+          id: r.id,
+          slots: {
+            created: r.commitOpen,
+            commitDeadline: r.commitClose,
+            pulseSet: r.pulseSlot,
+            revealDeadline: r.revealDeadline,
+            finalized: r.finalizedAt,
+            settled: r.settledAt,
+            swept: r.sweptAt
+          },
+          oracle: {
+            pulseHash: r.pulseHash,
+            pulseId: r.pulseId
+          },
+          stats: {
+            tickets: r.tickets,
+            reveals: r.reveals,
+            wins: r.wins
+          }
+        }))
       }
     };
     const blob2 = new Blob([JSON.stringify(proofs, null, 2)], { type: "application/json;charset=utf-8;" });
@@ -59744,9 +59897,32 @@ function AuditDashboard() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "40px", height: "40px", background: COLORS.blue, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 15px ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 26, color: "#fff" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.2em" }, children: "NETWORK INTEGRITY" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", letterSpacing: "-0.02em" }, children: [
-            "LIVE AUDIT TERMINAL ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS.muted, fontWeight: "400" }, children: "v3.0" })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", letterSpacing: "-0.02em" }, children: [
+              "LIVE AUDIT TERMINAL ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS.muted, fontWeight: "400" }, children: "v3.0" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "a",
+              {
+                href: "index.html?mode=audit",
+                target: "_blank",
+                style: { color: COLORS.blue, opacity: 0.6, transition: "all 0.2s", display: "flex", alignItems: "center", marginLeft: "8px" },
+                title: "Open in New Tab",
+                onMouseOver: (e) => {
+                  e.currentTarget.style.opacity = "1";
+                  e.currentTarget.style.transform = "scale(1.1)";
+                },
+                onMouseOut: (e) => {
+                  e.currentTarget.style.opacity = "0.6";
+                  e.currentTarget.style.transform = "scale(1)";
+                },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { fill: "currentColor", width: "32", height: "32", viewBox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M14.93,9.36a.38.38,0,0,0-.37.38V13a.76.76,0,0,1-.75.75H6.19A.76.76,0,0,1,5.44,13V6.89a.75.75,0,0,1,.75-.74h3.94a.38.38,0,0,0,.38-.38.37.37,0,0,0-.38-.37H6.19a1.5,1.5,0,0,0-1.5,1.49V13a1.51,1.51,0,0,0,1.5,1.5h7.62a1.51,1.51,0,0,0,1.5-1.5V9.74A.38.38,0,0,0,14.93,9.36Z" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12.06,6.18H14L9.61,9.81a.38.38,0,0,0,.24.67.38.38,0,0,0,.24-.09l4.45-3.7,0,1.56a.38.38,0,0,0,.37.37h0a.38.38,0,0,0,.38-.38l0-2.42a.37.37,0,0,0-.37-.37l-2.85,0h0a.38.38,0,0,0,0,.75Z" })
+                ] })
+              }
+            )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.muted, marginTop: "4px", display: "flex", gap: "8px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
@@ -59839,7 +60015,7 @@ function AuditDashboard() {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Percentage of valid reveals that matched the Oracle Pulse", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Bernoulli verification: Actual wins / Total reveals (matches Oracle Pulse)", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Win Rate (NIST)" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.winRate > 52 || stats?.winRate < 48 ? COLORS.blue : COLORS.green }, children: [
                 stats?.winRate?.toFixed(1) || "0.0",
@@ -59867,6 +60043,22 @@ function AuditDashboard() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL TIMLG" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", opacity: 0.8 }, children: ((stats?.treasury?.timlgFees ?? 0) + (stats?.treasury?.timlgSweeps ?? 0)).toFixed(1) })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { cursor: "pointer" }, onClick: () => setActiveModal("config"), children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: "SOL Service Fee" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS.blue, textDecoration: "underline" }, children: [
+                  stats?.config?.solServiceFee?.toFixed(4) || "0.0000",
+                  " SOL"
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { cursor: "pointer", textAlign: "right" }, onClick: () => setActiveModal("config"), children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: "Reward Fee" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS.blue, textDecoration: "underline" }, children: [
+                  stats?.config?.fee?.toFixed(1) || "0.0",
+                  "%"
+                ] })
               ] })
             ] })
           ] }),
@@ -59919,141 +60111,323 @@ function AuditDashboard() {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.green, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Mathematical verification of protocol invariants", children: "INTEGRITY PROOFS" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Tickets (${totalTickets}) = Wins (${totalWins}) + Losses (${totalLosses}) + Unrevealed (${estimatedUnrevealed})`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Tickets (${totalTickets}) = Wins (${totalWins}) + Losses (${totalLosses}) + Unrevealed (${estimatedUnrevealed})`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Accounting Math" }),
-                accountingVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
+                accountingVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: () => setActiveModal("accounting"),
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    children: "VERIFIED"
+                  }
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
               ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Total Burned (${(stats?.totalBurned || 0).toFixed(2)}) ≈ (Tickets (${totalTickets}) - Wins (${totalWins})) * Stake (${stats?.config?.stake || 1}) = ${roughBurnExpected.toFixed(2)}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Burned (${(stats?.totalBurned || 0).toFixed(2)}) ≈ (Losses + Unrevealed) * Stake = ${roughBurnExpected.toFixed(2)}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Token Flow" }),
-                tokenFlowVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "PENDING" })
+                tokenFlowVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: () => setActiveModal("tokenomics"),
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    children: "VERIFIED"
+                  }
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "PENDING" })
               ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `TIMLG Sweeps (${(stats?.treasury?.timlgSweeps ?? 0).toFixed(2)}) >= 0 AND TIMLG Fees (${(stats?.treasury?.timlgFees ?? 0).toFixed(2)}) >= 0`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `TIMLG Sweeps (${(stats?.treasury?.timlgSweeps ?? 0).toFixed(2)}) >= 0 AND TIMLG Fees (${(stats?.treasury?.timlgFees ?? 0).toFixed(2)}) >= 0`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Treasury State" }),
-                treasuryVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)` }, children: "VERIFIED" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
+                treasuryVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: () => setActiveModal("treasury"),
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    children: "VERIFIED"
+                  }
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
               ] }) })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}`, display: "flex", flexDirection: "column", gap: "10px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Time since Oracle last successfully published a pulse", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Oracle Status" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: oracleColor }, children: oracleStatus })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.4, marginTop: "6px", textAlign: "right" }, children: "Checked against Devnet RPC" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: exportAuditProofsJSON,
+                style: {
+                  width: "100%",
+                  background: "rgba(16, 185, 129, 0.1)",
+                  border: `1px solid ${COLORS.green}`,
+                  color: COLORS.green,
+                  fontSize: "9px",
+                  fontWeight: "900",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  letterSpacing: "0.05em"
+                },
+                onMouseOver: (e) => e.target.style.background = "rgba(16, 185, 129, 0.2)",
+                onMouseOut: (e) => e.target.style.background = "rgba(16, 185, 129, 0.1)",
+                children: "DOWNLOAD INTEGRITY PROOFS (JSON)"
+              }
+            )
           ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", minHeight: 0, flexGrow: 1 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { style: { cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "16px",
+          background: "rgba(255, 255, 255, 0.03)",
+          padding: "12px 20px",
+          borderRadius: "12px",
+          border: `1px solid ${COLORS.cardBorder}`,
+          flexWrap: "wrap",
+          gap: "16px"
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", opacity: 0.4, marginTop: "2px" }, children: [
+                "Snapshot of ",
+                rounds.length,
+                " recent rounds"
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { style: { cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "input",
                 {
                   type: "checkbox",
                   checked: hideEmptyRounds,
                   onChange: (e) => setHideEmptyRounds(e.target.checked),
-                  style: { accentColor: COLORS.blue }
+                  style: { accentColor: COLORS.blue, width: "14px", height: "14px" }
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", opacity: 0.8 }, children: "Only Significant Activity" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: exportCSV,
-                  style: {
-                    background: "rgba(45, 104, 234, 0.1)",
-                    border: `1px solid ${COLORS.blue}`,
-                    color: COLORS.blue,
-                    fontSize: "8px",
-                    fontWeight: "900",
-                    padding: "4px 10px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    letterSpacing: "0.05em"
-                  },
-                  onMouseOver: (e) => e.target.style.background = "rgba(45, 104, 234, 0.2)",
-                  onMouseOut: (e) => e.target.style.background = "rgba(45, 104, 234, 0.1)",
-                  children: "ROUND EXPLORER (CSV)"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: exportAuditProofsJSON,
-                  style: {
-                    background: "rgba(16, 185, 129, 0.1)",
-                    border: `1px solid ${COLORS.green}`,
-                    color: COLORS.green,
-                    fontSize: "8px",
-                    fontWeight: "900",
-                    padding: "4px 10px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    letterSpacing: "0.05em"
-                  },
-                  onMouseOver: (e) => e.target.style.background = "rgba(16, 185, 129, 0.2)",
-                  onMouseOut: (e) => e.target.style.background = "rgba(16, 185, 129, 0.1)",
-                  children: "INTEGRITY PROOFS (JSON)"
-                }
-              )
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "600", opacity: 0.8 }, children: "Only Significant Activity" })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4 }, children: [
-            "Displaying snapshot of ",
-            rounds.length,
-            " recent rounds"
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.5, letterSpacing: "0.05em" }, children: "EXPORT:" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "select",
+              {
+                value: exportRangeMode,
+                onChange: (e) => setExportRangeMode(e.target.value),
+                style: { background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px", cursor: "pointer" },
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "CURRENT", children: "Visible Table" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "LAST_X", children: "Last X Rounds" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "RANGE", children: "Custom Range (ID)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "SINGLE", children: "Single Round (ID)" })
+                ]
+              }
+            ),
+            exportRangeMode === "LAST_X" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "number",
+                value: exportLastX,
+                onChange: (e) => setExportLastX(parseInt(e.target.value, 10)),
+                placeholder: "Count",
+                style: { width: "70px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+              }
+            ),
+            exportRangeMode === "RANGE" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "number",
+                  value: exportStartId,
+                  onChange: (e) => setExportStartId(e.target.value),
+                  placeholder: "Start ID",
+                  style: { width: "85px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "to" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "number",
+                  value: exportEndId,
+                  onChange: (e) => setExportEndId(e.target.value),
+                  placeholder: "End ID",
+                  style: { width: "85px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                }
+              )
+            ] }),
+            exportRangeMode === "SINGLE" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "number",
+                value: exportSingleId,
+                onChange: (e) => setExportSingleId(e.target.value),
+                placeholder: "Round ID",
+                style: { width: "90px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: exportCSV,
+                disabled: isExporting,
+                style: {
+                  background: isExporting ? COLORS.muted : COLORS.blue,
+                  border: "none",
+                  color: "#fff",
+                  fontSize: "10px",
+                  fontWeight: "900",
+                  padding: "7px 18px",
+                  borderRadius: "6px",
+                  cursor: isExporting ? "not-allowed" : "pointer",
+                  boxShadow: isExporting ? "none" : `0 0 15px ${COLORS.blue}44`,
+                  transition: "all 0.2s",
+                  opacity: isExporting ? 0.7 : 1
+                },
+                onMouseOver: (e) => !isExporting && (e.target.style.transform = "translateY(-1px)"),
+                onMouseOut: (e) => !isExporting && (e.target.style.transform = "translateY(0)"),
+                children: isExporting ? "PREPARING..." : "DOWNLOAD CSV"
+              }
+            )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-          background: COLORS.cardBg,
-          borderRadius: "16px",
-          border: `1px solid ${COLORS.cardBorder}`,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 0,
-          flexGrow: 1
-        }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "REVEALS" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
-                "#",
-                r.id.toString().padStart(6, "0"),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
-              ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Pulse", active: r.pulsePublished, COLORS, link: r.pulseUrl }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sweep", active: r.swept, COLORS })
-              ] }) })
-            ] }, r.id)) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4 }, children: [
+          "Displaying snapshot of ",
+          rounds.length,
+          " recent rounds"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        background: COLORS.cardBg,
+        borderRadius: "16px",
+        border: `1px solid ${COLORS.cardBorder}`,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+        flexGrow: 1
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "REVEALS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "PULSE HASH" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
           ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
+              "#",
+              r.id.toString().padStart(6, "0"),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontFamily: "monospace", fontSize: "10px", maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: r.pulseHash ? /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: r.pulseHash, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { color: COLORS.blue, opacity: 0.8 }, children: [
+              r.pulseHash.substring(0, 16),
+              "..."
+            ] }) }) : "-" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Pulse", active: r.pulsePublished, COLORS, link: r.pulseUrl }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sweep", active: r.swept, COLORS })
+            ] }) })
+          ] }, r.id)) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
                             .audit-scroll::-webkit-scrollbar { width: 6px; }
                             .audit-scroll::-webkit-scrollbar-track { background: transparent; }
                             .audit-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); borderRadius: 10px; }
                             .audit-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.1); }
                         ` })
-        ] })
       ] })
-    ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      VerificationModal,
+      {
+        isOpen: activeModal === "accounting",
+        onClose: () => setActiveModal(null),
+        title: "Commit/Reveal Accounting Proof",
+        formula: "TOTAL_TICKETS = WINS + LOSSES + UNREVEALED",
+        slot: stats?.lastPulse?.slot,
+        data: [
+          { label: "On-chain Tickets", value: totalTickets },
+          { label: "Confirmed Wins", value: totalWins },
+          { label: "Confirmed Losses", value: totalLosses },
+          { label: "Estimated Unrevealed", value: estimatedUnrevealed }
+        ],
+        explorerLinks: [
+          { label: "View Global Round Registry", url: `https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet` },
+          ...stats?.lastPulse?.pulseTx ? [{ label: "Audit Last Pulse Tx", url: `https://explorer.solana.com/tx/${stats.lastPulse.pulseTx}?cluster=devnet` }] : []
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      VerificationModal,
+      {
+        isOpen: activeModal === "tokenomics",
+        onClose: () => setActiveModal(null),
+        title: "Token Flow & Burn Verification",
+        formula: "EXPECTED_BURN = (LOSSES + UNREVEALED) * STAKE_AMOUNT",
+        slot: stats?.lastPulse?.slot,
+        data: [
+          { label: "Current Burned Total", value: `${(stats?.totalBurned || 0).toFixed(2)} TIMLG` },
+          { label: "Expected Burn (Theoretical)", value: `${roughBurnExpected.toFixed(2)} TIMLG` },
+          { label: "Stake per Ticket", value: `${(stats?.config?.stake || 1).toFixed(2)} TIMLG` },
+          { label: "Burn-First Policy", value: "Active (Incl. Unrevealed)" }
+        ],
+        explorerLinks: [
+          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.treasury?.timlgMintAddress || "TIMLGUf..."}?cluster=devnet` }
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      VerificationModal,
+      {
+        isOpen: activeModal === "config",
+        onClose: () => setActiveModal(null),
+        title: "Protocol Configuration Proof",
+        formula: "FEE_VALUES = DECODED(ACCOUNT_DATA[OFFSET..])",
+        slot: stats?.lastPulse?.slot,
+        data: [
+          { label: "SOL Fee (Config PDA)", value: `${stats?.config?.solServiceFee?.toFixed(4) || "0.0000"} SOL` },
+          { label: "Anchor Field Name", value: "sol_service_fee_lamports" },
+          { label: "Reward Fee (Tokenomics PDA)", value: `${stats?.config?.fee?.toFixed(1) || "0.0"}%` },
+          { label: "Anchor Field Name", value: "reward_fee_bps" }
+        ],
+        explorerLinks: [
+          { label: "Inspect Config Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.configAddress || ""}?cluster=devnet` },
+          { label: "Inspect Tokenomics Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.tokenomicsAddress || ""}?cluster=devnet` }
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      VerificationModal,
+      {
+        isOpen: activeModal === "treasury",
+        onClose: () => setActiveModal(null),
+        title: "Treasury Invariant Proof",
+        formula: "TREASURY = SUM(UNCLAIMED_PRIZES) + SUM(PROTOCOL_FEES)",
+        slot: stats?.lastPulse?.slot,
+        data: [
+          { label: "Unclaimed Recycle Vault", value: `${(stats?.treasury?.timlgSweeps || 0).toFixed(2)} TIMLG` },
+          { label: "Collected Reward Fees", value: `${(stats?.treasury?.timlgFees || 0).toFixed(2)} TIMLG` },
+          { label: "Treasury SOL (Fees)", value: `${((stats?.treasury?.solFees || 0) / 1e9).toFixed(4)} SOL` }
+        ],
+        explorerLinks: [
+          { label: "Recycling Vault PDA", url: `https://explorer.solana.com/address/${stats?.treasury?.solFeesAddress || ""}?cluster=devnet` }
+        ]
+      }
+    )
   ] });
 }
 function ParamRow({ label, value, COLORS, link, color }) {

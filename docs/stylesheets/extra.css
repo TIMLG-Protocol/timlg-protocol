@@ -64,6 +64,7 @@
   width: auto;
   margin-top: 0.1rem;
 }
+
 /* Increase site title size to match the large icon */
 .md-header__title {
   font-size: 1.8rem;
@@ -142,5 +143,24 @@
   border: 1px solid var(--azulito-border);
 }
 
-.token-badge.blue { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
-.token-badge.green { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+.token-badge.blue {
+  background: #e0f2fe;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+.token-badge.green {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+/* Hide title on Live Audit page specifically */
+[data-md-component="main"]:has(iframe[src*="mode=audit"]) h1 {
+  display: none !important;
+}
+
+[data-md-component="main"]:has(iframe[src*="mode=audit"]) .md-content {
+  margin-top: 0 !important;
+  padding-top: 0.5rem !important;
+}
