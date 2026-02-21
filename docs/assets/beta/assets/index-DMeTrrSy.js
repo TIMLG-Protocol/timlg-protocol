@@ -59978,7 +59978,7 @@ function AuditDashboard() {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "16px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, title: "Overall ticket and reveal activity for the network", children: "NETWORK ACTIVITY" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", opacity: 0.4, fontWeight: "700" }, children: "LAST 24H" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", opacity: 0.4, fontWeight: "700" }, children: "LIFETIME" })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: COLORS.muted, marginBottom: "16px", lineHeight: "1.4" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("i", { children: "Note: Rounds schedule every ~60s to maintain Oracle uptime; zero-ticket rounds are expected." }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }, children: [
