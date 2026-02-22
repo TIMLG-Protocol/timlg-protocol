@@ -423,10 +423,12 @@ async function runIndexer() {
         let displayPayouts = globalStats.totalPayouts;
         let displayLosses = 0;
 
-        // Calculate losses from historical archive
+        // Calculate losses from historical archive — ONLY finalized rounds
+        // Non-finalized archived rounds are handled in the real-time loop below
         for (const rid in roundArchive) {
             const arch = roundArchive[rid];
-            displayLosses += (arch.tickets - arch.wins) * stakeAmount;
+            if (!arch.isFinal) continue; // skip non-finalized; real-time loop covers them
+            displayLosses += arch.burns || (arch.tickets - arch.wins) * stakeAmount;
         }
 
         // Oracle Uptime logic
@@ -434,9 +436,13 @@ async function runIndexer() {
         let lastPulseRound = null;
 
         // Add real-time data from active/unprocessed rounds
+        // Also include non-final rounds that are archived (processedRounds) so
+        // their payouts and losses are counted symmetrically.
         for (const r of currentCycleRecentRounds) {
             const isFinal = r.swept || r.state === 2 || (typeof r.state === 'object' && r.state !== null && Object.keys(r.state)[0] === 'finalized');
-            if (!isFinal && !processedRounds.has(r.id)) {
+            const isArchivedNonFinal = roundArchive[r.id?.toString()]?.isFinal === false;
+            // Include if: not final AND (not in processedRounds OR it's archived-but-not-final)
+            if (!isFinal && (!processedRounds.has(r.id) || isArchivedNonFinal)) {
                 displayTickets += r.tickets;
                 displayReveals += r.reveals;
                 displayWins += r.wins;
