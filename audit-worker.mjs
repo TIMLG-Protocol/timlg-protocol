@@ -6,12 +6,12 @@ import { fileURLToPath } from 'url';
 import admin from 'firebase-admin';
 
 // --- Configuration ---
-const RPC_URL = process.env.RPC_URL || "https://devnet.helius-rpc.com/?api-key=df9e7f13-259a-42be-af08-7cee2aacd36f";
+const RPC_URL = process.env.RPC_URL || "https://api.devnet.solana.com";
 const PROGRAM_ID = process.env.PROGRAM_ID || "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP";
 const IDL_PATH = process.env.IDL_PATH || join(dirname(fileURLToPath(import.meta.url)), "beta-app/src/playcard/lib/timlg_protocol.json");
 const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH || join(dirname(fileURLToPath(import.meta.url)), "firebase-credentials.json");
 const DB_URL = process.env.DB_URL || "https://timlg-protocol-default-rtdb.firebaseio.com";
-const POLL_INTERVAL = parseInt(process.env.POLL_INTERVAL || "60000"); // 60 seconds (optimized)
+const POLL_INTERVAL = parseInt(process.env.POLL_INTERVAL || "60000"); // Poll frequency (ms)
 
 const OUTPUT_PATHS = [
     process.env.AUDIT_JSON_OUT_1 || join(dirname(fileURLToPath(import.meta.url)), "beta-app/public/audit_stats.json"),
@@ -246,7 +246,7 @@ async function runIndexer() {
 
 
                         // INCREMENTAL STATS TRACKING
-                        const isFinal = r.swept || (Object.keys(r.state)[0] === 'finished' || r.state === 3);
+                        const isFinal = r.swept || r.state === 2 || (typeof r.state === 'object' && r.state !== null && Object.keys(r.state)[0] === 'finalized');
 
                         // Volume tracking (Daily Tickets/Reveals/Wins)
                         // Rules: We only count the DELTA between what we saw before and what we see now.
@@ -435,7 +435,7 @@ async function runIndexer() {
 
         // Add real-time data from active/unprocessed rounds
         for (const r of currentCycleRecentRounds) {
-            const isFinal = r.swept || (Object.keys(r.state)[0] === 'finished' || r.state === 3);
+            const isFinal = r.swept || r.state === 2 || (typeof r.state === 'object' && r.state !== null && Object.keys(r.state)[0] === 'finalized');
             if (!isFinal && !processedRounds.has(r.id)) {
                 displayTickets += r.tickets;
                 displayReveals += r.reveals;
