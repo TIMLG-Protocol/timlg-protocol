@@ -528,7 +528,12 @@ async function runIndexer() {
             },
             recentRounds: currentCycleRecentRounds,
             processedIds: globalStats.processedIds,
-            archive: roundArchive
+            // Only export the last 100 rounds to prevent the JSON file from growing indefinitely
+            archive: Object.fromEntries(
+                Object.entries(roundArchive)
+                    .sort(([, a], [, b]) => b.id - a.id)
+                    .slice(0, 100)
+            )
         };
 
         await writeStats(finalStats);
