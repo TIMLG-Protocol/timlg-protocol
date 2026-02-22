@@ -6,7 +6,7 @@
     - Added the Audit Dashboard as a core evidential layer for decentralized transparency.
 - **Economic Stabilization**:
     - Finalized the **SOL Service Fee** requirement for participation.
-    - Documented the active **500 bps (5\%)** Reward Fee on winning outcomes.
+    - Documented the active **100 bps (1\%)** Reward Fee on winning outcomes.
     - Clarified the **dual-treasury** architecture (SOL for operations, SPL for rewards/governance).
 - **Roadmap Advancement**:
     - Marked Phase 1 (operational core) and Phase 2 (audit tools) as successfully deployed/integrated.
