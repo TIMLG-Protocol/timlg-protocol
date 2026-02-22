@@ -378,14 +378,15 @@ async function runIndexer() {
                             }
                             roundArchive[idStr].settleTx = sTx || "PURGED";
                             roundArchive[idStr].id = rId;
-                            roundArchive[idStr].isFinal = true;
-                            roundArchive[idStr].state = 2; // Manual state override for purged rounds (Finalized)
                             roundArchive[idStr].swept = true; // If purged, it must be swept
+                            roundArchive[idStr].sweepTx = roundArchive[idStr].sweepTx || "PURGED"; // Required for UI badge
                             console.log(`[BACKFILL] Account purged but found sigs for #${rId} (Settle: ${sTx ? "FOUND" : "PURGED"}). Marking as Finalized.`);
                         } else {
                             roundArchive[idStr].settleTx = "PURGED";
+                            roundArchive[idStr].sweepTx = "PURGED";
                             roundArchive[idStr].id = rId;
                             roundArchive[idStr].isFinal = true;
+                            roundArchive[idStr].swept = true;
                             roundArchive[idStr].state = 2;
                         }
                         backfilledCount++;
