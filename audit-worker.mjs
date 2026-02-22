@@ -319,9 +319,12 @@ async function runIndexer() {
             // If it has tickets but is missing IDs or tech fields, force a de-facto re-index
             // BROADENED: Also backfill if state is stale (not finalized) but it has a settleTx
             const isStaleState = r.state === undefined || r.state === null || r.state === 1 || (r.state && (r.state.pulseSet || r.state.announced));
-            // Only backfill missing settleTx if the round should theoretically have one (state is Finalized)
+            // Only backfill missing settleTx or sweepTx if the round should theoretically have one (state is Finalized)
             const shouldBeSettled = r.state === 2 || (typeof r.state === 'object' && r.state !== null && Object.keys(r.state)[0] === 'finalized');
-            const needsBackfill = r.tickets > 0 && (r.id === undefined || isStaleState || (shouldBeSettled && !r.settleTx));
+            const needsSettle = shouldBeSettled && !r.settleTx;
+            const needsSweep = shouldBeSettled && (!r.sweepTx || !r.swept);
+
+            const needsBackfill = r.tickets > 0 && (r.id === undefined || isStaleState || needsSettle || needsSweep);
 
             if (needsBackfill) {
                 try {
