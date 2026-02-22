@@ -14,7 +14,7 @@ const DB_URL = process.env.DB_URL || "https://timlg-protocol-default-rtdb.fireba
 const POLL_INTERVAL = parseInt(process.env.POLL_INTERVAL || "60000"); // 60 seconds (optimized)
 
 const OUTPUT_PATHS = [
-    process.env.AUDIT_JSON_OUT_1,
+    process.env.AUDIT_JSON_OUT_1 || join(dirname(fileURLToPath(import.meta.url)), "beta-app/public/audit_stats.json"),
     process.env.AUDIT_JSON_OUT_2
 ].filter(Boolean);
 
@@ -307,31 +307,20 @@ async function runIndexer() {
             }
         }
 
-        // ✅ UX FIX: Fill remaining display slots with historical data from the archive.
-        // This ensures the dashboard always shows recent rounds even after they are deleted on-chain by the rent reclaimer.
-        if (currentCycleRecentRounds.length < recentRoundsLimit) {
-            const sortedArchiveKeys = Object.keys(roundArchive).sort((a, b) => parseInt(b, 10) - parseInt(a, 10));
-            for (const key of sortedArchiveKeys) {
-                if (currentCycleRecentRounds.length >= recentRoundsLimit) break;
-                const archivedRound = roundArchive[key];
-                // Only add if it's not already in the array (not active on-chain)
-                if (!currentCycleRecentRounds.some(r => r.id === archivedRound.id)) {
-                    currentCycleRecentRounds.push(archivedRound);
-                }
-            }
-        }
-        currentCycleRecentRounds.sort((a, b) => b.id - a.id);
-
         // --- TECHNICAL BACKFILL (Phase 51) ---
         // Verify if any archived round with activity is missing technical fields
-        const backfillLimit = 5;
+        const backfillLimit = 20;
         let backfilledCount = 0;
-        for (const [idStr, r] of Object.entries(roundArchive)) {
-            if (backfilledCount >= backfillLimit) break;
+        const sortedArchiveKeysForBackfill = Object.keys(roundArchive).sort((a, b) => parseInt(b, 10) - parseInt(a, 10));
 
+        for (const idStr of sortedArchiveKeysForBackfill) {
+            const r = roundArchive[idStr];
             const rId = parseInt(idStr, 10);
+            if (backfilledCount >= backfillLimit) break;
             // If it has tickets but is missing IDs or tech fields, force a de-facto re-index
-            const needsBackfill = r.tickets > 0 && (!r.settleTx || r.id === undefined);
+            // BROADENED: Also backfill if state is stale (not finalized) but it has a settleTx
+            const isStaleState = r.state === undefined || r.state === null || r.state === 1 || (r.state && (r.state.pulseSet || r.state.announced));
+            const needsBackfill = r.tickets > 0 && (!r.settleTx || r.id === undefined || isStaleState);
 
             if (needsBackfill) {
                 try {
@@ -362,10 +351,11 @@ async function runIndexer() {
                         roundArchive[idStr] = {
                             ...r,
                             id: rId,
+                            state: (decoded.tokenSettledSlot > 0 || decoded.token_settled_slot > 0 || decoded.swept) ? 2 : decoded.state,
                             pulseTx: pTx || r.pulseTx,
                             settleTx: sTx || r.settleTx,
                             sweepTx: swTx || r.sweepTx,
-                            settledAt: decoded.settledCount ? decoded.settledCount.toNumber() : 0,
+                            settledAt: (decoded.tokenSettledSlot || decoded.token_settled_slot || 0) > 0 ? 1 : 0,
                             isFinal: true
                         };
                         console.log(`[BACKFILL] Successfully restored Round #${rId} (Settle: ${sTx ? "FOUND" : "NOT FOUND"})`);
@@ -381,10 +371,15 @@ async function runIndexer() {
                             }
                             roundArchive[idStr].settleTx = sTx || "PURGED";
                             roundArchive[idStr].id = rId;
-                            console.log(`[BACKFILL] Account purged but found sigs for #${rId} (Settle: ${sTx ? "FOUND" : "PURGED"})`);
+                            roundArchive[idStr].isFinal = true;
+                            roundArchive[idStr].state = 2; // Manual state override for purged rounds (Finalized)
+                            roundArchive[idStr].swept = true; // If purged, it must be swept
+                            console.log(`[BACKFILL] Account purged but found sigs for #${rId} (Settle: ${sTx ? "FOUND" : "PURGED"}). Marking as Finalized.`);
                         } else {
                             roundArchive[idStr].settleTx = "PURGED";
                             roundArchive[idStr].id = rId;
+                            roundArchive[idStr].isFinal = true;
+                            roundArchive[idStr].state = 2;
                         }
                         backfilledCount++;
                     }
@@ -393,6 +388,21 @@ async function runIndexer() {
                 }
             }
         }
+
+        // ✅ UX FIX: Fill remaining display slots with historical data from the archive.
+        // This ensures the dashboard always shows recent rounds even after they are deleted on-chain by the rent reclaimer.
+        if (currentCycleRecentRounds.length < recentRoundsLimit) {
+            const sortedArchiveKeys = Object.keys(roundArchive).sort((a, b) => parseInt(b, 10) - parseInt(a, 10));
+            for (const key of sortedArchiveKeys) {
+                if (currentCycleRecentRounds.length >= recentRoundsLimit) break;
+                const archivedRound = roundArchive[key];
+                // Only add if it's not already in the array (not active on-chain)
+                if (!currentCycleRecentRounds.some(r => r.id === archivedRound.id)) {
+                    currentCycleRecentRounds.push(archivedRound);
+                }
+            }
+        }
+        currentCycleRecentRounds.sort((a, b) => b.id - a.id);
 
         // Keep archive manageable
         const archiveKeys = Object.keys(roundArchive);
