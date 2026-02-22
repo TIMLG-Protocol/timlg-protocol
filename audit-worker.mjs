@@ -459,7 +459,7 @@ async function runIndexer() {
             dailyReveals: displayReveals,
             dailyWins: displayWins,
             totalPayouts: displayPayouts,
-            totalBurned: globalStats.totalBurned,
+            totalBurned: displayLosses,
             winRate: displayTickets > 0 ? (displayWins / displayTickets) * 100 : 0,
             netFlux: displayPayouts - displayLosses,
             lastUpdated: new Date().toISOString(),
