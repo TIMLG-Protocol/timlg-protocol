@@ -320,7 +320,9 @@ async function runIndexer() {
             // If it has tickets but is missing IDs or tech fields, force a de-facto re-index
             // BROADENED: Also backfill if state is stale (not finalized) but it has a settleTx
             const isStaleState = r.state === undefined || r.state === null || r.state === 1 || (r.state && (r.state.pulseSet || r.state.announced));
-            const needsBackfill = r.tickets > 0 && (!r.settleTx || r.id === undefined || isStaleState);
+            // Only backfill missing settleTx if the round should theoretically have one (state is Finalized)
+            const shouldBeSettled = r.state === 2 || (typeof r.state === 'object' && r.state !== null && Object.keys(r.state)[0] === 'finalized');
+            const needsBackfill = r.tickets > 0 && (r.id === undefined || isStaleState || (shouldBeSettled && !r.settleTx));
 
             if (needsBackfill) {
                 try {
@@ -348,15 +350,21 @@ async function runIndexer() {
                             }
                         }
 
+                        const rawStateObj = decoded.state;
+                        const newState = (decoded.tokenSettledSlot > 0 || decoded.token_settled_slot > 0 || decoded.swept) ? 2 : rawStateObj;
+                        const isFinalState = decoded.swept || newState === 2 || (typeof newState === 'object' && newState !== null && Object.keys(newState)[0] === 'finalized');
+
                         roundArchive[idStr] = {
                             ...r,
                             id: rId,
-                            state: (decoded.tokenSettledSlot > 0 || decoded.token_settled_slot > 0 || decoded.swept) ? 2 : decoded.state,
+                            state: newState,
                             pulseTx: pTx || r.pulseTx,
                             settleTx: sTx || r.settleTx,
                             sweepTx: swTx || r.sweepTx,
                             settledAt: (decoded.tokenSettledSlot || decoded.token_settled_slot || 0) > 0 ? 1 : 0,
-                            isFinal: true
+                            isFinal: isFinalState,
+                            payouts: r.payouts !== undefined ? r.payouts : (isFinalState ? ((r.wins || 0) * stakeAmount * feeMultiplier) : 0),
+                            burns: r.burns !== undefined ? r.burns : (isFinalState ? (((r.tickets || 0) - (r.wins || 0)) * stakeAmount) : 0)
                         };
                         console.log(`[BACKFILL] Successfully restored Round #${rId} (Settle: ${sTx ? "FOUND" : "NOT FOUND"})`);
                         backfilledCount++;
@@ -420,15 +428,16 @@ async function runIndexer() {
         let displayTickets = globalStats.dailyTickets;
         let displayReveals = globalStats.dailyReveals;
         let displayWins = globalStats.dailyWins;
-        let displayPayouts = globalStats.totalPayouts;
+        // Calculate payouts and losses from historical archive — ONLY finalized rounds
+        // Non-finalized archived rounds are handled in the real-time loop below
+        let displayPayouts = 0; // Rebuild from scratch symmetrically
         let displayLosses = 0;
 
-        // Calculate losses from historical archive — ONLY finalized rounds
-        // Non-finalized archived rounds are handled in the real-time loop below
         for (const rid in roundArchive) {
             const arch = roundArchive[rid];
             if (!arch.isFinal) continue; // skip non-finalized; real-time loop covers them
-            displayLosses += arch.burns || (arch.tickets - arch.wins) * stakeAmount;
+            displayLosses += arch.burns !== undefined ? arch.burns : ((arch.tickets - arch.wins) * stakeAmount);
+            displayPayouts += arch.payouts !== undefined ? arch.payouts : (arch.wins * stakeAmount * feeMultiplier);
         }
 
         // Oracle Uptime logic
