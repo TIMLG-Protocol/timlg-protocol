@@ -239,10 +239,7 @@ async function runIndexer() {
 
                         processedRounds.add(r.id);
 
-                        // Deduplication for display list
-                        if (!currentCycleRecentRounds.some(existing => existing.id === r.id)) {
-                            currentCycleRecentRounds.push(r);
-                        }
+                        // Deduplication for display list is handled below after zombie check
 
 
                         // INCREMENTAL STATS TRACKING
@@ -300,7 +297,9 @@ async function runIndexer() {
                             r.tickets === 0 && (currentSlot - r.createdSlot > 10000);
 
                         if (!isZombie && currentCycleRecentRounds.length < recentRoundsLimit) {
-                            currentCycleRecentRounds.push(r);
+                            if (!currentCycleRecentRounds.some(existing => existing.id === r.id)) {
+                                currentCycleRecentRounds.push(r);
+                            }
                         }
                     } catch (e) { }
                 }
