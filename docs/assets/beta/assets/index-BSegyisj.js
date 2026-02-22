@@ -59637,14 +59637,15 @@ function AuditDashboard() {
   }
   const rawRounds = stats?.recentRounds || [];
   const uniqueRoundsMap = /* @__PURE__ */ new Map();
-  rawRounds.forEach((item) => {
-    const roundId2 = parseInt(item.id, 10);
+  rawRounds.forEach((item, index2) => {
+    const roundId2 = item.id !== void 0 && item.id !== null ? parseInt(item.id, 10) : index2;
     if (!isNaN(roundId2)) {
-      uniqueRoundsMap.set(roundId2, item);
+      uniqueRoundsMap.set(roundId2, { ...item, id: roundId2 });
     }
   });
   const allRounds = Array.from(uniqueRoundsMap.values()).sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10)).slice(0, 50);
-  const rounds = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished) : allRounds;
+  const highestId = allRounds.length > 0 ? allRounds[0].id : 0;
+  const rounds = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished || highestId - r.id < 5) : allRounds;
   const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
   const totalTickets = stats?.dailyTickets || 0;
   const totalWins = stats?.dailyWins || 0;
