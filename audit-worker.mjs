@@ -175,9 +175,9 @@ async function runIndexer() {
                             createdSlot: (decoded.createdSlot || decoded.created_slot).toNumber(),
                             pulsePublished: (decoded.pulsePublished || decoded.pulse_set),
                             swept: decoded.swept,
-                            tickets: (decoded.committedCount || decoded.committed_count).toNumber(),
-                            reveals: (decoded.revealedCount || decoded.revealed_count).toNumber(),
-                            wins: (decoded.winCount || decoded.win_count).toNumber(),
+                            tickets: Math.max((decoded.committedCount || decoded.committed_count).toNumber(), prev.tickets || 0),
+                            reveals: Math.max((decoded.revealedCount || decoded.revealed_count).toNumber(), prev.reveals || 0),
+                            wins: Math.max((decoded.winCount || decoded.win_count).toNumber(), prev.wins || 0),
                             explorerUrl: pdas[j] ? `https://explorer.solana.com/address/${pdas[j].toBase58()}?cluster=devnet` : null,
                             pulseUrl: decoded.pulse_id ? `https://beacon.nist.gov/beacon/2.0/pulse/current?pulseId=${decoded.pulse_id}` : (decoded.pulseId ? `https://beacon.nist.gov/beacon/2.0/pulse/current?pulseId=${decoded.pulseId}` : null),
 
