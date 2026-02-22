@@ -127,7 +127,7 @@ The system enforces a **dual‑fee model** to sustain the network and incentiviz
 
 | Fee Component | Description | Current Default |
 |---|---|---|
-| **Reward Fee (bps)** | Percentage taken from the winner's reward before minting. | `reward_fee_bps = 100` (1%) |
+| **Reward Fee (bps)** | Percentage taken from the winner's reward before minting. | `reward_fee_bps = 500` (5%) |
 | **Reward Fee Pool** | SPL‑token vault PDA that receives the accumulated fees. | `reward_fee_pool` (Seed: `reward_pool`) |
 | **Replication Pool** | Reserved for future protocol‑level replication incentives. | `replication_pool` (Seed: `replication`) |
 
