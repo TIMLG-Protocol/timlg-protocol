@@ -59635,7 +59635,7 @@ function AuditDashboard() {
   if (error2 && !stats) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "red", padding: "20px" }, children: "Error connecting to audit node." });
   }
-  const rawRounds = stats?.recentRounds || [];
+  const rawRounds = stats?.activeRoundsMetadata || [];
   const uniqueRoundsMap = /* @__PURE__ */ new Map();
   rawRounds.forEach((item, index2) => {
     const roundId2 = item.id !== void 0 && item.id !== null ? parseInt(item.id, 10) : index2;
@@ -59647,21 +59647,21 @@ function AuditDashboard() {
   const highestId = allRounds.length > 0 ? allRounds[0].id : 0;
   const rounds = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished || highestId - r.id < 5) : allRounds;
   const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
-  const totalTickets = stats?.dailyTickets || 0;
-  const totalWins = stats?.dailyWins || 0;
-  const totalRevealed = stats?.dailyReveals || 0;
+  const totalTickets = stats?.globalSummary?.dailyTickets || 0;
+  const totalWins = stats?.globalSummary?.dailyWins || 0;
+  const totalRevealed = stats?.globalSummary?.dailyReveals || 0;
   const totalLosses = totalRevealed - totalWins;
   const estimatedUnrevealed = totalTickets - totalRevealed;
-  const accountingVerified = totalTickets === totalWins + totalLosses + estimatedUnrevealed;
+  const accountingVerified = stats?.integrityProofs?.accountingMath?.status === "VERIFIED" || totalTickets === totalWins + totalLosses + estimatedUnrevealed;
   const roughBurnExpected = (totalTickets - totalWins) * (stats?.config?.stake || 1);
-  (stats?.totalPayouts || 0) * 0.0101;
-  const tokenFlowVerified = totalTickets === 0 || Math.abs((stats?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.totalBurned || 0) * 0.1);
-  const treasuryVerified = stats?.treasury?.timlgSweeps >= 0 && stats?.treasury?.timlgFees >= 0;
+  (stats?.globalSummary?.totalPayouts || 0) * 0.0101;
+  const tokenFlowVerified = stats?.integrityProofs?.tokenFlow?.status === "VERIFIED" || (totalTickets === 0 || Math.abs((stats?.globalSummary?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.globalSummary?.totalBurned || 0) * 0.1));
+  const treasuryVerified = stats?.integrityProofs?.treasuryState?.status === "VERIFIED" || stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps >= 0 && stats?.integrityProofs?.treasuryState?.balances?.timlgFees >= 0;
   let oracleStatus = "UNKNOWN";
   let oracleColor = COLORS.muted;
-  console.log("LAST PULSE DATA:", stats?.lastPulse);
-  if (stats?.lastPulse?.currentSlot && stats?.lastPulse?.slot) {
-    const slotDiff = Math.max(0, stats.lastPulse.currentSlot - stats.lastPulse.slot);
+  console.log("LAST PULSE DATA:", stats?.integrityProofs?.oracleState?.lastPulse);
+  if (stats?.integrityProofs?.oracleState?.lastPulse?.currentSlot && stats?.integrityProofs?.oracleState?.lastPulse?.slot) {
+    const slotDiff = Math.max(0, stats.integrityProofs.oracleState.lastPulse.currentSlot - stats.integrityProofs.oracleState.lastPulse.slot);
     const minutesAgo = slotDiff * 0.4 / 60;
     if (minutesAgo < 60) {
       oracleStatus = "ACTIVE (Recent)";
@@ -59673,8 +59673,8 @@ function AuditDashboard() {
       oracleStatus = "DELAYED";
       oracleColor = "#EF4444";
     }
-  } else if (stats?.lastPulse) {
-    console.warn("lastPulse received but missing slot/currentSlot properties", stats.lastPulse);
+  } else if (stats?.integrityProofs?.oracleState?.lastPulse) {
+    console.warn("lastPulse received but missing slot/currentSlot properties", stats.integrityProofs.oracleState.lastPulse);
   }
   const exportCSV = async () => {
     if (isExporting) return;
@@ -59784,98 +59784,13 @@ function AuditDashboard() {
   };
   const exportAuditProofsJSON = () => {
     if (!stats) return;
-    const stake = stats?.config?.stake || 1;
-    const expectedBurn = totalLosses * stake;
-    const actualBurn = stats?.totalBurned || 0;
-    const slashBurn = Math.max(0, actualBurn - expectedBurn);
-    const treasuryInflow2 = estimatedUnrevealed * stake;
-    const proofs = {
-      metadata: {
-        snapshotTime: (/* @__PURE__ */ new Date()).toISOString(),
-        snapshotSlot: stats?.lastPulse?.currentSlot || null,
-        programId: "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP",
-        cluster: "Devnet",
-        rpc: "public"
-      },
-      globalSummary: {
-        totalBurned: actualBurn,
-        dailyTickets: totalTickets,
-        dailyWins: totalWins,
-        dailyLosses: totalLosses,
-        dailyUnrevealed: estimatedUnrevealed,
-        winRatePercentage: stats?.winRate || 0,
-        activeRounds: activeRoundsCount
-      },
-      integrityProofs: {
-        accountingMath: {
-          status: accountingVerified ? "VERIFIED" : "ALERT",
-          formula: "Tickets = Wins + Losses + Unrevealed",
-          values: {
-            tickets: totalTickets,
-            wins: totalWins,
-            losses: totalLosses,
-            unrevealed: estimatedUnrevealed
-          }
-        },
-        tokenFlow: {
-          status: actualBurn >= expectedBurn ? "VERIFIED" : "ALERT",
-          formula: slashBurn > 0 ? "TotalBurned = Losses*Stake + SlashBurn" : "ExpectedBurn = Losses * Stake",
-          values: {
-            totalBurned: actualBurn,
-            expectedBurnBase: expectedBurn,
-            slashBurn: slashBurn > 0 ? slashBurn : void 0,
-            stakeMultiplier: stake,
-            losses: totalLosses
-          }
-        },
-        treasuryInflow: {
-          status: "VERIFIED",
-          formula: "TreasuryInflow = Unrevealed * Stake",
-          values: {
-            expectedInflow: treasuryInflow2,
-            unrevealed: estimatedUnrevealed,
-            stake
-          }
-        },
-        treasuryState: {
-          status: treasuryVerified ? "VERIFIED" : "ALERT",
-          balances: {
-            timlgSweeps: stats?.treasury?.timlgSweeps || 0,
-            timlgFees: stats?.treasury?.timlgFees || 0
-          },
-          accounts: {
-            timlgSweepsAddress: stats?.treasury?.timlgSweepsAddress || stats?.treasury?.vault,
-            timlgSweepsExplorer: `https://explorer.solana.com/address/${stats?.treasury?.timlgSweepsAddress || stats?.treasury?.vault}?cluster=devnet`,
-            timlgFeesAddress: stats?.treasury?.timlgFeesAddress || stats?.treasury?.fee,
-            timlgFeesExplorer: `https://explorer.solana.com/address/${stats?.treasury?.timlgFeesAddress || stats?.treasury?.fee}?cluster=devnet`,
-            solFeesAddress: stats?.treasury?.solFeesAddress,
-            solOperatorAddress: stats?.treasury?.solOperatorAddress
-          }
-        },
-        roundsMetadata: rounds.map((r) => ({
-          id: r.id,
-          slots: {
-            created: r.commitOpen,
-            commitDeadline: r.commitClose,
-            pulseSet: r.pulseSlot,
-            revealDeadline: r.revealDeadline,
-            finalized: r.finalizedAt,
-            settled: r.settledAt,
-            swept: r.sweptAt
-          },
-          oracle: {
-            pulseHash: r.pulseHash,
-            pulseId: r.pulseId
-          },
-          stats: {
-            tickets: r.tickets,
-            reveals: r.reveals,
-            wins: r.wins
-          }
-        }))
-      }
+    const pristinePayload = {
+      metadata: stats.metadata,
+      globalSummary: stats.globalSummary,
+      config: stats.config,
+      integrityProofs: stats.integrityProofs
     };
-    const blob2 = new Blob([JSON.stringify(proofs, null, 2)], { type: "application/json;charset=utf-8;" });
+    const blob2 = new Blob([JSON.stringify(pristinePayload, null, 2)], { type: "application/json;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob2);
     link.setAttribute("href", url);
@@ -59945,7 +59860,7 @@ function AuditDashboard() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
               "SNAPSHOT: ",
-              stats?.lastPulse?.currentSlot ? `Slot ${stats?.lastPulse?.currentSlot.toLocaleString()}` : "Live"
+              stats?.metadata?.snapshotSlot ? `Slot ${stats?.metadata?.snapshotSlot.toLocaleString()}` : "Live"
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "RPC: Public" })
@@ -59995,15 +59910,15 @@ function AuditDashboard() {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total tickets committed across all rounds", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TICKETS" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.dailyTickets?.toLocaleString() || 0 })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.globalSummary?.dailyTickets?.toLocaleString() || 0 })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total tickets successfully revealed", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "REVEALS" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.dailyReveals?.toLocaleString() || 0 })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.globalSummary?.dailyReveals?.toLocaleString() || 0 })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total winning tickets", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px", color: COLORS.green }, children: "WINS" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.green }, children: stats?.dailyWins?.toLocaleString() || 0 })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.green }, children: stats?.globalSummary?.dailyWins?.toLocaleString() || 0 })
               ] })
             ] })
           ] }),
@@ -60017,9 +59932,9 @@ function AuditDashboard() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Deflationary/Inflationary state of the token economy", children: "PROTOCOL EQUILIBRIUM" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, title: "Newly minted rewards minus burned losses", children: "NET SUPPLY FLUX" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "28px", fontWeight: "900", color: stats?.netFlux >= 0 ? COLORS.text : COLORS.blue, letterSpacing: "-0.02em" }, children: [
-                stats?.netFlux > 0 ? "+" : "",
-                Math.round(stats?.netFlux || 0),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "28px", fontWeight: "900", color: stats?.globalSummary?.netSupplyFlux >= 0 ? COLORS.text : COLORS.blue, letterSpacing: "-0.02em" }, children: [
+                stats?.globalSummary?.netSupplyFlux > 0 ? "+" : "",
+                Math.round(stats?.globalSummary?.netSupplyFlux || 0),
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS.text }, children: "TIMLG" })
               ] })
@@ -60028,15 +59943,15 @@ function AuditDashboard() {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Bernoulli verification: Actual wins / Total reveals (matches Oracle Pulse)", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Win Rate (NIST)" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.winRate > 52 || stats?.winRate < 48 ? COLORS.blue : COLORS.green }, children: [
-                stats?.winRate?.toFixed(1) || "0.0",
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.globalSummary?.winRatePercentage > 52 || stats?.globalSummary?.winRatePercentage < 48 ? COLORS.blue : COLORS.green }, children: [
+                stats?.globalSummary?.winRatePercentage?.toFixed(1) || "0.0",
                 "%"
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Net flux = minted - burned - swept (last 24h)", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "VERIFIED REDUCTION" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900" }, children: [
-                Math.round(stats?.totalBurned || 0),
+                Math.round(stats?.globalSummary?.totalBurned || 0),
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", opacity: 0.4 }, children: "TIMLG" })
               ] })
@@ -60049,11 +59964,11 @@ function AuditDashboard() {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL SOL" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.blue }, children: ((stats?.treasury?.solFees ?? 0) + (stats?.treasury?.solOperator ?? 0)).toFixed(1) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.blue }, children: ((stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0)).toFixed(1) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL TIMLG" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", opacity: 0.8 }, children: ((stats?.treasury?.timlgFees ?? 0) + (stats?.treasury?.timlgSweeps ?? 0)).toFixed(1) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", opacity: 0.8 }, children: ((stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0)).toFixed(1) })
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
@@ -60079,18 +59994,18 @@ function AuditDashboard() {
                 ParamRow,
                 {
                   label: "Fees",
-                  value: (stats?.treasury?.solFees ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0).toFixed(2),
                   COLORS,
-                  link: `https://explorer.solana.com/address/${stats?.treasury?.solFeesAddress}?cluster=devnet`
+                  link: stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress}?cluster=devnet` : "#"
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 ParamRow,
                 {
                   label: "Node",
-                  value: (stats?.treasury?.solOperator ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0).toFixed(2),
                   COLORS,
-                  link: `https://explorer.solana.com/address/${stats?.treasury?.solOperatorAddress}?cluster=devnet`
+                  link: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress}?cluster=devnet` : "#"
                 }
               )
             ] }),
@@ -60099,20 +60014,20 @@ function AuditDashboard() {
                 ParamRow,
                 {
                   label: "Fees",
-                  value: (stats?.treasury?.timlgFees ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0).toFixed(2),
                   COLORS,
                   color: "rgba(255,255,255,0.8)",
-                  link: `https://explorer.solana.com/address/${stats?.treasury?.timlgFeesAddress}?cluster=devnet`
+                  link: stats?.integrityProofs?.treasuryState?.accounts?.timlgFeesExplorer || "#"
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 ParamRow,
                 {
                   label: "Vault",
-                  value: (stats?.treasury?.timlgSweeps ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0).toFixed(2),
                   COLORS,
                   color: "rgba(255,255,255,0.8)",
-                  link: `https://explorer.solana.com/address/${stats?.treasury?.timlgSweepsAddress}?cluster=devnet`
+                  link: stats?.integrityProofs?.treasuryState?.accounts?.timlgSweepsExplorer || "#"
                 }
               )
             ] })
