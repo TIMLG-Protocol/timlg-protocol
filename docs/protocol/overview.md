@@ -43,81 +43,86 @@ graph TD
 
 ---
 
-## Core objects (MVP implementation)
+## Core components (Professional Implementation)
 
-### Config (global)
+### Global Configuration (`Config`)
 
-The **Config** account defines deployment-wide parameters, including:
+The **Config** account defines deployment‑wide parameters and enforces protocol‑level guardrails.
 
-- `admin` (governing authority for admin-gated instructions)
-- `timlg_mint` (TIMLG SPL token mint)
-- `stake_amount` (fixed cost per ticket)
-- `treasury` (SPL account for fee collection)
-- `treasury_sol` (System account for lamport collection)
-- `claim_grace_slots` (standard window before sweep)
+| Parameter | Type | Description |
+|---|---|---|
+| `admin` | Pubkey | Governing authority for admin‑gated instructions. |
+| `timlg_mint`| Pubkey | TIMLG SPL token mint (SPL‑2022). |
+| `stake_amount` | u64 | Fixed cost per ticket (default: 1 000 000 000 base units). |
+| `treasury` | Pubkey | SPL‑token vault for fee collection (`reward_fee_pool`). |
+| `treasury_sol` | Pubkey | System PDA for lamport collection (SOL service fees/rent). |
+| `claim_grace_slots` | u64 | Window before unclaimed rewards can be swept (default: 900). |
+| `sol_service_fee` | u64 | Fee in lamports charged per ticket (configurable). |
 
-### RoundRegistry
+### Timing Parameters (Slot-Bound Windows)
 
-Used to maintain the sequence of automated rounds:
-- `next_round_id`: The ID to be assigned to the next created round.
+TIMLG operates on a strict slot‑based schedule to maintain the integrity of the randomness pulse.
 
-### Tokenomics
+| Setting | Default Value | Description |
+|---|---|---|
+| `COMMIT_WINDOW` | 1000 slots | Window during which users can submit commitments. |
+| `REVEAL_WINDOW` | 1000 slots | Window during which users must reveal their guesses. |
+| `MIN_REVEAL_WINDOW`| 60 slots | Minimum duration required for the reveal phase. |
+| `REFUND_TIMEOUT` | 150 slots | Deadline for oracle pulse submission before refunding. |
+| `CLAIM_GRACE` | 900 slots | Delay after settlement before sweeping unclaimed funds. |
 
-Configures economic parameters:
-- `reward_fee_bps`: Fees applied to winner rewards.
-- `reward_fee_pool`: PDA vault receiving fees.
+### Oracle Architecture
 
-### Round
-
-A **Round** defines:
-
-- `round_id`
-- `pulse_index_target`
-- `commit_deadline_slot` and `reveal_deadline_slot`
-- `pulse` (set once after commits close)
-- lifecycle flags: `pulse_set`, `finalized`, `token_settled`, `swept`
-
-### Ticket
-
-A **Ticket** binds a user to a single commitment:
-
-- `round_id`, `user`, `nonce`
-- `commitment` (32 bytes)
-- `bit_index` (0–511), derived from `(round_id, user, nonce)`
-- reveal markers (`revealed`, `guess` as 0/1) and outcome (`win`)
-- claim guards (`claimed`, `claimed_slot` or equivalent)
-
-!!! note "Stake amount location"
-    The stake amount is **not a per-ticket parameter** in the MVP; it is defined in the global **Config** and applied consistently to tickets in a round.
+The randomness pulse is provided by a set of authorized oracles.
+- **Oracle Set**: Maximum of 16 authorized public keys.
+- **Threshold**: Configurable minimum number of signatures required (default: 1).
+- **Validation**: All pulse submissions are verified on‑chain via Ed25519 instructions.
 
 ---
 
-## Lifecycle (happy path)
+## Lifecycle (Standard Flow)
 
-1. Admin (or automated system) creates a round (`create_round_auto`)
-2. User commits (`commit_ticket`) during the commit window
-3. Oracle publishes the pulse (`set_pulse_signed`) after commits close
-4. User reveals (`reveal_ticket`) during the reveal window
-5. Settle token accounting (`settle_round_tokens`) — **Note**: auto-finalizes if reveal window passed.
-6. Winners claim (`claim_reward`)
-7. Optionally, after the grace window, SOL sweep (`sweep_unclaimed`)
+### 1. Initialization & Timing
+Rounds are created with pre‑defined slot deadlines. The **Hawking Wall** is enforced by ensuring the commit window closes before the target pulse index is reached.
 
-### Key invariants
+### 2. Participation (Commit-Reveal)
+- **Commit**: The user pays the **stake (TIMLG)** and **service fee (SOL)**. A persistent `Ticket` PDA is created.
+- **Pulse**: After the commit window closes, the Oracle publishes a 512‑bit pulse verified against a signed Ed25519 message.
+- **Reveal**: Users submit their original choice and salt. The program verifies the commitment hash and determines the outcome based on the deterministic bit index.
 
-- **Commitments are immutable**: a reveal must match the commitment.
-- **Pulse is one-shot**: a round’s pulse can only be set once.
-- **Timing gates are enforced** by slots.
-- **Settlement gates claiming**: claim happens only after token settlement.
+### 3. Settlement & Rewards
+- **Settle**: The round is finalized after the reveal window closes. This action triggers token accounting and enables claims.
+- **Claim**: Winners receive their initial stake plus the minted reward (minus the protocol fee).
+- **Sweep**: Unclaimed rewards in the round vault are transferred to the treasury after the `claim_grace_slots` period expires.
 
 ---
 
-## Where to go deeper
+## Treasury Management
 
-- **Log Format** → canonical hashing and commitment rules, message formats, versioning
-- **Timing Windows** → slot-based windows and edge cases
-- **Settlement Rules** → how winners/losers/no-reveal are handled
-- **Tokenomics** → how the MVP distributes and accounts for value
-- **Treasury & BitIndex** → treasury flows and how bit indexes are derived
+The protocol utilizes isolated vaults for risk management:
+- **Round Vault (SPL)**: Escrows stakes and holds minted rewards until claim.
+- **Reward Fee Pool (SPL)**: Receives protocol commission from winning rewards.
+- **Treasury SOL**: PDA‑owned account collecting service fees and unclaimed rent/sweeps.
+
+---
+
+## Ticket Lifecycle States
+
+Tickets transition through states defined in the on‑chain state machine:
+- `PENDING`: Commitment submitted, waiting for pulse.
+- `REVEAL_NOW`: Pulse published, reveal window active.
+- `REVEALED`: Guess submitted, outcome pending settlement.
+- `WIN`: Prediction correct, reward available.
+- `BURN_LOSS`: Incorrect guess, stake transferred to burn address.
+- `EXPIRED`: Reveal deadline missed, stake burned.
+- `REFUND_AVAILABLE`: Oracle timeout reached, stake returnable.
+
+---
+
+## Ticket Closure (Rent Recovery)
+
+Tickets are rent‑exempt PDAs. To recover the SOL deposit, the user must call the `close_ticket` instruction after the ticket has been fully processed (Claimed, Burned, or Refunded). The instruction closes the account and transfers the lamports back to the user.
+
 
 
 ---

@@ -14,58 +14,24 @@ It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **
 
 ## Token Specifications
 
-<div class="azulito-card token-card">
+| Property | Value |
+|---|---|
+| **Mint Address** | `7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy` |
+| **Decimals** | 9 |
+| **Supply Model** | Elastic, self‑balancing via minting rewards and burning stakes |
+| **Stake per Ticket** | 1 TIMLG (1 000 000 000 base units) |
+| **Treasury SPL Vault** | Holds collected fees (`reward_fee_pool`) |
+| **Treasury SOL Vault** | Holds SOL rent deposits (`treasury_sol`) |
 
-  <!-- 1. Identity Header -->
-  <div class="token-card-header">
-      <img src="assets/icon_vector_logo.svg" width="56" height="56" style="background: #fff; border-radius: 50%; padding: 4px; border: 1px solid var(--azulito-border);">
-      <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-         <h3 style="margin: 0; font-size: 1.1rem; color: #0f172a; line-height: 1;">TIMLG <span style="font-size: 0.85em; color: #64748b; font-weight: 500;">$TIMLG</span></h3>
-         <div style="display: flex; gap: 6px;">
-             <span class="token-badge blue">SPL-2022</span>
-             <span class="token-badge green">Devnet</span>
-         </div>
-      </div>
-  </div>
-
-  <!-- 2. Technical Stats (Simplified for Devnet) -->
-  <div class="token-card-body">
-      <div>
-          <div class="token-stat-label">Circulating</div>
-          <div class="token-stat-value">Dynamic</div>
-          <div style="font-size: 0.65rem; color: #64748b;">+1/-1 Mechanism</div>
-      </div>
-      <div>
-          <div class="token-stat-label">Max Supply</div>
-          <div class="token-stat-value">Elastic</div>
-          <div style="font-size: 0.65rem; color: #64748b;">Self-Balancing</div>
-      </div>
-  </div>
-
-   <!-- 3. Technical Specs Footer -->
-   <div class="token-card-footer">
-       <div style="display: flex; align-items: center; gap: 8px;">
-           <span style="color: #64748b; font-weight: 600;">Mint:</span>
-           <a href="https://explorer.solana.com/address/7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy/attributes?cluster=devnet" target="_blank" style="font-family: monospace; color: var(--azulito-blue); font-weight: 600; text-decoration: none;">7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy ↗</a>
-       </div>
-       <div style="display: flex; align-items: center; gap: 8px;">
-           <span style="color: #64748b; font-weight: 600;">Decimals:</span>
-           <span style="font-family: monospace; color: #0f172a; font-weight: 600;">9</span>
-       </div>
-  </div>
-
-</div>
+### Cost model (current parameters)
 
 
-### Cost model (current vs target)
+- **Transaction fees:** Users must hold a small amount of SOL to cover transaction fees on Solana.
+- **Stake:** Each ticket requires a stake of **1 TIMLG** (1 000 000 000 base units) paid in SPL tokens.
+- **Rent deposits:** SOL used as a rent deposit is fully recoverable by closing the ticket account after settlement.
+- **Relayer:** The protocol supports optional relayer usage, but participation is not cost‑free by default; fees are covered by the user.
 
-- **Current (Devnet / MVP):** users may need a small amount of SOL for **transaction fees** to interact with the program.
-- **Target design:** the protocol is intended to run **via a relayer**, making participation **cost-free for users** (fees sponsored by the relayer).
-- **Rent deposits:** SOL used for rent deposits can be **recovered** by closing ticket accounts after settlement.
-
-!!! note "Decimals, base units, and ticket cleanup"
-    - Amounts are stored in **base units** (`u64`). With `decimals = 9`, **1 TIMLG = 1_000_000_000 base units**.
-    - `claim_reward` pays **SPL tokens** only. To reclaim the ticket account’s **SOL rent deposit**, the user closes the ticket (`close_ticket`) after settlement (and after claim if you won).
+> **Note:** All parameters are defined in the on‑chain `Config` account and can be updated by the admin via the `update_config` instruction.
 
 
 

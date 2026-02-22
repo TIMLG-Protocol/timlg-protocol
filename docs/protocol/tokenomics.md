@@ -121,12 +121,27 @@ sankey-beta
 
 ---
 
-## Fees (Implemented)
+## Fees (On-Chain Reference)
 
-The system includes a configurable fee on rewards:
-- `reward_fee_bps`: Basis points charged on the minted reward (0 = 0%).
-- Fees are routed to a dedicated **Reward Fee Pool** (SPL TokenAccount).
-- These parameters are initialized via `initialize_tokenomics` and stored in the `Tokenomics` account.
+The system enforces a **dual‑fee model** to sustain the network and incentivize participation.
+
+| Fee Component | Description | Current Default |
+|---|---|---|
+| **Reward Fee (bps)** | Percentage taken from the winner's reward before minting. | `reward_fee_bps = 500` (5%) |
+| **Reward Fee Pool** | SPL‑token vault PDA that receives the accumulated fees. | `reward_fee_pool` (Seed: `reward_pool`) |
+| **Replication Pool** | Reserved for future protocol‑level replication incentives. | `replication_pool` (Seed: `replication`) |
+
+### Fee Calculation Logic
+
+When a ticket outcome is determined as a **WIN**, the protocol calculates fees before minting:
+
+```rust
+// Logic implemented in programs/timlg_protocol/src/instructions/reward.rs
+let fee = reward_amount * reward_fee_bps / 10_000;
+let net_reward = reward_amount - fee;
+```
+
+The `fee` is transferred to the protocol's fee pool, and only the `net_reward` is minted to the participant. These parameters are stored in the `Tokenomics` account and manageable by the admin.
 
 ---
 
