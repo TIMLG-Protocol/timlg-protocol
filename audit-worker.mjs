@@ -424,17 +424,23 @@ async function runIndexer() {
         }
 
         // 3. Prep final stats for UI with global display calculations
-        let displayTickets = globalStats.dailyTickets;
-        let displayReveals = globalStats.dailyReveals;
-        let displayWins = globalStats.dailyWins;
-        // Calculate payouts and losses from historical archive — ONLY finalized rounds
-        // Non-finalized archived rounds are handled in the real-time loop below
-        let displayPayouts = 0; // Rebuild from scratch symmetrically
+        // Calculate base volume from FINALIZED rounds in the archive to prevent double counting.
+        // globalStats.dailyTickets is a cumulative tracker that includes active rounds, 
+        // so adding active rounds on top of it causes 2x duplication in the UI.
+        let displayTickets = 0;
+        let displayReveals = 0;
+        let displayWins = 0;
+
+        // Rebuild from scratch symmetrically
+        let displayPayouts = 0;
         let displayLosses = 0;
 
         for (const rid in roundArchive) {
             const arch = roundArchive[rid];
             if (!arch.isFinal) continue; // skip non-finalized; real-time loop covers them
+            displayTickets += arch.tickets || 0;
+            displayReveals += arch.reveals || 0;
+            displayWins += arch.wins || 0;
             displayLosses += arch.burns !== undefined ? arch.burns : ((arch.tickets - arch.wins) * stakeAmount);
             displayPayouts += arch.payouts !== undefined ? arch.payouts : (arch.wins * stakeAmount * feeMultiplier);
         }
