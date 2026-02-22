@@ -1,5 +1,17 @@
 # Whitepaper Changelog
 
+## v1.2 (2026-02-22)
+- **Live Audit Infrastructure**:
+    - Integrated real‑time token flow analysis and categorical integrity proofs.
+    - Added the Audit Dashboard as a core evidential layer for decentralized transparency.
+- **Economic Stabilization**:
+    - Finalized the **SOL Service Fee** requirement for participation.
+    - Documented the active **500 bps (5\%)** Reward Fee on winning outcomes.
+    - Clarified the **dual-treasury** architecture (SOL for operations, SPL for rewards/governance).
+- **Roadmap Advancement**:
+    - Marked Phase 1 (operational core) and Phase 2 (audit tools) as successfully deployed/integrated.
+    - Updated focus towards Decentralized Relayers and UX Hardening.
+
 ## v1.1 (2026-02-02)
 - **Technical Alignment**:
     - Synchronized documentation with current Devnet parameters (420s betting horizon, 1000 slot reveal window).
