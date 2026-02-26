@@ -1,6 +1,6 @@
 # Protocol Overview
 
-TIMLG (TimeLog) is a **verifiable time-log protocol**: users commit during a commit window, an oracle publishes a public randomness pulse after commits close, users reveal their guess, and the program settles outcomes deterministically.
+TIMLG (TimeLog) is a **verifiable time-log protocol** and metrology experiment: users commit during a commit window, an oracle publishes a public randomness pulse (sourced from the **NIST Randomness Beacon v2.0**) after commits close, users reveal their guess, and the program settles outcomes deterministically.
 
 This documentation is **public** and intentionally avoids operational or privileged details.
 
@@ -36,7 +36,7 @@ graph TD
 ## Roles
 
 - **Participant**: commits a ticket, later reveals it, and (if winning) claims.
-- **Oracle**: publishes a **pulse** (64 bytes / 512 bits) tied to a publicly verifiable source and verified on-chain.
+- **Oracle**: publishes a **pulse** (64 bytes / 512 bits) tied to a publicly verifiable source (**NIST Randomness Beacon v2.0**) and verified on-chain. This provides **metrological traceability** for the protocol's randomness.
 - **Admin/Governance**: creates rounds and executes admin-gated lifecycle steps (finalize, settle, optional sweep).
 - **Relayer (optional)**: submits transactions on behalf of users (batching/gasless patterns).  
   **Note:** “gasless” typically still requires the user to have pre-funded an on-chain mechanism (e.g., escrow) depending on implementation.
@@ -76,7 +76,7 @@ TIMLG operates on a strict slot‑based schedule to maintain the integrity of th
 The randomness pulse is provided by a set of authorized oracles.
 - **Oracle Set**: Maximum of 16 authorized public keys.
 - **Threshold**: Configurable minimum number of signatures required (default: 1).
-- **Validation**: All pulse submissions are verified on‑chain via Ed25519 instructions.
+- **Validation**: All pulse submissions are verified on‑chain via Ed25519 instructions, ensuring that the **auditability of infrastructure** is preserved against malicious oracle behavior. The pulse data adheres to the **NIST Interoperable Randomness Beacon** standards.
 
 ---
 

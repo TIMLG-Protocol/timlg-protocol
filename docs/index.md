@@ -1,10 +1,10 @@
 # <img src="assets/icon_vector_logo.svg" width="56" style="vertical-align: bottom; margin-right: 12px;"> TIMLG Protocol
 
-TIMLG is a **public, auditable experiment protocol** built on Solana.
+TIMLG is a **public, auditable experiment protocol** built on Solana, designed to establish **metrological traceability** for on-chain events.
 
-It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **512-bit randomness pulse**. The goal is to measure whether any strategy can predict a bit **under strict anti-leakage constraints** (“Hawking Wall”) — and to make that measurement reproducible by anyone.
+It runs slot-bounded **commit–reveal rounds** against a publicly verifiable **512-bit randomness pulse** sourced from the **NIST Randomness Beacon v2.0**. The goal is to measure whether any strategy can predict a bit **under strict anti-leakage constraints** (“Hawking Wall”) — and to ensure the **auditability of infrastructure** behavior is reproducible by anyone.
 
-<div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;"><a href="/beta/" class="md-button md-button--primary" style="margin: 0; display: flex; align-items: center; gap: 8px;">Try the Devnet Beta <span style="background: #ffeb3b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">New</span></a></div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;"><a href="/beta/" class="md-button md-button--primary" style="margin: 0; display: flex; align-items: center; gap: 8px;">Open App <span style="background: #ffeb3b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">New</span></a></div>
 
 !!! warning "Experimental Phase (Devnet)"
     TIMLG is currently in an **experimental phase on Solana Devnet**. Timing parameters are intentionally short to facilitate testing. Tokens and results on this network have no real-world value.
@@ -63,11 +63,11 @@ The **Play Card** reveals all technical details (Assigned Bit, Nonce, Commitment
 
 ## What TIMLG is trying to achieve (Scientific Goals)
 
-### 1) Audit randomness providers
-Many systems rely on "randomness" provided by an oracle. TIMLG turns that into an **audit trail**: if the "randomness" is manipulable or leaky, a winning strategy will emerge on-chain.
+### 1) Audit randomness providers (Metrological Traceability)
+Many systems rely on "randomness" provided by an oracle. TIMLG turns that into a cryptographically secure **audit trail**: if the "randomness" is manipulable or leaky, a winning strategy will emerge on-chain. This provides an external benchmark for the **NIST Randomness Beacon v2.0** and other public entropy sources.
 
-### 2) Measure "predictability under constraints"
-If a strategy claims an edge, it must survive commit–reveal timing and deterministic settlement.
+### 2) Measure "predictability under constraints" (Auditability of Infrastructure)
+If a strategy claims an edge, it must survive commit–reveal timing and deterministic settlement. This acts as a stress-test for the auditability of the underlying blockchain infrastructure.
 
 ---
 
