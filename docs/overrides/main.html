@@ -5,7 +5,8 @@
 
 <!-- Persistent Beta App Iframe -->
 <iframe id="persistent-beta-app" src="{{ base_url }}/assets/beta/index.html"
-    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: -100; visibility: hidden; opacity: 0;"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: -100; visibility: hidden; opacity: 0; overflow: hidden;"
+    scrolling="no"
     title="Devnet Beta App" sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads"
     allow="clipboard-read; clipboard-write; camera; fullscreen"></iframe>
 {% endblock %}

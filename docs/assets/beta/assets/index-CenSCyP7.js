@@ -61763,7 +61763,6 @@ function App() {
   });
   reactExports.useEffect(() => {
     const observer = new ResizeObserver(() => {
-      if (activeTab === "audit") return;
       const height = document.body.scrollHeight;
       window.parent.postMessage({ type: "BETA_RESIZE", height }, "*");
     });

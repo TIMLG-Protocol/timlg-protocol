@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!iframe) return;
 
-        if (placeholder && document.body.contains(placeholder)) {
+        // Check if placeholder is present AND visible in the DOM
+        if (placeholder && document.body.contains(placeholder) && placeholder.offsetParent !== null) {
             // We are on the Beta App page!
             const rect = placeholder.getBoundingClientRect();
             // Calculate position relative to the document
@@ -24,16 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
             iframe.style.display = "block";
             iframe.style.visibility = "visible";
             iframe.style.opacity = "1";
-            iframe.style.zIndex = "1"; // Ensure it's above content but below header (z-index: 2)
+            iframe.style.zIndex = "1"; // Above content but below header
 
-            // Auto-resize listener from Iframe
-            window.addEventListener("message", (e) => {
-                if (e.data && e.data.type === "BETA_RESIZE") {
-                    const newHeight = e.data.height + 50;
-                    placeholder.style.height = newHeight + "px";
-                    iframe.style.height = newHeight + "px";
-                }
-            });
+            // Ensure z-index doesn't block interactions if misplaced
+            iframe.style.pointerEvents = "auto";
 
         } else {
             // We are elsewhere -> Hide but Keep Alive
@@ -41,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             iframe.style.visibility = "hidden";
             iframe.style.opacity = "0";
             iframe.style.zIndex = "-100";
+            iframe.style.pointerEvents = "none";
         }
     }
 
@@ -49,12 +45,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Hook into Material for MkDocs instant navigation events
     if (window.location$) {
-        window.location$.subscribe(function (url) {
+        // Hide immediately on navigation start to prevent "overlay" effect
+        window.location$.subscribe(function () {
+            const iframe = document.getElementById(iframeId);
+            if (iframe) {
+                iframe.style.display = "none";
+                iframe.style.opacity = "0";
+            }
+        });
+    }
+
+    if (window.document$) {
+        // Trigger visibility update after DOM is swapped
+        window.document$.subscribe(function () {
+            // Delay slightly to allow Material's fade-in/transition to complete
             setTimeout(updateIframeVisibility, 100);
+            setTimeout(updateIframeVisibility, 500); // Fail-safe second check
         });
     }
 
     // Fallback for resize to keep position sync
-    // NOTE: Removed 'scroll' listener because absolute positioning handles scroll naturally
     window.addEventListener("resize", updateIframeVisibility);
+
+    // Also listen for potential height changes sent from the app
+    window.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "BETA_RESIZE") {
+            const placeholder = document.getElementById(placeholderId);
+            if (placeholder && e.data.height) {
+                // Buffer for safety to avoid micro-scrollbars
+                placeholder.style.height = (e.data.height + 20) + "px";
+            }
+            updateIframeVisibility();
+        }
+    });
 });
