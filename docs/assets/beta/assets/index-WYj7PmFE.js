@@ -59483,6 +59483,9 @@ const firebaseConfig = {
 console.log("AUDIT_LOG: Initializing Firebase Cloud Sync...");
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const CONFIG_PDA_DEFAULT = "2Hm4fAkwXN1bbfhFgF8BFpZrVFjFXxBwACEbSU7MX9ZT";
+const TOKENOMICS_PDA_DEFAULT = "84bVSJKiiBZLYVMK2jKN8tDh5gy2VeXwn3ABRWur13Xx";
+const TIMLG_MINT_DEFAULT = "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy";
 const Tooltip = ({ content, children }) => {
   const [isVisible, setIsVisible] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -60335,7 +60338,7 @@ function AuditDashboard() {
           { label: "Burn-First Policy", value: "Active (Incl. Unrevealed)" }
         ],
         explorerLinks: [
-          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.config?.timlgMintAddress || "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy"}?cluster=devnet` }
+          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.config?.timlgMintAddress || TIMLG_MINT_DEFAULT}?cluster=devnet` }
         ]
       }
     ),
@@ -60354,8 +60357,8 @@ function AuditDashboard() {
           { label: "Anchor Field Name", value: "reward_fee_bps" }
         ],
         explorerLinks: [
-          { label: "Inspect Config Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.configAddress || ""}?cluster=devnet` },
-          { label: "Inspect Tokenomics Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.tokenomicsAddress || ""}?cluster=devnet` }
+          { label: "Inspect Config Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.configAddress || CONFIG_PDA_DEFAULT}?cluster=devnet` },
+          { label: "Inspect Tokenomics Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.tokenomicsAddress || TOKENOMICS_PDA_DEFAULT}?cluster=devnet` }
         ]
       }
     ),
