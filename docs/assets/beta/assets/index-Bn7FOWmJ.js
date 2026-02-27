@@ -59964,18 +59964,18 @@ function AuditDashboard() {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL SOL" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.blue }, children: ((stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0)).toFixed(1) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.blue }, children: ((stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0)).toFixed(4) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL TIMLG" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", opacity: 0.8 }, children: ((stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0)).toFixed(1) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", opacity: 0.8 }, children: ((stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0)).toFixed(4) })
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { cursor: "pointer" }, onClick: () => setActiveModal("config"), children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: "SOL Service Fee" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS.blue, textDecoration: "underline" }, children: [
-                  stats?.config?.solServiceFee?.toFixed(4) || "0.0000",
+                  stats?.config?.solServiceFee?.toFixed(8) || "0.00000000",
                   " SOL"
                 ] })
               ] }),
@@ -59994,7 +59994,7 @@ function AuditDashboard() {
                 ParamRow,
                 {
                   label: "Fees",
-                  value: (stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0).toFixed(8),
                   COLORS,
                   link: stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress}?cluster=devnet` : "#"
                 }
@@ -60003,7 +60003,7 @@ function AuditDashboard() {
                 ParamRow,
                 {
                   label: "Node",
-                  value: (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0).toFixed(2),
+                  value: (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0).toFixed(8),
                   COLORS,
                   link: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress}?cluster=devnet` : "#"
                 }
@@ -60059,7 +60059,7 @@ function AuditDashboard() {
                   }
                 ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "PENDING" })
               ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `TIMLG Sweeps (${(stats?.treasury?.timlgSweeps ?? 0).toFixed(2)}) >= 0 AND TIMLG Fees (${(stats?.treasury?.timlgFees ?? 0).toFixed(2)}) >= 0`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `TIMLG Sweeps (${(stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0).toFixed(4)}) >= 0 AND TIMLG Fees (${(stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0).toFixed(4)}) >= 0`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Treasury State" }),
                 treasuryVerified ? /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
@@ -60335,7 +60335,7 @@ function AuditDashboard() {
           { label: "Burn-First Policy", value: "Active (Incl. Unrevealed)" }
         ],
         explorerLinks: [
-          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.treasury?.timlgMintAddress || "TIMLGUf..."}?cluster=devnet` }
+          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.config?.timlgMintAddress || "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy"}?cluster=devnet` }
         ]
       }
     ),
@@ -60348,7 +60348,7 @@ function AuditDashboard() {
         formula: "FEE_VALUES = DECODED(ACCOUNT_DATA[OFFSET..])",
         slot: stats?.lastPulse?.slot,
         data: [
-          { label: "SOL Fee (Config PDA)", value: `${stats?.config?.solServiceFee?.toFixed(4) || "0.0000"} SOL` },
+          { label: "SOL Fee (Config PDA)", value: `${stats?.config?.solServiceFee?.toFixed(8) || "0.00000000"} SOL` },
           { label: "Anchor Field Name", value: "sol_service_fee_lamports" },
           { label: "Reward Fee (Tokenomics PDA)", value: `${stats?.config?.fee?.toFixed(1) || "0.0"}%` },
           { label: "Anchor Field Name", value: "reward_fee_bps" }
@@ -60368,14 +60368,14 @@ function AuditDashboard() {
         formula: "TREASURY = SUM(UNCLAIMED_PRIZES) + SUM(PROTOCOL_FEES)",
         slot: stats?.lastPulse?.slot,
         data: [
-          { label: "Unclaimed Recycle Vault", value: `${(stats?.treasury?.timlgSweeps || 0).toFixed(2)} TIMLG` },
-          { label: "Collected Reward Fees", value: `${(stats?.treasury?.timlgFees || 0).toFixed(2)} TIMLG` },
-          { label: "Treasury SOL (Fees)", value: `${((stats?.treasury?.solFees || 0) / 1e9).toFixed(4)} SOL` }
+          { label: "Unclaimed Recycle Vault", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps || 0).toFixed(4)} TIMLG` },
+          { label: "Collected Reward Fees", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgFees || 0).toFixed(4)} TIMLG` },
+          { label: "Treasury SOL (Fees)", value: `${(stats?.integrityProofs?.treasuryState?.balances?.solFees || 0).toFixed(8)} SOL` }
         ],
         explorerLinks: [
-          { label: "Recycling Vault PDA", url: `https://explorer.solana.com/address/${stats?.treasury?.timlgSweepsAddress || ""}?cluster=devnet` },
-          { label: "SOL Service Fee Account", url: `https://explorer.solana.com/address/${stats?.treasury?.solFeesAddress || ""}?cluster=devnet` },
-          { label: "SOL Operator Account", url: `https://explorer.solana.com/address/${stats?.treasury?.solOperatorAddress || ""}?cluster=devnet` }
+          { label: "Recycling Vault PDA", url: stats?.integrityProofs?.treasuryState?.accounts?.timlgSweepsExplorer || "" },
+          { label: "SOL Service Fee Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solFeesExplorer || "" },
+          { label: "SOL Operator Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorExplorer || "" }
         ]
       }
     )
