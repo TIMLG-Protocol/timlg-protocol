@@ -45638,8 +45638,10 @@ function PlayCard({
   setGuess,
   doCommitGlobal,
   globalLoading,
-  visualSlot
+  visualSlot,
   // ✅ Received from App
+  usePriorityFee,
+  setUsePriorityFee
 }) {
   const log2 = typeof appendLog === "function" ? appendLog : () => {
   };
@@ -46056,7 +46058,50 @@ function PlayCard({
           gap: "8px",
           filter: canCommit ? "none" : "grayscale(1)"
         }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em" }, children: "COMMIT PREDICTION" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", fontWeight: "500", color: "#666" }, children: [
+                "Fee: ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "700", color: usePriorityFee ? "#4C82FB" : "#111" }, children: usePriorityFee ? "~0.00008 SOL" : "< 0.00001" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "10px", background: "rgba(0,0,0,0.1)" } }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "4px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "700", color: usePriorityFee ? "#4C82FB" : "#888", transition: "color 0.2s" }, children: "FAST" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "div",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setUsePriorityFee((prev) => !prev);
+                    },
+                    style: {
+                      width: "36px",
+                      height: "20px",
+                      background: usePriorityFee ? "#4C82FB" : "#E5E7EB",
+                      borderRadius: "12px",
+                      position: "relative",
+                      cursor: "pointer",
+                      transition: "background 0.2s",
+                      boxShadow: "inset 0 1px 3px rgba(0,0,0,0.1)"
+                    },
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                      position: "absolute",
+                      top: "2px",
+                      left: usePriorityFee ? "18px" : "2px",
+                      width: "16px",
+                      height: "16px",
+                      background: "#fff",
+                      borderRadius: "50%",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+                      transition: "left 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
+                    } })
+                  }
+                )
+              ] })
+            ] })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", gap: "8px", flex: 1 }, children: [
             { val: 0, label: "BEAR", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BearIconHead, { size: 42, color: guess === 0 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
             { val: 1, label: "BULL", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(BullIconHead, { size: 42, color: guess === 1 ? "#4C82FB" : "#9CA3AF" }), color: "#4C82FB" },
@@ -60903,7 +60948,8 @@ function useUserTickets({
   appendLog,
   onAfterAction,
   setLastTx,
-  limit = 20
+  limit = 20,
+  usePriorityFee = false
 }) {
   const coder = reactExports.useMemo(() => new BorshAccountsCoder(idl), []);
   const [rows, setRows] = reactExports.useState([]);
@@ -61238,14 +61284,19 @@ function useUserTickets({
       appendLog?.(`Reveal: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
       setProcessingId(row.ticketPk.toBase58());
       try {
-        const sig = await program.methods.revealTicket(new BN(row.roundId), new BN(row.nonce), Number(row.receipt.guess), Array.from(salt)).accounts({ config: configPda, round: roundPda, user: userPubkey, ticket: row.ticketPk }).rpc();
+        const ix = await program.methods.revealTicket(new BN(row.roundId), new BN(row.nonce), Number(row.receipt.guess), Array.from(salt)).accounts({ config: configPda, round: roundPda, user: userPubkey, ticket: row.ticketPk }).instruction();
+        let tx = new Transaction();
+        const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+        tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+        tx.add(ix);
+        const sig = await program.provider.sendAndConfirm(tx);
         appendLog?.(`Reveal OK ✅ tx=${sig}`);
         try {
           if (row.receipt) {
             let revealedSlot = 0;
             try {
-              const tx = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
-              if (tx && tx.slot) revealedSlot = tx.slot;
+              const tx2 = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
+              if (tx2 && tx2.slot) revealedSlot = tx2.slot;
             } catch (e) {
               console.log("Slot fetch warn", e);
             }
@@ -61325,7 +61376,7 @@ function useUserTickets({
       appendLog?.(`Claim: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
       setProcessingId(row.ticketPk.toBase58());
       try {
-        const sig = await program.methods.claimReward(new BN(row.roundId), new BN(row.nonce)).accounts({
+        const ix = await program.methods.claimReward(new BN(row.roundId), new BN(row.nonce)).accounts({
           config: configPda,
           tokenomics: tokenomicsPda,
           round: roundPda,
@@ -61334,22 +61385,26 @@ function useUserTickets({
           timlgMint: mintPk,
           timlgVault: timlgVaultPda,
           userTimlgAta: userTIMLGAta,
-          // ✅ Fix: Match IDL casing (Timlg vs TIMLG)
           rewardFeePool: rewardFeePoolPda,
           tokenProgram: index.token.TOKEN_PROGRAM_ID,
-          // Defensive keys
+          // Defensive keys needed for some versions
           user_timlg_ata: userTIMLGAta,
           timlg_mint: mintPk,
           timlg_vault: timlgVaultPda,
           reward_fee_pool: rewardFeePoolPda
-        }).rpc();
+        }).instruction();
+        let tx = new Transaction();
+        const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+        tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+        tx.add(ix);
+        const sig = await program.provider.sendAndConfirm(tx);
         appendLog?.(`Claim OK ✅ tx=${sig}`);
         try {
           if (row.receipt) {
             let claimedSlot = 0;
             try {
-              const tx = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
-              if (tx && tx.slot) claimedSlot = tx.slot;
+              const txInfo = await connection.getTransaction(sig, { maxSupportedTransactionVersion: 0, commitment: "confirmed" });
+              if (txInfo && txInfo.slot) claimedSlot = txInfo.slot;
             } catch (e) {
               console.log("Slot fetch warn", e);
             }
@@ -61382,8 +61437,8 @@ function useUserTickets({
             };
             const updated = { ...existingReceipt, claimTx: "already-processed", claimedAt: Date.now() };
             saveLocalReceipt(walletStr, row.roundId, updated);
-          } catch (e2) {
-            console.warn("Failed to save synthetic claim receipt", e2);
+          } catch (err) {
+            console.warn("Failed to save synthetic claim receipt", err);
           }
           await refresh("action");
           return "already-processed";
@@ -61409,7 +61464,7 @@ function useUserTickets({
       appendLog?.(`Refund: recovering funds… (round=${row.roundId})`);
       setProcessingId(row.ticketPk.toBase58());
       try {
-        const sig = await program.methods.recoverFunds(new BN(row.roundId)).accounts({
+        const ix = await program.methods.recoverFunds(new BN(row.roundId)).accounts({
           config: configPda,
           round: roundPda,
           ticket: row.ticketPk,
@@ -61419,7 +61474,12 @@ function useUserTickets({
           timlgMint: mintPk,
           tokenProgram: index.token.TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId
-        }).rpc();
+        }).instruction();
+        let tx = new Transaction();
+        const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+        tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+        tx.add(ix);
+        const sig = await program.provider.sendAndConfirm(tx);
         appendLog?.(`Refund OK ✅ tx=${sig}`);
         try {
           const walletStr = userPubkey.toBase58();
@@ -61507,7 +61567,7 @@ function useUserTickets({
       }
       appendLog?.(`Settle: found ${ticketsToSettle.length} tickets to process.`);
       try {
-        const sig = await program.methods.settleRoundTokens(roundIdBn).accounts({
+        const ix = await program.methods.settleRoundTokens(roundIdBn).accounts({
           config: configPda,
           tokenomics: tokenomicsPda,
           round: roundPda,
@@ -61518,7 +61578,12 @@ function useUserTickets({
           payer: userPubkey,
           // Updated to payer (User pays gas)
           tokenProgram: index.token.TOKEN_PROGRAM_ID
-        }).remainingAccounts(ticketsToSettle).rpc();
+        }).remainingAccounts(ticketsToSettle).instruction();
+        let tx = new Transaction();
+        const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+        tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+        tx.add(ix);
+        const sig = await program.provider.sendAndConfirm(tx);
         appendLog?.(`Settle OK ✅ tx=${sig}`);
         try {
           const walletStr = userPubkey.toBase58();
@@ -61572,13 +61637,18 @@ function useUserTickets({
       setProcessingId(row.ticketPk.toBase58());
       try {
         const configPda = await pdaConfig(programPk);
-        const sig = await program.methods.closeTicket(new BN(row.roundId), new BN(row.nonce)).accounts({
+        const ix = await program.methods.closeTicket(new BN(row.roundId), new BN(row.nonce)).accounts({
           config: configPda,
           round: await pdaRound(programPk, row.roundId),
           ticket: row.ticketPk,
           user: userPubkey,
           systemProgram: SystemProgram.programId
-        }).rpc();
+        }).instruction();
+        let tx = new Transaction();
+        const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+        tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+        tx.add(ix);
+        const sig = await program.provider.sendAndConfirm(tx);
         appendLog?.(`Close Ticket OK (+~0.002 SOL) ✅ tx=${sig}`);
         try {
           const walletStr = userPubkey.toBase58();
@@ -61680,6 +61750,7 @@ function App() {
   const [pubkey2, setPubkey] = reactExports.useState(null);
   const [sol, setSol] = reactExports.useState(null);
   const [timlg, setTIMLG] = reactExports.useState(null);
+  const [usePriorityFee, setUsePriorityFee] = reactExports.useState(false);
   const [userRpc, setUserRpc] = reactExports.useState(() => localStorage.getItem("TIMLG_USER_RPC") || "");
   const [rpcInput, setRpcInput] = reactExports.useState(userRpc);
   const [rpcTestStatus, setRpcTestStatus] = reactExports.useState(null);
@@ -61860,7 +61931,8 @@ function App() {
     onAfterAction: refreshAll,
     setLastTx,
     refreshNonce: ticketVersion,
-    limit: 1e3
+    limit: 1e3,
+    usePriorityFee
   }) || {};
   const stats = reactExports.useMemo(() => {
     if (isDemo) {
@@ -62230,7 +62302,12 @@ Domain: timlg.org`;
         // ✅ Save slot for export
         commitTx: "pending"
       };
-      let sig = await program.methods.commitTicket(new BN(targetRoundId), new BN(nonce), Array.from(commitment)).accounts(accounts2).rpc();
+      let tx = new Transaction();
+      const computeUnitPrice = usePriorityFee ? 4e5 : 1;
+      tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: computeUnitPrice }));
+      const commitIx = await program.methods.commitTicket(new BN(targetRoundId), new BN(nonce), Array.from(commitment)).accounts(accounts2).instruction();
+      tx.add(commitIx);
+      let sig = await program.provider.sendAndConfirm(tx);
       setTxSig(sig);
       appendLog(`Commit OK ✅ tx=${sig}`);
       receipt.commitTx = sig;
@@ -62287,7 +62364,7 @@ Domain: timlg.org`;
     } finally {
       setLoading2(false);
     }
-  }, [pubkey2, walletReady, program, chainState, connection, mintPk, programPk, guess, appendLog, refreshProtocolState, refreshTickets]);
+  }, [pubkey2, walletReady, program, chainState, connection, mintPk, programPk, guess, usePriorityFee, appendLog, refreshProtocolState, refreshTickets]);
   reactExports.useEffect(() => {
     const p = getPhantomProvider();
     setPhantomDetected(Boolean(p?.isPhantom));
@@ -62702,7 +62779,7 @@ Domain: timlg.org`;
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", opacity: 0.5, fontWeight: "600" }, children: "Solana Native" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(3) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("b", { style: { fontSize: "18px", color: "#111" }, children: displaySol == null ? "—" : displaySol.toFixed(6) }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "800", opacity: 0.6 }, children: "SOL" })
                   ] })
                 ] })
@@ -62893,7 +62970,9 @@ Domain: timlg.org`;
             guess,
             setGuess,
             doCommitGlobal,
-            globalLoading: loading
+            globalLoading: loading,
+            usePriorityFee,
+            setUsePriorityFee
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 24 }, children: walletStr && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -62926,7 +63005,8 @@ Domain: timlg.org`;
             guess,
             doCommitGlobal,
             globalLoading: loading,
-            programPkStr: PROGRAM_ID
+            programPkStr: PROGRAM_ID,
+            usePriorityFee
           }
         ) })
       ] })
