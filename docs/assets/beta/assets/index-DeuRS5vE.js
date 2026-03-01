@@ -46277,7 +46277,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
           try {
             const revealDl = bnToBigInt$1(round2?._logic?.revealDeadline || round2.revealDeadline);
             const grace = BigInt(claimGraceSlots);
-            const cur = BigInt(Math.floor(currentSlot));
+            const cur = BigInt(Math.floor(Number(currentSlot)));
             if (revealDl && revealDl > 0n && cur > revealDl + grace) {
               return "SWEPT";
             }
@@ -46292,7 +46292,7 @@ const TicketDetailModal = ({ ticket, connection, programPk, claimGraceSlots, onC
     if (revealed && !win) return "LOSS";
     if (!revealed && !win) {
       if (!round2 || round2.finalized) return "EXPIRED";
-      const currentSlotBi = BigInt(Math.floor(currentSlot || 0));
+      const currentSlotBi = BigInt(Math.floor(Number(currentSlot || 0)));
       const revealDl = bnToBigInt$1(round2.revealDeadline || round2._logic?.revealDeadline);
       if (revealDl && revealDl > 0n && currentSlotBi > 0n) {
         if (currentSlotBi > revealDl + 150n) return "REFUND AVAILABLE";
@@ -47925,7 +47925,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px", fontSize: 12 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Current Slot:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(BigInt(Math.floor(visualSlot || currentSlot || 0))) || "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "bold", color: "#60A5FA" }, children: formatSlot(BigInt(Math.floor(Number(visualSlot || currentSlot || 0)))) || "—" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Created:" }),
@@ -47953,7 +47953,7 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6 }, children: "Claim Deadline:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.revealDeadline ? formatSlot(toBigInt$1(activeRound.revealDeadline) + toBigInt$1(claimGraceSlots || 1e4)) : "—" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { textAlign: "right" }, children: activeRound?.revealDeadline ? formatSlot(toBigInt$1(activeRound.revealDeadline) + BigInt(claimGraceSlots || 1e4)) : "—" })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -48420,16 +48420,16 @@ function MyTickets({
           /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { textAlign: "right", paddingRight: 24, width: "22%" }, children: "Action" })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: visibleRounds.map(({ roundId: roundId2, tickets, round: round2 }) => {
-          const commitDl = round2?._logic?.commitClose ?? 0n;
-          const revealDl = round2?._logic?.revealDeadline ?? 0n;
-          const pulseTarget = round2?._logic?.pulseIndexTarget ?? 0n;
-          const cSlot = currentSlot ? BigInt(Math.floor(currentSlot)) : 0n;
+          const commitDl = bnToBigInt(round2?._logic?.commitClose) ?? 0n;
+          const revealDl = bnToBigInt(round2?._logic?.revealDeadline) ?? 0n;
+          const pulseTarget = bnToBigInt(round2?._logic?.pulseIndexTarget) ?? 0n;
+          const cSlot = currentSlot ? BigInt(Math.floor(Number(currentSlot))) : 0n;
           const finalized = Boolean(round2?.isFinalized);
-          const pulseSet = Boolean(round2?.pulseSet);
-          const tokenSettled = Boolean(round2?.tokenSettled);
+          const pulseSet = Boolean(round2?.pulseSet || round2?.pulse_set);
+          const tokenSettled = Boolean(round2?.tokenSettled || round2?.token_settled);
           const isChainSyncing = cSlot < 1000n;
           const effectiveGrace = claimGraceSlots ?? 2e3;
-          const currentNistPulse = nist?.pulse?.pulseIndex != null ? BigInt(nist.pulse.pulseIndex) : 0n;
+          const currentNistPulse = nist?.pulse?.pulseIndex != null ? bnToBigInt(nist.pulse.pulseIndex) : 0n;
           const isFutureRound = pulseTarget > 0n && currentNistPulse > 0n && pulseTarget > currentNistPulse;
           const sweepEligible = revealDl > 0n ? revealDl + BigInt(effectiveGrace) : 0n;
           const refundEligible = revealDl > 0n ? revealDl + 150n : 0n;
