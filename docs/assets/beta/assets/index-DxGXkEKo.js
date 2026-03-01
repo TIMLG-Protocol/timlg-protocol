@@ -60935,6 +60935,12 @@ function pick(obj, names, fallback = void 0) {
   for (const n of names) if (obj && obj[n] !== void 0) return obj[n];
   return fallback;
 }
+const pkTo58 = (pk) => {
+  if (!pk) return "";
+  if (typeof pk === "string") return pk;
+  if (typeof pk.toBase58 === "function") return pk.toBase58();
+  return String(pk);
+};
 function computeUiStatus({ ticket, round: round2 }) {
   const revealed = Boolean(pick(ticket, ["revealed"], false));
   const win = Boolean(pick(ticket, ["win"], false));
@@ -61304,7 +61310,7 @@ function useUserTickets({
       const roundPda = await pdaRound(programPk, row.roundId);
       const salt = hexToBytes(row.receipt.saltHex);
       appendLog?.(`Reveal: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
-      setProcessingId(row.ticketPk.toBase58());
+      setProcessingId(pkTo58(row.ticketPk));
       try {
         const ix = await program.methods.revealTicket(new BN(row.roundId), new BN(row.nonce), Number(row.receipt.guess), Array.from(salt)).accounts({ config: configPda, round: roundPda, user: userPubkey, ticket: row.ticketPk }).instruction();
         let tx = new Transaction();
@@ -61329,8 +61335,9 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save reveal receipt", e);
         }
+        const tPkStr = pkTo58(row.ticketPk);
         setRows((prev) => prev.map(
-          (r) => r.ticketPk.equals(row.ticketPk) ? {
+          (r) => pkTo58(r.ticketPk) === tPkStr ? {
             ...r,
             revealed: true,
             revealing: true,
@@ -61363,7 +61370,7 @@ function useUserTickets({
               closedAt: Date.now(),
               revealed: row.revealed,
               win: row.win,
-              ticketPda: row.ticketPk.toBase58(),
+              ticketPda: pkTo58(row.ticketPk),
               roundId: row.roundId,
               nonce: row.nonce
             };
@@ -61396,7 +61403,7 @@ function useUserTickets({
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const userTIMLGAta = await index.token.associatedAddress({ mint: mintPk, owner: userPubkey });
       appendLog?.(`Claim: sending tx… (round=${row.roundId}, nonce=${row.nonce})`);
-      setProcessingId(row.ticketPk.toBase58());
+      setProcessingId(pkTo58(row.ticketPk));
       try {
         const ix = await program.methods.claimReward(new BN(row.roundId), new BN(row.nonce)).accounts({
           config: configPda,
@@ -61437,7 +61444,8 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save claim receipt", e);
         }
-        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, claimed: true, receipt: { ...r.receipt, claimTx: sig, claimedAt: Date.now() }, uiStatus: "CLAIMED" } : r));
+        const tPkStr = pkTo58(row.ticketPk);
+        setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, claimed: true, receipt: { ...r.receipt, claimTx: sig, claimedAt: Date.now() }, uiStatus: "CLAIMED" } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -61449,7 +61457,7 @@ function useUserTickets({
           try {
             const walletStr = userPubkey.toBase58();
             const existingReceipt = row.receipt || {
-              ticketPda: row.ticketPk.toBase58(),
+              ticketPda: pkTo58(row.ticketPk),
               roundId: row.roundId,
               nonce: row.nonce,
               timestamp: Date.now(),
@@ -61484,7 +61492,7 @@ function useUserTickets({
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const userTIMLGAta = await index.token.associatedAddress({ mint: mintPk, owner: userPubkey });
       appendLog?.(`Refund: recovering funds… (round=${row.roundId})`);
-      setProcessingId(row.ticketPk.toBase58());
+      setProcessingId(pkTo58(row.ticketPk));
       try {
         const ix = await program.methods.recoverFunds(new BN(row.roundId)).accounts({
           config: configPda,
@@ -61506,10 +61514,10 @@ function useUserTickets({
         try {
           const walletStr = userPubkey.toBase58();
           const receipts = loadAllLocalReceipts(walletStr, row.roundId);
-          let receipt = receipts.find((r) => r.ticketPda === row.ticketPk.toBase58());
+          let receipt = receipts.find((r) => r.ticketPda === pkTo58(row.ticketPk));
           if (!receipt) {
             receipt = {
-              ticketPda: row.ticketPk.toBase58(),
+              ticketPda: pkTo58(row.ticketPk),
               roundId: row.roundId,
               nonce: row.nonce,
               commitment: null,
@@ -61535,8 +61543,9 @@ function useUserTickets({
         } catch (err) {
           console.error("Failed to update receipt for refund:", err);
         }
-        console.log("Receipt saved/updated successfully for", row.ticketPk.toBase58());
-        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
+        console.log("Receipt saved/updated successfully for", pkTo58(row.ticketPk));
+        const tPkStr = pkTo58(row.ticketPk);
+        setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
@@ -61656,7 +61665,7 @@ function useUserTickets({
     async (row) => {
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       appendLog?.(`Close Ticket: recovering rent… (round=${row.roundId}, nonce=${row.nonce})`);
-      setProcessingId(row.ticketPk.toBase58());
+      setProcessingId(pkTo58(row.ticketPk));
       try {
         const configPda = await pdaConfig(programPk);
         const ix = await program.methods.closeTicket(new BN(row.roundId), new BN(row.nonce)).accounts({
@@ -61688,7 +61697,8 @@ function useUserTickets({
         } catch (e) {
           console.error("Failed to save close receipt", e);
         }
-        setRows((prev) => prev.map((r) => r.ticketPk.equals(row.ticketPk) ? { ...r, receipt: { ...r.receipt, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
+        const tPkStr = pkTo58(row.ticketPk);
+        setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, receipt: { ...r.receipt, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
         await refresh("action");
