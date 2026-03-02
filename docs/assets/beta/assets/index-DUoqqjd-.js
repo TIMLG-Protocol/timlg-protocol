@@ -48089,15 +48089,15 @@ function MyTickets({
     if (claimed) return "CLAIMED";
     if (win) {
       if (!row.round) return "SWEPT";
-      if (row.swept) return "SWEPT";
-      if (currentSlot2 && row.round && claimGraceSlots != null) {
-        const revealDl = bnToBigInt(row.round._logic?.revealDeadline || row.round.revealDeadline);
-        if (revealDl && revealDl > 0n) {
-          const sweepSlot = revealDl + BigInt(claimGraceSlots);
-          if (BigInt(Math.floor(currentSlot2)) > sweepSlot) return "SWEPT";
-        }
+      const revealDl = bnToBigInt(row.round._logic?.revealDeadline || row.round.revealDeadline);
+      const curSlot = currentSlot2 ? BigInt(Math.floor(Number(currentSlot2))) : 0n;
+      const revealDlPassed = curSlot > 0n && revealDl > 0n && curSlot > revealDl;
+      const pulseSet = Boolean(row.round.pulseSet || row.round.pulse_set);
+      if (curSlot > 0n && revealDl > 0n && claimGraceSlots != null) {
+        const sweepSlot = revealDl + BigInt(claimGraceSlots);
+        if (curSlot > sweepSlot) return "SWEPT";
       }
-      if (tokenSettled || row.round.finalized) return "READY TO CLAIM";
+      if (tokenSettled || row.round.finalized || revealDlPassed && pulseSet) return "READY TO CLAIM";
       return "WIN";
     }
     if (revealed && !win && row.round && !row.round.pulse_set && !row.round.pulseSet) {
@@ -61242,7 +61242,11 @@ function useUserTickets({
           localHistoryRaw = [];
         }
         const liveIds = new Set(next.map((t) => t.ticketPk.toBase58()));
-        const historyToShow = localHistoryRaw.filter((h) => h && h.ticketPk && !liveIds.has(h.ticketPk));
+        const historyToShow = localHistoryRaw.filter((h) => h && h.ticketPk && !liveIds.has(h.ticketPk)).map((h) => ({
+          ...h,
+          round: null
+          // ✅ Strip stale round data from local history
+        }));
         const combinedRows = [...next, ...historyToShow].sort((a, b) => b.roundId - a.roundId);
         setRows(combinedRows);
         setLastUpdatedAt(Date.now());
