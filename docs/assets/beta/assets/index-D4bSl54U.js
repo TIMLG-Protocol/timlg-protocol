@@ -45618,6 +45618,9 @@ const UserGuideIcon = ({ size = 20, color = "#09244B", ...props }) => /* @__PURE
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.107,23.14 z", fill: "none" }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M11.1211,20.6153 C10.923,20.4923 10.6312,20.3254 10.2684,20.158 C9.53474,19.8193 8.55682,19.5 7.5,19.5 C6.22109,19.5 5.06248,19.9675 4.32073,20.3617 C3.80203,20.6374 3.22918,20.5752 2.80631,20.342 C2.37858,20.106 2,19.6326 2,19 L2,6.5 C2,5.87876 2.29506,5.23692 2.89751,4.87097 C3.6721,4.40046 5.41372,3.5 7.5,3.5 C9.08128,3.5 10.6447,4.01008 12,4.80962 C13.3553,4.01008 14.9187,3.5 16.5,3.5 C18.5863,3.5 20.3279,4.40046 21.1025,4.87097 C21.7049,5.23692 22,5.87876 22,6.5 L22,19 C22,19.6326 21.6214,20.106 21.1937,20.342 C20.7708,20.5752 20.198,20.6374 19.6793,20.3617 C18.9375,19.9675 17.7789,19.5 16.5,19.5 C15.4432,19.5 14.4653,19.8193 13.7316,20.158 C13.3688,20.3254 13.077,20.4923 12.8789,20.6153 C12.5948,20.7916 12.3552,21 12.0005,21 C11.6451,21 11.4058,20.792 11.1211,20.6153 Z M4,18.2936 L4,6.5418 C4.67339,6.14226 6.00051,5.5 7.5,5.5 C8.73044,5.5 9.94819,5.91768 11,6.5418 L11,18.2936 C10.1153,17.8976 8.8866,17.5 7.5,17.5 C6.11866,17.5 4.89134,17.8946 4,18.2936 Z M13,18.2936 C13.8847,17.8976 15.1134,17.5 16.5,17.5 C17.8813,17.5 19.1087,17.8946 20,18.2936 L20,6.5418 C19.3266,6.14226 17.9995,5.5 16.5,5.5 C15.2696,5.5 14.0518,5.91768 13,6.5418 L13,18.2936 Z", id: "形状", fill: color })
 ] }) }) }) });
+const SearchIcon = ({ size = 16, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z", fill: color }) });
+const FullScreenIcon = ({ size = 16, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z", fill: color }) });
+const ExitFullScreenIcon = ({ size = 16, color = "currentColor" }) => /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z", fill: color }) });
 function PlayCard({
   rpcUrl,
   connection,
@@ -59645,7 +59648,7 @@ const VerificationModal = ({ isOpen, onClose, title, formula, data, slot, explor
     }, children: "CLOSE PROOF" })
   ] }) });
 };
-function AuditDashboard() {
+function AuditDashboard({ program, connection, programPk }) {
   const [stats, setStats] = reactExports.useState(null);
   const [loading, setLoading2] = reactExports.useState(true);
   const [error2, setError] = reactExports.useState(null);
@@ -59658,6 +59661,11 @@ function AuditDashboard() {
   const [exportSingleId, setExportSingleId] = reactExports.useState("");
   const [isExporting, setIsExporting] = reactExports.useState(false);
   const [activeModal, setActiveModal] = reactExports.useState(null);
+  const [searchTerm, setSearchTerm] = reactExports.useState("");
+  const [isExplorerFullscreen, setIsExplorerFullscreen] = reactExports.useState(false);
+  const [manualRounds, setManualRounds] = reactExports.useState([]);
+  const [isSearchingOnChain, setIsSearchingOnChain] = reactExports.useState(false);
+  const [searchError, setSearchError] = reactExports.useState("");
   const MAX_EXPORT_ROUNDS = 1e3;
   const COLORS = {
     bg: "#0a0a0c",
@@ -59695,6 +59703,83 @@ function AuditDashboard() {
       document.body.style.overflow = "auto";
     };
   }, []);
+  const rawRounds = stats?.activeRoundsMetadata || [];
+  const fetchRoundOnChain = async () => {
+    const id = searchTerm.trim();
+    if (!program || !id || isNaN(id)) return;
+    setIsSearchingOnChain(true);
+    setSearchError("");
+    try {
+      const numericId = parseInt(id, 10);
+      const roundIdBN = new BN(numericId);
+      const [roundPda] = PublicKey.findProgramAddressSync(
+        [Buffer$1.from("round_v3"), roundIdBN.toArrayLike(Buffer$1, "le", 8)],
+        program.programId
+      );
+      console.log(`AUDIT_LOG: Searching on-chain for Round ${numericId} at ${roundPda.toBase58()}...`);
+      const acc = await program.account.round.fetch(roundPda);
+      if (acc) {
+        const roundData = {
+          id: numericId,
+          state: typeof acc.state === "object" ? Object.keys(acc.state)[0].toUpperCase() === "FINALIZED" ? 2 : Object.keys(acc.state)[0].toUpperCase() === "PULSESET" ? 1 : 0 : acc.state,
+          tickets: acc.totalTickets.toNumber(),
+          reveals: acc.revealsCount?.toNumber() || 0,
+          wins: acc.winnersCount?.toNumber() || 0,
+          pulsePublished: acc.pulseSet,
+          pulseHash: acc.pulseHash ? Buffer$1.from(acc.pulseHash).toString("hex") : null,
+          revealDeadline: acc.revealDeadlineSlot?.toNumber() || 0,
+          settledAt: acc.settledAtSlot?.toNumber() || 0,
+          swept: acc.sweptAtSlot?.toNumber() > 0,
+          sweptAt: acc.sweptAtSlot?.toNumber() || 0,
+          explorerUrl: `https://explorer.solana.com/address/${roundPda.toBase58()}?cluster=devnet`,
+          isManual: true
+          // Mark as manual for UI differentiation if needed
+        };
+        setManualRounds((prev) => {
+          const filtered = prev.filter((r) => r.id !== numericId);
+          return [...filtered, roundData];
+        });
+        console.log(`AUDIT_LOG: Found Round ${numericId} on-chain!`);
+      }
+    } catch (e) {
+      console.error("AUDIT_LOG: Round not found on-chain or error:", e);
+      setSearchError(`Round ${id} not found on devnet.`);
+    } finally {
+      setIsSearchingOnChain(false);
+    }
+  };
+  const uniqueRoundsMap = /* @__PURE__ */ new Map();
+  rawRounds.forEach((item, index2) => {
+    const roundId2 = item.id !== void 0 && item.id !== null ? parseInt(item.id, 10) : index2;
+    if (!isNaN(roundId2)) {
+      uniqueRoundsMap.set(roundId2, { ...item, id: roundId2 });
+    }
+  });
+  manualRounds.forEach((r) => {
+    uniqueRoundsMap.set(r.id, r);
+  });
+  const allRounds = Array.from(uniqueRoundsMap.values()).sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10));
+  const highestId = allRounds.length > 0 ? allRounds[0].id : 0;
+  const roundsBase = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished || highestId - r.id < 5) : allRounds;
+  const rounds = reactExports.useMemo(() => {
+    const term = searchTerm.trim();
+    if (!term) return roundsBase.slice(0, 50);
+    const matches = [...roundsBase.filter((r) => r.id.toString().includes(term))];
+    if (stats?.archive) {
+      Object.entries(stats.archive).forEach(([id, r]) => {
+        const numericId = parseInt(id, 10);
+        if (id.includes(term) && !matches.find((m) => m.id === numericId)) {
+          matches.push({ ...r, id: numericId });
+        }
+      });
+    }
+    manualRounds.forEach((r) => {
+      if (r.id.toString().includes(term) && !matches.find((m) => m.id === r.id)) {
+        matches.push(r);
+      }
+    });
+    return matches.sort((a, b) => b.id - a.id).slice(0, 50);
+  }, [roundsBase, searchTerm, stats?.archive, manualRounds]);
   if (loading && !stats) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: COLORS.bg, color: COLORS.blue }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "audit-spinner", style: { width: 40, height: 40, border: `3px solid ${COLORS.cardBorder}`, borderTop: `3px solid ${COLORS.blue}`, borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 20 } }),
@@ -59705,17 +59790,6 @@ function AuditDashboard() {
   if (error2 && !stats) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "red", padding: "20px" }, children: "Error connecting to audit node." });
   }
-  const rawRounds = stats?.activeRoundsMetadata || [];
-  const uniqueRoundsMap = /* @__PURE__ */ new Map();
-  rawRounds.forEach((item, index2) => {
-    const roundId2 = item.id !== void 0 && item.id !== null ? parseInt(item.id, 10) : index2;
-    if (!isNaN(roundId2)) {
-      uniqueRoundsMap.set(roundId2, { ...item, id: roundId2 });
-    }
-  });
-  const allRounds = Array.from(uniqueRoundsMap.values()).sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10)).slice(0, 50);
-  const highestId = allRounds.length > 0 ? allRounds[0].id : 0;
-  const rounds = hideEmptyRounds ? allRounds.filter((r) => r.tickets > 0 || r.pulsePublished || highestId - r.id < 5) : allRounds;
   const activeRoundsCount = rounds.filter((r) => r.state < 2).length;
   const totalTickets = stats?.globalSummary?.dailyTickets || 0;
   const totalWins = stats?.globalSummary?.dailyWins || 0;
@@ -59879,7 +59953,8 @@ function AuditDashboard() {
     fontFamily: "Inter, system-ui, sans-serif",
     color: COLORS.text,
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    position: "relative"
   }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { style: {
       display: "flex",
@@ -60172,20 +60247,40 @@ function AuditDashboard() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", minHeight: 0, flexGrow: 1 }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+        flexGrow: 1,
+        gap: isExplorerFullscreen ? 0 : "16px",
+        ...isExplorerFullscreen ? {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 100,
+          background: COLORS.bg,
+          padding: "24px 30px",
+          margin: 0,
+          borderRadius: 0,
+          border: "none"
+        } : {}
+      }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "16px",
           background: "rgba(255, 255, 255, 0.03)",
           padding: "12px 20px",
           borderRadius: "12px",
           border: `1px solid ${COLORS.cardBorder}`,
           flexWrap: "wrap",
-          gap: "16px"
+          gap: "16px",
+          flexShrink: 0,
+          ...isExplorerFullscreen ? { borderRadius: "12px 12px 0 0", borderBottom: "none" } : {}
         }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px", flexGrow: 1 }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", opacity: 0.4, marginTop: "2px" }, children: [
@@ -60193,6 +60288,74 @@ function AuditDashboard() {
                 rounds.length,
                 " recent rounds"
               ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", display: "flex", alignItems: "center", gap: "8px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", display: "flex", alignItems: "center" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "10px", opacity: 0.5, display: "flex" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SearchIcon, { size: 12, color: COLORS.blue }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    placeholder: "Search Round ID...",
+                    value: searchTerm,
+                    onChange: (e) => {
+                      setSearchTerm(e.target.value);
+                      setSearchError("");
+                    },
+                    onKeyDown: (e) => {
+                      if (e.key === "Enter" && searchTerm.trim() && !rounds.find((r) => r.id.toString() === searchTerm.trim())) {
+                        fetchRoundOnChain();
+                      }
+                    },
+                    style: {
+                      background: "rgba(0,0,0,0.2)",
+                      border: `1px solid ${COLORS.cardBorder}`,
+                      borderRadius: "6px",
+                      padding: "6px 10px 6px 30px",
+                      fontSize: "11px",
+                      color: "#fff",
+                      width: "180px",
+                      outline: "none",
+                      transition: "all 0.2s"
+                    },
+                    onFocus: (e) => e.target.style.borderColor = COLORS.blue,
+                    onBlur: (e) => e.target.style.borderColor = COLORS.cardBorder
+                  }
+                ),
+                searchTerm && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: () => {
+                      setSearchTerm("");
+                      setSearchError("");
+                    },
+                    style: { position: "absolute", right: "8px", background: "none", border: "none", color: "#fff", opacity: 0.4, cursor: "pointer", fontSize: "14px" },
+                    children: "×"
+                  }
+                )
+              ] }),
+              searchTerm.trim() && !isNaN(searchTerm.trim()) && !rounds.find((r) => r.id.toString() === searchTerm.trim()) && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: fetchRoundOnChain,
+                  disabled: isSearchingOnChain,
+                  style: {
+                    background: "rgba(45, 104, 234, 0.1)",
+                    border: `1px solid ${COLORS.blue}`,
+                    color: COLORS.blue,
+                    fontSize: "9px",
+                    fontWeight: "900",
+                    padding: "6px 12px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    opacity: isSearchingOnChain ? 0.5 : 1
+                  },
+                  title: "Attempt to fetch directly from Solana if data is missing from Audit Database",
+                  children: isSearchingOnChain ? "FETCHING..." : "NOT IN DB - TRY ON-CHAIN"
+                }
+              ),
+              searchError && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", color: "#EF4444", fontWeight: "700" }, children: searchError })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { style: { cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }, children: [
@@ -60289,166 +60452,189 @@ function AuditDashboard() {
                 onMouseOut: (e) => !isExporting && (e.target.style.transform = "translateY(0)"),
                 children: isExporting ? "PREPARING..." : "DOWNLOAD CSV"
               }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setIsExplorerFullscreen(!isExplorerFullscreen),
+                style: {
+                  background: "rgba(255,255,255,0.05)",
+                  border: `1px solid ${COLORS.cardBorder}`,
+                  color: "#fff",
+                  padding: "6px",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 0.2s"
+                },
+                onMouseOver: (e) => e.currentTarget.style.background = "rgba(255,255,255,0.1)",
+                onMouseOut: (e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)",
+                title: isExplorerFullscreen ? "Exit Fullscreen" : "Fullscreen View",
+                children: isExplorerFullscreen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ExitFullScreenIcon, { size: 16, color: COLORS.blue }) : /* @__PURE__ */ jsxRuntimeExports.jsx(FullScreenIcon, { size: 16, color: COLORS.blue })
+              }
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4 }, children: [
-          "Displaying snapshot of ",
-          rounds.length,
-          " recent rounds"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        background: COLORS.cardBg,
-        borderRadius: "16px",
-        border: `1px solid ${COLORS.cardBorder}`,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        minHeight: 0,
-        flexGrow: 1
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "REVEALS" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
-              "#",
-              r.id.toString().padStart(6, "0"),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: COLORS.cardBg,
+          borderRadius: isExplorerFullscreen ? "0 0 12px 12px" : "16px",
+          border: `1px solid ${COLORS.cardBorder}`,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          flexGrow: 1
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4, padding: "12px 20px 0" }, children: [
+            "Displaying snapshot of ",
+            rounds.length,
+            " recent rounds"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "REVEALS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS, tooltip: "Round state synchronized with Cloud Registry" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                IntegrityPill,
-                {
-                  label: "Pulse",
-                  active: r.pulsePublished,
-                  COLORS,
-                  link: r.pulseUrl,
-                  tooltip: r.pulsePublished ? `Pulse Published: ${r.pulseHash?.substring(0, 12)}...` : "Pulse Pending"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                IntegrityPill,
-                {
-                  label: "Settle",
-                  active: r.tickets > 0 && (r.settledAt > 0 || !!r.settleTx),
-                  COLORS,
-                  link: r.settleTx ? `https://explorer.solana.com/tx/${r.settleTx}?cluster=devnet` : null,
-                  tooltip: r.tickets === 0 ? "N/A (0 Tickets)" : r.settledAt > 0 || r.settleTx ? `Settled: ${r.settleTx ? r.settleTx.substring(0, 12) + "..." : "Slot " + r.settledAt}` : r.state < 2 ? "Awaiting Finalization" : "Settlement Pending"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                IntegrityPill,
-                {
-                  label: "Sweep",
-                  active: !!r.swept,
-                  COLORS,
-                  link: r.sweepTx ? `https://explorer.solana.com/tx/${r.sweepTx}?cluster=devnet` : null,
-                  tooltip: r.swept ? r.sweepTx ? `Swept: ${r.sweepTx.substring(0, 12)}...` : `Swept at Slot ${r.sweptAt}` : r.state < 2 ? "Awaiting Finalization" : "Sweep Pending"
-                }
-              )
-            ] }) })
-          ] }, r.id)) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
+                "#",
+                r.id.toString().padStart(6, "0"),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS, tooltip: "Round state synchronized with Cloud Registry" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  IntegrityPill,
+                  {
+                    label: "Pulse",
+                    active: r.pulsePublished,
+                    COLORS,
+                    link: r.pulseUrl,
+                    tooltip: r.pulsePublished ? `Pulse Published: ${r.pulseHash?.substring(0, 12)}...` : "Pulse Pending"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  IntegrityPill,
+                  {
+                    label: "Settle",
+                    active: r.tickets > 0 && (r.settledAt > 0 || !!r.settleTx),
+                    COLORS,
+                    link: r.settleTx ? `https://explorer.solana.com/tx/${r.settleTx}?cluster=devnet` : null,
+                    tooltip: r.tickets === 0 ? "N/A (0 Tickets)" : r.settledAt > 0 || r.settleTx ? `Settled: ${r.settleTx ? r.settleTx.substring(0, 12) + "..." : "Slot " + r.settledAt}` : r.state < 2 ? "Awaiting Finalization" : "Settlement Pending"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  IntegrityPill,
+                  {
+                    label: "Sweep",
+                    active: !!r.swept,
+                    COLORS,
+                    link: r.sweepTx ? `https://explorer.solana.com/tx/${r.sweepTx}?cluster=devnet` : null,
+                    tooltip: r.swept ? r.sweepTx ? `Swept: ${r.sweepTx.substring(0, 12)}...` : `Swept at Slot ${r.sweptAt}` : r.state < 2 ? "Awaiting Finalization" : "Sweep Pending"
+                  }
+                )
+              ] }) })
+            ] }, r.id)) })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
                             .audit-scroll::-webkit-scrollbar { width: 6px; }
                             .audit-scroll::-webkit-scrollbar-track { background: transparent; }
                             .audit-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); borderRadius: 10px; }
                             .audit-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.1); }
                         ` })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      VerificationModal,
-      {
-        isOpen: activeModal === "accounting",
-        onClose: () => setActiveModal(null),
-        title: "Commit/Reveal Accounting Proof",
-        formula: "TOTAL_TICKETS = WINS + LOSSES + UNREVEALED",
-        slot: stats?.lastPulse?.slot,
-        data: [
-          { label: "On-chain Tickets", value: totalTickets },
-          { label: "Confirmed Wins", value: totalWins },
-          { label: "Confirmed Losses", value: totalLosses },
-          { label: "Estimated Unrevealed", value: estimatedUnrevealed }
-        ],
-        explorerLinks: [
-          { label: "View Global Round Registry", url: `https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet` },
-          ...stats?.lastPulse?.pulseTx ? [{ label: "Audit Last Pulse Tx", url: `https://explorer.solana.com/tx/${stats.lastPulse.pulseTx}?cluster=devnet` }] : []
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      VerificationModal,
-      {
-        isOpen: activeModal === "tokenomics",
-        onClose: () => setActiveModal(null),
-        title: "Token Flow & Burn Verification",
-        formula: "EXPECTED_BURN = (LOSSES + UNREVEALED) * STAKE_AMOUNT",
-        slot: stats?.lastPulse?.slot,
-        data: [
-          { label: "Current Burned Total", value: `${(stats?.totalBurned || 0).toFixed(2)} TIMLG` },
-          { label: "Expected Burn (Theoretical)", value: `${roughBurnExpected.toFixed(2)} TIMLG` },
-          { label: "Stake per Ticket", value: `${(stats?.config?.stake || 1).toFixed(2)} TIMLG` },
-          { label: "Burn-First Policy", value: "Active (Incl. Unrevealed)" }
-        ],
-        explorerLinks: [
-          { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.config?.timlgMintAddress || TIMLG_MINT_DEFAULT}?cluster=devnet` }
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      VerificationModal,
-      {
-        isOpen: activeModal === "config",
-        onClose: () => setActiveModal(null),
-        title: "Protocol Configuration Proof",
-        formula: "FEE_VALUES = DECODED(ACCOUNT_DATA[OFFSET..])",
-        slot: stats?.lastPulse?.slot,
-        data: [
-          { label: "SOL Fee (Config PDA)", value: `${stats?.config?.solServiceFee?.toFixed(8) || "0.00000000"} SOL` },
-          { label: "Anchor Field Name", value: "sol_service_fee_lamports" },
-          { label: "Reward Fee (Tokenomics PDA)", value: `${stats?.config?.fee?.toFixed(1) || "0.0"}%` },
-          { label: "Anchor Field Name", value: "reward_fee_bps" }
-        ],
-        explorerLinks: [
-          { label: "Inspect Config Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.configAddress || CONFIG_PDA_DEFAULT}?cluster=devnet` },
-          { label: "Inspect Tokenomics Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.tokenomicsAddress || TOKENOMICS_PDA_DEFAULT}?cluster=devnet` }
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      VerificationModal,
-      {
-        isOpen: activeModal === "treasury",
-        onClose: () => setActiveModal(null),
-        title: "Treasury Invariant Proof",
-        formula: "TREASURY = SUM(UNCLAIMED_PRIZES) + SUM(PROTOCOL_FEES)",
-        slot: stats?.lastPulse?.slot,
-        data: [
-          { label: "Unclaimed Recycle Vault", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps || 0).toFixed(4)} TIMLG` },
-          { label: "Collected Reward Fees", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgFees || 0).toFixed(4)} TIMLG` },
-          { label: "Treasury SOL (Fees)", value: `${(stats?.integrityProofs?.treasuryState?.balances?.solFees || 0).toFixed(8)} SOL` }
-        ],
-        explorerLinks: [
-          { label: "Recycling Vault PDA", url: stats?.integrityProofs?.treasuryState?.accounts?.timlgSweepsExplorer || "" },
-          { label: "SOL Service Fee Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solFeesExplorer || "" },
-          { label: "SOL Operator Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorExplorer || "" }
-        ]
-      }
-    )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        VerificationModal,
+        {
+          isOpen: activeModal === "accounting",
+          onClose: () => setActiveModal(null),
+          title: "Commit/Reveal Accounting Proof",
+          formula: "TOTAL_TICKETS = WINS + LOSSES + UNREVEALED",
+          slot: stats?.lastPulse?.slot,
+          data: [
+            { label: "On-chain Tickets", value: totalTickets },
+            { label: "Confirmed Wins", value: totalWins },
+            { label: "Confirmed Losses", value: totalLosses },
+            { label: "Estimated Unrevealed", value: estimatedUnrevealed }
+          ],
+          explorerLinks: [
+            { label: "View Global Round Registry", url: `https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet` },
+            ...stats?.lastPulse?.pulseTx ? [{ label: "Audit Last Pulse Tx", url: `https://explorer.solana.com/tx/${stats.lastPulse.pulseTx}?cluster=devnet` }] : []
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        VerificationModal,
+        {
+          isOpen: activeModal === "tokenomics",
+          onClose: () => setActiveModal(null),
+          title: "Token Flow & Burn Verification",
+          formula: "EXPECTED_BURN = (LOSSES + UNREVEALED) * STAKE_AMOUNT",
+          slot: stats?.lastPulse?.slot,
+          data: [
+            { label: "Current Burned Total", value: `${(stats?.totalBurned || 0).toFixed(2)} TIMLG` },
+            { label: "Expected Burn (Theoretical)", value: `${roughBurnExpected.toFixed(2)} TIMLG` },
+            { label: "Stake per Ticket", value: `${(stats?.config?.stake || 1).toFixed(2)} TIMLG` },
+            { label: "Burn-First Policy", value: "Active (Incl. Unrevealed)" }
+          ],
+          explorerLinks: [
+            { label: "TIMLG Mint Address", url: `https://explorer.solana.com/address/${stats?.config?.timlgMintAddress || TIMLG_MINT_DEFAULT}?cluster=devnet` }
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        VerificationModal,
+        {
+          isOpen: activeModal === "config",
+          onClose: () => setActiveModal(null),
+          title: "Protocol Configuration Proof",
+          formula: "FEE_VALUES = DECODED(ACCOUNT_DATA[OFFSET..])",
+          slot: stats?.lastPulse?.slot,
+          data: [
+            { label: "SOL Fee (Config PDA)", value: `${stats?.config?.solServiceFee?.toFixed(8) || "0.00000000"} SOL` },
+            { label: "Anchor Field Name", value: "sol_service_fee_lamports" },
+            { label: "Reward Fee (Tokenomics PDA)", value: `${stats?.config?.fee?.toFixed(1) || "0.0"}%` },
+            { label: "Anchor Field Name", value: "reward_fee_bps" }
+          ],
+          explorerLinks: [
+            { label: "Inspect Config Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.configAddress || CONFIG_PDA_DEFAULT}?cluster=devnet` },
+            { label: "Inspect Tokenomics Account on Explorer", url: `https://explorer.solana.com/address/${stats?.config?.tokenomicsAddress || TOKENOMICS_PDA_DEFAULT}?cluster=devnet` }
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        VerificationModal,
+        {
+          isOpen: activeModal === "treasury",
+          onClose: () => setActiveModal(null),
+          title: "Treasury Invariant Proof",
+          formula: "TREASURY = SUM(UNCLAIMED_PRIZES) + SUM(PROTOCOL_FEES)",
+          slot: stats?.lastPulse?.slot,
+          data: [
+            { label: "Unclaimed Recycle Vault", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps || 0).toFixed(4)} TIMLG` },
+            { label: "Collected Reward Fees", value: `${(stats?.integrityProofs?.treasuryState?.balances?.timlgFees || 0).toFixed(4)} TIMLG` },
+            { label: "Treasury SOL (Fees)", value: `${(stats?.integrityProofs?.treasuryState?.balances?.solFees || 0).toFixed(8)} SOL` }
+          ],
+          explorerLinks: [
+            { label: "Recycling Vault PDA", url: stats?.integrityProofs?.treasuryState?.accounts?.timlgSweepsExplorer || "" },
+            { label: "SOL Service Fee Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solFeesExplorer || "" },
+            { label: "SOL Operator Account", url: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorExplorer || "" }
+          ]
+        }
+      )
+    ] })
   ] });
 }
 function ParamRow({ label, value, COLORS, link, color }) {
