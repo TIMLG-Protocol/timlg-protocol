@@ -59702,7 +59702,7 @@ function AuditDashboard({ program, connection, programPk }) {
   const [isSearchingOnChain, setIsSearchingOnChain] = reactExports.useState(false);
   const [searchError, setSearchError] = reactExports.useState("");
   const MAX_EXPORT_ROUNDS = 1e3;
-  const COLORS2 = {
+  const COLORS = {
     bg: "#0a0a0c",
     cardBg: "rgba(45, 104, 234, 0.05)",
     cardBorder: "rgba(45, 104, 234, 0.3)",
@@ -59816,8 +59816,8 @@ function AuditDashboard({ program, connection, programPk }) {
     return matches.sort((a, b) => b.id - a.id).slice(0, 50);
   }, [roundsBase, searchTerm, stats?.archive, manualRounds]);
   if (loading && !stats) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: COLORS2.bg, color: COLORS2.blue }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "audit-spinner", style: { width: 40, height: 40, border: `3px solid ${COLORS2.cardBorder}`, borderTop: `3px solid ${COLORS2.blue}`, borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 20 } }),
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: COLORS.bg, color: COLORS.blue }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "audit-spinner", style: { width: 40, height: 40, border: `3px solid ${COLORS.cardBorder}`, borderTop: `3px solid ${COLORS.blue}`, borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 20 } }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: 900, letterSpacing: "0.2em" }, children: "SYNCHRONIZING GLOBAL AUDIT..." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }` })
     ] });
@@ -59837,17 +59837,17 @@ function AuditDashboard({ program, connection, programPk }) {
   const tokenFlowVerified = stats?.integrityProofs?.tokenFlow?.status === "VERIFIED" || (totalTickets === 0 || Math.abs((stats?.globalSummary?.totalBurned || 0) - roughBurnExpected) <= Math.max((stats?.config?.stake || 1) * 5, (stats?.globalSummary?.totalBurned || 0) * 0.1));
   const treasuryVerified = stats?.integrityProofs?.treasuryState?.status === "VERIFIED" || stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps >= 0 && stats?.integrityProofs?.treasuryState?.balances?.timlgFees >= 0;
   let oracleStatus = "UNKNOWN";
-  let oracleColor = COLORS2.muted;
+  let oracleColor = COLORS.muted;
   console.log("LAST PULSE DATA:", stats?.integrityProofs?.oracleState?.lastPulse);
   if (stats?.integrityProofs?.oracleState?.lastPulse?.currentSlot && stats?.integrityProofs?.oracleState?.lastPulse?.slot) {
     const slotDiff = Math.max(0, stats.integrityProofs.oracleState.lastPulse.currentSlot - stats.integrityProofs.oracleState.lastPulse.slot);
     const minutesAgo = slotDiff * 0.4 / 60;
     if (minutesAgo < 60) {
       oracleStatus = "ACTIVE (Recent)";
-      oracleColor = COLORS2.green;
+      oracleColor = COLORS.green;
     } else if (minutesAgo < 1440) {
       oracleStatus = `ACTIVE (${Math.round(minutesAgo)}m ago)`;
-      oracleColor = COLORS2.blue;
+      oracleColor = COLORS.blue;
     } else {
       oracleStatus = "DELAYED";
       oracleColor = "#EF4444";
@@ -59980,13 +59980,13 @@ function AuditDashboard({ program, connection, programPk }) {
     document.body.removeChild(link);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-    background: COLORS2.bg,
+    background: COLORS.bg,
     height: "100vh",
     maxHeight: "100vh",
     width: "100vw",
     overflow: "hidden",
     fontFamily: "Inter, system-ui, sans-serif",
-    color: COLORS2.text,
+    color: COLORS.text,
     display: "flex",
     flexDirection: "column",
     position: "relative"
@@ -59996,24 +59996,24 @@ function AuditDashboard({ program, connection, programPk }) {
       justifyContent: "space-between",
       alignItems: "center",
       padding: "24px 30px",
-      borderBottom: `1px solid ${COLORS2.cardBorder}`,
+      borderBottom: `1px solid ${COLORS.cardBorder}`,
       flexShrink: 0
     }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "40px", height: "40px", background: COLORS2.blue, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 15px ${COLORS2.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 26, color: "#fff" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "40px", height: "40px", background: COLORS.blue, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 15px ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TimlgIcon, { size: 26, color: "#fff" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS2.blue, letterSpacing: "0.2em" }, children: "NETWORK INTEGRITY" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.2em" }, children: "NETWORK INTEGRITY" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "18px", fontWeight: "900", letterSpacing: "-0.02em" }, children: [
               "LIVE AUDIT TERMINAL ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS2.muted, fontWeight: "400" }, children: "v3.0" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: COLORS.muted, fontWeight: "400" }, children: "v3.0" })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "a",
               {
                 href: "index.html?mode=audit",
                 target: "_blank",
-                style: { color: COLORS2.blue, opacity: 0.6, transition: "all 0.2s", display: "flex", alignItems: "center", marginLeft: "8px" },
+                style: { color: COLORS.blue, opacity: 0.6, transition: "all 0.2s", display: "flex", alignItems: "center", marginLeft: "8px" },
                 title: "Open in New Tab",
                 onMouseOver: (e) => {
                   e.currentTarget.style.opacity = "1";
@@ -60030,10 +60030,10 @@ function AuditDashboard({ program, connection, programPk }) {
               }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.muted, marginTop: "4px", display: "flex", gap: "8px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.muted, marginTop: "4px", display: "flex", gap: "8px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
               "PROGRAM ID: ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.blue, textDecoration: "none" }, title: "View Verified Build on Explorer", children: "GeA3...PrUP" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://explorer.solana.com/address/GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP?cluster=devnet", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none" }, title: "View Verified Build on Explorer", children: "GeA3...PrUP" })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.5 }, children: "|" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "CLUSTER: Devnet" }),
@@ -60049,10 +60049,10 @@ function AuditDashboard({ program, connection, programPk }) {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "16px", fontSize: "11px", fontWeight: "800", marginRight: "10px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS2.text, onMouseOut: (e) => e.target.style.color = COLORS2.muted, children: "GitHub" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/PROTOCOL.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS2.text, onMouseOut: (e) => e.target.style.color = COLORS2.muted, children: "Specs" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/SECURITY.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS2.text, onMouseOut: (e) => e.target.style.color = COLORS2.muted, children: "Security" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/END_TO_END_DEVNET_RUN.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS2.text, onMouseOut: (e) => e.target.style.color = COLORS2.muted, children: "Runbook" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "GitHub" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/PROTOCOL.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Specs" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/SECURITY.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Security" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/richarddmm/timlg-protocol/blob/main/END_TO_END_DEVNET_RUN.md", target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.muted, textDecoration: "none", transition: "color 0.2s" }, onMouseOver: (e) => e.target.style.color = COLORS.text, onMouseOut: (e) => e.target.style.color = COLORS.muted, children: "Runbook" })
         ] }),
         lastUpdated && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", opacity: 0.4, fontWeight: "700" }, children: [
           "PROTO SYNC: ",
@@ -60060,12 +60060,12 @@ function AuditDashboard({ program, connection, programPk }) {
           error2 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginLeft: "10px", color: "#EF4444" }, children: " (Offline)" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: "rgba(45, 104, 234, 0.1)", padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS2.blue}` }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS2.blue, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS2.blue}`, animation: "pulse 2s infinite" } }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.blue, opacity: 0.9 }, children: "CLOUD SYNC" })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: "rgba(45, 104, 234, 0.1)", padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS.blue}` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS.blue, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS.blue}`, animation: "pulse 2s infinite" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, opacity: 0.9 }, children: "CLOUD SYNC" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: COLORS2.cardBg, padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS2.cardBorder}` }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS2.green, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS2.green}` } }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", background: COLORS.cardBg, padding: "6px 14px", borderRadius: "30px", border: `1px solid ${COLORS.cardBorder}` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 8, height: 8, background: COLORS.green, borderRadius: "50%", boxShadow: `0 0 8px ${COLORS.green}` } }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", fontWeight: "800", opacity: 0.9 }, children: "SYSTEMS NOMINAL" })
           ] })
         ] })
@@ -60073,13 +60073,13 @@ function AuditDashboard({ program, connection, programPk }) {
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { flexGrow: 1, overflowY: "auto", padding: "24px 30px", display: "flex", flexDirection: "column", gap: "24px" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", flexShrink: 0 }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS2.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS2.cardBorder}`, backdropFilter: "blur(10px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, backdropFilter: "blur(10px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "16px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.blue, letterSpacing: "0.1em" }, title: "Overall ticket and reveal activity for the network", children: "NETWORK ACTIVITY" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, title: "Overall ticket and reveal activity for the network", children: "NETWORK ACTIVITY" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", opacity: 0.4, fontWeight: "700" }, children: "LIFETIME" })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: COLORS2.muted, marginBottom: "16px", lineHeight: "1.4" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("i", { children: "Note: Rounds schedule every ~60s to maintain Oracle uptime; zero-ticket rounds are expected." }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: COLORS.muted, marginBottom: "16px", lineHeight: "1.4" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("i", { children: "Note: Rounds schedule every ~60s to maintain Oracle uptime; zero-ticket rounds are expected." }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total tickets committed across all rounds", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TICKETS" }),
@@ -60090,33 +60090,33 @@ function AuditDashboard({ program, connection, programPk }) {
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em" }, children: stats?.globalSummary?.dailyReveals?.toLocaleString() || 0 })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { title: "Total winning tickets", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px", color: COLORS2.green }, children: "WINS" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS2.green }, children: stats?.globalSummary?.dailyWins?.toLocaleString() || 0 })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px", color: COLORS.green }, children: "WINS" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.green }, children: stats?.globalSummary?.dailyWins?.toLocaleString() || 0 })
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS2.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Rounds currently running (Announced or Pulse Set)", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Rounds currently running (Announced or Pulse Set)", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Active Rounds" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "14px", fontWeight: "900" }, children: activeRoundsCount })
           ] }) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS2.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS2.cardBorder}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.blue, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Deflationary/Inflationary state of the token economy", children: "PROTOCOL EQUILIBRIUM" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Deflationary/Inflationary state of the token economy", children: "PROTOCOL EQUILIBRIUM" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, title: "Newly minted rewards minus burned losses", children: "NET SUPPLY FLUX" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "28px", fontWeight: "900", color: stats?.globalSummary?.netSupplyFlux >= 0 ? COLORS2.text : COLORS2.blue, letterSpacing: "-0.02em" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "28px", fontWeight: "900", color: stats?.globalSummary?.netSupplyFlux >= 0 ? COLORS.text : COLORS.blue, letterSpacing: "-0.02em" }, children: [
                 stats?.globalSummary?.netSupplyFlux > 0 ? "+" : "",
                 Math.round(stats?.globalSummary?.netSupplyFlux || 0),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS2.text }, children: "TIMLG" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.4, color: COLORS.text }, children: "TIMLG" })
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS2.cardBorder}` }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Bernoulli verification: Actual wins / Total reveals (matches Oracle Pulse)", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Win Rate (NIST)" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.globalSummary?.winRatePercentage > 52 || stats?.globalSummary?.winRatePercentage < 48 ? COLORS2.blue : COLORS2.green }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "14px", fontWeight: "900", color: stats?.globalSummary?.winRatePercentage > 52 || stats?.globalSummary?.winRatePercentage < 48 ? COLORS.blue : COLORS.green }, children: [
                 stats?.globalSummary?.winRatePercentage?.toFixed(1) || "0.0",
                 "%"
               ] })
@@ -60131,13 +60131,13 @@ function AuditDashboard({ program, connection, programPk }) {
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS2.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS2.cardBorder}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.cardBorder}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.blue, letterSpacing: "0.1em", marginBottom: "16px" }, children: "TREASURY RESERVES" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em", marginBottom: "16px" }, children: "TREASURY RESERVES" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL SOL" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS2.blue }, children: ((stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0)).toFixed(4) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "28px", fontWeight: "900", letterSpacing: "-0.02em", color: COLORS.blue }, children: ((stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0) + (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0)).toFixed(4) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "4px" }, children: "TOTAL TIMLG" }),
@@ -60147,28 +60147,28 @@ function AuditDashboard({ program, connection, programPk }) {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { cursor: "pointer" }, onClick: () => setActiveModal("config"), children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: "SOL Service Fee" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS2.blue, textDecoration: "underline" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS.blue, textDecoration: "underline" }, children: [
                   stats?.config?.solServiceFee?.toFixed(8) || "0.00000000",
                   " SOL"
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { cursor: "pointer", textAlign: "right" }, onClick: () => setActiveModal("config"), children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: "Reward Fee" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS2.blue, textDecoration: "underline" }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", fontWeight: "800", color: COLORS.blue, textDecoration: "underline" }, children: [
                   stats?.config?.fee?.toFixed(1) || "0.0",
                   "%"
                 ] })
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS2.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "4px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 ParamRow,
                 {
                   label: "Fees",
                   value: (stats?.integrityProofs?.treasuryState?.balances?.solFees ?? 0).toFixed(8),
-                  COLORS: COLORS2,
+                  COLORS,
                   link: stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solFeesAddress}?cluster=devnet` : "#"
                 }
               ),
@@ -60177,7 +60177,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 {
                   label: "Node",
                   value: (stats?.integrityProofs?.treasuryState?.balances?.solOperator ?? 0).toFixed(8),
-                  COLORS: COLORS2,
+                  COLORS,
                   link: stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress ? `https://explorer.solana.com/address/${stats?.integrityProofs?.treasuryState?.accounts?.solOperatorAddress}?cluster=devnet` : "#"
                 }
               )
@@ -60188,7 +60188,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 {
                   label: "Fees",
                   value: (stats?.integrityProofs?.treasuryState?.balances?.timlgFees ?? 0).toFixed(2),
-                  COLORS: COLORS2,
+                  COLORS,
                   color: "rgba(255,255,255,0.8)",
                   link: stats?.integrityProofs?.treasuryState?.accounts?.timlgFeesExplorer || "#"
                 }
@@ -60198,7 +60198,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 {
                   label: "Vault",
                   value: (stats?.integrityProofs?.treasuryState?.balances?.timlgSweeps ?? 0).toFixed(2),
-                  COLORS: COLORS2,
+                  COLORS,
                   color: "rgba(255,255,255,0.8)",
                   link: stats?.integrityProofs?.treasuryState?.accounts?.timlgSweepsExplorer || "#"
                 }
@@ -60206,9 +60206,9 @@ function AuditDashboard({ program, connection, programPk }) {
             ] })
           ] }) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS2.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS2.green}`, display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: `0 0 10px rgba(16, 185, 129, 0.1)` }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: COLORS.cardBg, borderRadius: "16px", padding: "20px", border: `1px solid ${COLORS.green}`, display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: `0 0 10px rgba(16, 185, 129, 0.1)` }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS2.green, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Mathematical verification of protocol invariants", children: "INTEGRITY PROOFS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", color: COLORS.green, letterSpacing: "0.1em", marginBottom: "16px" }, title: "Mathematical verification of protocol invariants", children: "INTEGRITY PROOFS" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: `Tickets (${totalTickets}) = Wins (${totalWins}) + Losses (${totalLosses}) + Unrevealed (${estimatedUnrevealed})`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.8, fontWeight: "600" }, children: "Accounting Math" }),
@@ -60216,7 +60216,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   "button",
                   {
                     onClick: () => setActiveModal("accounting"),
-                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS2.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
                     children: "VERIFIED"
                   }
                 ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
@@ -60227,7 +60227,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   "button",
                   {
                     onClick: () => setActiveModal("tokenomics"),
-                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS2.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
                     children: "VERIFIED"
                   }
                 ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "PENDING" })
@@ -60238,14 +60238,14 @@ function AuditDashboard({ program, connection, programPk }) {
                   "button",
                   {
                     onClick: () => setActiveModal("treasury"),
-                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS2.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
+                    style: { fontSize: "10px", fontWeight: "900", background: "rgba(16, 185, 129, 0.15)", color: COLORS.green, padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(16, 185, 129, 0.3)`, cursor: "pointer", outline: "none" },
                     children: "VERIFIED"
                   }
                 ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", background: "rgba(239, 68, 68, 0.15)", color: "#EF4444", padding: "2px 8px", borderRadius: "4px", border: `1px solid rgba(239, 68, 68, 0.3)` }, children: "ALERT" })
               ] }) })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS2.cardBorder}`, display: "flex", flexDirection: "column", gap: "10px" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${COLORS.cardBorder}`, display: "flex", flexDirection: "column", gap: "10px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, title: "Time since Oracle last successfully published a pulse", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "Oracle Status" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: oracleColor }, children: oracleStatus })
@@ -60257,8 +60257,8 @@ function AuditDashboard({ program, connection, programPk }) {
                 style: {
                   width: "100%",
                   background: "rgba(16, 185, 129, 0.1)",
-                  border: `1px solid ${COLORS2.green}`,
-                  color: COLORS2.green,
+                  border: `1px solid ${COLORS.green}`,
+                  color: COLORS.green,
                   fontSize: "9px",
                   fontWeight: "900",
                   padding: "8px",
@@ -60288,7 +60288,7 @@ function AuditDashboard({ program, connection, programPk }) {
           width: "100vw",
           height: "100vh",
           zIndex: 100,
-          background: COLORS2.bg,
+          background: COLORS.bg,
           padding: "24px 30px",
           margin: 0,
           borderRadius: 0,
@@ -60302,7 +60302,7 @@ function AuditDashboard({ program, connection, programPk }) {
           background: "rgba(255, 255, 255, 0.03)",
           padding: "12px 20px",
           borderRadius: "12px",
-          border: `1px solid ${COLORS2.cardBorder}`,
+          border: `1px solid ${COLORS.cardBorder}`,
           flexWrap: "wrap",
           gap: "16px",
           flexShrink: 0,
@@ -60310,17 +60310,17 @@ function AuditDashboard({ program, connection, programPk }) {
         }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "20px", flexGrow: 1 }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS2.blue, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.blue, letterSpacing: "0.1em" }, children: "LIVE ROUND EXPLORER" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "9px", opacity: 0.4, marginTop: "2px" }, children: [
                 "Snapshot of ",
                 rounds.length,
                 " recent rounds"
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS2.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", display: "flex", alignItems: "center", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", display: "flex", alignItems: "center" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "10px", opacity: 0.5, display: "flex" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SearchIcon, { size: 12, color: COLORS2.blue }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", left: "10px", opacity: 0.5, display: "flex" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(SearchIcon, { size: 12, color: COLORS.blue }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "input",
                   {
@@ -60338,7 +60338,7 @@ function AuditDashboard({ program, connection, programPk }) {
                     },
                     style: {
                       background: "rgba(0,0,0,0.2)",
-                      border: `1px solid ${COLORS2.cardBorder}`,
+                      border: `1px solid ${COLORS.cardBorder}`,
                       borderRadius: "6px",
                       padding: "6px 10px 6px 30px",
                       fontSize: "11px",
@@ -60347,8 +60347,8 @@ function AuditDashboard({ program, connection, programPk }) {
                       outline: "none",
                       transition: "all 0.2s"
                     },
-                    onFocus: (e) => e.target.style.borderColor = COLORS2.blue,
-                    onBlur: (e) => e.target.style.borderColor = COLORS2.cardBorder
+                    onFocus: (e) => e.target.style.borderColor = COLORS.blue,
+                    onBlur: (e) => e.target.style.borderColor = COLORS.cardBorder
                   }
                 ),
                 searchTerm && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -60370,8 +60370,8 @@ function AuditDashboard({ program, connection, programPk }) {
                   disabled: isSearchingOnChain,
                   style: {
                     background: "rgba(45, 104, 234, 0.1)",
-                    border: `1px solid ${COLORS2.blue}`,
-                    color: COLORS2.blue,
+                    border: `1px solid ${COLORS.blue}`,
+                    color: COLORS.blue,
                     fontSize: "9px",
                     fontWeight: "900",
                     padding: "6px 12px",
@@ -60385,7 +60385,7 @@ function AuditDashboard({ program, connection, programPk }) {
               ),
               searchError && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", color: "#EF4444", fontWeight: "700" }, children: searchError })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS2.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { style: { cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "input",
@@ -60393,7 +60393,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   type: "checkbox",
                   checked: hideEmptyRounds,
                   onChange: (e) => setHideEmptyRounds(e.target.checked),
-                  style: { accentColor: COLORS2.blue, width: "14px", height: "14px" }
+                  style: { accentColor: COLORS.blue, width: "14px", height: "14px" }
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "600", opacity: 0.8 }, children: "Only Significant Activity" })
@@ -60406,7 +60406,7 @@ function AuditDashboard({ program, connection, programPk }) {
               {
                 value: exportRangeMode,
                 onChange: (e) => setExportRangeMode(e.target.value),
-                style: { background: COLORS2.bg, color: "#fff", border: `1px solid ${COLORS2.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px", cursor: "pointer" },
+                style: { background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px", cursor: "pointer" },
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "CURRENT", children: "Visible Table" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "LAST_X", children: "Last X Rounds" }),
@@ -60422,7 +60422,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 value: exportLastX,
                 onChange: (e) => setExportLastX(parseInt(e.target.value, 10)),
                 placeholder: "Count",
-                style: { width: "70px", background: COLORS2.bg, color: "#fff", border: `1px solid ${COLORS2.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                style: { width: "70px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
               }
             ),
             exportRangeMode === "RANGE" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
@@ -60433,7 +60433,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   value: exportStartId,
                   onChange: (e) => setExportStartId(e.target.value),
                   placeholder: "Start ID",
-                  style: { width: "85px", background: COLORS2.bg, color: "#fff", border: `1px solid ${COLORS2.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                  style: { width: "85px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5 }, children: "to" }),
@@ -60444,7 +60444,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   value: exportEndId,
                   onChange: (e) => setExportEndId(e.target.value),
                   placeholder: "End ID",
-                  style: { width: "85px", background: COLORS2.bg, color: "#fff", border: `1px solid ${COLORS2.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                  style: { width: "85px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
                 }
               )
             ] }),
@@ -60455,7 +60455,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 value: exportSingleId,
                 onChange: (e) => setExportSingleId(e.target.value),
                 placeholder: "Round ID",
-                style: { width: "90px", background: COLORS2.bg, color: "#fff", border: `1px solid ${COLORS2.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
+                style: { width: "90px", background: COLORS.bg, color: "#fff", border: `1px solid ${COLORS.cardBorder}`, borderRadius: "6px", fontSize: "11px", padding: "6px 10px" }
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -60464,7 +60464,7 @@ function AuditDashboard({ program, connection, programPk }) {
                 onClick: exportCSV,
                 disabled: isExporting,
                 style: {
-                  background: isExporting ? COLORS2.muted : COLORS2.blue,
+                  background: isExporting ? COLORS.muted : COLORS.blue,
                   border: "none",
                   color: "#fff",
                   fontSize: "10px",
@@ -60472,7 +60472,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   padding: "7px 18px",
                   borderRadius: "6px",
                   cursor: isExporting ? "not-allowed" : "pointer",
-                  boxShadow: isExporting ? "none" : `0 0 15px ${COLORS2.blue}44`,
+                  boxShadow: isExporting ? "none" : `0 0 15px ${COLORS.blue}44`,
                   transition: "all 0.2s",
                   opacity: isExporting ? 0.7 : 1
                 },
@@ -60481,14 +60481,14 @@ function AuditDashboard({ program, connection, programPk }) {
                 children: isExporting ? "PREPARING..." : "DOWNLOAD CSV"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS2.cardBorder } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: "1px", height: "24px", background: COLORS.cardBorder } }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 onClick: () => setIsExplorerFullscreen(!isExplorerFullscreen),
                 style: {
                   background: "rgba(255,255,255,0.05)",
-                  border: `1px solid ${COLORS2.cardBorder}`,
+                  border: `1px solid ${COLORS.cardBorder}`,
                   color: "#fff",
                   padding: "6px",
                   borderRadius: "6px",
@@ -60501,15 +60501,15 @@ function AuditDashboard({ program, connection, programPk }) {
                 onMouseOver: (e) => e.currentTarget.style.background = "rgba(255,255,255,0.1)",
                 onMouseOut: (e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)",
                 title: isExplorerFullscreen ? "Exit Fullscreen" : "Fullscreen View",
-                children: isExplorerFullscreen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ExitFullScreenIcon, { size: 16, color: COLORS2.blue }) : /* @__PURE__ */ jsxRuntimeExports.jsx(FullScreenIcon, { size: 16, color: COLORS2.blue })
+                children: isExplorerFullscreen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ExitFullScreenIcon, { size: 16, color: COLORS.blue }) : /* @__PURE__ */ jsxRuntimeExports.jsx(FullScreenIcon, { size: 16, color: COLORS.blue })
               }
             )
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-          background: COLORS2.cardBg,
+          background: COLORS.cardBg,
           borderRadius: isExplorerFullscreen ? "0 0 12px 12px" : "16px",
-          border: `1px solid ${COLORS2.cardBorder}`,
+          border: `1px solid ${COLORS.cardBorder}`,
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
@@ -60522,7 +60522,7 @@ function AuditDashboard({ program, connection, programPk }) {
             " recent rounds"
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowY: "auto", flexGrow: 1 }, className: "audit-scroll", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse", textAlign: "left" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS2.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS2.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { background: "rgba(255,255,255,0.02)", fontSize: "10px", fontWeight: "900", color: COLORS.muted, position: "sticky", top: 0, zIndex: 1, backdropFilter: "blur(10px)", borderBottom: `1px solid ${COLORS.cardBorder}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "ROUND ID" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "STATE" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "TICKETS" }),
@@ -60530,24 +60530,24 @@ function AuditDashboard({ program, connection, programPk }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "WINS" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "16px 24px" }, children: "INTEGRITY" })
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS2.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS2.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { style: { fontSize: "13px" }, children: rounds.map((r, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid ${COLORS.cardBorder}`, background: i === 0 ? "rgba(45, 104, 234, 0.03)" : "transparent" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "800", fontFamily: "monospace" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: r.explorerUrl, target: "_blank", rel: "noopener noreferrer", style: { color: COLORS.blue, textDecoration: "none", display: "flex", alignItems: "center", gap: "4px", transition: "opacity 0.2s" }, children: [
                 "#",
                 r.id.toString().padStart(6, "0"),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
               ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS2.green : COLORS2.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: r.state === 2 ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: r.state === 2 ? COLORS.green : COLORS.blue, border: `1px solid ${r.state === 2 ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: ["ANNOUNCED", "PULSE_SET", "FINALIZED"][r.state] || "UNKNOWN" }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS2.green }, children: r.wins > 0 ? r.wins : "-" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px" }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS: COLORS2, tooltip: "Round state synchronized with Cloud Registry" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(IntegrityPill, { label: "Sync", active: true, COLORS, tooltip: "Round state synchronized with Cloud Registry" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   IntegrityPill,
                   {
                     label: "Pulse",
                     active: r.pulsePublished,
-                    COLORS: COLORS2,
+                    COLORS,
                     link: r.pulseUrl,
                     tooltip: r.pulsePublished ? `Pulse Published: ${r.pulseHash?.substring(0, 12)}...` : "Pulse Pending"
                   }
@@ -60557,7 +60557,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   {
                     label: "Settle",
                     active: r.tickets > 0 && (r.settledAt > 0 || !!r.settleTx),
-                    COLORS: COLORS2,
+                    COLORS,
                     link: r.settleTx ? `https://explorer.solana.com/tx/${r.settleTx}?cluster=devnet` : null,
                     tooltip: r.tickets === 0 ? "N/A (0 Tickets)" : r.settledAt > 0 || r.settleTx ? `Settled: ${r.settleTx ? r.settleTx.substring(0, 12) + "..." : "Slot " + r.settledAt}` : r.state < 2 ? "Awaiting Finalization" : "Settlement Pending"
                   }
@@ -60567,7 +60567,7 @@ function AuditDashboard({ program, connection, programPk }) {
                   {
                     label: "Sweep",
                     active: !!r.swept,
-                    COLORS: COLORS2,
+                    COLORS,
                     link: r.sweepTx ? `https://explorer.solana.com/tx/${r.sweepTx}?cluster=devnet` : null,
                     tooltip: r.swept ? r.sweepTx ? `Swept: ${r.sweepTx.substring(0, 12)}...` : `Swept at Slot ${r.sweptAt}` : r.state < 2 ? "Awaiting Finalization" : "Sweep Pending"
                   }
@@ -60665,24 +60665,24 @@ function AuditDashboard({ program, connection, programPk }) {
     ] })
   ] });
 }
-function ParamRow({ label, value, COLORS: COLORS2, link, color }) {
+function ParamRow({ label, value, COLORS, link, color }) {
   const content = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "11px", opacity: 0.5, fontWeight: "600" }, children: label }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: color || COLORS2.blue, textDecoration: link ? "underline" : "none", textUnderlineOffset: "3px" }, children: value })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", fontWeight: "800", fontFamily: "monospace", color: color || COLORS.blue, textDecoration: link ? "underline" : "none", textUnderlineOffset: "3px" }, children: value })
   ] });
   if (link) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: link, target: "_blank", rel: "noopener noreferrer", style: { textDecoration: "none", color: "inherit" }, onMouseOver: (e) => e.currentTarget.style.opacity = 0.8, onMouseOut: (e) => e.currentTarget.style.opacity = 1, children: content });
   }
   return content;
 }
-function IntegrityPill({ label, active, COLORS: COLORS2, link, tooltip }) {
+function IntegrityPill({ label, active, COLORS, link, tooltip }) {
   const content = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
     fontSize: "9px",
     fontWeight: "900",
     padding: "2px 6px",
     borderRadius: "4px",
     background: active ? "rgba(16, 185, 129, 0.1)" : "rgba(255,255,255,0.05)",
-    color: active ? COLORS2.green : "rgba(255,255,255,0.2)",
+    color: active ? COLORS.green : "rgba(255,255,255,0.2)",
     border: `1px solid ${active ? "rgba(16, 185, 129, 0.2)" : "rgba(255,255,255,0.05)"}`,
     cursor: link ? "pointer" : "default",
     transition: "all 0.2s"
@@ -60692,224 +60692,6 @@ function IntegrityPill({ label, active, COLORS: COLORS2, link, tooltip }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: tooltip, children: pill });
   }
   return pill;
-}
-const COLORS = {
-  cardBg: "rgba(45, 104, 234, 0.05)",
-  cardBorder: "rgba(45, 104, 234, 0.3)",
-  blue: "#2D68EA",
-  green: "#10B981",
-  red: "#EF4444",
-  muted: "rgba(255, 255, 255, 0.5)",
-  text: "#ffffff",
-  gold: "#FFD700"
-};
-function TrustChecker() {
-  const [url, setUrl] = reactExports.useState("");
-  const [result, setResult] = reactExports.useState(null);
-  const [loading, setLoading2] = reactExports.useState(false);
-  const detectTyposquatting = (inputUrl) => {
-    try {
-      const domain = new URL(inputUrl.startsWith("http") ? inputUrl : `https://${inputUrl}`).hostname.toLowerCase();
-      const brands = ["google", "amazon", "apple", "microsoft", "solana", "binance", "coinbase", "phantom", "meta", "facebook", "twitter", "timlg", "paypal", "netflix"];
-      const domainParts = domain.split(".");
-      const coreDomain = domainParts[domainParts.length - 2];
-      if (!coreDomain) return null;
-      for (const brand of brands) {
-        if (coreDomain === brand) return null;
-        if (brand.includes(coreDomain) && brand.length > coreDomain.length && coreDomain.length > 3) {
-          return `Potential typosquatting for ${brand.toUpperCase()}`;
-        }
-        const lookalikes = brand.replace(/o/g, "0").replace(/i/g, "1").replace(/l/g, "1").replace(/e/g, "3");
-        if (coreDomain === lookalikes) return `Critical lookalike alert: ${brand.toUpperCase()}`;
-      }
-      return null;
-    } catch (e) {
-      return "Invalid URL format.";
-    }
-  };
-  const checkTrust = async () => {
-    if (!url) return;
-    setLoading2(true);
-    setResult(null);
-    const cleanUrl = url.trim();
-    const typosquatWarning = detectTyposquatting(cleanUrl);
-    let domain = "";
-    try {
-      domain = new URL(cleanUrl.startsWith("http") ? cleanUrl : `https://${cleanUrl}`).hostname;
-    } catch (e) {
-      domain = cleanUrl;
-    }
-    try {
-      const response = await fetch(`https://urlscan.io/api/v1/search/?q=domain:${domain}&size=1`);
-      const data = await response.json();
-      const latestScan = data.results && data.results.length > 0 ? data.results[0] : null;
-      const isTimlg = domain.includes("timlg.org") || domain.includes("localhost");
-      setResult({
-        url: cleanUrl,
-        domain,
-        reputation: typosquatWarning ? "SUSPICIOUS" : latestScan ? "REPORTED" : "UNKNOWN",
-        typosquat: typosquatWarning,
-        lastScan: latestScan ? new Date(latestScan.task.time).toLocaleDateString() : "No recent scan",
-        scanUrl: latestScan ? latestScan.result : null,
-        protocolHonesty: isTimlg ? "VERIFIED" : "NOT DETECTED",
-        details: typosquatWarning ? `Warning: ${typosquatWarning}` : latestScan ? `Found existing security report for this domain.` : "No public security reports found in urlscan.io database."
-      });
-    } catch (err) {
-      console.error("Analysis Error:", err);
-      setResult({
-        url: cleanUrl,
-        domain,
-        reputation: "ERROR",
-        details: "Communication lost with analysis servers. Check your connection."
-      });
-    } finally {
-      setLoading2(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-    background: COLORS.cardBg,
-    border: `1px solid ${COLORS.cardBorder}`,
-    borderRadius: "16px",
-    padding: "24px",
-    color: COLORS.text,
-    fontFamily: "Inter, sans-serif"
-  }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { style: { margin: 0, fontSize: "18px", fontWeight: "900" }, children: "WEBSITE HONESTY ANALYZER" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", color: COLORS.blue, fontWeight: "900", letterSpacing: "0.1em" }, children: "POWERED BY TIMLG + URLSCAN" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize: "12px", color: COLORS.muted, marginBottom: "20px" }, children: "Analyze URLs for malicious patterns, typosquatting, and cryptographic honesty." }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px", marginBottom: "24px" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "input",
-        {
-          type: "text",
-          value: url,
-          onChange: (e) => setUrl(e.target.value),
-          onKeyDown: (e) => e.key === "Enter" && checkTrust(),
-          placeholder: "Enter URL (e.g., google.com or timlg.org)",
-          style: {
-            flexGrow: 1,
-            background: "rgba(0,0,0,0.3)",
-            border: `1px solid ${COLORS.cardBorder}`,
-            borderRadius: "8px",
-            padding: "12px",
-            color: "#fff",
-            outline: "none",
-            fontSize: "14px"
-          }
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: checkTrust,
-          disabled: loading,
-          style: {
-            background: COLORS.blue,
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            padding: "0 24px",
-            fontWeight: "900",
-            cursor: "pointer",
-            opacity: loading ? 0.5 : 1,
-            transition: "all 0.2s",
-            letterSpacing: "0.05em"
-          },
-          children: loading ? "ANALYZING..." : "ANALYZE"
-        }
-      )
-    ] }),
-    result && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-      borderTop: `1px solid ${COLORS.cardBorder}`,
-      paddingTop: "20px",
-      animation: "fadeIn 0.5s ease-out"
-    }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "15px" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(255,255,255,0.02)", padding: "15px", borderRadius: "12px", border: `1px solid ${result.reputation === "SUSPICIOUS" ? COLORS.red : COLORS.cardBorder}` }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted, marginBottom: "8px" }, children: "WEB REPUTATION" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-            fontSize: "18px",
-            fontWeight: "900",
-            color: result.reputation === "SUSPICIOUS" ? COLORS.red : result.reputation === "REPORTED" ? "#F59E0B" : COLORS.green
-          }, children: result.reputation }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", marginTop: "4px", opacity: 0.7, color: result.typosquat ? COLORS.red : "inherit" }, children: result.details }),
-          result.scanUrl && /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: result.scanUrl, target: "_blank", rel: "noreferrer", style: { display: "block", marginTop: "8px", fontSize: "10px", color: COLORS.blue, fontWeight: "700" }, children: "VIEW FULL SCAN REPORT ↗" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(255,255,255,0.02)", padding: "15px", borderRadius: "12px", border: `1px solid ${result.protocolHonesty === "VERIFIED" ? COLORS.blue : COLORS.cardBorder}` }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted, marginBottom: "8px" }, children: "LOGICAL HONESTY (TIMLG)" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-            fontSize: "18px",
-            fontWeight: "900",
-            color: result.protocolHonesty === "VERIFIED" ? COLORS.blue : COLORS.muted
-          }, children: result.protocolHonesty }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "11px", marginTop: "4px", opacity: 0.7 }, children: result.protocolHonesty === "VERIFIED" ? "This application follows the TIMLG protocol and provides verifiable integrity proofs." : "No cryptographic integrity proofs detected for this domain." }),
-          result.protocolHonesty === "VERIFIED" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "8px", fontSize: "10px", background: "rgba(45, 104, 234, 0.1)", color: COLORS.blue, padding: "4px 8px", borderRadius: "4px", fontWeight: "800", width: "fit-content" }, children: "MATHEMATICALLY JUSTIFIED" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { background: "rgba(255,255,255,0.02)", padding: "15px", borderRadius: "12px", border: `1px solid ${COLORS.gold}44` }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.gold, marginBottom: "8px" }, children: "THIRD-PARTY SECURITY AUDITS" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "14px", fontWeight: "800", color: "#fff", marginBottom: "10px" }, children: "Verify Site Content Safety" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "a",
-              {
-                href: `https://safeweb.norton.com/report/show?url=${result.domain}`,
-                target: "_blank",
-                rel: "noreferrer",
-                style: { textDecoration: "none", background: "#fff", padding: "4px 8px", borderRadius: "4px", display: "flex", alignItems: "center", gap: "4px", border: "1px solid #ddd" },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { width: 6, height: 6, background: "#FFD700", borderRadius: "50%" } }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "8px", fontWeight: "900", color: "#333" }, children: [
-                    "Norton ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#000", opacity: 0.6 }, children: "REPORT" })
-                  ] })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: `https://www.siteadvisor.com/sitereport.html?url=${result.domain}`,
-                target: "_blank",
-                rel: "noreferrer",
-                style: { textDecoration: "none", background: "#CC0000", padding: "4px 8px", borderRadius: "4px", display: "flex", alignItems: "center", gap: "4px" },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "8px", fontWeight: "900", color: "#fff" }, children: [
-                  "McAfee ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "400" }, children: "REPORT" })
-                ] })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: `https://transparencyreport.google.com/safe-browsing/search?url=${result.domain}`,
-                target: "_blank",
-                rel: "noreferrer",
-                style: { textDecoration: "none", background: "#4285F4", padding: "4px 8px", borderRadius: "4px", display: "flex", alignItems: "center", gap: "4px" },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { fontSize: "8px", fontWeight: "900", color: "#fff" }, children: [
-                  "Google ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontWeight: "400" }, children: "SAFE LIST" })
-                ] })
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "11px", opacity: 0.7 }, children: [
-            "Click the buttons above to view external, independent security reports for ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("b", { children: result.domain }),
-            "."
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "16px", fontSize: "10px", color: COLORS.muted, textAlign: "center" }, children: "Note: Authentic verification requires checking the domain on the provider's official site. Never trust static icons alone." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-            ` })
-  ] });
 }
 function WalletSankey({ stats, chainState }) {
   const { breakdown, total } = stats || {};
@@ -62270,7 +62052,6 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     if (mode === "audit") return "audit";
-    if (mode === "honesty") return "honesty";
     return "play";
   });
   const isDemo = reactExports.useMemo(() => {
@@ -63003,32 +62784,6 @@ Domain: timlg.org`;
                 children: walletStr ? "Disconnect" : "Connect Wallet"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { style: { display: "flex", gap: "8px", marginLeft: "12px", borderLeft: "1px solid #eee", paddingLeft: "12px" }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "a",
-                {
-                  href: "index.html",
-                  style: { fontSize: "10px", fontWeight: "900", color: activeTab === "play" ? "#2D68EA" : "#666", textDecoration: "none" },
-                  children: "PLAY"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "a",
-                {
-                  href: "index.html?mode=audit",
-                  style: { fontSize: "10px", fontWeight: "900", color: activeTab === "audit" ? "#2D68EA" : "#666", textDecoration: "none" },
-                  children: "AUDIT"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "a",
-                {
-                  href: "index.html?mode=honesty",
-                  style: { fontSize: "10px", fontWeight: "900", color: activeTab === "honesty" ? "#2D68EA" : "#666", textDecoration: "none" },
-                  children: "TRUST CHECKER"
-                }
-              )
-            ] }),
             isCompact && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 16, marginLeft: 20 }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: 4 }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "700", opacity: 0.5 }, children: "SOL" }),
@@ -63127,7 +62882,7 @@ Domain: timlg.org`;
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "TRUST & SECURITY" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "10px", letterSpacing: "0.08em", fontSize: "11px" }, children: "SECURITY" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { opacity: 0.6, fontWeight: "600" }, children: "VERIFICATION:" }),
@@ -63362,7 +63117,7 @@ Domain: timlg.org`;
                 "aria-hidden": "true"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "12px", position: "relative", zIndex: 1 }, children: "PERFORMANCE AUDIT" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: 0.4, letterSpacing: "0.05em", marginBottom: "12px", position: "relative", zIndex: 1 }, children: "SESSION PERFORMANCE" }),
             !stats ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed rgba(0,0,0,0.1)", borderRadius: "12px", opacity: 0.3, fontSize: "10px" }, children: ticketsLoading ? "Analyzing..." : "No History" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "10px", flex: 1 }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
                 background: stats.netProfit >= 0 ? "rgba(16, 185, 129, 0.06)" : "rgba(239, 68, 68, 0.06)",
@@ -63374,7 +63129,7 @@ Domain: timlg.org`;
                 alignItems: "center"
               }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PROFIT" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "8px", fontWeight: "800", opacity: 0.5, color: stats.netProfit >= 0 ? "#047857" : "#B91C1C" }, children: "NET PnL" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "22px", fontWeight: "900", color: stats.netProfit >= 0 ? "#059669" : "#DC2626", letterSpacing: "-0.02em" }, children: [
                     stats.netProfit > 0 ? "+" : "",
                     stats.netProfit.toLocaleString(void 0, { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
@@ -63508,14 +63263,7 @@ Domain: timlg.org`;
         ) })
       ] })
     ] }),
-    activeTab === "audit" && /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "beta-main", children: /* @__PURE__ */ jsxRuntimeExports.jsx(AuditDashboard, { program, connection, programPk }) }),
-    activeTab === "honesty" && /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "beta-main", style: { padding: "20px", maxWidth: "800px", margin: "0 auto" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: "24px", textAlign: "center" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { style: { fontSize: "24px", fontWeight: "900", color: "#fff" }, children: "Website Honesty & Transparency" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "#aaa", fontSize: "14px" }, children: "Verify the reputation and protocol honesty of any domain." })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TrustChecker, {})
-    ] })
+    activeTab === "audit" && /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "beta-main", children: /* @__PURE__ */ jsxRuntimeExports.jsx(AuditDashboard, { program, connection, programPk }) })
   ] });
 }
 class ErrorBoundary extends React.Component {
