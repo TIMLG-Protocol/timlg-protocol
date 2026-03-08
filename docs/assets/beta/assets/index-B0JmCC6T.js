@@ -59756,15 +59756,15 @@ function AuditDashboard({ program, connection, programPk }) {
         const roundData = {
           id: numericId,
           state: typeof acc.state === "object" ? Object.keys(acc.state)[0].toUpperCase() === "FINALIZED" ? 2 : Object.keys(acc.state)[0].toUpperCase() === "PULSESET" ? 1 : 0 : acc.state,
-          tickets: acc.totalTickets.toNumber(),
-          reveals: acc.revealsCount?.toNumber() || 0,
-          wins: acc.winnersCount?.toNumber() || 0,
-          pulsePublished: acc.pulseSet,
+          tickets: (acc.committedCount || acc.committed_count)?.toNumber() || 0,
+          reveals: (acc.revealedCount || acc.revealed_count)?.toNumber() || 0,
+          wins: (acc.winCount || acc.win_count)?.toNumber() || 0,
+          pulsePublished: acc.pulseSet ?? acc.pulse_set ?? false,
           pulseHash: acc.pulseHash ? Buffer$1.from(acc.pulseHash).toString("hex") : null,
-          revealDeadline: acc.revealDeadlineSlot?.toNumber() || 0,
-          settledAt: acc.settledAtSlot?.toNumber() || 0,
-          swept: acc.sweptAtSlot?.toNumber() > 0,
-          sweptAt: acc.sweptAtSlot?.toNumber() || 0,
+          revealDeadline: (acc.revealDeadlineSlot || acc.reveal_deadline_slot)?.toNumber() || 0,
+          settledAt: (acc.tokenSettledSlot || acc.token_settled_slot)?.toNumber() || 0,
+          swept: (acc.sweptAtSlot || acc.swept_slot || acc.swept_at_slot)?.toNumber() > 0,
+          sweptAt: (acc.sweptAtSlot || acc.swept_slot || acc.swept_at_slot)?.toNumber() || 0,
           explorerUrl: `https://explorer.solana.com/address/${roundPda.toBase58()}?cluster=devnet`,
           isManual: true
           // Mark as manual for UI differentiation if needed
@@ -60563,7 +60563,15 @@ function AuditDashboard({ program, connection, programPk }) {
                   r.id.toString().padStart(6, "0"),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "12px", opacity: 0.8 }, children: "↗" })
                 ] }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { padding: "4px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "900", background: isCompleted ? "rgba(16, 185, 129, 0.1)" : "rgba(45, 104, 234, 0.1)", color: isCompleted ? COLORS.green : COLORS.blue, border: `1px solid ${isCompleted ? "rgba(16, 185, 129, 0.2)" : "rgba(45, 104, 234, 0.2)"}` }, children: stateLabel.replace("_", " ") }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
+                  padding: "4px 10px",
+                  borderRadius: "20px",
+                  fontSize: "10px",
+                  fontWeight: "900",
+                  background: isCompleted ? "rgba(16, 185, 129, 0.1)" : stateLabel === "PULSE_SET" ? "rgba(250, 204, 21, 0.1)" : "rgba(45, 104, 234, 0.1)",
+                  color: isCompleted ? COLORS.green : stateLabel === "PULSE_SET" ? "#FACC15" : COLORS.blue,
+                  border: `1px solid ${isCompleted ? "rgba(16, 185, 129, 0.2)" : stateLabel === "PULSE_SET" ? "rgba(250, 204, 21, 0.2)" : "rgba(45, 104, 234, 0.2)"}`
+                }, children: stateLabel.replace("_", " ") }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.tickets }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "700", opacity: 0.9 }, children: r.reveals }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "16px 24px", fontWeight: "900", color: COLORS.green }, children: r.wins > 0 ? r.wins : "-" }),
