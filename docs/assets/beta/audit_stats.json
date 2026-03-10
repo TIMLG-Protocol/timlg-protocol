@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "snapshotTime": "2026-03-09T23:47:35.177Z",
-    "snapshotSlot": 447388386,
+    "snapshotTime": "2026-03-09T23:48:58.281Z",
+    "snapshotSlot": 447388605,
     "programId": "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP",
     "cluster": "Devnet",
     "rpc": "public"
@@ -10,11 +10,11 @@
     "totalBurned": 9,
     "totalPayouts": 2,
     "dailyTickets": 300,
-    "dailyReveals": 267,
-    "dailyWins": 121,
-    "winRatePercentage": 40.33333333333333,
+    "dailyReveals": 268,
+    "dailyWins": 122,
+    "winRatePercentage": 40.666666666666664,
     "netSupplyFlux": -7,
-    "activeRounds": 21
+    "activeRounds": 23
   },
   "config": {
     "stake": 1,
@@ -30,7 +30,7 @@
       "formula": "Win Rate = Wins / Tickets",
       "values": {
         "tickets": 300,
-        "wins": 121
+        "wins": 122
       }
     },
     "tokenFlow": {
@@ -48,7 +48,7 @@
         "timlgSweeps": 46,
         "timlgFees": 0,
         "solFees": 0.00089088,
-        "solOperator": 30.1442532
+        "solOperator": 30.1328934
       },
       "accounts": {
         "timlgSweepsAddress": "DLNp9vswML68FqxgdrvBmxw3KQHjgTPR8hnwZGWLmC95",
@@ -66,11 +66,47 @@
       "lastPulse": {
         "slot": 447386830,
         "roundId": 48011,
-        "currentSlot": 447388386
+        "currentSlot": 447388605
       }
     }
   },
   "activeRoundsMetadata": [
+    {
+      "id": 48023,
+      "state": 0,
+      "createdSlot": 447388592,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "tokenSettled": false,
+      "settledAt": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BFswWUYPKQjQ9mgGZo2bykxVio7cAVwa4iwxhkYJUxKw?cluster=devnet",
+      "pulseId": 1692895,
+      "pulseTx": null,
+      "settleTx": null,
+      "sweepTx": null,
+      "revealDeadline": 447390591
+    },
+    {
+      "id": 48022,
+      "state": 0,
+      "createdSlot": 447388587,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "tokenSettled": false,
+      "settledAt": 0,
+      "explorerUrl": "https://explorer.solana.com/address/2fheMkyyg74TFcGpuEoUHYHfR6qC9Knd3mRWR1PGfj26?cluster=devnet",
+      "pulseId": 1692894,
+      "pulseTx": null,
+      "settleTx": null,
+      "sweepTx": null,
+      "revealDeadline": 447390445
+    },
     {
       "id": 48021,
       "state": 0,
@@ -258,8 +294,8 @@
       "pulsePublished": true,
       "swept": false,
       "tickets": 1,
-      "reveals": 0,
-      "wins": 0,
+      "reveals": 1,
+      "wins": 1,
       "tokenSettled": false,
       "settledAt": 0,
       "explorerUrl": "https://explorer.solana.com/address/GycpmmwhxPHyHCEe8GWzDxnzUFGdKfAqzmyBZCtSPrc4?cluster=devnet",
@@ -271,7 +307,7 @@
     },
     {
       "id": 48010,
-      "state": 1,
+      "state": 2,
       "createdSlot": 447386619,
       "pulsePublished": true,
       "swept": false,
@@ -314,8 +350,8 @@
       "tickets": 1,
       "reveals": 1,
       "wins": 0,
-      "tokenSettled": false,
-      "settledAt": 0,
+      "tokenSettled": true,
+      "settledAt": 447388497,
       "explorerUrl": "https://explorer.solana.com/address/3fcTGC2GcyEyw9GX6BAsHe2KAf8ECyqQjBRBFT9UTMb8?cluster=devnet",
       "pulseId": 1692880,
       "pulseTx": null,
@@ -451,34 +487,6 @@
     }
   ],
   "archive": {
-    "47022": {
-      "burns": 0,
-      "explorerUrl": "https://explorer.solana.com/address/EHkcCsFqxgwPKmtv6MB8STn5PEAQapcDizd8o8aQFuko?cluster=devnet",
-      "id": 47022,
-      "isFinal": true,
-      "payouts": 0,
-      "pulsePublished": false,
-      "reveals": 0,
-      "state": "finalized",
-      "swept": true,
-      "sweptAt": 447222098,
-      "tickets": 0,
-      "wins": 0
-    },
-    "47023": {
-      "burns": 0,
-      "explorerUrl": "https://explorer.solana.com/address/FexqBiUXTqgK7pKZJAFAdtgxiQXbPErdLy8SbMatyvF3?cluster=devnet",
-      "id": 47023,
-      "isFinal": true,
-      "payouts": 0,
-      "pulsePublished": false,
-      "reveals": 0,
-      "state": "finalized",
-      "swept": true,
-      "sweptAt": 447222260,
-      "tickets": 0,
-      "wins": 0
-    },
     "47024": {
       "burns": 0,
       "explorerUrl": "https://explorer.solana.com/address/6ZXrHHA8TKrwjfNJEb5mrMPK9ehJPZJNJjPhRgK2GbLH?cluster=devnet",
@@ -14385,8 +14393,8 @@
       "tickets": 1,
       "reveals": 1,
       "wins": 0,
-      "tokenSettled": false,
-      "settledAt": 0,
+      "tokenSettled": true,
+      "settledAt": 447388497,
       "explorerUrl": "https://explorer.solana.com/address/3fcTGC2GcyEyw9GX6BAsHe2KAf8ECyqQjBRBFT9UTMb8?cluster=devnet",
       "pulseId": 1692880,
       "pulseTx": null,
@@ -14420,7 +14428,7 @@
     },
     "48010": {
       "id": 48010,
-      "state": 1,
+      "state": 2,
       "createdSlot": 447386619,
       "pulsePublished": true,
       "swept": false,
@@ -14446,8 +14454,8 @@
       "pulsePublished": true,
       "swept": false,
       "tickets": 1,
-      "reveals": 0,
-      "wins": 0,
+      "reveals": 1,
+      "wins": 1,
       "tokenSettled": false,
       "settledAt": 0,
       "explorerUrl": "https://explorer.solana.com/address/GycpmmwhxPHyHCEe8GWzDxnzUFGdKfAqzmyBZCtSPrc4?cluster=devnet",
@@ -14666,6 +14674,48 @@
       "settleTx": null,
       "sweepTx": null,
       "revealDeadline": 447390279,
+      "isFinal": false,
+      "payouts": 0,
+      "burns": 0
+    },
+    "48022": {
+      "id": 48022,
+      "state": 0,
+      "createdSlot": 447388587,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "tokenSettled": false,
+      "settledAt": 0,
+      "explorerUrl": "https://explorer.solana.com/address/2fheMkyyg74TFcGpuEoUHYHfR6qC9Knd3mRWR1PGfj26?cluster=devnet",
+      "pulseId": 1692894,
+      "pulseTx": null,
+      "settleTx": null,
+      "sweepTx": null,
+      "revealDeadline": 447390445,
+      "isFinal": false,
+      "payouts": 0,
+      "burns": 0
+    },
+    "48023": {
+      "id": 48023,
+      "state": 0,
+      "createdSlot": 447388592,
+      "pulsePublished": false,
+      "swept": false,
+      "tickets": 0,
+      "reveals": 0,
+      "wins": 0,
+      "tokenSettled": false,
+      "settledAt": 0,
+      "explorerUrl": "https://explorer.solana.com/address/BFswWUYPKQjQ9mgGZo2bykxVio7cAVwa4iwxhkYJUxKw?cluster=devnet",
+      "pulseId": 1692895,
+      "pulseTx": null,
+      "settleTx": null,
+      "sweepTx": null,
+      "revealDeadline": 447390591,
       "isFinal": false,
       "payouts": 0,
       "burns": 0
