@@ -44902,7 +44902,7 @@ function pdaTicket(programId, roundId2, userPk, nonce) {
   );
   return pda;
 }
-function pdaTokenomics$1(programId, configPda) {
+function pdaTokenomics(programId, configPda) {
   const [pda] = PublicKey.findProgramAddressSync(
     [seed("tokenomics_v3"), configPda.toBytes()],
     programId
@@ -61072,13 +61072,13 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
     return new Connection$1(rpcUrl, "processed");
   }, [connectionOverride, rpcUrl]);
   const coder = reactExports.useMemo(() => new BorshAccountsCoder(idl), []);
-  const [chainState, setChainState2] = reactExports.useState(null);
+  const [chainState, setChainState] = reactExports.useState(null);
   const [statusLine, setStatusLine] = reactExports.useState("");
   const activeRoundsRef = reactExports.useMemo(() => ({ current: {} }), []);
   const latestRoundObjRef = reactExports.useMemo(() => ({ current: null }), []);
   const refreshNow = reactExports.useCallback(async () => {
     if (!pubkey2) {
-      setChainState2(null);
+      setChainState(null);
       setStatusLine("");
       return;
     }
@@ -61088,8 +61088,8 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
       const rrInfo = await connection.getAccountInfo(roundRegistryPda, "processed");
       const configInfo = await connection.getAccountInfo(configPda, "processed");
       if (!rrInfo?.data || !configInfo?.data) {
-        const tokenomicsPda2 = pdaTokenomics$1(programId, configPda);
-        setChainState2({
+        const tokenomicsPda2 = pdaTokenomics(programId, configPda);
+        setChainState({
           configPda,
           config: null,
           roundRegistryPda,
@@ -61139,7 +61139,7 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
         } catch {
         }
       });
-      const tokenomicsPda = pdaTokenomics$1(programId, configPda);
+      const tokenomicsPda = pdaTokenomics(programId, configPda);
       const tokenomicsInfo = await connection.getAccountInfo(tokenomicsPda, "processed");
       const tokenomicsExists = Boolean(tokenomicsInfo?.data);
       let rewardFeeBps = 0;
@@ -61171,7 +61171,7 @@ function useProtocolState({ rpcUrl, connection: connectionOverride, programId, p
           console.error("Failed to decode UserStats:", e);
         }
       }
-      setChainState2({
+      setChainState({
         configPda,
         config,
         roundRegistryPda,
@@ -61751,7 +61751,7 @@ function useUserTickets({
       if (!mintPk) throw new Error("Mint not set");
       const configPda = await pdaConfig(programPk);
       const roundPda = await pdaRound(programPk, row.roundId);
-      const tokenomicsPda = await pdaTokenomics$1(programPk, configPda);
+      const tokenomicsPda = await pdaTokenomics(programPk, configPda);
       const rewardFeePoolPda = await pdaRewardFeePool(programPk, tokenomicsPda);
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const userTIMLGAta = await index.token.associatedAddress({ mint: mintPk, owner: userPubkey });
@@ -61923,7 +61923,7 @@ function useUserTickets({
       setProcessingId(`settle-${row.roundId}`);
       const configPda = await pdaConfig(programPk);
       const roundPda = await pdaRound(programPk, row.roundId);
-      const tokenomicsPda = await pdaTokenomics$1(programPk, configPda);
+      const tokenomicsPda = await pdaTokenomics(programPk, configPda);
       const timlgVaultPda = await pdaTIMLGVault(programPk, row.roundId);
       const treasuryPda = await pdaTreasury(programPk);
       const replicationPoolPda = await pdaReplicationPool(programPk, tokenomicsPda);
@@ -62364,20 +62364,9 @@ function App() {
       const rawClaimed = Number(chainStats.ticketsClaimed);
       const rawSwept = Number(chainStats.ticketsSwept);
       const rawStreak = Number(chainStats.longestStreak);
-      const currentSlot = chainState?.currentSlot ? BigInt(chainState.currentSlot) : null;
-      let pendingCount = 0;
-      let refundedCount = 0;
-      ticketRows.forEach((r) => {
-        if (r.receipt?.refunded) {
-          refundedCount++;
-          return;
-        }
-        const revealDl = r.round?._logic?.revealDeadline || null;
-        const isExpired = !r.revealed && !r.win && (!r.round || revealDl && currentSlot && currentSlot > revealDl);
-        if (!r.revealed && !isExpired) {
-          pendingCount++;
-        }
-      });
+      const rawRefunded = Number(chainStats.ticketsRefunded || 0);
+      const pendingCount = Math.max(0, rawPlayed - rawRevealed - rawRefunded);
+      const refundedCount = rawRefunded;
       const ghostLossCount = Math.max(0, rawPlayed - rawWon - rawLost - pendingCount - refundedCount);
       const rawStake = chainState?.config?.stakeAmount ? BigInt(chainState.config.stakeAmount) : 1000000000n;
       const feeBps = BigInt(chainState?.rewardFeeBps ?? 0);
@@ -62603,15 +62592,12 @@ Domain: timlg.org`;
         const batch = toClose.slice(i, i + batchSize);
         const tx = new Transaction();
         for (const r of batch) {
-          const ix = await program.methods.closeTicket(toBigInt(r.roundId), toBigInt(r.nonce)).accounts({
+          const ix = await program.methods.closeTicket(new BN(r.roundId.toString()), new BN(r.nonce.toString())).accounts({
             config: pdaConfig(programPk),
-            tokenomics: pdaTokenomics(programPk, pdaConfig(programPk)),
             round: pdaRound(programPk, toBigInt(r.roundId)),
             ticket: pdaTicket(programPk, toBigInt(r.roundId), pubkey2, toBigInt(r.nonce)),
             user: pubkey2,
-            userStats: pdaUserStats(programPk, pubkey2),
-            tokenProgram: index.token.TOKEN_PROGRAM_ID,
-            systemProgram: SystemProgram.programId
+            userStats: pdaUserStats(programPk, pubkey2)
           }).instruction();
           tx.add(ix);
         }
@@ -62638,20 +62624,37 @@ Domain: timlg.org`;
         })
       );
       setStatus(`Sending ${txs.length} transactions...`);
+      const sigs = [];
       for (let i = 0; i < signedTxs.length; i++) {
         const rawTx = signedTxs[i].serialize();
         const sig = await connection.sendRawTransaction(rawTx, { skipPreflight: true });
-        await connection.confirmTransaction(sig, "confirmed");
-        appendLog(`Reset Stats: Confirmed tx ${i + 1}/${signedTxs.length} ✅ (${sig.slice(0, 8)}...)`);
+        sigs.push(sig);
+        appendLog(`Reset Stats: Broadcasted tx ${i + 1}/${signedTxs.length} ⏳ (${sig.slice(0, 8)}...)`);
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+      setStatus(`Confirming ${sigs.length} transactions...`);
+      for (let i = 0; i < sigs.length; i++) {
+        await connection.confirmTransaction(sigs[i], "confirmed");
+        appendLog(`Reset Stats: Confirmed tx ${i + 1}/${sigs.length} ✅`);
       }
       const totalSol = (3e-3 + closedCount * 2e-3).toFixed(3);
       setStatus(`Cleaned! Reclaimed ≈${totalSol} SOL ✅`);
       appendLog(`Reset Stats: FINISHED. Sent ${txs.length} txs. Total Sol Recovered ≈ ${totalSol}`);
-      setChainState((prev) => ({ ...prev, userStats: null }));
       if (refreshTickets) refreshTickets();
       if (refreshProtocolState) refreshProtocolState();
     } catch (e) {
-      const msg = e?.message ?? String(e);
+      let msg = "Unknown error";
+      if (typeof e === "string") {
+        msg = e;
+      } else if (e && e.message) {
+        msg = e.message;
+      } else if (e) {
+        try {
+          msg = JSON.stringify(e);
+        } catch (_) {
+          msg = String(e);
+        }
+      }
       setStatus(`Reset error: ${msg}`);
       appendLog(`Reset Stats error: ${msg}`);
     }
@@ -63381,14 +63384,7 @@ Domain: timlg.org`;
                       children: /* @__PURE__ */ jsxRuntimeExports.jsx(ResetIcon, { size: 40, color: resetConfirm ? "#EF4444" : "#555" })
                     }
                   ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }, children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: resetConfirm ? 0.9 : 0.4, color: resetConfirm ? "#DC2626" : "inherit", letterSpacing: "0.02em" }, children: resetConfirm ? "CONFIRM" : "CLEAN & RECLAIM" }),
-                    stats?.reclaimableSol > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: "10px", fontWeight: "900", color: "#059669", opacity: 0.8 }, children: [
-                      "≈",
-                      stats.reclaimableSol.toFixed(3),
-                      " SOL"
-                    ] })
-                  ] })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "9px", fontWeight: "900", opacity: resetConfirm ? 0.9 : 0.4, color: resetConfirm ? "#DC2626" : "inherit", letterSpacing: "0.02em" }, children: resetConfirm ? "CONFIRM" : "CLEAN & RECLAIM" }) })
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }, children: [
