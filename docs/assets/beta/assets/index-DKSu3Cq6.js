@@ -59796,7 +59796,13 @@ function AuditDashboard({ program, connection, programPk }) {
         const roundData = {
           id: numericId,
           state: typeof acc.state === "object" ? Object.keys(acc.state)[0].toUpperCase() === "FINALIZED" ? 2 : Object.keys(acc.state)[0].toUpperCase() === "PULSESET" ? 1 : 0 : acc.state,
-          tickets: (acc.committedCount || acc.committed_count)?.toNumber() || 0,
+          // committed_count decrements when closeTicket/recoverFunds runs (live counter),
+          // but revealed_count never decrements (permanent historical record).
+          // max() ensures we always display the true historical ticket total.
+          tickets: Math.max(
+            (acc.committedCount || acc.committed_count)?.toNumber() || 0,
+            (acc.revealedCount || acc.revealed_count)?.toNumber() || 0
+          ),
           reveals: (acc.revealedCount || acc.revealed_count)?.toNumber() || 0,
           wins: (acc.winCount || acc.win_count)?.toNumber() || 0,
           pulsePublished: acc.pulseSet ?? acc.pulse_set ?? false,
