@@ -59615,6 +59615,7 @@ PersistentConnection.prototype.echo = function(data, onEcho) {
   this.sendRequest("echo", { d: data }, onEcho);
 };
 registerDatabase();
+const __vite_import_meta_env__ = { "BASE_URL": "./", "DEV": false, "MODE": "production", "PROD": true, "SSR": false, "VITE_FAUCET_URL": "https://timlg-faucet.vercel.app/api/faucet", "VITE_MIN_SOL": "0.05", "VITE_MIN_TIMLG": "1", "VITE_PROGRAM_ID": "GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP", "VITE_RPC_URL": "https://api.devnet.solana.com", "VITE_TIMLG_MINT": "7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy" };
 const firebaseConfig = {
   apiKey: "AIzaSyAgSDoo6_t-xMKbIMCxU4olV1TMV7-Dxbo",
   authDomain: "timlg-protocol.firebaseapp.com",
@@ -59815,6 +59816,23 @@ function AuditDashboard({ program, connection, programPk }) {
           isManual: true
           // Mark as manual for UI differentiation if needed
         };
+        const auditLogUrl = __vite_import_meta_env__?.VITE_AUDIT_LOG_URL;
+        if (auditLogUrl) {
+          try {
+            const resp = await fetch(auditLogUrl, { cache: "no-store" });
+            if (resp.ok) {
+              const log2 = await resp.json();
+              const entry = log2[String(numericId)];
+              if (entry) {
+                if (entry.pulseTx) roundData.pulseTx = entry.pulseTx;
+                if (entry.finalizeTx) roundData.finalizeTx = entry.finalizeTx;
+                if (entry.settleTx) roundData.settleTx = entry.settleTx;
+                if (entry.sweepTx) roundData.sweepTx = entry.sweepTx;
+              }
+            }
+          } catch (_) {
+          }
+        }
         setManualRounds((prev) => {
           const filtered = prev.filter((r) => r.id !== numericId);
           return [...filtered, roundData];
