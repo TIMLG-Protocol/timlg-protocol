@@ -48660,7 +48660,13 @@ function MyTickets({
                     fontSize: "13px",
                     whiteSpace: "nowrap"
                   },
-                  onClick: () => ticketsToReveal.forEach((t) => doRevealTicket(t)),
+                  onClick: async () => {
+                    if (loading || globalLoading) return;
+                    const sortedToReveal = [...ticketsToReveal].sort((a, b) => Number(a.nonce) - Number(b.nonce));
+                    for (const t of sortedToReveal) {
+                      await doRevealTicket(t);
+                    }
+                  },
                   disabled: loading || globalLoading || !!processingId,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(BatchIcon, { size: 18, style: { marginRight: 6 } }),
