@@ -59851,7 +59851,8 @@ function AuditDashboard({ program, connection, programPk }) {
     Object.entries(stats.archive).forEach(([idStr, r]) => {
       const roundId2 = parseInt(idStr, 10);
       if (!isNaN(roundId2)) {
-        uniqueRoundsMap.set(roundId2, { ...r, id: roundId2 });
+        const safeTickets = Math.max(r.tickets || 0, r.reveals || 0);
+        uniqueRoundsMap.set(roundId2, { ...r, id: roundId2, tickets: safeTickets });
       }
     });
   }
@@ -59860,7 +59861,8 @@ function AuditDashboard({ program, connection, programPk }) {
     if (!isNaN(roundId2)) {
       const existing = uniqueRoundsMap.get(roundId2);
       if (!existing || !existing.isFinal) {
-        uniqueRoundsMap.set(roundId2, { ...item, id: roundId2 });
+        const safeTickets = Math.max(item.tickets || 0, item.reveals || 0);
+        uniqueRoundsMap.set(roundId2, { ...item, id: roundId2, tickets: safeTickets });
       }
     }
   });
