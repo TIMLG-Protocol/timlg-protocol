@@ -59958,7 +59958,21 @@ function AuditDashboard({ program, connection, programPk }) {
           });
         }
         rawRounds.forEach((r) => {
-          allAvailableRounds.set(parseInt(r.id, 10), r);
+          const rid = parseInt(r.id, 10);
+          const existing = allAvailableRounds.get(rid);
+          if (existing) {
+            allAvailableRounds.set(rid, {
+              ...existing,
+              ...r,
+              pulseTx: r.pulseTx || existing.pulseTx,
+              settleTx: r.settleTx || existing.settleTx,
+              sweepTx: r.sweepTx || existing.sweepTx,
+              finalizeTx: r.finalizeTx || existing.finalizeTx,
+              pulseHash: r.pulseHash || existing.pulseHash
+            });
+          } else {
+            allAvailableRounds.set(rid, r);
+          }
         });
         if (exportRangeMode === "LAST_X") {
           roundsToExport = Array.from(allAvailableRounds.values()).sort((a, b) => b.id - a.id).slice(0, exportLastX);
@@ -59990,7 +60004,40 @@ function AuditDashboard({ program, connection, programPk }) {
         alert(`Export too large (${roundsToExport.length} rounds). Please select a smaller range (Max: ${MAX_EXPORT_ROUNDS} rounds).`);
         return;
       }
-      const headers = ["ROUND_ID", "SLOT", "ROUND_PDA", "STATE", "TICKETS", "REVEALS", "WINS", "PULSE_SET", "SWEPT", "ZERO_TICKET", "COMMIT_OPEN", "COMMIT_CLOSE", "PULSE_SLOT", "REVEAL_DL", "FINALIZED_AT", "SETTLED_AT", "SWEPT_AT", "PULSE_HASH", "PULSE_TX", "SETTLE_TX", "SWEEP_TX", "EXPLORER_URL"];
+      const headers = [
+        "ROUND_ID",
+        "SLOT",
+        "ROUND_PDA",
+        "STATE",
+        "TICKETS",
+        "REVEALS",
+        "WINS",
+        "STAKE",
+        "MINTED_TIMLG",
+        "BURNED_TIMLG",
+        "SETTLED_COUNT",
+        "CLAIMED_WINS",
+        "WIN_REVEALED",
+        "BURN_DONE",
+        "MINT_DONE",
+        "PULSE_SET",
+        "SWEPT",
+        "NIST_TARGET",
+        "COMMIT_OPEN",
+        "COMMIT_CLOSE",
+        "PULSE_SLOT",
+        "REVEAL_DL",
+        "FINALIZED_SLOT",
+        "SETTLED_SLOT",
+        "SWEPT_SLOT",
+        "PULSE_HASH",
+        "CREATE_TX",
+        "PULSE_TX",
+        "FINALIZE_TX",
+        "SETTLE_TX",
+        "SWEEP_TX",
+        "EXPLORER_URL"
+      ];
       const rows = roundsToExport.map((r) => {
         const explorerUrl = r.explorerUrl || (stats?.treasury?.vault ? `https://explorer.solana.com/address/${stats.treasury.vault}?cluster=devnet` : "");
         const pdaMatch = explorerUrl.match(/address\/([a-zA-Z0-9]{32,44})/);
@@ -60011,18 +60058,28 @@ function AuditDashboard({ program, connection, programPk }) {
           getValue(r.tickets, 0),
           getValue(r.reveals, 0),
           getValue(r.wins, 0),
+          getValue(r.stake, "N/A"),
+          getValue(r.minted, 0),
+          getValue(r.burned, 0),
+          getValue(r.settledCount, 0),
+          getValue(r.claimedWins, 0),
+          getValue(r.winRevealed, 0),
+          r.burnDone ? "YES" : "NO",
+          r.mintDone ? "YES" : "NO",
           r.pulsePublished ? "YES" : "NO",
           r.swept ? "YES" : "NO",
-          r.tickets === 0 ? "TRUE" : "FALSE",
+          getValue(r.nistTarget || r.pulseId),
           getValue(r.commitOpen),
           getValue(r.commitClose),
           getValue(r.pulseSlot),
           getValue(r.revealDeadline),
           getValue(r.finalizedAt),
-          r.tickets === 0 ? "NO REQ" : getValue(r.settledAt),
+          getValue(r.settledAt),
           getValue(r.sweptAt),
           getValue(r.pulseHash),
+          getValue(r.createTx),
           getValue(r.pulseTx),
+          getValue(r.finalizeTx),
           r.tickets === 0 ? "NO REQ" : getValue(r.settleTx),
           getValue(r.sweepTx),
           explorerUrl
