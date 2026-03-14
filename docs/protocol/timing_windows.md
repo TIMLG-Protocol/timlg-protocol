@@ -1,4 +1,10 @@
-# Timing Windows
+# Technical Specification: Temporal Gating Windows
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-SPEC-004 |
+| **Status** | Canonical (Devnet MVP) |
+| **Source** | `programs/timlg_protocol/src/state/round.rs` |
 
 TIMLG rounds are **slot-bounded**: each phase is gated by Solana slot numbers recorded on-chain.
 

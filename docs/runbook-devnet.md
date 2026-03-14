@@ -1,80 +1,52 @@
 # Operator Runbook (Devnet)
 
-This document provides a technical walkthrough for developers and grant reviewers to observe and verify the **TIMLG Protocol** on Solana Devnet.
+| Document Control | Value |
+|---|---|
+| **Purpose** | Practical operational guide for observing and exercising the Devnet MVP |
+| **Audience** | Developers, reviewers, operators |
 
-> [!NOTE]
-> This runbook is designed to work with the `public_export` repository structure, focusing on verification and the core oracle infrastructure.
+This runbook is intentionally practical. It focuses on how the current devnet deployment is observed and operated, not on aspirational architecture.
 
----
+## 1. Environment baseline
 
-## 1. Prerequisites
+| Variable | Meaning |
+|---|---|
+| `RPC_URL` | Devnet RPC endpoint |
+| `PROGRAM_ID` | Current deployed program ID |
+| `TIMLG_MINT` | Current devnet mint used by the protocol |
+| `ORACLE_PUBKEY` | Authorized pulse signer public key |
 
-- **Solana CLI**: `solana 1.18.x` or higher.
-- **Node.js**: `v18.x` or `v20.x`.
-- **Anchor Framework**: `v0.29.0`.
+## 2. Standard workflow
 
----
+| Phase | Typical tool / script | Purpose |
+|---|---|---|
+| **Prepare devnet config** | `./switch_devnet.sh` | Align local environment with current devnet deployment |
+| **Create / maintain rounds** | `oracle/create_round_auto_devnet.js` or supervisor flow | Ensure commitable rounds exist |
+| **Post pulses** | `oracle/operator/set_due_pulses_devnet.js` | Submit signed pulse data |
+| **Finalize / settle** | `oracle/operator/finalize_and_settle_due_rounds_devnet.js` or manual helpers | Move rounds through post-reveal accounting |
+| **Inspect state** | `oracle/print_round_devnet.js` and related scripts | Verify round and ticket status |
+| **Sweep / cleanup** | sweep helpers after grace | Clean up post-grace residue |
 
-## 2. Environment Setup
+## 3. Important operational clarifications
 
-The oracle scripts rely on a `.env` file for RPC and Program addresses.
+| Topic | Current reality |
+|---|---|
+| **Finalization** | `finalize_round` is an explicit admin path; settlement logic may auto-finalize under valid conditions |
+| **Settlement** | `settle_round_tokens` is the key accounting step for burns and winner preparation |
+| **Sweep** | Sweep is delayed by on-chain `claim_grace_slots`; local prechecks cannot bypass this |
+| **Ticket cleanup** | `close_ticket` remains user-driven and separate from operator sweep logic |
 
-```bash
-# RPC Configuration
-RPC_URL="https://api.devnet.solana.com"
+## 4. Verification tasks for reviewers
 
-# Protocol Identities
-PROGRAM_ID="GeA3JqAjAWBCoW3JVDbdTjEoxfUaSgtHuxiAeGG5PrUP"
-TIMLG_MINT="7kpdb6snovzpm5T5rU6BKJspX7qMUwaSVv9Ki5zqSHjy"
-```
+| Check | Example approach |
+|---|---|
+| Program identity | `solana program show <PROGRAM_ID>` |
+| Round inspection | `node oracle/print_round_devnet.js --id <ROUND_ID>` |
+| Pulse publication path | Observe `set_pulse_signed` transactions and matching state changes |
+| Settlement consistency | Compare wins, losses, revealed count, pending count, and refunds |
 
----
+## 5. Guardrails
 
-## 3. Protocol Observation & Verification
-
-### Phase A: Verifying the Program
-The protocol leverages **verifiable builds**. Anyone can verify that the code in the repository matches the on-chain binary using the `solana-verify` tool.
-
-```bash
-# Verify on-chain binary against this repository
-solana-verify verify-from-repo \
-  -u https://api.devnet.solana.com \
-  --program-id [PROGRAM_ID] \
-  [REPO_URL]
-```
-
-### Phase B: Observing the Oracle
-The operator node manages the lifecycle of rounds, aligning them with NIST pulses.
-
-```bash
-# Observe the core oracle logic in action
-node oracle/run_oracle_devnet.js
-```
-
-### Phase C: Strategic Interaction
-Developers can use the provided infrastructure scripts to simulate protocol behaviors.
-
-```bash
-# Simulate automated round creation
-node oracle/create_round_auto_devnet.js
-
-# Trigger settlement for a completed round
-node oracle/settle_round_tokens_auto_devnet.js
-```
-
----
-
-## 4. Key Logic (Showcase)
-
-The following files in the `oracle/` directory contain the core logic for the verifiable timing mechanism:
-
-- `nist.js`: Handles pulse fetching and Ed25519 signature verification.
-- `keys.js`: Management of protocol-derived addresses and signing identities.
-- `run_oracle_devnet.js`: High-level supervisor loop for round pipelines.
-
----
-
-## 5. Security & Safety
-
-- **Read-Only Verification**: Most oversight can be done via `solana program show` or the Solana Explorer.
-- **Permissionless Settlement**: Any participant can trigger the finalization of a round once the pulse is set, ensuring the protocol cannot be stalled by the operator.
+- Never publish private key material, signer files, or privileged operational topology in public docs.
+- Treat local convenience scripts as helpers, not as the source of protocol truth.
+- When local behavior and on-chain state disagree, the on-chain program wins.

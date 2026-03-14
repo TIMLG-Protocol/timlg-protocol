@@ -1,38 +1,38 @@
-# Security & Control
+# Security and Control
 
-This section clarifies what is intentionally **public vs private**, and how TIMLG preserves **authorized control** while avoiding accidental disclosure of sensitive operational details.
+| Document Control | Value |
+|---|---|
+| **Scope** | Public security summary for the Devnet MVP |
+| **Audience** | Developers, reviewers, integrators |
 
-TIMLG is currently in an **MVP phase** (localnet validated). The implementation repository and operational tooling remain **private** until a stable devnet release is ready.
+This section explains what is intentionally public, what remains private, and which control surfaces matter in the current MVP.
 
-!!! warning "Principle"
-    Public documentation must never include anything that enables unauthorized control, signing, authority changes, or fund movement.
+!!! warning "Public documentation boundary"
+    This site must never disclose private keys, signer files, seed phrases, privileged operational topology, or any instruction sequence that would enable unauthorized control.
 
----
+## 1. Public vs private by category
 
-## What is public vs private
-
-| Category | Public (this repo) | Private (not published here) |
+| Category | Public in this site | Private by design |
 |---|---|---|
-| Specs & docs | Protocol overview, specs, diagrams, rationale | Internal notes that increase exploitability |
-| Roadmap & status | Milestones, progress snapshots | Private scheduling, vendor contacts, infra bills |
-| Architecture | High-level component flow | Concrete infra topology (hosts, endpoints, regions) |
-| Keys & signers | **Never** | Private keys, seed phrases, signer files, custody procedures |
-| Oracle / relayer ops | High-level behavior | Runbooks, automation, secrets, privileged configs |
-| Treasury | Conceptual routing rules | Authority handoff procedures, signer topology |
+| **Protocol rules** | Timing, settlement, account roles, trust assumptions | Internal exploit analysis and sensitive review notes |
+| **Architecture** | High-level component boundaries and control surfaces | Detailed infrastructure topology and privileged endpoints |
+| **Authorities** | Which authority classes exist and what they control | Exact custody, signing workflow, hardware layout |
+| **Operator behavior** | High-level lifecycle automation description | Private automation configuration, key handling, alert routing |
+| **Treasury** | Routing model and account purpose | Signer custody and withdrawal procedures |
 
----
+## 2. Current security posture
 
-## Where to go next
+| Area | Current MVP posture | Hardening direction |
+|---|---|---|
+| **Oracle trust** | Single authorized signer | Oracle set / threshold model |
+| **Admin control** | Centralized authority surfaces | Multisig, role split, stronger governance |
+| **Replay safety** | Program/state guards + signed pulse verification | Additional versioned verification tooling |
+| **Operational secrecy** | Private runbooks and signer custody remain off-site | Formalized separation of duties |
 
-- **Authority surfaces** (who can do what, and why it matters): [Authority Surfaces](authorities.md)  
-- **Threat model summary** (public, MVP stage): [Threat Model](threat_model.md)  
-- **Responsible disclosure** (how to report issues safely): [Responsible Disclosure](disclosure.md)
+## 3. Where to read next
 
----
-
-## Security posture (MVP stage)
-
-- **Goal now:** correctness + replay-safety + deterministic settlement + clear authority boundaries  
-- **Goal next:** devnet parity, then hardening (multisig, separation of duties, audits)
-
-This docs site is a **public artifact**. Anything posted here should be treated as public forever.
+| Topic | Page |
+|---|---|
+| Authority classes and implications | [Authorities](authorities.md) |
+| Public threat summary | [Threat Model](threat_model.md) |
+| Issue reporting | [Disclosure](disclosure.md) |

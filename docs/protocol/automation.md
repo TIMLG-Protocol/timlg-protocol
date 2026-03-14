@@ -1,4 +1,9 @@
-# Protocol Automation
+# Technical Architecture: Operational Automation
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-OPER-001 |
+| **Component** | Cranker & Relayer Strategy |
 
 To ensure a continuous and reliable experiment, TIMLG uses an automated round management system. This avoids the need for manual intervention for every round creation.
 

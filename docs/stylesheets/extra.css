@@ -164,3 +164,8 @@
   margin-top: 0 !important;
   padding-top: 0.5rem !important;
 }
+
+/* Home page polish: Hide redundant page title when hero is present */
+.md-main__inner:has(.hero) .md-content__inner > h1 {
+  display: none !important;
+}

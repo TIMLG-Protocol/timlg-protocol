@@ -1,4 +1,9 @@
-# Error Reference
+# Technical Reference: Error Code Taxonomy
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-REFR-004 |
+| **Category** | Exception Codes & Failure Modes |
 
 The TIMLG Protocol uses custom error codes to signal specific failure conditions. Below are the most common error codes encountered by users and operators.
 

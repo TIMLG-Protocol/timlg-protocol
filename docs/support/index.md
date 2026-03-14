@@ -1,20 +1,27 @@
 # Support
 
-TIMLG Protocol is an early-stage research + engineering effort.  
-If you’d like to support development, you can make an **optional donation** on Solana.
+TIMLG Protocol is a research effort in active development. If you find the project valuable, you can support its infrastructure and engineering through an optional donation.
 
-!!! note "Donations are optional"
-    Donations help fund development, documentation, infrastructure, and (future) security reviews.  
-    This is **not** an investment and provides **no guarantees, rights, or promises**.
+## Resource Allocation
+
+A clear breakdown of how contributions empower the project's technical maturation.
+
+| Area | Purpose | Priority |
+|---|---|---|
+| **Infrastructure** | Cloud nodes, RPC services & Firebase | [ HIGH ] |
+| **Security** | Threat modeling & external audits | [ MED ] |
+| **R&D** | Devnet iteration & protocol research | [ MED ] |
 
 ---
 
-## Solana donation address
+## Solana Development Fund
+
+Contributions go directly toward maintaining the public Devnet environment and hardening the protocol.
 
 <div class="donation-card" markdown="1">
 <img class="donation-qr" src="../assets/solana-donation-qr.png" alt="Solana donation QR" />
 
-**Address (click to open Explorer):**  
+**Verification Address:**  
 <div style="display: flex; align-items: center; gap: 10px;">
   <a class="donation-address" href="https://explorer.solana.com/address/5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL" target="_blank" rel="noopener noreferrer">5a9iyBipjuQjQKziYTEayvu9aUwzxiZ4SuPWKbtCLAHL</a>
   <button style="background:none; border:none; cursor:pointer; padding:4px; opacity:0.7;" onclick="timlgCopyDonationAddress()" title="Copy address">
@@ -25,28 +32,16 @@ If you’d like to support development, you can make an **optional donation** on
 </div>
 
 <small class="donation-hint">
-Verify the address carefully before sending.
+*Note: This is an optional contribution to project infrastructure. No rights or securities are offered.*
 </small>
-
 </div>
 
 ---
 
-## What donations may fund
+## Technical contact
 
-- Devnet iteration costs (SOL for testing & demo reproducibility)
-- Tooling and infrastructure (build/deploy, monitoring, indexing)
-- Documentation improvements (diagrams, examples, clarity)
-- Security work (threat modeling; later: external reviews)
+For critical bugs or integration research:
 
----
-
-## Transparency (recommended)
-
-- Use a **dedicated donation wallet** (separate from personal wallets)
-- Publish a simple **donation policy** (what funds are used for, what is not funded)
-- Periodically post **high-level summaries** (e.g., devnet testing / infra / security)
-- Prefer **multisig / separation of duties** before any mainnet-like operations
-
-!!! warning "Never share secrets"
-    Do **not** publish private keys, seed phrases, or privileged signer details anywhere in public docs.
+*   **Engineering**: [GitHub Issues](https://github.com/richarddmm/timlg-protocol/issues)
+*   **Audit**: [Terminal Traceability](../audit.md)
+*   **Integrity**: Never share private keys or seed phrases.

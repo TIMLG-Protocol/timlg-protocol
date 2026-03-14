@@ -1,28 +1,39 @@
-# Threat Model (Public Summary)
+# Threat Model
 
-This is a short, public summary suitable for the MVP phase. Detailed operational analysis stays private.
+| Document Control | Value |
+|---|---|
+| **Scope** | Public threat summary for the Devnet MVP |
+| **Status** | Informational but aligned with current implementation |
 
----
+This page is a public summary. It is meant to show what classes of failure matter, not to expose private operational detail.
 
-## Key threats and mitigations
+## 1. Main threats and mitigations
 
-| Threat | What it looks like | Impact | Mitigation (MVP / planned) |
+| Threat | Failure mode | Current mitigation | Remaining limitation |
 |---|---|---|---|
-| Key compromise (upgrade/config/treasury) | attacker gets a privileged key | takeover / fund loss | multisig + hardware keys + separation of duties (planned hardening) |
-| Oracle key compromise | attacker signs pulses | outcome manipulation | strict custody; rotation policy; hardened signer pipeline (private ops) |
-| Pulse spoofing | unsigned/wrong messages | invalid pulse accepted | on-chain Ed25519 verification + canonical message envelope |
-| Replay attacks | reuse old signatures/tx patterns | double submit / bypass intent | canonical payloads + replay guards + instruction verification |
-| No-reveal griefing | commit then refuse to reveal | fairness/UX degradation | slot windows + NO-REVEAL slashing policy + deterministic settlement |
-| DoS / spam | mass ticket creation/tx spam | degraded UX | economic constraints + optional relayer policies (future) |
-| Misconfiguration | wrong params/oracle pubkey | broken rounds | staged config changes + deterministic devnet scripts |
+| **Admin key compromise** | Unauthorized config or treasury actions | Restricted authority surfaces, public documentation of roles | Still centralized in MVP |
+| **Oracle key compromise** | Malicious pulse accepted | On-chain Ed25519 verification against configured pubkey | Single-signer trust remains |
+| **Replay or duplicate execution** | Duplicate pulse, claim, refund, or reveal path | State flags, round binding, timing windows, signature checks | Depends on correct implementation discipline |
+| **No-reveal griefing** | Users commit then disappear | Burn-on-no-reveal and deterministic deadlines | UX penalty remains real for inattentive users |
+| **Misconfiguration** | Wrong oracle key, mint, or timing | Deterministic config, scripted deployment flows, public parameter docs | Human error is still possible |
+| **Operator outage** | Rounds stall or refund path is needed | Timeout and refund path, inspection scripts, automation | Current liveness still depends on operator health |
 
----
+## 2. Public invariants worth checking
 
-## Public invariants (auditable)
+| Invariant | Why it matters |
+|---|---|
+| No commit after deadline | Protects fairness of the pulse target |
+| No reveal before pulse or after reveal deadline | Prevents timing abuse |
+| Pulse accepted once only | Prevents contradictory round state |
+| Claim cannot succeed twice | Protects supply and payout correctness |
+| Sweep cannot pre-empt grace | Preserves winner claim window |
+| Refund requires pulse absence | Prevents invalid dual-resolution paths |
 
-1. No commits after commit deadline  
-2. No reveals after reveal deadline  
-3. Pulse is verified on-chain and set only once  
-4. Settlement depends only on public state + finalized pulse  
-5. Claims are idempotent (no double-claims)  
-6. Sweep cannot occur before grace period  
+## 3. MVP limitations that should be stated plainly
+
+| Limitation | Current status |
+|---|---|
+| **Single-oracle dependency** | Present in MVP |
+| **Centralized admin surfaces** | Present in MVP |
+| **Operational liveness** | Strongly helped by the supervisor pipeline |
+| **Devnet assumptions** | Parameters and cadence are tuned for testing, not production economics |

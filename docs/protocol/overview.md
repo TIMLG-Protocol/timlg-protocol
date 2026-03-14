@@ -1,132 +1,126 @@
-# Protocol Overview
+# Protocol Architecture Overview
 
-TIMLG (TimeLog) is a **verifiable time-log protocol** and metrology experiment: users commit during a commit window, an oracle publishes a public randomness pulse (sourced from the **NIST Randomness Beacon v2.0**) after commits close, users reveal their guess, and the program settles outcomes deterministically.
+| Metadata | Reference |
+|---|---|
+| **Document ID** | TP-SPEC-001 |
+| **Status** | Approved (Devnet MVP) |
+| **Authority** | Richard David Martín |
 
-This documentation is **public** and intentionally avoids operational or privileged details.
+TIMLG is a slot-bounded commit-reveal protocol tied to a public 512-bit randomness pulse.
+Participants commit during the commit window, an authorized oracle publishes the pulse after commit closes,
+participants reveal their guess, and the program settles outcomes deterministically.
 
-!!! warning "Security principle"
-    Public documentation must never include anything that enables unauthorized signing, authority changes, or treasury movement.
-
-!!! note "Stability vs versioning"
-    The **core concept** is stable (commit–reveal against a publicly verifiable 512-bit pulse; deterministic settlement with WIN/LOSE/NO-REVEAL).
-    Some **protocol surfaces** may still evolve while moving from localnet → devnet/mainnet readiness. If they change, they will be **explicitly versioned** (e.g., v1 → v2) to preserve auditability for indexers and independent verifiers.
-    Examples: signed message domain separators, relayer/gasless flows, authority hardening (multisig/rotation), and sweep/claim semantics.
+This documentation is public and intentionally excludes operational secrets, signer custody details,
+and any material that would weaken authority safety.
 
 ---
 
-## Architecture (high level)
+## Current implementation boundary
+
+| Topic | Current Devnet MVP | Future hardening |
+|---|---|---|
+| Oracle model | Single authorized signer, on-chain Ed25519 verification | Oracle-set / threshold-based model |
+| User flow | User-paid commit, reveal, claim | Relayed / batched participation |
+| Ticket outcome model | WIN, LOSE, NO-REVEAL, REFUND | Stable unless explicitly versioned |
+| Wallet-level analytics | `UserStats` counters and streaks | Expanded campaign logic / leaderboards |
+| Incentive campaigns | Not part of core settlement | Separate streak or leaderboard reward modules |
+
+---
+
+## High-level architecture
 
 ```mermaid
 graph TD
   P[Participant] --> S[On-chain Program]
   O[Oracle] --> S
-  S --> V[Round Token Vault]
-  S --> T_SPL[Treasury SPL - TIMLG Fees]
-  S --> SV[Round SOL Vault]
-  S --> T_SOL[Treasury SOL - Rent/Sweeps]
-  S --> RR[RoundRegistry]
+  S --> RV[Round Vault - SPL]
+  S --> RFP[Reward Fee Pool - SPL]
+  S --> TSOL[Treasury SOL]
+  S --> RR[Round Registry]
+  S --> US[UserStats]
 ```
-
-!!! note "MVP vs optional components"
-    In the current MVP, the **core user flow** is user-paid commit → reveal → (win) claim.
-    Relayer/batched flows exist as an optional design surface and may require additional on-chain/off-chain plumbing.
 
 ---
 
 ## Roles
 
-- **Participant**: commits a ticket, later reveals it, and (if winning) claims.
-- **Oracle**: publishes a **pulse** (64 bytes / 512 bits) tied to a publicly verifiable source (**NIST Randomness Beacon v2.0**) and verified on-chain. This provides **metrological traceability** for the protocol's randomness.
-- **Admin/Governance**: creates rounds and executes admin-gated lifecycle steps (finalize, settle, optional sweep).
-- **Relayer (optional)**: submits transactions on behalf of users (batching/gasless patterns).  
-  **Note:** “gasless” typically still requires the user to have pre-funded an on-chain mechanism (e.g., escrow) depending on implementation.
+| Role | Responsibility |
+|---|---|
+| **Participant** | Commits a ticket, later reveals, and claims if the ticket wins |
+| **Oracle** | Publishes a signed pulse tied to a publicly verifiable randomness source |
+| **Admin / Governance** | Creates rounds and executes admin-gated lifecycle operations |
+| **Relayer (optional)** | Future surface for batching or sponsored flows |
 
 ---
 
-## Core components (Professional Implementation)
+## Core protocol surfaces
 
-### Global Configuration (`Config`)
-
-The **Config** account defines deployment‑wide parameters and enforces protocol‑level guardrails.
-
-| Parameter | Type | Description |
+| Surface | Type | Purpose |
 |---|---|---|
-| `admin` | Pubkey | Governing authority for admin‑gated instructions. |
-| `timlg_mint`| Pubkey | TIMLG SPL token mint (SPL‑2022). |
-| `stake_amount` | u64 | Fixed cost per ticket (default: 1 000 000 000 base units). |
-| `treasury` | Pubkey | SPL‑token vault for fee collection (`reward_fee_pool`). |
-| `treasury_sol` | Pubkey | System PDA for lamport collection (SOL service fees/rent). |
-| `claim_grace_slots` | u64 | Window before unclaimed rewards can be swept (default: 900). |
-| `sol_service_fee` | u64 | Fee in lamports charged per ticket (configurable). |
+| **Config** | PDA | Global parameters and authority references |
+| **Tokenomics** | PDA | Reward fee configuration and treasury routing parameters |
+| **RoundRegistry** | PDA | Global round indexing |
+| **Round** | PDA | One round's timing, pulse, and settlement state |
+| **Ticket** | PDA | One user participation record |
+| **UserStats** | PDA | Wallet-level participation counters and streak tracking |
+| **Round Vault** | Token account / PDA authority | Escrow and token routing surface |
+| **Reward Fee Pool** | Token account | Receives fee on winning rewards |
+| **Treasury SOL** | PDA / system surface | Lamport collection surface |
 
-### Timing Parameters (Slot-Bound Windows)
+For derivation patterns and ownership boundaries, see [PDAs and Accounts](pdas_and_accounts.md).
+For counter semantics, see [User Statistics](user_stats.md).
 
-TIMLG operates on a strict slot‑based schedule to maintain the integrity of the randomness pulse.
+---
 
-| Setting | Default Value | Description |
+## Canonical lifecycle
+
+| Step | What happens | Primary state surfaces |
 |---|---|---|
-| `COMMIT_WINDOW` | 1000 slots | Window during which users can submit commitments. |
-| `REVEAL_WINDOW` | 1000 slots | Window during which users must reveal their guesses. |
-| `MIN_REVEAL_WINDOW`| 60 slots | Minimum duration required for the reveal phase. |
-| `REFUND_TIMEOUT` | 150 slots | Deadline for oracle pulse submission before refunding. |
-| `CLAIM_GRACE` | 900 slots | Delay after settlement before sweeping unclaimed funds. |
-
-### Oracle Architecture
-
-The randomness pulse is provided by a set of authorized oracles.
-- **Oracle Set**: Maximum of 16 authorized public keys.
-- **Threshold**: Configurable minimum number of signatures required (default: 1).
-- **Validation**: All pulse submissions are verified on‑chain via Ed25519 instructions, ensuring that the **auditability of infrastructure** is preserved against malicious oracle behavior. The pulse data adheres to the **NIST Interoperable Randomness Beacon** standards.
+| 1. Round creation | Admin creates a round with slot deadlines and target pulse metadata | `Round`, `RoundRegistry` |
+| 2. Commit | User stake is escrowed and a ticket is created | `Ticket`, round vault |
+| 3. Pulse publication | Oracle publishes the signed pulse after commit closes | `Round` |
+| 4. Reveal | User reveals guess + salt; commitment is checked and outcome is classified | `Ticket`, `UserStats` |
+| 5. Settle | Losers and no-reveals are burned; winning tickets become claimable after settlement | `Round`, round vault |
+| 6. Claim | Winner claims stake refund plus minted reward, minus protocol fee if configured | `Ticket`, `UserStats`, `Reward Fee Pool` |
+| 7. Sweep / refund / close | Cleanup and fallback flows run according to policy | `Round`, `Ticket`, treasuries |
 
 ---
 
-## Lifecycle (Standard Flow)
+## Why `UserStats` matters in the architecture
 
-### 1. Initialization & Timing
-Rounds are created with pre‑defined slot deadlines. The **Hawking Wall** is enforced by ensuring the commit window closes before the target pulse index is reached.
+A protocol that is serious about observability should document wallet-level state as clearly as round-level state.
+`UserStats` exists for that reason.
 
-### 2. Participation (Commit-Reveal)
-- **Commit**: The user pays the **stake (TIMLG)** and **service fee (SOL)**. A persistent `Ticket` PDA is created.
-- **Pulse**: After the commit window closes, the Oracle publishes a 512‑bit pulse verified against a signed Ed25519 message.
-- **Reveal**: Users submit their original choice and salt. The program verifies the commitment hash and determines the outcome based on the deterministic bit index.
+| Capability | Why it is useful |
+|---|---|
+| Participation counters | Gives a compact, auditable summary of wallet activity |
+| Win/loss ratios | Supports analytics without scanning every historical ticket |
+| Current and longest streak | Enables deterministic leaderboard-style evaluation |
+| Future campaign integration | Provides a clean input for streak-based reward modules without changing settlement rules |
 
-### 3. Settlement & Rewards
-- **Settle**: The round is finalized after the reveal window closes. This action triggers token accounting and enables claims.
-- **Claim**: Winners receive their initial stake plus the minted reward (minus the protocol fee).
-- **Sweep**: Unclaimed rewards in the round vault are transferred to the treasury after the `claim_grace_slots` period expires.
-
----
-
-## Treasury Management
-
-The protocol utilizes isolated vaults for risk management:
-- **Round Vault (SPL)**: Escrows stakes and holds minted rewards until claim.
-- **Reward Fee Pool (SPL)**: Receives protocol commission from winning rewards.
-- **Treasury SOL**: PDA‑owned account collecting service fees and unclaimed rent/sweeps.
+!!! note "Important boundary"
+    `UserStats` is **not** a reward vault and **not** a replacement for ticket-level verification.
+    It is an aggregated observability surface.
 
 ---
 
-## Ticket Lifecycle States
+## Treasury model in one table
 
-Tickets transition through states defined in the on‑chain state machine:
-- `PENDING`: Commitment submitted, waiting for pulse.
-- `REVEAL_NOW`: Pulse published, reveal window active.
-- `REVEALED`: Guess submitted, outcome pending settlement.
-- `WIN`: Prediction correct, reward available.
-- `BURN_LOSS`: Incorrect guess, stake transferred to burn address.
-- `EXPIRED`: Reveal deadline missed, stake burned.
-- `REFUND_AVAILABLE`: Oracle timeout reached, stake returnable.
+| Surface | Current role |
+|---|---|
+| **Round Vault (SPL)** | Holds escrowed stake and post-settlement token routing surface |
+| **Reward Fee Pool (SPL)** | Receives configured fee from winning rewards |
+| **Treasury SOL** | Receives service fees and selected lamport cleanup flows |
 
 ---
 
-## Ticket Closure (Rent Recovery)
+## Versioning principle
 
-Tickets are rent‑exempt PDAs. To recover the SOL deposit, the user must call the `close_ticket` instruction after the ticket has been fully processed (Claimed, Burned, or Refunded). The instruction closes the account and transfers the lamports back to the user.
+The protocol concept is stable. If any of the following changes, documentation should treat it as a versioned surface rather than a silent reinterpretation:
 
-
-
----
-
-## Ticket cleanup (rent)
-
-Tickets are rent-exempt PDAs that hold a lamport deposit. After settlement (and after claim if you won), the owner can reclaim this SOL by calling `close_ticket`.
+- signed message envelope format
+- oracle model
+- treasury routing semantics
+- bitIndex derivation formula
+- `UserStats` field semantics
+- future streak-reward eligibility rules

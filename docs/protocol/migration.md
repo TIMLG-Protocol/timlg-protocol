@@ -1,4 +1,9 @@
-# Protocol Versioning & Migration
+# Technical Architecture: Versioning & Migration
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-OPER-002 |
+| **Subject** | Schema Evolution & Configuration Upgrades |
 
 The TIMLG Protocol implements a versioned account structure to support future upgrades without data loss.
 

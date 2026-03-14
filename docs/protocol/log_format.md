@@ -1,4 +1,9 @@
-# Log Format
+# Technical Specification: Log Format & Traceability
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-REFR-003 |
+| **Subject** | Publicly Reproducible Audit Trails |
 
 This page defines **publicly shareable, reproducible** data fields for TIMLG rounds and tickets.
 

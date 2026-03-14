@@ -1,190 +1,71 @@
 # Settlement Rules
 
-This page describes how the MVP resolves tickets after a pulse is finalized.
+| Document Control | Value |
+|---|---|
+| **Document ID** | TP-ECON-002 |
+| **Status** | Approved for Devnet MVP |
+| **Purpose** | Define terminal ticket outcomes and state transitions |
 
-It is written to be **accurate and auditable** without exposing operational secrets.
+Settlement is the stage where ticket states become economically final. This page describes which outcomes exist, what triggers them, and which instructions are involved.
 
----
+## 1. Terminal paths per ticket
 
-## Ticket outcomes
+Each ticket must end in exactly one economic path.
 
-Each ticket escrows a fixed stake at commit time.
+| Terminal path | Eligibility | User result | Protocol action |
+|---|---|---|---|
+| **WIN → CLAIMABLE** | Revealed and matches assigned bit | Winner can claim | Ticket is marked as winning; reward becomes claimable |
+| **LOSE** | Revealed and does not match | No payout | Stake burned during settlement |
+| **NO-REVEAL** | Reveal missing or invalid by deadline | No payout | Stake burned during settlement |
+| **REFUND** | No valid pulse and refund timeout conditions are satisfied | Stake recovered | Stake returned through refund path |
+| **SWEEPED WINNER** | Winner was never claimed before claim grace elapsed | Prize forfeited | Remaining round balance may be swept |
 
-!!! info "TIMLG Decimals and Units"
-    TIMLG is an SPL token with **`decimals = 9`**. Amounts are stored in **base units** (`u64`), where **1 TIMLG = 1_000_000_000 base units**. The on-chain `stake_amount` is an integer expressed in these base units.
+## 2. Settlement pipeline
 
-After the oracle publishes the pulse and the reveal window closes, each ticket is classified as:
-
-| Outcome | Condition | Result (MVP) |
+| Stage | Main instruction | What it does |
 |---|---|---|
-| **WIN** | Valid reveal, and `guess_bit == target_bit` | user can claim **refund stake + minted reward** (total payout = 2) |
-| **LOSE** | Valid reveal, and `guess_bit != target_bit` | stake is **burned** during token settlement (payout = 0) |
-| **NO-REVEAL** | No valid reveal by the reveal deadline | stake is **burned** during token settlement (payout = 0) |
+| **Pulse available** | `set_pulse_signed` | Makes reveal phase possible |
+| **Optional explicit finalization** | `finalize_round` | Admin-gated explicit transition to finalized state |
+| **Token settlement** | `settle_round_tokens` | May auto-finalize if conditions are met; classifies and burns non-winning tickets |
+| **Winner payout** | `claim_reward` | Refunds stake and mints reward |
+| **Timeout recovery** | `recover_funds` / `recover_funds_anyone` | Returns stake when refund path is valid |
+| **Post-grace cleanup** | `sweep_unclaimed` | Cleans up unclaimed residue after grace period |
 
-This is the core experimental unit: a Bernoulli trial under a strict anti-leakage commit–reveal schedule.
+## 3. Decision table
 
----
+| Ticket state before settlement | Pulse set? | Reveal present? | Match? | Result |
+|---|---|---|---|---|
+| Pending | No | No | N/A | Still pending until refund conditions become true |
+| Pending | Yes | No | N/A | NO-REVEAL after reveal deadline and settlement |
+| Revealed | Yes | Yes | Yes | WIN |
+| Revealed | Yes | Yes | No | LOSE |
+| Pending / unrevealed | No | No | N/A | REFUND only when refund timeout conditions are met |
 
-## Target bit definition (MVP)
+## 4. Claim, refund, and sweep are different operations
 
-The oracle submits a **512-bit pulse** (64 bytes). The MVP defines a deterministic bit extraction function:
+| Operation | Who triggers it | When allowed | What it does not do |
+|---|---|---|---|
+| **Claim** | Winner or authorized client acting for winner | After ticket is in claimable winning state | Does not close the ticket rent account |
+| **Refund** | Owner or anyone through the permissionless refund path | Only after refund timeout conditions are met | Does not mint rewards |
+| **Sweep** | Authorized cleanup path | Only after `claim_grace_slots` has elapsed | Does not recreate claim rights for users |
+| **close_ticket** | Ticket owner | After ticket is fully resolved | Does not transfer reward or stake |
 
-- `target_bit = ExtractBit(pulse_512, bit_index)`
+## 5. Normative rules
 
-With the exact extraction convention:
+| Rule | Meaning |
+|---|---|
+| **Settlement never invents new outcomes** | Every ticket resolves to one of the terminal paths listed above |
+| **No late reveal recovery** | Missing the reveal deadline does not convert into a normal refund |
+| **Burn is final for non-winning stake** | LOSE and NO-REVEAL do not remain claimable |
+| **Refund exists only for oracle failure / pulse absence path** | Refund is not a general fallback for late users |
+| **Sweep is delayed by on-chain grace** | Cleanup cannot preempt the configured claim window |
 
-- `byte_i = bit_index / 8`
-- `bit_i  = bit_index % 8`
-- `target_bit = (pulse[byte_i] >> bit_i) & 1`
+## 6. Typical audit checks
 
-So bit 0 is the **least significant bit (LSB) of pulse[0]**, bit 7 is the MSB of pulse[0], bit 8 is the LSB of pulse[1], etc.
-
-!!! note "Stability requirement"
-    The extraction convention (byte order + bit order) must remain stable and versioned.
-    If it ever changes, it must be treated as a breaking change and documented.
-
----
-
-## Valid reveal
-
-A reveal is valid if:
-
-1) It arrives on or before the reveal deadline  
-2) It recomputes the commitment digest for that ticket  
-3) The revealed guess is well-formed (MVP: a single bit `0/1`)
-
-Invalid reveals are treated as **NO-REVEAL** for settlement purposes.
-
----
-
-## Settlement flow (high level)
-
-At a high level, a round moves through these steps:
-
-1) **Commits** are accepted (users escrow stake into the **round token vault**; legacy code name: `timlg_vault`)
-2) Oracle publishes pulse (`set_pulse_signed`)
-3) Users **reveal**
-5) **Settle** token accounting (`settle_round_tokens`) — **Note**: this instruction auto-finalizes the round if it hasn't been done yet.
-6) Winners **claim** (`claim_reward`)
-7) Users **close** finished tickets to reclaim the ticket account’s SOL rent deposit (`close_ticket`)
-8) After a grace period, admin may run `sweep_unclaimed` (round vault **SOL + remaining SPL tokens**)
-
-### Why settlement is a separate step
-Settlement is intentionally explicit so:
-
-- accounting is deterministic and observable,
-- claim gating can be hardened,
-- and the sweep policy can run only after a known grace period.
-
-
----
-
-## Ticket rent recovery (`close_ticket`)
-
-A ticket is an on-chain account (PDA) that holds a **Solana rent-exempt deposit** (lamports). This deposit is **not** part of the TIMLG reward; it exists to keep the account alive.
-
-- `claim_reward` distributes **SPL tokens** (stake refund + minted reward). It does **not** close the ticket account.
-- To reclaim the ticket account’s lamports, the ticket owner calls **`close_ticket`** (user-signed).
-
-### When can a user close a ticket?
-
-If the round account still exists (“round alive”), the program enforces that the ticket is fully finished:
-
-- The ticket must be `processed == true` (i.e., settlement has processed it).
-- If `ticket.win == true`, the user must have claimed first: `claimed == true`.
-
-If the round account has been closed/archived (“round dead”, detected via `round.lamports() == 0`), the program allows closing **any** ticket to recover rent. This is a safe “auto-healing” path because the round state no longer exists to pay out rewards.
-
-> Practical UX rule: **after settlement (and after claim if you won), close your ticket to recover SOL.**
-
-
-
----
-
-## Reward funding and vault behavior (MVP)
-
-The payout rule is:
-
-- **WIN payout total = 2 × stake_amount**
-  - 1× is a **refund** of the escrowed base units
-  - 1× is a **minted reward** in base units
-
-So the MVP does **not** require a pre-funded “reward vault” for rewards:
-- stake refunds come from the round token vault
-- rewards are minted on claim by the configured mint authority
-
-!!! important "MVP nuance"
-    Rewards are minted **only when the winner claims**.
-    If winners do not claim, fewer rewards are minted while loser burns can still occur → net deflation vs “all winners claim”.
-
----
-
-## Claim rules
-
-A claim is valid if:
-
-- the round token settlement has completed (`token_settled == true`),
-- the round has not been swept (`swept == false`),
-- the ticket outcome is WIN,
-- the claimant is the recorded user,
-- and the claim has not already been executed.
-
-To prevent double-claims:
-- each ticket carries a **claimed flag** and a **claimed_slot** in on-chain state.
-
----
-
-## Token settlement (what actually moves)
-
-During `settle_round_tokens`:
-
-- For every **LOSE** or **NO-REVEAL** ticket: `stake_amount` is included in a burn total and burned from the round token vault.
-- WIN tickets are not paid automatically at settlement; they become claimable.
-
-### Edge cases and rules of thumb
-
-#### 1) Pulse arrives early or late
-(Handled in Timing Windows)
-
-#### 2) Users commit at the boundary slot
-(Handled in Timing Windows)
-
-#### 3) Permissionless Refunds (Cranker)
-
-If the randomness pulse is never posted (e.g., oracle failure), users have an **infinite refund right**. To prevent rounds from staying open indefinitely if users are inactive, the protocol allows **permissionless refunds**:
-- Anyone can trigger a refund for any ticket after the **Refund Timeout** has passed.
-- The funds are always sent to the original user's Token Account.
-- The ticket PDA is closed, and its remaining lamports are returned to the user.
-
----
-
-## Sweep rules (MVP)
-
-After the grace period, `sweep_unclaimed` may be executed:
-
-- Gate: `current_slot > reveal_deadline_slot + claim_grace_slots`
-- Requires: round is finalized and not already swept
-- Effect (MVP): transfers **native SOL** (lamports) to the **SOL treasury** and **remaining tokens** to the **Protocol Treasury SPL**.
-- Side effect: marks the round as **swept**, which **closes claims** in the MVP (`claim_reward` rejects if `round.swept`).
-- This ensures the round vault is emptied, allowing for a successful `close_round`.
-
-> [!CAUTION]
-> **Permanent Prize Forfeiture**: In the current MVP implementation, if a winner fails to claim their reward before the **Claim Grace** period expires and the round is **swept**, the prize is **lost forever**. The system does not support late claims or automated reward distribution after a sweep has occurred.
-
-!!! note "Operational guidance"
-    The MVP code allows sweeping both SOL and SPL. Operators should typically:
-    finalize → settle tokens → allow claim window → then sweep everything.
-
----
-
-## Public invariants (what anyone can check)
-
-1) No commits after commit window closes (and commits are rejected once pulse is set)
-2) No reveals after reveal deadline
-3) Pulse is one-shot and verified on-chain (Ed25519)
-4) Settlement outcomes depend only on: commitment/reveal validity + finalized pulse + extraction convention
-5) Claims are idempotent (cannot be claimed twice)
-6) Sweep cannot happen early (must wait for the grace window)
-
-If any of these invariants are violated, it is considered a protocol bug (H1/H2 in the whitepaper ladder) and must be
-fixed before stronger interpretations are considered.
+| Check | Expected result |
+|---|---|
+| `wins + losses == revealed` | True for fully classified revealed tickets |
+| `total - revealed - refunded == pending/unresolved` | True while some tickets remain unresolved |
+| Winner claimed twice | Must be impossible |
+| Sweep before grace | Must be rejected |
+| Unrevealed ticket paid as winner | Must be impossible |

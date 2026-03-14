@@ -15,5 +15,5 @@
 </script>
 
 <p id="beta-loader-msg" style="text-align:center; color:#888; font-size:0.8em; margin-top:10px;">
-  <em>If the application does not load automatically, please refresh the page (F5 or Ctrl+R).</em>
+  <em>If the application does not load automatically, refresh the page. For normative behavior, follow the Protocol section rather than any temporary UI label.</em>
 </p>

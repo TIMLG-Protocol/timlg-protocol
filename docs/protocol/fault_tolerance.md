@@ -1,4 +1,9 @@
-# Fault Tolerance & Risk Management
+# Technical Specification: Fault Tolerance & Risk Mitigation
+
+| Metadata | Specification |
+|---|---|
+| **Document ID** | TP-SAFE-001 |
+| **Level** | Resilience & Exception Handling |
 
 This document outlines how the TIMLG protocol handles technical failures, oracle outages, and network instability to protect user funds and maintain system integrity.
 

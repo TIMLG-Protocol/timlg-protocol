@@ -75,6 +75,9 @@ extra_css:
 
 nav:
   - Home: index.md
+  - Status:
+      - Current Status: status/status.md
+      - Changelog: status/changelog.md
   - App:
       - App: beta.md
       - Guide: devnet_guide.md
@@ -83,17 +86,31 @@ nav:
       - Overview: whitepaper/index.md
       - Changelog: whitepaper/changelog.md
   - Protocol:
-      - Overview: protocol/overview.md
-      - Lifecycle: LIFECYCLE.md
-      - Log Format: protocol/log_format.md
-      - Timing Maps: protocol/parameters.md
-      - Settlement Rules: protocol/settlement_rules.md
-      - Tokenomics: protocol/tokenomics.md
-      - Treasury & BitIndex: protocol/treasury_bitindex.md
-      - Automation: protocol/automation.md
-      - Error Reference: protocol/errors.md
-      - Account Migration: protocol/migration.md
-      - Operator Guide: runbook-devnet.md
+      - Architecture Overview: protocol/overview.md
+      - Operational Lifecycle: LIFECYCLE.md
+      - 1. Temporal Logic:
+          - Gating & Timing Windows: protocol/timing_windows.md
+          - Parameter Mapping: protocol/parameters.md
+          - Fault Tolerance: protocol/fault_tolerance.md
+      - 2. Economic Logic:
+          - Metrological Finality: protocol/settlement_rules.md
+          - Tokenomics & Fees: protocol/tokenomics.md
+          - Treasury & BitIndex: protocol/treasury_bitindex.md
+      - 3. Technical Topology:
+          - PDA Seed Topography: protocol/pdas_and_accounts.md
+          - User Statistics: protocol/user_stats.md
+          - Cryptographic Envelopes: protocol/signatures_and_replay_protection.md
+          - Oracle Trust Model: protocol/oracle_trust_model.md
+      - 4. Implementation Details:
+          - Automation & Cranks: protocol/automation.md
+          - Log Specification: protocol/log_format.md
+          - Account Migration: protocol/migration.md
+      - 5. Support & Reference:
+          - Technical Quickstart: protocol/devnet_quickstart.md
+          - Troubleshooting: protocol/troubleshooting.md
+          - Nomenclature (Glossary): protocol/glossary.md
+          - Error Reference: protocol/errors.md
+          - Operator Runbook: runbook-devnet.md
 
   - Roadmap: roadmap/index.md
   - Security & Control:
@@ -101,6 +118,5 @@ nav:
       - Authorities: security/authorities.md
       - Threat Model: security/threat_model.md
       - Disclosure: security/disclosure.md
-      - Honesty Verification: honesty-verification.md
   - Team & Contact: team/index.md
   - Support: support/index.md

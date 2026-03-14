@@ -1,172 +1,130 @@
-# Tokenomics (TIMLG)
+# Tokenomics and Settlement Routing
 
-This page documents **protocol economics** as implemented for the TIMLG MVP: what is staked, how rounds settle, and how
-funds are routed.
+| Metadata | Reference |
+|---|---|
+| **Document ID** | TP-ECON-001 |
+| **Revision** | 3.1 |
+| **Subject** | TIMLG MVP economic rules |
 
-It also includes a **token distribution** section, but marks it as **TBD** until the project formally defines supply,
-allocations, and vesting.
-
-!!! note "Scope"
-    This page is about **protocol rules and incentives**, not an investment pitch.
-
----
-
-## What exists today (MVP-aligned)
-
-### Economic unit (base units)
-- The protocol accounts in **base units** (`u64`).
-- TIMLG uses **`decimals = 9`**, meaning **1 TIMLG = 1_000_000_000 base units**.
-- This decimal configuration is consistent across all environments (Devnet and Mainnet).
-
-!!! note "Implementation note"
-    The on-chain program does not enforce mint decimals; `stake_amount` should be interpreted as **base units** of the configured mint.
-
-### Why this exists
-The economics are designed to:
-1. Enforce **commit–reveal integrity** (discourage “commit then disappear”).
-2. Keep settlement **deterministic** and auditable from on-chain state.
-3. Support a **treasury** model for long-term sustainability (infra + future reviews).
+This page documents the protocol's current economic behavior.
+It is intentionally limited to **what the MVP settles today**, how fees are routed, and how future incentive layers
+should be kept separate from the core round logic.
 
 ---
 
-## Outcomes and routing (MVP)
+## Economic primitives
 
-After the pulse is finalized and the reveal window closes, each ticket is classified:
+| Primitive | Current interpretation |
+|---|---|
+| **Stake amount** | Fixed per ticket, stored in base units (`u64`) |
+| **TIMLG decimals** | `9` in the current mint configuration, so `1 TIMLG = 1_000_000_000` base units |
+| **Round vault** | Token escrow and routing surface at round scope |
+| **Reward minting** | Happens only on successful claim of a winning ticket |
+| **Reward fee** | Applied to the winning reward if `reward_fee_bps > 0` |
 
-| Outcome | Condition | Economic effect (MVP) |
+!!! note "Base units first"
+    The program reasons in base units. Any human-readable TIMLG amount shown in the UI is a presentation layer over the configured mint.
+
+---
+
+## Canonical settlement matrix
+
+| Outcome | Condition | Token path | User consequence |
+|---|---|---|---|
+| **WIN** | Valid reveal and assigned bit matches the guess | Stake refund + reward mint on claim | Ticket becomes claimable |
+| **LOSE** | Valid reveal and assigned bit does not match | Escrowed stake is burned during settlement | Terminal loss |
+| **NO-REVEAL** | No valid reveal before deadline | Escrowed stake is burned during settlement | Terminal expiry |
+| **REFUND** | Oracle failure path and refund gate becomes valid | Original stake is returned | Safety fallback |
+
+---
+
+## What is and is not part of core economics
+
+| Included in core protocol economics | Explicitly outside core protocol economics |
+|---|---|
+| stake escrow | token distribution / vesting plan |
+| burn of losses and no-reveals | exchange or liquidity strategy |
+| reward mint on claim | marketing campaigns |
+| fee on winning reward | future leaderboard or streak promotions |
+| sweep / refund / ticket closure semantics | off-chain community incentives unless explicitly documented |
+
+This distinction matters. It keeps the round logic auditable and prevents promotional incentives from being mistaken for base protocol behavior.
+
+---
+
+## Claim, sweep, and ticket closure
+
+| Operation | What it does | What it does not do |
 |---|---|---|
-| **WIN** | valid reveal and matches assigned target bit | user may **claim**: **refund stake** + **mint reward** |
-| **LOSE** | valid reveal but does not match | stake is **burned** during token settlement |
-| **NO-REVEAL** | no valid reveal by deadline | stake is **burned** during token settlement (same as LOSE) |
-
-!!! warning "No promises"
-    Rewards are protocol-defined accounting outcomes. They are not guarantees of profit, yield, or investment returns.
+| **Claim** | Delivers stake refund + reward mint for a winning ticket | Does not close the ticket PDA |
+| **Sweep** | Cleans up eligible unclaimed round-level balances after grace expiry | Does not retroactively mint a user's reward |
+| **Close ticket** | Returns the ticket account's rent-exempt lamports to the owner | Does not change the economic outcome of the ticket |
 
 ---
 
----
+## Supply intuition
 
-## Ticket rent (SOL) and “residue zero” cleanup
+For one ticket, the simplified token supply effect is:
 
-Each ticket is an on-chain account that holds a **rent-exempt lamport deposit**. This deposit is **not** part of the TIMLG reward.
+| Outcome | Approximate supply effect |
+|---|---|
+| **WIN** | `+ stake_amount` reward minted on claim |
+| **LOSE** | `- stake_amount` burned during settlement |
+| **NO-REVEAL** | `- stake_amount` burned during settlement |
+| **Unclaimed winner** | Less minting than the idealized fully-claimed case |
 
-- Winners claim **SPL tokens** via `claim_reward` (stake refund + minted reward).
-- After settlement (and after claim if you won), the ticket owner should call **`close_ticket`** to close the ticket PDA and reclaim its lamports.
-
-This keeps the system “residue zero” for users: token outcomes are auditable on-chain, and the network deposit is recoverable by the user.
-
-
-## Claim + settlement model (what happens and when)
-
-TIMLG separates “classification” from “distribution”:
-
-1. **Commit:** stake escrowed into the **round token vault** (legacy code name: `timlg_vault`)
-2. **Pulse:** oracle publishes the 512-bit pulse (Ed25519 verified)
-3. **Reveal:** proof of commitment (guess + salt)
-4. **Finalize:** round is locked
-5. **Settle tokens:** losers and unrevealed are burned
-6. **Claim:** winners can claim **refund + mint**
-7. **Close ticket:** users close finished tickets to reclaim the ticket account’s SOL rent deposit (`close_ticket`)
-8. **Sweep:** after a grace window, **round vault** native SOL and **remaining SPL tokens** are swept to their respective treasuries (tickets are not closed by sweep).
-
-This separation makes the protocol easier to audit and harder to exploit with timing tricks.
+If revealed tickets are approximately unbiased around 50/50 and all winners claim, the expectation is near neutral.
+If winners fail to claim, the system becomes more deflationary than the idealized fully-claimed case.
 
 ---
 
-## Anti-griefing design
+## Fee routing
 
-The primary griefing pattern in commit–reveal systems is:
+| Fee surface | Current role |
+|---|---|
+| **Reward Fee Pool** | Receives the configured fee fraction of winning rewards |
+| **Treasury SOL** | Receives service fees and selected lamport cleanup flows |
 
-- users commit, then refuse to reveal (to influence outcomes or stall settlement)
-
-TIMLG addresses this by:
-- enforcing slot-bounded windows
-- routing **NO-REVEAL** stake to be **burned** (prevents “free option to disappear”)
-- burning **LOSE** stake (makes spam participation costly)
-
----
-
-## Supply intuition (MVP)
-
-Per ticket, the token supply changes like this:
-
-- **WIN:** supply **+1,000,000,000** base units (reward is minted on claim)
-- **LOSE:** supply **−1,000,000,000** base units (stake is burned during settlement)
-- **NO-REVEAL:** supply **-1,000,000,000** base units (stake is burned during settlement)
-
-If the experiment is truly unbiased for a single bit (p ≈ 0.5) and participants are not advantaged,
-then in expectation:
-
-- `E[Δsupply] ≈ +0.5 − 0.5 = 0` (ignoring NO-REVEAL)
-
-### Token Flow Visualization (Expectation)
-
-The following diagram shows the statistical flow of the TIMLG token per round.
-
-```mermaid
-sankey-beta
-    Total, Played, 1000
-    Played, Revealed, 950
-    Played, No-Reveal (Burn), 50
-    Revealed, Win (Mint), 475
-    Revealed, Lose (Burn), 475
-    Win (Mint), Claimed, 450
-    Win (Mint), Unclaimed (Deflation), 25
-```
-
-!!! important "MVP nuance"
-    The reward is minted **only when the winner claims**.
-    If winners do not claim, fewer rewards are minted while loser burns still happen → the system becomes
-    **net deflationary** relative to “all winners claim”.
-
----
-
-## Fees (On-Chain Reference)
-
-The system enforces a **dual‑fee model** to sustain the network and incentivize participation.
-
-| Fee Component | Description | Current Default |
-|---|---|---|
-| **Reward Fee (bps)** | Percentage taken from the winner's reward before minting. | `reward_fee_bps = 500` (5%) |
-| **Reward Fee Pool** | SPL‑token vault PDA that receives the accumulated fees. | `reward_fee_pool` (Seed: `reward_pool`) |
-| **Replication Pool** | Reserved for future protocol‑level replication incentives. | `replication_pool` (Seed: `replication`) |
-
-### Fee Calculation Logic
-
-When a ticket outcome is determined as a **WIN**, the protocol calculates fees before minting:
+### Reward fee formula
 
 ```rust
-// Logic implemented in programs/timlg_protocol/src/instructions/reward.rs
 let fee = reward_amount * reward_fee_bps / 10_000;
 let net_reward = reward_amount - fee;
 ```
 
-The `fee` is transferred to the protocol's fee pool, and only the `net_reward` is minted to the participant. These parameters are stored in the `Tokenomics` account and manageable by the admin.
+---
+
+## Future incentive surfaces: streak rewards
+
+Future streak-based prizes can be added without changing core round settlement.
+That should be documented as a separate incentive layer with its own budget, ranking policy, and claim flow.
+
+### Recommended boundary
+
+| Layer | Recommended responsibility |
+|---|---|
+| **Core settlement** | Decides WIN / LOSE / NO-REVEAL / REFUND |
+| **UserStats** | Supplies counters such as `current_streak` and `longest_streak` |
+| **Leaderboard policy** | Defines ranking period, tie-breaks, and eligibility |
+| **Prize distributor** | Makes streak rewards claimable from a dedicated budget |
+
+### Why this separation is important
+
+| Benefit | Explanation |
+|---|---|
+| Cleaner audits | Core settlement remains independent from campaign logic |
+| Easier upgrades | Incentive modules can evolve without rewriting the base round model |
+| Better user clarity | Users can distinguish protocol settlement from promotional rewards |
+| Better treasury discipline | Prize budgets can be accounted for explicitly |
+
+!!! warning "Do not mix layers"
+    A future streak campaign should not silently change base ticket settlement rules.
+    It should publish its own documentation, eligibility table, funding source, and claim behavior.
 
 ---
 
-## Token distribution (TBD)
+## What this page intentionally does not claim
 
-The project name/ticker has been updated to **TIMLG (TimeLog)**.
-
-A full “launch tokenomics” plan is **not finalized yet**, including:
-- total supply / emission schedule
-- allocations (team, treasury, community, liquidity, advisors, etc.)
-- vesting and unlock schedules
-- exchange/liquidity strategy
-- governance distribution (multisig / DAO transition)
-
-Until defined, the public docs will only describe **protocol economics** (how the game settles and routes value), not a
-market distribution plan.
-
-!!! tip "Good public practice"
-    When distribution is defined, publish it in a **versioned whitepaper release** (e.g., v0.2) and mirror a summarized
-    version here.
-
----
-
-## What is intentionally not published here
-
-- private treasury operations / signer custody procedures
-- relayer/oracle operational runbooks
-- any detail that enables unauthorized authority changes or fund movement
+- that streak rewards already exist in the MVP
+- that `UserStats` alone is sufficient for dispute resolution without ticket-level verification
+- that treasury balances should be interpreted as user prize balances unless explicitly documented

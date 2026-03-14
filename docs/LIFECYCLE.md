@@ -1,99 +1,105 @@
-# Ticket Lifecycle in TIMLG
+# Ticket Lifecycle
 
-This diagram details all possible ticket states, from the moment a user performs the *commit* to its final resolution.
+This page summarizes the canonical ticket lifecycle for the current TIMLG MVP.
+It is intentionally concise: one visual state map, one transition table, and one note on how wallet statistics relate to the lifecycle.
 
 ```mermaid
 flowchart 
-  Start((COMMIT\nTicket created))
+  Start((COMMIT
+Ticket created))
 
   subgraph WAIT[WAIT PHASE]
     direction TB
-    PENDING[PENDING\nStake paid - waiting for NIST pulse]
+    PENDING[PENDING
+Stake paid - waiting for pulse]
   end
 
   subgraph REVEAL[REVEAL PHASE]
     direction TB
-    REVEAL_NOW[REVEAL NOW\nPulse published - reveal window open]
+    REVEAL_NOW[REVEAL NOW
+Pulse published - reveal window open]
   end
 
   subgraph RESULT[RESULT]
     direction TB
-    REVEALED[REVEALED\nReveal submitted]
-    WIN[WIN\nPrediction correct]
-    BURN_LOSS[BURN LOSS\nStake burned]
-    CLAIM_PRIZE[CLAIM PRIZE\nFunds available after settlement]
-    CLAIMED[CLAIMED\nPayout received]
-    BURN_EXPIRED[BURN EXPIRED\nStake burned]
+    REVEALED[REVEALED
+Reveal submitted]
+    WIN[WIN
+Prediction correct]
+    BURN_LOSS[BURN LOSS
+Stake burned]
+    CLAIM_PRIZE[CLAIM PRIZE
+Funds available after settlement]
+    CLAIMED[CLAIMED
+Payout received]
+    BURN_EXPIRED[BURN EXPIRED
+Stake burned]
   end
 
   subgraph RECOVERY[RECOVERY - TIMEOUT]
     direction TB
-    REFUND_TIMEOUT[REFUND TIMEOUT\nNo pulse within REFUND_TIMEOUT_SLOTS]
-    REFUNDED[REFUNDED\nStake returned]
+    REFUND_TIMEOUT[REFUND TIMEOUT
+No pulse within timeout]
+    REFUNDED[REFUNDED
+Stake returned]
   end
 
   End((END))
 
   Start --> PENDING
-
-  PENDING -->|Oracle publishes pulse - on time| REVEAL_NOW
+  PENDING -->|Oracle publishes pulse| REVEAL_NOW
   PENDING -->|No pulse - timeout| REFUND_TIMEOUT
-
-  REVEAL_NOW -->|User reveals - in time| REVEALED
-  REVEAL_NOW -->|Missed reveal window| BURN_EXPIRED
-
+  REVEAL_NOW -->|User reveals in time| REVEALED
+  REVEAL_NOW -->|Reveal missed| BURN_EXPIRED
   REVEALED -->|Correct| WIN
   REVEALED -->|Incorrect| BURN_LOSS
-
   WIN -->|Round settled| CLAIM_PRIZE
   CLAIM_PRIZE -->|User claims| CLAIMED
-
-  REFUND_TIMEOUT -->|User refunds stake| REFUNDED
-
+  REFUND_TIMEOUT -->|User refunds| REFUNDED
   BURN_LOSS --> End
   BURN_EXPIRED --> End
   CLAIMED --> End
   REFUNDED --> End
-
-  classDef phase fill:#F6F1FF,stroke:#6B5BD2,stroke-width:1px,color:#111;
-  classDef neutral fill:#FFFFFF,stroke:#8A8A8A,stroke-width:1px,color:#111;
-  classDef good fill:#DFF7E6,stroke:#2E7D32,stroke-width:1px,color:#111;
-  classDef warn fill:#FFF4CC,stroke:#B08900,stroke-width:1px,color:#111;
-  classDef bad fill:#FFE1E1,stroke:#B3261E,stroke-width:1px,color:#111;
-
-  class WAIT,REVEAL,RESULT,RECOVERY phase;
-  class PENDING,REVEAL_NOW,REVEALED,CLAIM_PRIZE,REFUND_TIMEOUT,REFUNDED neutral;
-  class WIN,CLAIMED good;
-  class BURN_LOSS,BURN_EXPIRED bad;
 ```
 
-### Participation Volume Flow
+---
 
-The following Sankey diagram visualizes how tickets typically flow through the system by volume, highlighting the "leakage" point (Expired) and the final distribution of outcomes.
+## Transition table
 
-```mermaid
-sankey-beta
-    Total,Refunded,50
-    Total,Pending,50
-    Total,Played,900
+| State | Meaning | Next valid transition(s) | Terminal? |
+|---|---|---|---|
+| **PENDING** | Ticket exists, stake escrowed, pulse not yet set | `REVEAL NOW`, `REFUND TIMEOUT` | No |
+| **REVEAL NOW** | Pulse set, reveal window open | `REVEALED`, `BURN EXPIRED` | No |
+| **REVEALED** | Reveal accepted, awaiting classification / settlement | `WIN`, `BURN LOSS` | No |
+| **WIN** | Ticket classified as winner | `CLAIM PRIZE` | No |
+| **CLAIM PRIZE** | Winning ticket is claimable | `CLAIMED` | No |
+| **CLAIMED** | Winner claimed | — | Yes |
+| **BURN LOSS** | Revealed but incorrect | — | Yes |
+| **BURN EXPIRED** | Reveal missed or invalid | — | Yes |
+| **REFUND TIMEOUT** | Refund path opened because no pulse was set | `REFUNDED` | No |
+| **REFUNDED** | Stake returned | — | Yes |
 
-    Played,Expired,50
-    Played,Revealed,850
+---
 
-    Revealed,Losses,425
-    Revealed,Wins,425
+## Economic meaning
 
-    Wins,Claimed,425
-```
+| Terminal path | Token consequence |
+|---|---|
+| **CLAIMED** | Stake refund + reward mint delivered |
+| **BURN LOSS** | Escrowed stake burned |
+| **BURN EXPIRED** | Escrowed stake burned |
+| **REFUNDED** | Original stake returned |
 
-### State Explanations (Updated)
+---
 
-1. **PENDING**: The ticket has been registered on-chain. The user has already paid the *stake*, but the result (NIST Pulse) is not yet available.  
-2. **REVEAL NOW**: The pulse is now public on-chain, and the reveal window is still open for the user.  
-3. **WIN**: The user revealed and was correct, either waiting for settlement or ready to collect.  
-4. **CLAIM PRIZE**: Prize funds are now available for claiming after the round has been settled.  
-5. **BURN LOSS**: The user revealed but was not correct. The *stake* is permanently **burned**.  
-6. **BURN EXPIRED**: The user **did not reveal on time**. The *stake* is **burned** in the same way as a loss.  
-7. **REFUND TIMEOUT**: A safety mechanism activated if the Oracle does not publish the pulse after a reasonable time (`REFUND_TIMEOUT_SLOTS`). Allows the user to recover their *stake*.  
-8. **CLAIMED**: Terminal state. The user successfully claimed the prize payout.  
-9. **REFUNDED**: Terminal state. The user recovered their *stake* after a timeout (no pulse published).  
+## Relation to wallet statistics
+
+| Lifecycle event | `UserStats` significance |
+|---|---|
+| Commit | Increases participation count |
+| Winning reveal | Increases win count and may increase streak |
+| Losing reveal | Increases loss count and resets current streak |
+| Claim | Increases claimed counter |
+| Sweep of unclaimed winner | Increases swept counter |
+
+For the detailed wallet-level counter model, see [User Statistics](protocol/user_stats.md).
