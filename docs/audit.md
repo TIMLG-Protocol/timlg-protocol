@@ -5,11 +5,11 @@ hide:
   - title
 ---
 
-<div style="width:100%; border:none;">
+<div style="width:100%; height: 100vh; border:none; margin: 0; padding: 0;">
   <iframe 
     id="audit-iframe"
     src="../assets/beta/index.html?mode=audit" 
-    style="width:100%; height:820px; border:none; overflow:hidden;"
+    style="width:100%; height:100%; border:none; overflow:hidden;"
     scrolling="no"
     title="TIMLG Protocol Live Audit"
     sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads"

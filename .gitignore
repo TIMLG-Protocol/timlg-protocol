@@ -1,11 +1,14 @@
 .venv/
 plannings/
-
-# mkdocs build output
 site/
-
-site/
-.venv/
+*.log
+node_modules/
+dist/
+build/
+.cache/
+.pytest_cache/
+__pycache__/
+.DS_Store
 
 
 

@@ -162,7 +162,17 @@
 
 [data-md-component="main"]:has(iframe[src*="mode=audit"]) .md-content {
   margin-top: 0 !important;
-  padding-top: 0.5rem !important;
+  padding-top: 0 !important;
+}
+
+[data-md-component="main"]:has(iframe[src*="mode=audit"]) .md-content__inner {
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+[data-md-component="main"]:has(iframe[src*="mode=audit"]) .md-footer {
+  display: none !important;
 }
 
 /* Home page polish: Hide redundant page title when hero is present */
