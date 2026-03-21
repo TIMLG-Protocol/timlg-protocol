@@ -42,4 +42,4 @@ Pushing to `main` triggers the GitHub Actions workflow that builds and deploys t
 
 ---
 
-**Last updated:** 2025-12-25
+**Last updated:** 2026-03-21

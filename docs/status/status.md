@@ -68,7 +68,7 @@ TIMLG Protocol is currently in **Public Devnet MVP**. The protocol core, operato
 
 | Topic | Current position |
 |---|---|
-| **Oracle trust model** | Single-signer operational model with signed pulse verification |
+| **Oracle trust model** | **Trust-minimized**, single-signer model with signed pulse verification and on-chain sequential constraints. Not trustless. See [Oracle Trust Model](../protocol/oracle_trust_model.md). |
 | **Settlement model** | Deflationary settlement with automated and lazy settlement paths |
 | **Audit model** | Chain-derived data plus synchronized archive / export layers for Devnet observability |
 | **Stats model** | On-chain user statistics and streak tracking are present and already used by surrounding tooling |
@@ -89,7 +89,8 @@ TIMLG Protocol is currently in **Public Devnet MVP**. The protocol core, operato
 | Constraint | Practical meaning |
 |---|---|
 | **Devnet-only public posture** | Reliability and economics should be read as MVP behavior, not production guarantees |
-| **Single authorized oracle** | Operationally simpler, but intentionally more centralized than a future hardened model |
+| **Single authorized oracle — trust-minimized** | The protocol is **not trustless**: ed25519 verification proves oracle authorization, not NIST pulse authenticity. The operator must be trusted to fetch and publish real pulses. |
+| **syncLatestPulse / ORACLE-GAP dependency** | The `latest_finalized_pulse_index` is advanced by admin calls, not purely by sequential pulse publications. This is a liveness mechanism, but also a centralization vector. The program enforces monotonic advancement only. |
 | **Legacy migration burden** | Multiple commits exist solely to handle older rounds, old IDLs, and migrated account layouts |
 | **Operational complexity still lives off-chain** | The supervisor, audit worker, reclaim tools, and archive sync remain essential components |
 | **UI and audit are actively refined** | The surfaces are usable, but their presentation and edge-case handling have evolved continuously |

@@ -2,6 +2,37 @@
 
 This changelog is organized by **technical milestones**, not by arbitrary semantic versions. It is intended to help a specialized reader understand how the current Devnet MVP was assembled and hardened.
 
+## March 2026 (late) — Supervisor SDK, protocol hardening, and trust model clarification
+
+### Supervisor SDK (`protocol-supervisor-sdk`)
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-03-21 | **Supervisor / architecture** | Replaced legacy operator with unified `protocol-supervisor-sdk/index.mjs`; modular tick cycle covering boot, audit, scheduler, ORACLE-GAP, pulses, finalize, settlement, sweep, and close |
+| 2026-03-21 | **Supervisor / scheduler** | Fixed `BN.toNumber()` overflow in slot comparison that caused round creation to enter a deadlock after ~60K rounds |
+| 2026-03-21 | **Supervisor / liveness** | Implemented ORACLE-GAP: automatic `syncLatestPulse` calls to unblock the pipeline when LFP falls behind the earliest pending round target |
+| 2026-03-21 | **Supervisor / safety** | Added `MAX_FUTURE_PULSE_WINDOW` guard: prevents round creation for pulse targets too far ahead of the current chain state |
+| 2026-03-21 | **Supervisor / resilience** | Added per-tick deadlock detection: supervisor detects stuck pipelines and logs a summary before skipping the tick |
+
+### Protocol on-chain hardening
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-03-21 | **Protocol / constants** | Added enforced hardcaps: `MAX_STAKE_AMOUNT` (10K TIMLG), `MAX_REWARD_FEE_BPS` (50%), `MAX_COMMIT_WINDOW_SLOTS` and `MAX_REVEAL_WINDOW_SLOTS` (54,000 slots each) |
+| 2026-03-21 | **Protocol / config** | `initialize_config` now transfers mint authority to the config PDA, preventing external minting outside protocol flows |
+| 2026-03-21 | **Protocol / sync** | `syncLatestPulse` enforces `SyncPulseWouldDecrease`: the LFP can only advance, never retreat; closes retroactive target repositioning vector |
+| 2026-03-21 | **Protocol / treasury** | `TreasuryWithdrawBlocked` guard: treasury withdrawals are rejected when active winners with pending claims exist |
+
+### Trust model documentation
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-03-21 | **Docs / oracle** | Updated [Oracle Trust Model](../protocol/oracle_trust_model.md): ed25519 proves oracle authorization, not NIST pulse authenticity; explicit "trust-minimized, not trustless" characterization |
+| 2026-03-21 | **Docs / automation** | Updated [Automation](../protocol/automation.md): documented `protocol-supervisor-sdk`, tick cycle, ORACLE-GAP mechanism, and empty-round handling |
+| 2026-03-21 | **Docs / status** | Added ORACLE-GAP and trust-minimized constraint entries to Known Constraints |
+
+---
+
 ## March 2026 — Stats hardening, audit traceability, and operator resilience
 
 ### Protocol and state handling

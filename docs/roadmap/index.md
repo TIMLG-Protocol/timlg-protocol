@@ -1,9 +1,10 @@
 # Roadmap
 
-The TIMLG roadmap outlines a rigorous path from cryptographic foundation to mainnet-scale production. Approximately **~93%** of the core protocol and infrastructure is already functional on Devnet. 
-Devnet is live; ongoing hardening focuses on RPC rate-limits (HTTP/WebSocket 429) and late pulse handling (PulseTooLate).
+The TIMLG roadmap outlines a rigorous path from cryptographic foundation to mainnet-scale production. The complete end-to-end lifecycle is operational on Devnet: round creation, commit, pulse publication, reveal, finalize, settlement, claim, sweep, and rent recovery.
 
-**Last updated:** 2026-02-10
+Devnet is live and continuously cycling. Trust model hardening (multi-oracle, zkTLS) and relayer infrastructure are the primary next milestones before mainnet.
+
+**Last updated:** 2026-03-21
 
 ---
 
