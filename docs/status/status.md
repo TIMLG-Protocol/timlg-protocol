@@ -91,6 +91,8 @@ TIMLG Protocol is currently in **Public Devnet MVP**. The protocol core, operato
 | **Devnet-only public posture** | Reliability and economics should be read as MVP behavior, not production guarantees |
 | **Single authorized oracle — trust-minimized** | The protocol is **not trustless**: ed25519 verification proves oracle authorization, not NIST pulse authenticity. The operator must be trusted to fetch and publish real pulses. |
 | **syncLatestPulse / ORACLE-GAP dependency** | The `latest_finalized_pulse_index` is advanced by admin calls, not purely by sequential pulse publications. This is a liveness mechanism, but also a centralization vector. The program enforces monotonic advancement only. |
+| **Treasury withdrawal guard not yet active** | `TREASURY_WITHDRAW_MAX_ACTIVE_WINNERS` is defined in constants but **not wired** into `withdraw_treasury_tokens`. The admin can currently withdraw treasury tokens regardless of active winners. This flag is scheduled for a future upgrade. |
+| **SOL service fee has no cap** | `update_sol_service_fee` has no upper bound enforced on-chain. The admin can set any SOL fee per ticket. Requires operator trust. |
 | **Legacy migration burden** | Multiple commits exist solely to handle older rounds, old IDLs, and migrated account layouts |
 | **Operational complexity still lives off-chain** | The supervisor, audit worker, reclaim tools, and archive sync remain essential components |
 | **UI and audit are actively refined** | The surfaces are usable, but their presentation and edge-case handling have evolved continuously |

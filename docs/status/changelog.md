@@ -21,7 +21,7 @@ This changelog is organized by **technical milestones**, not by arbitrary semant
 | 2026-03-21 | **Protocol / constants** | Added enforced hardcaps: `MAX_STAKE_AMOUNT` (10K TIMLG), `MAX_REWARD_FEE_BPS` (50%), `MAX_COMMIT_WINDOW_SLOTS` and `MAX_REVEAL_WINDOW_SLOTS` (54,000 slots each) |
 | 2026-03-21 | **Protocol / config** | `initialize_config` now transfers mint authority to the config PDA, preventing external minting outside protocol flows |
 | 2026-03-21 | **Protocol / sync** | `syncLatestPulse` enforces `SyncPulseWouldDecrease`: the LFP can only advance, never retreat; closes retroactive target repositioning vector |
-| 2026-03-21 | **Protocol / treasury** | `TreasuryWithdrawBlocked` guard: treasury withdrawals are rejected when active winners with pending claims exist |
+| 2026-03-21 | **Protocol / treasury** | `TREASURY_WITHDRAW_MAX_ACTIVE_WINNERS` constant defined (value: 1) to express the intended active-winner guard policy; enforcement in `withdraw_treasury_tokens` is pending a future upgrade |
 
 ### Trust model documentation
 
