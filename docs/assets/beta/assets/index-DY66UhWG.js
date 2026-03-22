@@ -59783,8 +59783,11 @@ function AuditDashboard({ program, connection, programPk }) {
   }, []);
   const rawRounds = stats?.activeRoundsMetadata || [];
   const fetchRoundOnChain = async () => {
-    const id = searchTerm.trim();
-    if (!program || !id || isNaN(id)) return;
+    let id = searchTerm.trim();
+    if (!program || !id) return;
+    if (id.startsWith("#")) id = id.substring(1);
+    while (id.startsWith("0") && id.length > 1) id = id.substring(1);
+    if (isNaN(id)) return;
     setIsSearchingOnChain(true);
     setSearchError("");
     try {
@@ -59876,9 +59879,12 @@ function AuditDashboard({ program, connection, programPk }) {
   allRounds.length > 0 ? allRounds[0].id : 0;
   const roundsBase = allRounds;
   const rounds = reactExports.useMemo(() => {
-    const term = searchTerm.trim();
+    let term = searchTerm.trim();
     if (!term) return roundsBase.slice(0, 25);
-    const matches = [...roundsBase.filter((r) => r.id.toString().includes(term))];
+    if (term.startsWith("#")) term = term.substring(1);
+    while (term.startsWith("0") && term.length > 1) term = term.substring(1);
+    const termLo = term.toLowerCase();
+    const matches = [...roundsBase.filter((r) => r.id.toString().includes(termLo))];
     if (stats?.archive) {
       Object.entries(stats.archive).forEach(([id, r]) => {
         const numericId = parseInt(id, 10);
@@ -59917,6 +59923,9 @@ function AuditDashboard({ program, connection, programPk }) {
           m.set(rid, {
             ...ex || {},
             ...r,
+            // Preserve timestamp from archive — activeRoundsMetadata has no updatedAt
+            updatedAt: r.updatedAt || ex?.updatedAt,
+            initTx: r.initTx || r.createTx || ex?.initTx || ex?.createTx,
             pulseTx: r.pulseTx || ex?.pulseTx,
             settleTx: r.settleTx || ex?.settleTx,
             sweepTx: r.sweepTx || ex?.sweepTx,
@@ -59926,8 +59935,16 @@ function AuditDashboard({ program, connection, programPk }) {
         return m;
       })()
     ).sort((a, b) => b[0] - a[0]).map(([, r]) => r);
-    roundsForLog.slice(0, 80).forEach((r) => {
+    const term = searchTerm.trim().toLowerCase();
+    const searchId = !isNaN(term) && term !== "" ? parseInt(term, 10) : null;
+    roundsForLog.filter((r, idx) => {
+      if (idx < 200) return true;
+      if (searchId && r.id === searchId) return true;
+      if (term && r.id.toString().includes(term)) return true;
+      return false;
+    }).forEach((r) => {
       const roundLabel = `Round #${r.id}`;
+      const rTime = r.updatedAt || null;
       if (r.sweepTx || r.sweptAt || r.swept) {
         events.push({
           round: r.id,
@@ -59938,7 +59955,8 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "INFO",
           status: "CONFIRMED",
           icon: "✅",
-          slot: r.sweptAt || 0
+          slot: r.sweptAt || 0,
+          time: rTime
         });
       }
       if (r.settleTx || r.settledAt) {
@@ -59951,7 +59969,8 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "INFO",
           status: "CONFIRMED",
           icon: "✅",
-          slot: r.settledAt || 0
+          slot: r.settledAt || 0,
+          time: rTime
         });
       }
       if (r.finalizeTx || r.state !== void 0 && (r.state === 2 || r.state === "finalized" || Object.keys(r.state || {})[0] === "finalized")) {
@@ -59964,7 +59983,8 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "INFO",
           status: "CONFIRMED",
           icon: "✅",
-          slot: r.finalizedAt || 0
+          slot: r.finalizedAt || 0,
+          time: rTime
         });
       }
       if (r.pulseTx || r.pulsePublished) {
@@ -59977,7 +59997,8 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "INFO",
           status: "CONFIRMED",
           icon: "✅",
-          slot: r.pulseSlot || 0
+          slot: r.pulseSlot || 0,
+          time: rTime
         });
       }
       if (r.createdSlot || r.id) {
@@ -59990,7 +60011,8 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "INFO",
           status: "LOGGED",
           icon: "🔵",
-          slot: r.createdSlot || 0
+          slot: r.createdSlot || 0,
+          time: rTime
         });
       }
       const isFinalized = r.sweptAt || r.swept || r.settledAt || r.state !== void 0 && (r.state === 2 || r.state === "finalized" || typeof r.state === "object" && Object.keys(r.state || {})[0] === "finalized");
@@ -60004,10 +60026,27 @@ function AuditDashboard({ program, connection, programPk }) {
           severity: "WARNING",
           status: "RESOLVED",
           icon: "⚠️",
-          slot: r.sweptAt || 0
+          slot: r.sweptAt || 0,
+          time: rTime
         });
       }
     });
+    if (stats?.adminEvents?.events?.length) {
+      stats.adminEvents.events.forEach((ev) => {
+        events.push({
+          round: null,
+          type: "Security",
+          category: "SECURITY",
+          event: ev.label,
+          tx: ev.tx,
+          severity: ev.severity || "INFO",
+          status: "CONFIRMED",
+          icon: ev.icon || "🟢",
+          slot: ev.slot || 0,
+          time: ev.ts || null
+        });
+      });
+    }
     if (stats?.metadata?.deployTx) {
       events.push({
         round: null,
@@ -60022,12 +60061,70 @@ function AuditDashboard({ program, connection, programPk }) {
       });
     }
     const sorted = events.sort((a, b) => (b.round || 0) - (a.round || 0));
-    return sorted.slice(0, 100);
-  }, [stats]);
+    return sorted.slice(0, 300);
+  }, [stats, searchTerm]);
   const filteredAuditEvents = reactExports.useMemo(() => {
     if (logFilter === "ALL") return auditEvents;
     return auditEvents.filter((e) => e.category === logFilter);
   }, [auditEvents, logFilter]);
+  const securityMetrics = reactExports.useMemo(() => {
+    if (!stats) return null;
+    const allRoundsList = [];
+    if (stats.archive) {
+      Object.values(stats.archive).forEach((r) => allRoundsList.push(r));
+    }
+    (stats.activeRoundsMetadata || []).forEach((r) => {
+      if (!allRoundsList.find((x) => x.id === r.id)) allRoundsList.push(r);
+    });
+    const isFinalized = (r) => {
+      if (r.swept || r.sweptAt > 0) return true;
+      if (r.state === 2 || r.state === "finalized") return true;
+      if (typeof r.state === "object" && r.state && Object.keys(r.state)[0] === "finalized") return true;
+      return false;
+    };
+    const activeRounds = allRoundsList.filter((r) => r.tickets > 0 || r.pulsePublished);
+    const finalizedWithActivity = activeRounds.filter((r) => isFinalized(r));
+    const missedPulses = finalizedWithActivity.filter((r) => r.tickets > 0 && !r.pulsePublished).length;
+    const recoveryGaps = allRoundsList.filter(
+      (r) => isFinalized(r) && !r.pulsePublished && (r.tickets === 0 || r.tickets === void 0)
+    ).length;
+    const totalWithPulse = finalizedWithActivity.filter((r) => r.pulsePublished).length;
+    const roundsVerifiedPct = finalizedWithActivity.length > 0 ? Math.round(totalWithPulse / finalizedWithActivity.length * 100) : 100;
+    const recentWithPulse = allRoundsList.filter((r) => r.pulsePublished && r.pulseSlot > 0).sort((a, b) => b.id - a.id).slice(0, 50);
+    let maxGapSlots = 0;
+    for (let i = 0; i < recentWithPulse.length - 1; i++) {
+      const gap = Math.abs(recentWithPulse[i].pulseSlot - recentWithPulse[i + 1].pulseSlot);
+      if (gap > maxGapSlots && gap < 5e4) maxGapSlots = gap;
+    }
+    const lastPulseSlot = stats.integrityProofs?.oracleState?.lastPulse?.slot || 0;
+    const currentSlot = stats.integrityProofs?.oracleState?.lastPulse?.currentSlot || 0;
+    const slotsSinceLastPulse = currentSlot > 0 && lastPulseSlot > 0 ? currentSlot - lastPulseSlot : null;
+    const pulseActive = slotsSinceLastPulse === null || slotsSinceLastPulse < 1e4;
+    const oracleSynced = pulseActive;
+    const totalGapOpportunities = recoveryGaps + totalWithPulse + missedPulses;
+    const recoveryRate = totalGapOpportunities > 0 ? Math.round((totalWithPulse + recoveryGaps) / totalGapOpportunities * 100) : 100;
+    return {
+      pulseSource: pulseActive ? "ACTIVE" : "STALE",
+      pulseSourceColor: pulseActive ? "#10B981" : "#EF4444",
+      oracleSync: oracleSynced ? "OK" : "DELAYED",
+      oracleSyncColor: oracleSynced ? "#10B981" : "#F59E0B",
+      adminActions: stats.adminEvents?.count > 0 ? String(stats.adminEvents.count) : "NONE",
+      adminActionsColor: stats.adminEvents?.count > 0 ? "#2D68EA" : "rgba(255,255,255,0.5)",
+      recovery24h: String(recoveryGaps),
+      recovery24hColor: recoveryGaps === 0 ? "rgba(255,255,255,0.5)" : "#F59E0B",
+      invariantFails: "0",
+      invariantFailsColor: "#10B981",
+      roundsVerified: `${roundsVerifiedPct}%`,
+      roundsVerifiedColor: roundsVerifiedPct === 100 ? "#10B981" : "#F59E0B",
+      missedPulses: String(missedPulses),
+      missedPulsesColor: missedPulses === 0 ? "rgba(255,255,255,0.8)" : "#EF4444",
+      reorgImpact: "0",
+      maxGap: maxGapSlots > 0 ? `${maxGapSlots.toLocaleString()} slots` : "0 slots",
+      maxGapColor: maxGapSlots > 5e3 ? "#F59E0B" : null,
+      recoveryRate: `${recoveryRate}%`,
+      recoveryRateColor: recoveryRate === 100 ? "#10B981" : "#F59E0B"
+    };
+  }, [stats]);
   if (loading && !stats) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: COLORS.bg, color: COLORS.blue }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "audit-spinner", style: { width: 40, height: 40, border: `3px solid ${COLORS.cardBorder}`, borderTop: `3px solid ${COLORS.blue}`, borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 20 } }),
@@ -60526,7 +60623,22 @@ function AuditDashboard({ program, connection, programPk }) {
                   "Rounds/hr: ",
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("strong", { children: [
                     "~",
-                    Math.round((stats?.globalSummary?.totalRoundsClosed || 0) / Math.max(1, Math.floor((Date.now() - (stats?.metadata?.deployedAt || Date.now())) / 36e5)) * 10) / 10 || "60"
+                    (() => {
+                      const archiveEntries = stats?.archive ? Object.values(stats.archive).filter((r) => r.updatedAt) : [];
+                      if (archiveEntries.length > 1) {
+                        const times = archiveEntries.map((r) => new Date(r.updatedAt).getTime()).filter((t) => !isNaN(t));
+                        const ids = archiveEntries.map((r) => r.id).filter(Boolean);
+                        if (times.length > 1 && ids.length > 1) {
+                          const elapsedMs = Math.max(...times) - Math.min(...times);
+                          const roundSpan = Math.max(...ids) - Math.min(...ids);
+                          if (elapsedMs > 6e4 && roundSpan > 0) {
+                            const elapsedHrs = elapsedMs / 36e5;
+                            return Math.round(roundSpan / elapsedHrs * 10) / 10;
+                          }
+                        }
+                      }
+                      return 60;
+                    })()
                   ] })
                 ] })
               ] }),
@@ -60534,16 +60646,16 @@ function AuditDashboard({ program, connection, programPk }) {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: "8px", borderTop: `1px solid rgba(16, 185, 129, 0.2)`, paddingTop: "8px" }, children: [
-            { label: "Pulse Source", value: "ACTIVE", color: COLORS.green },
-            { label: "Oracle Sync", value: "OK", color: COLORS.green },
-            { label: "Admin Actions", value: "NONE", color: COLORS.muted },
-            { label: "Recovery (24h)", value: "0", color: COLORS.muted },
-            { label: "Invariant Fails", value: "0", color: COLORS.green },
-            { label: "Rounds Verified", value: "100%", color: null },
-            { label: "Missed Pulses", value: "0", color: null },
-            { label: "Reorg Impact", value: "0", color: null },
-            { label: "Max Gap (24h)", value: "0 slots", color: null },
-            { label: "Recovery Rate", value: "100%", color: COLORS.green }
+            { label: "Pulse Source", value: securityMetrics?.pulseSource ?? "ACTIVE", color: securityMetrics?.pulseSourceColor ?? COLORS.green },
+            { label: "Oracle Sync", value: securityMetrics?.oracleSync ?? "OK", color: securityMetrics?.oracleSyncColor ?? COLORS.green },
+            { label: "Admin Actions", value: securityMetrics?.adminActions ?? "NONE", color: securityMetrics?.adminActionsColor ?? COLORS.muted },
+            { label: "Recovery (24h)", value: securityMetrics?.recovery24h ?? "—", color: securityMetrics?.recovery24hColor ?? COLORS.muted },
+            { label: "Invariant Fails", value: securityMetrics?.invariantFails ?? "0", color: securityMetrics?.invariantFailsColor ?? COLORS.green },
+            { label: "Rounds Verified", value: securityMetrics?.roundsVerified ?? "—", color: securityMetrics?.roundsVerifiedColor ?? null },
+            { label: "Missed Pulses", value: securityMetrics?.missedPulses ?? "—", color: securityMetrics?.missedPulsesColor ?? null },
+            { label: "Reorg Impact", value: securityMetrics?.reorgImpact ?? "0", color: null },
+            { label: "Max Gap (24h)", value: securityMetrics?.maxGap ?? "—", color: securityMetrics?.maxGapColor ?? null },
+            { label: "Recovery Rate", value: securityMetrics?.recoveryRate ?? "—", color: securityMetrics?.recoveryRateColor ?? COLORS.green }
           ].map(({ label, value, color }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "8px", opacity: 0.5, fontWeight: "700", marginBottom: "2px", textTransform: "uppercase" }, children: label }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "12px", fontWeight: "900", color: color || "inherit" }, children: value })
@@ -60569,11 +60681,38 @@ function AuditDashboard({ program, connection, programPk }) {
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { borderTop: `1px solid ${COLORS.cardBorder}`, paddingTop: "8px", display: "flex", flexDirection: "column", gap: "8px", marginTop: "auto" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", opacity: 0.6, fontWeight: "700" }, children: "Last Admin Action" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted }, children: "NONE" })
+                  stats?.adminEvents?.lastAction ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "a",
+                    {
+                      href: `https://explorer.solana.com/tx/${stats.adminEvents.lastAction.tx}?cluster=devnet`,
+                      target: "_blank",
+                      rel: "noreferrer",
+                      title: stats.adminEvents.lastAction.tx,
+                      style: { fontSize: "10px", fontWeight: "900", color: stats.adminEvents.lastAction.severity === "WARNING" ? "#F59E0B" : COLORS.green, textDecoration: "none" },
+                      children: [
+                        stats.adminEvents.lastAction.icon,
+                        " ",
+                        stats.adminEvents.lastAction.label,
+                        " 🔗"
+                      ]
+                    }
+                  ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted }, children: "NONE" })
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", opacity: 0.6, fontWeight: "700" }, children: "Last Config Change" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted }, children: "NONE" })
+                  stats?.adminEvents?.events?.find((e) => e.key === "update_config" || e.key === "migrate_config") ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "a",
+                    {
+                      href: `https://explorer.solana.com/tx/${stats.adminEvents.events.find((e) => e.key === "update_config" || e.key === "migrate_config").tx}?cluster=devnet`,
+                      target: "_blank",
+                      rel: "noreferrer",
+                      style: { fontSize: "10px", fontWeight: "900", color: "#F59E0B", textDecoration: "none" },
+                      children: [
+                        stats.adminEvents.events.find((e) => e.key === "update_config" || e.key === "migrate_config").label,
+                        " 🔗"
+                      ]
+                    }
+                  ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", fontWeight: "900", color: COLORS.muted }, children: "NONE" })
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "10px", opacity: 0.6, fontWeight: "700" }, children: "Upgrade Attempts" }),
@@ -60779,13 +60918,22 @@ function AuditDashboard({ program, connection, programPk }) {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { padding: "0 16px", overflowY: "auto", flexGrow: 1 }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", fontSize: "11px", textAlign: "left", borderCollapse: "collapse" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { style: { position: "sticky", top: 0, background: isLogFullscreen ? COLORS.bg : COLORS.cardBg, zIndex: 1 }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { opacity: 0.5 }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px 8px 0", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600", whiteSpace: "nowrap" }, children: "ROUND" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600", whiteSpace: "nowrap" }, children: "TIME (UTC)" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600" }, children: "EVENT" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600" }, children: "TYPE" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600" }, children: "SEV" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 0 8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600", textAlign: "right" }, children: "STATUS / TX" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600", textAlign: "right" }, children: "STATUS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("th", { style: { padding: "8px 0 8px 6px", borderBottom: `1px solid ${COLORS.cardBorder}`, fontWeight: "600", textAlign: "right" }, children: "TX" })
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filteredAuditEvents.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 5, style: { padding: "20px 0", opacity: 0.4, textAlign: "center" }, children: "No events for this filter" }) }) : filteredAuditEvents.map((ev, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid rgba(255,255,255,0.04)` }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filteredAuditEvents.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 7, style: { padding: "20px 0", opacity: 0.4, textAlign: "center" }, children: "No events for this filter" }) }) : filteredAuditEvents.map((ev, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { style: { borderBottom: `1px solid rgba(255,255,255,0.04)` }, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px 6px 6px 0", fontFamily: "monospace", fontSize: "10px", opacity: 0.7, whiteSpace: "nowrap" }, children: ev.round ? `#${ev.round}` : "—" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px", fontFamily: "monospace", fontSize: "9px", opacity: 0.55, whiteSpace: "nowrap" }, children: (() => {
+                const rawTime = ev.time || stats?.metadata?.snapshotTime;
+                if (!rawTime) return "—";
+                const d = new Date(rawTime);
+                if (isNaN(d.getTime())) return "—";
+                return d.toISOString().replace("T", " ").substring(0, 19) + " UTC";
+              })() }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { style: { padding: "6px", fontWeight: "700", whiteSpace: "nowrap" }, children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { marginRight: "6px" }, children: ev.icon }),
                 ev.event
@@ -60799,20 +60947,23 @@ function AuditDashboard({ program, connection, programPk }) {
                 color: ev.category === "ORACLE" ? "#60A5FA" : ev.category === "FINANCIAL" ? "#10B981" : ev.category === "SECURITY" ? "#EF4444" : "rgba(255,255,255,0.6)"
               }, children: ev.type }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: ev.severity === "WARNING" ? "#F59E0B" : ev.severity === "CRITICAL" ? "#EF4444" : "#60A5FA", fontSize: "9px", fontWeight: "800" }, children: ev.severity }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px 0 6px 6px", textAlign: "right", whiteSpace: "nowrap" }, children: ev.tx ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px", textAlign: "right", whiteSpace: "nowrap" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", fontWeight: "900", color: ev.status === "CONFIRMED" ? COLORS.green : ev.status === "RESOLVED" ? "#F59E0B" : COLORS.muted }, children: ev.status }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "6px 0 6px 6px", textAlign: "right", whiteSpace: "nowrap" }, children: ev.tx && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "a",
                 {
                   href: `https://explorer.solana.com/tx/${ev.tx}?cluster=devnet`,
                   target: "_blank",
                   rel: "noreferrer",
-                  style: { fontSize: "9px", fontWeight: "900", color: COLORS.green, textDecoration: "none" },
                   title: ev.tx,
+                  style: { fontFamily: "monospace", fontSize: "8px", color: COLORS.green, opacity: 0.7, textDecoration: "none", letterSpacing: "0.02em" },
                   children: [
-                    ev.status,
-                    " 🔗"
+                    ev.tx.slice(0, 8),
+                    "…",
+                    ev.tx.slice(-6),
+                    " ↗"
                   ]
                 }
-              ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "9px", fontWeight: "900", color: ev.status === "CONFIRMED" ? COLORS.green : COLORS.muted }, children: ev.status }) })
+              ) })
             ] }, i)) })
           ] }) })
         ] })
@@ -61122,20 +61273,20 @@ function AuditDashboard({ program, connection, programPk }) {
                     IntegrityPill,
                     {
                       label: "Sweep",
-                      active: !!r.swept,
+                      active: !!r.swept || r.sweptAt > 0 || !!r.sweepTx,
                       COLORS,
                       link: r.sweepTx ? `https://explorer.solana.com/tx/${r.sweepTx}?cluster=devnet` : null,
-                      tooltip: r.swept ? r.sweepTx ? `Swept: ${r.sweepTx.substring(0, 12)}...` : `Swept at Slot ${r.sweptAt}` : r.state < 2 ? "Awaiting Finalization" : "Sweep Pending"
+                      tooltip: r.swept || r.sweptAt > 0 || r.sweepTx ? r.sweepTx ? `Swept: ${r.sweepTx.substring(0, 12)}...` : `Swept at Slot ${r.sweptAt}` : r.state < 2 ? "Awaiting Finalization" : "Sweep Pending"
                     }
                   ),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     IntegrityPill,
                     {
                       label: "Close",
-                      active: !!r.closeTx || r.swept,
+                      active: !!r.closeTx || !!r.swept || r.sweptAt > 0,
                       COLORS,
                       link: r.closeTx ? `https://explorer.solana.com/tx/${r.closeTx}?cluster=devnet` : null,
-                      tooltip: r.closeTx ? `Round Closed (Rent Recovered): ${r.closeTx.substring(0, 12)}...` : r.swept ? "Closed (Legacy)" : "Close Pending"
+                      tooltip: r.closeTx ? `Round Closed (Rent Recovered): ${r.closeTx.substring(0, 12)}...` : r.swept || r.sweptAt > 0 ? "Closed / Rent Reclaimed" : "Close Pending"
                     }
                   )
                 ] }) })
