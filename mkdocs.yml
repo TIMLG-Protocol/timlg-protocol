@@ -115,6 +115,8 @@ nav:
   - Roadmap: roadmap/index.md
   - Security & Control:
       - Overview: security/index.md
+      - Privileged Adversary Model: security/privileged_adversary.md
+      - Recovery and Safety Invariants: security/recovery_invariants.md
       - Authorities: security/authorities.md
       - Threat Model: security/threat_model.md
       - Disclosure: security/disclosure.md

@@ -21,11 +21,11 @@ This runbook is intentionally practical. It focuses on how the current devnet de
 | Phase | Typical tool / script | Purpose |
 |---|---|---|
 | **Prepare devnet config** | `./switch_devnet.sh` | Align local environment with current devnet deployment |
-| **Create / maintain rounds** | `oracle/create_round_auto_devnet.js` or supervisor flow | Ensure commitable rounds exist |
-| **Post pulses** | `oracle/operator/set_due_pulses_devnet.js` | Submit signed pulse data |
-| **Finalize / settle** | `oracle/operator/finalize_and_settle_due_rounds_devnet.js` or manual helpers | Move rounds through post-reveal accounting |
-| **Inspect state** | `oracle/print_round_devnet.js` and related scripts | Verify round and ticket status |
-| **Sweep / cleanup** | sweep helpers after grace | Clean up post-grace residue |
+| **Create / maintain rounds** | `node index.mjs --actions=scheduler` | Supervisor-driven loop ensuring commit windows remain open |
+| **Post pulses** | `node index.mjs --actions=pulse` | Supervisor-driven automated entropy submission |
+| **Finalize / settle / recover** | `node index.mjs --actions=settle,recover` | Supervisor-driven handling of normal outcomes, salvage, and gap recoveries |
+| **Inspect state** | Live Audit UI | Verify round, anchor, and ticket status reliably without private scripts |
+| **Sweep / cleanup** | `node index.mjs --actions=sweep,close` | Supervisor-driven delayed cleanup after strict grace slots |
 
 ## 3. Important operational clarifications
 

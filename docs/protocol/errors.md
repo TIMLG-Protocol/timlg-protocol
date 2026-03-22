@@ -9,7 +9,7 @@ The TIMLG Protocol uses custom error codes to signal specific failure conditions
 
 | Error Code | Description |
 |---|---|
-| `PulseAlreadySet` | Attempted to set a pulse for a round that already has one. |
+| `PulseAlreadySet` | Attempted to set a pulse for a round that already has one. Handled idempotently by the supervisor as a benign retry. |
 | `CommitWindowClosed` | Attempted to commit a ticket after the `commit_deadline_slot`. |
 | `RevealWindowClosed` | Attempted to reveal a ticket after the `reveal_deadline_slot`. |
 | `RevealWindowNotOpen` | Attempted to reveal before the oracle pulse has been submitted. |
@@ -20,3 +20,6 @@ The TIMLG Protocol uses custom error codes to signal specific failure conditions
 | `MissingOrInvalidEd25519Ix` | The transaction is missing the required Ed25519 signature verification instruction. |
 | `Ed25519PubkeyMismatch` | The public key in the Ed25519 instruction does not match an authorized oracle. |
 | `Ed25519MessageMismatch` | The signed message does not match the expected round data. |
+| `InvalidRecoveryAnchor` | Supervisor attempted to install a recovery anchor that violates the `minCommitted - 1` gap-handling invariant. |
+| `RoundSwallowedByRecovery` | Operational guardrail state indicating an active round was correctly preserved bypassing naive recovery swallows. |
+| `SettlementFalsePositive` | Client error mimicking failure when the on-chain round has already settled successfully. |

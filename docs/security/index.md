@@ -33,6 +33,8 @@ This section explains what is intentionally public, what remains private, and wh
 
 | Topic | Page |
 |---|---|
+| Explicit bounds on privileged abuse | [Privileged Adversary Model](privileged_adversary.md) |
+| Operational invariants preventing state corruption | [Recovery and Safety Invariants](recovery_invariants.md) |
 | Authority classes and implications | [Authorities](authorities.md) |
 | Public threat summary | [Threat Model](threat_model.md) |
 | Issue reporting | [Disclosure](disclosure.md) |

@@ -549,6 +549,21 @@ async function runIndexer() {
                     }
                 }
             },
+            securityOversight: {
+                authoritySurface: {
+                    configAuthority: adminPk.toBase58(),
+                    oracleAuthority: new PublicKey(configData.oraclePubkey || configData.oracle_pubkey).toBase58(),
+                    treasuryAuthority: treasuryPda.toBase58(),
+                    upgradeAuthorityStatus: "Multisig Pending (MVP Centralized)"
+                },
+                configurationDrift: {
+                    stakeAmount: stakeAmount,
+                    rewardFeeBps: feeBps,
+                    commitWindowSlots: (configData.commitWindowSlots || configData.commit_window_slots || 0).toString(),
+                    revealWindowSlots: (configData.revealWindowSlots || configData.reveal_window_slots || 0).toString(),
+                    claimGraceSlots: (configData.claimGraceSlots || configData.claim_grace_slots || 0).toString()
+                }
+            },
             // Keep a tiny footprint of live rounds for the frontend
             activeRoundsMetadata: currentCycleRecentRounds
         };
