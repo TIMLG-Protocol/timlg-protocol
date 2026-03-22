@@ -59993,6 +59993,20 @@ function AuditDashboard({ program, connection, programPk }) {
           slot: r.createdSlot || 0
         });
       }
+      const isFinalized = r.sweptAt || r.swept || r.settledAt || r.state !== void 0 && (r.state === 2 || r.state === "finalized" || typeof r.state === "object" && Object.keys(r.state || {})[0] === "finalized");
+      if (isFinalized && !r.pulsePublished && !r.pulseTx && r.tickets === 0) {
+        events.push({
+          round: r.id,
+          type: "Security",
+          category: "SECURITY",
+          event: `Recovery Gap Resolved · ${roundLabel}`,
+          tx: r.recoveryTx || null,
+          severity: "WARNING",
+          status: "RESOLVED",
+          icon: "⚠️",
+          slot: r.sweptAt || 0
+        });
+      }
     });
     if (stats?.metadata?.deployTx) {
       events.push({
