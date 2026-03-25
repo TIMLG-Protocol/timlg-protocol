@@ -47926,37 +47926,6 @@ const RoundDetailModal = React.memo(function RoundDetailModal2({ round: round2, 
           }, children: activeRound?.isFinalized || accountStatus === "closed" ? "YES" : "NO" })
         ] })
       ] }),
-      (activeRound?.isFinalized || activeRound?.winRevealedCount > 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-        marginBottom: 16,
-        padding: 10,
-        borderRadius: 8,
-        background: "rgba(74, 222, 128, 0.05)",
-        border: "1px solid rgba(74, 222, 128, 0.15)"
-      }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, fontWeight: "bold", color: "#4ade80", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }, children: "Tokenomics (Lazy Settlement)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "8px 16px" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, opacity: 0.6 }, children: "WINNERS REVEALED" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 16, fontWeight: "bold" }, children: activeRound?.winRevealedCount?.toString() || "0" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, opacity: 0.6 }, children: "REWARDS CLAIMED" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { fontSize: 16, fontWeight: "bold", color: activeRound?.claimedWinCount === activeRound?.winRevealedCount && activeRound?.winRevealedCount > 0 ? "#4ade80" : "inherit" }, children: [
-              activeRound?.claimedWinCount?.toString() || "0",
-              " / ",
-              activeRound?.winRevealedCount?.toString() || "0"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, opacity: 0.6 }, children: "SWEEP STATUS" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, fontWeight: "bold", color: activeRound?.isSwept ? "#4ade80" : "#999" }, children: activeRound?.isSwept ? "✅ CLOSED (BURNED)" : "⏳ PENDING" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 10, opacity: 0.6 }, children: "ECONOMY MODEL" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, fontWeight: "bold", color: "#60A5FA" }, children: "DEFLATIONARY (BURN)" })
-          ] })
-        ] })
-      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "beta-card", id: `round-timeline-card-${roundId2}`, style: { padding: 10, background: "rgba(45, 104, 234, 0.02)", border: "1px solid var(--beta-blue-border)", position: "relative" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, fontWeight: "bold", opacity: 0.7 }, children: "TIMELINE (SLOTS)" }),
@@ -48112,9 +48081,9 @@ function MyTickets({
   const [statusFilter, setStatusFilter] = reactExports.useState("ALL");
   function getComputedStatus(row, currentSlot2) {
     if (row.revealing) return "REVEALING";
-    const revealed = Boolean(row.revealed);
-    const win = Boolean(row.win);
-    const claimed = Boolean(row.claimed);
+    const revealed = Boolean(row.revealed) || Boolean(row.receipt?.revealTx);
+    const win = Boolean(row.win) || row.receipt?.outcome === "win";
+    const claimed = Boolean(row.claimed) || Boolean(row.receipt?.claimTx);
     const tokenSettled = Boolean(row.tokenSettled);
     if (row.round) {
       const r = row.round;
@@ -48197,7 +48166,15 @@ function MyTickets({
     return "PENDING";
   }
   const indexedRows = reactExports.useMemo(() => {
-    return [...safeRows].sort((a, b) => {
+    return [...safeRows].filter((row) => {
+      const isGhost = !row.ticket;
+      const hasReceipt = !!row.receipt;
+      const isRevealed = row.revealed || !!row.receipt?.revealedAt;
+      const isFinalized = !row.round || row.round.finalized || row.round.isFinalized;
+      if (isGhost && !isRevealed && isFinalized) return false;
+      if (!hasReceipt && !isRevealed) return false;
+      return true;
+    }).sort((a, b) => {
       if (a.roundId !== b.roundId) return Number(a.roundId) - Number(b.roundId);
       return Number(a.nonce) - Number(b.nonce);
     }).map((row, idx) => ({ ...row, absoluteIndex: idx + 1 }));
@@ -48664,8 +48641,9 @@ function MyTickets({
                     if (loading || globalLoading) return;
                     const sortedToReveal = [...ticketsToReveal].sort((a, b) => Number(a.nonce) - Number(b.nonce));
                     for (const t of sortedToReveal) {
-                      await doRevealTicket(t);
+                      await doRevealTicket(t, { skipRefresh: true });
                     }
+                    if (onAfterAction) onAfterAction();
                   },
                   disabled: loading || globalLoading || !!processingId,
                   children: [
@@ -48697,10 +48675,11 @@ function MyTickets({
                     if (loading || globalLoading) return;
                     for (const t of allProccesableClaim) {
                       const s = getComputedStatus(t, currentSlot);
-                      if (s === "READY TO CLAIM") await doClaimTicket(t);
-                      else if (s === "REFUND AVAILABLE" || s === "REFUND RENT") await doRefundTicket(t);
-                      else await doCloseTicket(t);
+                      if (s === "READY TO CLAIM") await doClaimTicket(t, { skipRefresh: true });
+                      else if (s === "REFUND AVAILABLE" || s === "REFUND RENT") await doRefundTicket(t, { skipRefresh: true });
+                      else await doCloseTicket(t, { skipRefresh: true });
                     }
+                    if (onAfterAction) onAfterAction();
                   },
                   disabled: loading || globalLoading || !!processingId,
                   children: [
@@ -48732,8 +48711,9 @@ function MyTickets({
                     if (loading || globalLoading) return;
                     if (window.confirm(`Reclaim all ${ticketsToReclaim.length} tickets?`)) {
                       for (const t of ticketsToReclaim) {
-                        await doCloseTicket(t);
+                        await doCloseTicket(t, { skipRefresh: true });
                       }
+                      if (onAfterAction) onAfterAction();
                     }
                   },
                   disabled: loading || globalLoading || !!processingId,
@@ -61969,6 +61949,7 @@ function useUserTickets({
       try {
         inFlightRef.current = true;
         if (!silent) setLoading2(true);
+        else if (reason === "action") setLoading2(false);
         setError(null);
         setRetryInSec(0);
         const walletStr = userPubkey.toBase58();
@@ -62039,7 +62020,21 @@ function useUserTickets({
           receipt: r
         }));
         const uniqueGhosts = ghostRows.filter((g) => !existingPks.has(g.ticketPk.toBase58()));
-        const decoded = [...rows2, ...uniqueGhosts].sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0)).slice(0, Math.max(1, limit));
+        const combined = [...rows2, ...uniqueGhosts];
+        const deduplicatedMap = /* @__PURE__ */ new Map();
+        combined.forEach((item) => {
+          const pkStr = pkTo58(item.ticketPk);
+          if (!deduplicatedMap.has(pkStr)) {
+            deduplicatedMap.set(pkStr, item);
+          } else {
+            if (item.ticket) deduplicatedMap.set(pkStr, item);
+          }
+        });
+        const decoded = Array.from(deduplicatedMap.values()).sort((a, b) => (b.createdSlot ?? 0) - (a.createdSlot ?? 0));
+        if (decoded.length > 0) {
+          console.log(`[useUserTickets] Refresh complete: ${rows2.length} live, ${uniqueGhosts.length} ghosts. Result: ${decoded.length} unique tickets.`);
+        }
+        setRows(decoded.slice(0, Math.max(1, limit)));
         const uniqRoundIds = Array.from(new Set(decoded.map((x) => Number(x.roundId)))).filter((x) => x != null);
         const roundMap = /* @__PURE__ */ new Map();
         const roundMintMap = /* @__PURE__ */ new Map();
@@ -62294,7 +62289,8 @@ function useUserTickets({
     };
   }, [refresh]);
   const doRevealTicket = reactExports.useCallback(
-    async (row) => {
+    async (row, options = {}) => {
+      const skipRefresh = !!options.skipRefresh;
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       if (!row?.receipt?.saltHex) throw new Error("Missing local receipt for this ticket (salt).");
       const configPda = await pdaConfig(programPk);
@@ -62338,7 +62334,7 @@ function useUserTickets({
         ));
         setLastTx?.(sig);
         onAfterAction?.();
-        await refresh("action");
+        if (!skipRefresh) await refresh({ reason: "action", silent: true });
         return sig;
       } catch (e) {
         const msg = formatSolanaError(e);
@@ -62348,7 +62344,7 @@ function useUserTickets({
             const updated = { ...row.receipt, revealTx: "already-processed", revealedAt: Date.now() };
             saveLocalReceipt(userPubkey.toBase58(), row.roundId, updated);
           }
-          await refresh("action");
+          if (!skipRefresh) await refresh({ reason: "action", silent: true });
           return "already-processed";
         }
         if (msg.includes("AccountNotInitialized") || msg.includes("3012") || msg.includes("0xbc4")) {
@@ -62370,7 +62366,7 @@ function useUserTickets({
           } catch (err) {
             console.error("Failed to mark ticket as closed", err);
           }
-          await refresh("action");
+          if (!skipRefresh) await refresh({ reason: "action", silent: true });
           return "account-closed";
         }
         appendLog?.(`Reveal failed: ${msg}`);
@@ -62384,7 +62380,8 @@ function useUserTickets({
     [program, programPk, userPubkey, appendLog, setLastTx, onAfterAction, refresh]
   );
   const doClaimTicket = reactExports.useCallback(
-    async (row) => {
+    async (row, options = {}) => {
+      const skipRefresh = !!options.skipRefresh;
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       if (!mintPk) throw new Error("Mint not set");
       const configPda = await pdaConfig(programPk);
@@ -62439,7 +62436,7 @@ function useUserTickets({
         setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, claimed: true, receipt: { ...r.receipt, claimTx: sig, claimedAt: Date.now() }, uiStatus: "CLAIMED" } : r));
         setLastTx?.(sig);
         onAfterAction?.();
-        await refresh("action");
+        if (!skipRefresh) await refresh({ reason: "action", silent: true });
         return sig;
       } catch (e) {
         const msg = formatSolanaError(e);
@@ -62461,7 +62458,7 @@ function useUserTickets({
           } catch (err) {
             console.warn("Failed to save synthetic claim receipt", err);
           }
-          await refresh("action");
+          if (!skipRefresh) await refresh({ reason: "action", silent: true });
           return "already-processed";
         }
         appendLog?.(`Claim failed: ${msg}`);
@@ -62475,7 +62472,8 @@ function useUserTickets({
     [program, programPk, userPubkey, mintPk, appendLog, setLastTx, onAfterAction, refresh]
   );
   const doRefundTicket = reactExports.useCallback(
-    async (row) => {
+    async (row, options = {}) => {
+      const skipRefresh = !!options.skipRefresh;
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       if (!mintPk) throw new Error("Mint not set");
       const configPda = await pdaConfig(programPk);
@@ -62539,7 +62537,7 @@ function useUserTickets({
         setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, receipt: { ...r.receipt, refunded: true, refundedTx: sig, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
-        await refresh("action");
+        if (!skipRefresh) await refresh({ reason: "action", silent: true });
         return sig;
       } catch (e) {
         console.error("Refund RPC Failed:", e);
@@ -62554,7 +62552,8 @@ function useUserTickets({
     [program, programPk, userPubkey, mintPk, appendLog, setLastTx, onAfterAction, refresh]
   );
   const doSettleRound = reactExports.useCallback(
-    async (row) => {
+    async (row, options = {}) => {
+      const skipRefresh = !!options.skipRefresh;
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       if (!mintPk) throw new Error("Mint not set");
       appendLog?.(`Settle: discovering tickets for round ${row.roundId}...`);
@@ -62639,7 +62638,7 @@ function useUserTickets({
         }));
         setLastTx?.(sig);
         onAfterAction?.();
-        await refresh("action");
+        if (!skipRefresh) await refresh({ reason: "action", silent: true });
         return sig;
       } catch (e) {
         appendLog?.(`Settle failed: ${formatSolanaError(e)}`);
@@ -62653,7 +62652,8 @@ function useUserTickets({
     [program, programPk, userPubkey, mintPk, connection, coder, appendLog, setLastTx, onAfterAction, refresh]
   );
   const doCloseTicket = reactExports.useCallback(
-    async (row) => {
+    async (row, options = {}) => {
+      const skipRefresh = !!options.skipRefresh;
       if (!program || !userPubkey) throw new Error("Wallet not connected");
       appendLog?.(`Close Ticket: recovering rent… (round=${row.roundId}, nonce=${row.nonce})`);
       setProcessingId(pkTo58(row.ticketPk));
@@ -62693,7 +62693,7 @@ function useUserTickets({
         setRows((prev) => prev.map((r) => pkTo58(r.ticketPk) === tPkStr ? { ...r, receipt: { ...r.receipt, closed: true, closedTx: sig, closedAt: Date.now() } } : r));
         setLastTx?.(sig);
         onAfterAction?.();
-        await refresh("action");
+        if (!skipRefresh) await refresh({ reason: "action", silent: true });
         return sig;
       } catch (e) {
         const errorStr = formatSolanaError(e);
@@ -62710,7 +62710,7 @@ function useUserTickets({
             };
             saveLocalReceipt(walletStr, row.roundId, updated);
             appendLog?.(`Ticket marked as closed locally (already closed).`);
-            refresh("action");
+            if (!skipRefresh) await refresh({ reason: "action", silent: true });
           } catch (err) {
             console.error("Failed to mark ghost ticket as closed", err);
           }
@@ -62864,6 +62864,8 @@ function App() {
   const [faucetLoading, setFaucetLoading] = reactExports.useState(false);
   const [lastTx, setLastTx] = reactExports.useState("");
   const [showSankey, setShowSankey] = reactExports.useState(false);
+  const [showStatus, setShowStatus] = reactExports.useState(false);
+  const [showResetConfirm, setShowResetConfirm] = reactExports.useState(false);
   const [resetConfirm, setResetConfirm] = reactExports.useState(false);
   const [programStatus, setProgramStatus] = reactExports.useState({
     verified: null,
@@ -63793,6 +63795,79 @@ Domain: timlg.org`;
                 }
               )
             ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", borderTop: "2px solid rgba(231, 76, 60, 0.1)", paddingTop: "18px" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.6, fontWeight: "900", marginBottom: "12px", fontSize: "12px", letterSpacing: "0.1em", color: "#e74c3c" }, children: "DANGER ZONE (SYSTEM RESET)" }),
+            !showResetConfirm ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setShowResetConfirm(true),
+                style: {
+                  width: "100%",
+                  background: "#fff",
+                  border: "1px solid #e74c3c",
+                  color: "#e74c3c",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  fontSize: "12px",
+                  fontWeight: "900",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  boxShadow: "0 2px 4px rgba(231, 76, 60, 0.1)"
+                },
+                onMouseEnter: (e) => {
+                  e.currentTarget.style.background = "#e74c3c";
+                  e.currentTarget.style.color = "#fff";
+                },
+                onMouseLeave: (e) => {
+                  e.currentTarget.style.background = "#fff";
+                  e.currentTarget.style.color = "#e74c3c";
+                },
+                children: "PURGE ALL LOCAL STORAGE & ORDER HISTORY"
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "10px" }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => {
+                    localStorage.clear();
+                    window.location.reload();
+                  },
+                  style: {
+                    flex: 2,
+                    background: "#e74c3c",
+                    color: "#fff",
+                    border: "none",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    fontSize: "11px",
+                    fontWeight: "900",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 12px rgba(231, 76, 60, 0.3)"
+                  },
+                  children: "CONFIRM: ERASE EVERYTHING"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => setShowResetConfirm(false),
+                  style: {
+                    flex: 1,
+                    background: "rgba(0,0,0,0.05)",
+                    color: "#666",
+                    border: "none",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    fontSize: "11px",
+                    fontWeight: "700",
+                    cursor: "pointer"
+                  },
+                  children: "CANCEL"
+                }
+              )
+            ] }),
+            showResetConfirm && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: "10px", fontSize: "10px", color: "#e74c3c", fontWeight: "700", textAlign: "center" }, children: "⚠️ ACTION IS IRREVERSIBLE" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(0,0,0,0.05)" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { opacity: 0.5, fontWeight: "900", marginBottom: "12px", letterSpacing: "0.08em", fontSize: "11px" }, children: "PROTOCOL ASSETS" }),
