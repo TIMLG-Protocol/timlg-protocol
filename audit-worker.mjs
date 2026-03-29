@@ -45,6 +45,8 @@ let globalStats = null;
 let roundArchive = {}; // round_id -> { tickets, reveals, wins, isFinal }
 const MAX_ARCHIVE_SIZE = 5000;
 
+const success = (label, msg) => console.log(`[${label}] ✅ ${msg}`);
+
 async function runIndexer() {
     console.log(`[${new Date().toISOString()}] Starting Audit Indexing Cycle...`);
 
@@ -584,7 +586,7 @@ async function writeStats(stats) {
     }
     try {
         await db.ref('audit_stats').set(stats);
-        console.log(`[${new Date().toISOString()}] Successfully pushed to Firebase Realtime DB`);
+        console.log(`[${new Date().toISOString()}] Pushed to Firebase Realtime DB`);
     } catch (e) { }
 }
 
