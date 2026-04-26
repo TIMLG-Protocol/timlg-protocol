@@ -9,13 +9,13 @@ hide:
 
 **A verifiable, slot-bounded commit-reveal protocol on Solana.**
 
-TIMLG couples deterministic on-chain settlement with a public randomness pulse, wallet-level statistics,
-and a documentation set designed for technical verification.
+TIMLG couples deterministic on-chain settlement with a publicly verifiable 512-bit randomness pulse,
+wallet-level statistics, and a documentation set designed for technical verification.
 
 <div class="hero-buttons" markdown>
 [Protocol Specification](protocol/overview.md){ .md-button .md-button--primary }
 [Current Status](status/status.md){ .md-button }
-[Devnet Guide](devnet_guide.md){ .md-button }
+[Devnet App](beta.md){ .md-button }
 </div>
 </div>
 </div>
@@ -26,35 +26,26 @@ and a documentation set designed for technical verification.
 
 | Topic | Current Devnet MVP |
 |---|---|
-| **Randomness flow** | Commit window closes before oracle pulse publication; pulse is verified on-chain |
+| **Randomness flow** | Commit window closes before the oracle pulse is published; the pulse is verified on-chain |
 | **Outcome model** | WIN / LOSE / NO-REVEAL / REFUND |
-| **Settlement rule** | WIN = claimable refund + mint; LOSE and NO-REVEAL = burn |
-| **Oracle model** | Single authorized signer in the current MVP |
-| **Wallet analytics** | `UserStats` tracks cumulative counters and streaks |
-| **Future incentive path** | Streak rewards can be layered on top of `UserStats` without changing core settlement |
+| **Settlement rule** | WIN = claimable stake refund + reward mint; LOSE and NO-REVEAL = burn |
+| **Oracle model** | OracleSet quorum (M-of-N Ed25519) with on-chain NIST chaining (`output_value` + precommitment) |
+| **Round creation** | Permissionless, gated by an on-chain canonical-target rule |
+| **Wallet analytics** | `UserStats` tracks cumulative counters and consecutive-win streaks |
+| **Streak incentive** | `StreakLeaderboard` PDA + `claim_streak_jackpot` (active on-chain) |
 
 ---
 
-## Why the documentation is structured this way
-
-| Goal | Documentation response |
-|---|---|
-| Easy protocol review | Core rules are concentrated in protocol pages, not scattered across marketing copy |
-| Fast technical scanning | Tables summarize parameters, routing, and account surfaces |
-| Separation of concerns | Current MVP behavior is separated from future hardening and future incentive campaigns |
-| Strong auditability | Ticket-level and wallet-level surfaces are documented independently |
-
----
-
-## What can be verified today
+## Verifiable surfaces today
 
 | Surface | What a reviewer can check |
 |---|---|
-| **Lifecycle** | Commit → pulse → reveal → settle → claim / refund / sweep |
-| **Economic routing** | Burn paths, claim path, reward fee routing |
-| **Account model** | PDAs for config, rounds, tickets, stats, vaults, and treasuries |
-| **User history** | Wallet-level counters and streaks via `UserStats` |
-| **Timing** | Slot-bound deadlines and grace windows |
+| **Lifecycle** | Commit → pulse → reveal → settle → claim / refund / sweep / close |
+| **Economic routing** | Stake escrow, deflationary burn, reward mint, fee routing, treasury surfaces |
+| **Account model** | PDAs for config, rounds, tickets, stats, vaults, treasuries, oracle set, leaderboard |
+| **User history** | Wallet-level counters and consecutive-win streaks via `UserStats` |
+| **Timing** | Slot-bound deadlines, grace windows, and refund timeouts |
+| **Source code** | Anchor program, IDL, and TypeScript SDK at [`github.com/richarddmm/timlg-protocol`](https://github.com/richarddmm/timlg-protocol) |
 
 ---
 
@@ -64,27 +55,27 @@ and a documentation set designed for technical verification.
 
 - **Protocol Overview**
 
-  Architecture, lifecycle, current boundaries, and treasury surfaces.
+    Architecture, lifecycle, oracle quorum boundaries, and treasury surfaces.
 
-  [Open Overview](protocol/overview.md)
+    [Open Overview](protocol/overview.md)
+
+- **Oracle Trust Model**
+
+    Quorum-based pulse acceptance, on-chain NIST chaining, and the recovery mode.
+
+    [Read Oracle Trust](protocol/oracle_trust_model.md)
 
 - **Settlement and Tokenomics**
 
-  Outcome routing, burn logic, fee model, and the boundary for future incentive campaigns.
+    Outcome routing, burn logic, fee model, and the streak jackpot funding source.
 
-  [Read Settlement Rules](protocol/settlement_rules.md)
+    [Read Settlement Rules](protocol/settlement_rules.md)
 
-- **User Statistics**
+- **User Statistics & Streak Jackpot**
 
-  Canonical description of wallet-level counters and streak tracking.
+    Wallet-level counters, streak rules, and the on-chain jackpot claim flow.
 
-  [Open User Statistics](protocol/user_stats.md)
-
-- **PDAs and Accounts**
-
-  Program-owned surfaces, derivation patterns, and operational roles.
-
-  [Open PDA Reference](protocol/pdas_and_accounts.md)
+    [Open User Statistics](protocol/user_stats.md)
 
 </div>
 
@@ -94,8 +85,9 @@ and a documentation set designed for technical verification.
 
 The site distinguishes clearly between:
 
-- **implemented MVP behavior**,
-- **future hardening**, and
-- **future incentive layers**.
+- **implemented MVP behavior** (current Devnet deployment),
+- **future hardening** (mainnet trajectory), and
+- **explicit out-of-scope material** (privileged operational topology and key custody).
 
-That distinction is deliberate. It keeps the protocol easier to review, easier to audit, and easier to evolve without rewriting past claims.
+That distinction is deliberate. It keeps the protocol easier to review, easier to audit, and easier
+to evolve without rewriting past claims.

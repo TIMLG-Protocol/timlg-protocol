@@ -4,16 +4,11 @@
 |---|---|
 | **Document ID** | TP-REFR-006 |
 | **Status** | Canonical (Devnet MVP) |
-| **Scope** | Per-user participation counters and streak tracking |
+| **Scope** | Per-user participation counters, streak tracking, and jackpot eligibility |
 
-`UserStats` is the protocol account that aggregates a participant's long-lived activity counters.
-It is not a reward account and it does not hold claimable funds. Its purpose is to provide a compact,
-auditable summary of user activity that can be consumed by the web UI, analytics pipelines, and future
-incentive modules.
-
-!!! note "Current vs future scope"
-    In the current MVP, `UserStats` is an **observability surface**.
-    Future leaderboard or streak-based rewards should treat it as an **eligibility input**, not as a payout vault.
+`UserStats` is the protocol account that aggregates a participant's long-lived activity counters and
+serves as the eligibility input for the on-chain Streak Jackpot. It is **not** a reward vault and it
+does not hold claimable funds — it holds counters.
 
 ---
 
@@ -21,10 +16,10 @@ incentive modules.
 
 | Need | Why `UserStats` matters |
 |---|---|
-| Fast UI rendering | Avoids scanning every historical ticket to render wallet-level summary statistics. |
-| Auditability | Makes user-level counters reproducible from protocol events and ticket state. |
-| Future incentives | Provides a clean source for streak-based eligibility without overloading ticket accounts. |
-| Operational clarity | Separates **user history** from **ticket settlement** and **treasury routing**. |
+| Fast UI rendering | Avoids scanning every historical ticket to render wallet-level summary statistics |
+| Auditability | Makes user-level counters reproducible from protocol events and ticket state |
+| Streak jackpot eligibility | Provides the canonical `current_streak` and `refunded_in_streak_window` consumed by `claim_streak_jackpot` |
+| Operational clarity | Separates **user history** from **ticket settlement** and **treasury routing** |
 
 ---
 
@@ -33,7 +28,7 @@ incentive modules.
 | Item | Value |
 |---|---|
 | **Account name** | `UserStats` |
-| **Seed pattern** | `[b"user_stats", Pubkey(user)]` |
+| **Seed pattern** | `[b"user_stats_v3", Pubkey(user)]` |
 | **Authority model** | Program-owned PDA |
 | **One account per** | Wallet / participant |
 | **Holds tokens?** | No |
@@ -43,92 +38,91 @@ incentive modules.
 
 ## Canonical counters
 
-The exact struct may evolve by version, but the current documentation should be read with the following semantic model.
-
-| Field / Metric | Meaning | When it changes | Notes |
-|---|---|---|---|
-| `games_played` | Total tickets accepted by the protocol for the user | Successful commit | Counts protocol participation, not only revealed tickets. |
-| `games_won` | Tickets that revealed correctly and ended in WIN | Successful reveal classified as win | Does not imply the reward has already been claimed. |
-| `games_lost` | Tickets that revealed incorrectly and ended in LOSE | Successful reveal classified as loss | Terminal economic path after settlement is burn. |
-| `tickets_revealed` | Tickets successfully revealed | Successful reveal | Includes both wins and losses. |
-| `tickets_claimed` | Winning tickets successfully claimed | Successful `claim_reward` | Claim is separate from reveal and settlement. |
-| `tickets_swept` | Winning tickets later swept after grace expiry | Successful `sweep_unclaimed` affecting the user | Terminal path for an unclaimed winner. |
-| `current_streak` | Current consecutive wins not yet interrupted by a non-win result | Updated after every terminal classification relevant to streak logic | Resets when the streak is broken. |
-| `longest_streak` | Maximum historical consecutive wins | When `current_streak` exceeds prior maximum | Monotonic non-decreasing. |
+| Field | Meaning | When it changes |
+|---|---|---|
+| `user` | Owner pubkey | Set on init |
+| `bump` | PDA bump | Set on init |
+| `games_played` | Total tickets accepted by the protocol for the user | Successful commit |
+| `games_won` | Tickets revealed correctly and ended in WIN | Successful reveal classified as win |
+| `games_lost` | Tickets revealed incorrectly and ended in LOSE | Successful reveal classified as loss |
+| `tickets_revealed` | Tickets successfully revealed | Successful reveal |
+| `tickets_claimed` | Winning tickets successfully claimed | Successful `claim_reward` |
+| `tickets_swept` | Winning tickets later swept after grace expiry | Successful `sweep_unclaimed` affecting the user |
+| `tickets_refunded` | Tickets that exited via the refund path | Successful `recover_funds` / `recover_funds_anyone` |
+| `last_reset_slot` | Epoch boundary used by client-side filters | Set by admin reset flows when applicable |
+| `current_streak` | Current consecutive-win run not yet interrupted | Reveal classified as WIN extending the streak; reset on LOSE or jackpot claim |
+| `longest_streak` | Personal historical max of `current_streak` | Whenever `current_streak` exceeds the previous max — monotonic |
+| `last_revealed_winning_index` | `user_commit_index` of the last winning reveal that extended the streak | Set on every WIN that extends the streak |
+| `refunded_in_streak_window` | Count of refunded tickets whose `user_commit_index` is greater than `last_revealed_winning_index` | +1 in `recover_funds`; reset to 0 on every winning reveal that extends the streak |
 
 !!! note "Interpretation"
     `games_won` and `games_lost` are **outcome counters**.
     `tickets_claimed` and `tickets_swept` are **post-settlement settlement-path counters**.
-    They answer different questions and should not be merged in analytics.
+    `current_streak` and `refunded_in_streak_window` together drive the Streak Jackpot eligibility.
 
 ---
 
-## Update model
+## Streak rules (canonical)
 
-The table below describes the intended interpretation of the counters at protocol level.
+The protocol implements **strict consecutive streaks** anchored to a monotonic `user_commit_index`.
+This index is recorded on every commit and is what makes the streak unforgeable.
 
-| Lifecycle event | Played | Revealed | Outcome | Claimed | Swept | Streak |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Commit accepted** | +1 | — | — | — | — | — |
-| **Reveal - WIN** | — | +1 | +1 (W) | — | — | inc [^1] |
-| **Reveal - LOSE** | — | +1 | +1 (L) | — | — | rst [^2] |
-| **Expired / No-reveal** | — | — | — | — | — | brk [^3] |
-| **Claim successful** | — | — | — | +1 | — | — |
-| **Sweep of winner** | — | — | — | — | +1 | — |
-| **Refund path** | — | — | — | — | — | — |
+A WIN extends the current streak only when
 
-[^1]: **inc**: Current streak increments; updates `longest_streak` if high score.
-[^2]: **rst**: Current streak resets to zero.
-[^3]: **brk**: Streak is interrupted/broken by protocol policy during expiry.
+```
+ticket.user_commit_index == last_revealed_winning_index + 1 + refunded_in_streak_window
+```
 
-!!! warning "One source of truth per concern"
-    Use tickets and rounds for **per-round settlement truth**.
-    Use `UserStats` for **wallet-level aggregated counters**.
-    Do not use `UserStats` as a substitute for ticket-level forensic analysis.
-
----
-
-## Relationship to future streak rewards
-
-TIMLG can support future reward programs for high streak participants, but that should be documented as a
-separate incentive layer rather than mixed into the core settlement rules.
-
-### Recommended model
-
-| Layer | Purpose | Status |
+| Lifecycle event | `current_streak` effect | `refunded_in_streak_window` effect |
 |---|---|---|
-| **Core protocol** | Commit, reveal, settle, claim, refund, sweep | Implemented |
-| **UserStats** | Canonical counters and streak tracking | Implemented / documented surface |
-| **Leaderboard service** | Rank wallets by an explicit policy (e.g. highest confirmed `longest_streak`) | Future |
-| **Reward distributor** | Make streak prizes claimable from a dedicated budget and policy | Future |
+| Commit accepted | — | — |
+| Reveal — WIN, sequential index | +1 (or initialized to 1) | reset to 0 |
+| Reveal — WIN, non-sequential index | reset to 1 (broken) | reset to 0 |
+| Reveal — LOSE | reset to 0 | reset to 0 |
+| No-reveal (expired) | broken via reveal-window logic | unchanged |
+| `recover_funds` (refund) on a ticket past the last winning index | unchanged | +1 (legitimate "hop") |
+| `claim_streak_jackpot` | reset to 0 | reset to 0 |
 
-### Design principle
+This design has two important properties:
 
-A future streak reward should be determined by a documented policy such as:
-
-| Policy input | Why it matters |
+| Property | Why it holds |
 |---|---|
-| `longest_streak` | Primary ranking signal for streak competitions |
-| tie-break rule | Needed for deterministic results across equal streaks |
-| measurement window | Prevents ambiguity between all-time and seasonal contests |
-| eligibility filter | Prevents rewards being granted to excluded or incomplete records |
-| dedicated budget source | Keeps reward campaigns separate from core round settlement |
+| Hidden losers cannot inflate the streak | Skipping the loser's reveal breaks `user_commit_index` continuity, so the next WIN resets the streak rather than extending it |
+| Refunds caused by oracle failure do not break the streak | Refunded tickets count as legitimate hops via `refunded_in_streak_window`, but only when the round genuinely had no pulse (program enforces `!round.pulse_set`) |
 
-### What not to do
+---
 
-| Anti-pattern | Why to avoid it |
-|---|---|
-| Pay streak prizes directly from round settlement logic | Mixes promotional incentives with core protocol economics. |
-| Infer streaks by ad-hoc frontend logic only | Creates avoidable inconsistencies across clients. |
-| Reuse user ticket rent or sweep residue as undocumented prize funding | Makes treasury behavior harder to audit. |
+## Streak Jackpot eligibility
+
+`claim_streak_jackpot` succeeds only when:
+
+```
+current_streak > StreakLeaderboard.record_streak
+```
+
+If true, the program transfers the entire `Treasury SOL` balance (minus the rent-exempt minimum) to
+the user, updates `record_streak` / `record_holder` / audit counters in the leaderboard, and resets
+the user's `current_streak` to 0. `longest_streak` is preserved as the user's personal historical
+record.
+
+For the full design, anti-grinding analysis, and audit fields, see [Streak Jackpot](streak_jackpot.md).
+
+---
+
+## Lazy account migration
+
+The `refunded_in_streak_window` field was added during the Streak Jackpot rollout. Pre-existing
+`UserStats` accounts (size = 161 bytes) are reallocated to the new size (169 bytes) lazily on the
+next reveal or refund interaction, paid by the user themselves. No coordinated migration is required.
 
 ---
 
 ## Recommended documentation boundary
 
-For a serious public documentation set, keep the message simple:
+For a serious public documentation set:
 
 - `UserStats` is the canonical wallet-level statistics account.
-- It supports UI summaries, analytics, and future streak-based campaigns.
-- It does **not** change the current MVP settlement rules.
-- Any future streak prize system must publish its own eligibility table, budget source, and claim flow.
+- It supports UI summaries, analytics, and Streak Jackpot eligibility.
+- It does **not** alter the WIN / LOSE / NO-REVEAL / REFUND settlement matrix.
+- Any future seasonal or leaderboard layer must publish its own eligibility table, budget source,
+  and claim flow.

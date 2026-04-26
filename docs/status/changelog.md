@@ -2,6 +2,42 @@
 
 This changelog is organized by **technical milestones**, not by arbitrary semantic versions. It is intended to help a specialized reader understand how the current Devnet MVP was assembled and hardened.
 
+## April 2026 — Streak Jackpot, multi-oracle quorum, recovery mode, and public source release
+
+### Protocol on-chain — incentive layer
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-04-26 | **Protocol / state** | Added `StreakLeaderboard` PDA (singleton) — global on-chain record of the highest verified streak |
+| 2026-04-26 | **Protocol / state** | Added `UserStats.refunded_in_streak_window` field with lazy realloc — refunds caused by oracle failure no longer break a user's streak |
+| 2026-04-26 | **Protocol / instructions** | Added `initialize_streak_leaderboard` (admin one-shot) and `claim_streak_jackpot` (user-domain) |
+| 2026-04-26 | **Protocol / streak rules** | Hardened `update_streak` to anchor on the monotonic `user_commit_index` — hidden losers cannot inflate the streak |
+| 2026-04-26 | **Protocol / treasury** | `Treasury SOL` (already collecting `sol_service_fee_lamports`) is now the active funding source for the streak jackpot |
+
+### Protocol on-chain — oracle and recovery
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-04-26 | **Protocol / oracle** | `set_pulse_quorum` is now the canonical pulse acceptance path; `set_pulse_signed` (single-signer) returns `LegacyModeDisabled` for betting rounds |
+| 2026-04-26 | **Protocol / oracle** | Attestation Board PDAs (`OracleAttestationRecord`, `OracleAnchorAttestationRecord`) persist signature, output, and precommitment so any actor can assemble quorum without log harvesting |
+| 2026-04-26 | **Protocol / NIST chain** | `Config.has_nist_anchor`, `last_output_value`, `last_precommitment_value` enforce the full NIST chain on every accepted pulse (`NistChainBroken`, `NistPrecommitmentBroken`) |
+| 2026-04-26 | **Protocol / recovery** | Removed legacy `syncLatestPulse`. Replaced with proof-gated `enter_recovery_mode` + `install_nist_anchor_quorum` + `exit_recovery_mode`. Permissionless exit after `RECOVERY_EXIT_TIMEOUT_SLOTS` |
+| 2026-04-26 | **Protocol / rounds** | `create_round_permissionless` enforces `target == max(last_created_target + 1, LFP + min_future_pulses)` (`NonCanonicalTarget`); `create_continuity_fallback_permissionless` covers the post-publication recovery slot |
+| 2026-04-26 | **Protocol / rounds** | Introduced `RoundKind::Continuity` for technical sequencing rounds that do not accept commits |
+
+### SDKs and public release
+
+| Date | Area | Change |
+|---|---|---|
+| 2026-04-26 | **Public release** | Smart contract, IDL, and TypeScript SDK published at [`github.com/richarddmm/timlg-protocol`](https://github.com/richarddmm/timlg-protocol) (verifiable build) |
+| 2026-04-26 | **TypeScript SDK** | Modular `TimlgPlayer`, `TimlgSupervisor`, `TimlgAdmin` clients exported from `@timlg/sdk` |
+| 2026-04-26 | **`oracle-node-sdk`** | Independent oracle attestation publisher (NIST fetch + sign + on-chain attestation) |
+| 2026-04-26 | **`ticket-manager-sdk`** | Adds `--action=jackpot` for the streak claim flow alongside commit / reveal / claim / refund |
+| 2026-04-26 | **`protocol-supervisor-sdk`** | Operates only through public, permissionless instructions; reads the Attestation Board to assemble quorum |
+| 2026-04-26 | **Oracle node** | Anchor attestation guard skips the recovery anchor when a live round already exists at LFP+1 (the supervisor will use the pulse path, not the advance path) |
+
+---
+
 ## March 2026 (late) — Supervisor SDK, protocol hardening, and trust model clarification
 
 ### Supervisor SDK (`protocol-supervisor-sdk`)

@@ -3,10 +3,12 @@
 | Document Control | Value |
 |---|---|
 | **Document ID** | TP-SAFE-003 |
-| **Status** | Approved for Devnet MVP — revised March 2026 |
+| **Status** | Approved for Devnet MVP — revised April 2026 |
 | **Purpose** | State the trust assumptions for pulse publication clearly and without ambiguity |
 
-The protocol depends on an external pulse source and an authorized signer that proves the pulse submitted on-chain is the pulse the protocol intended to accept. This document is deliberately conservative about what the on-chain verification actually proves.
+The protocol depends on an external pulse source (NIST Beacon Chain 2) and an authorized oracle set
+that proves on-chain that the pulse submitted on-chain matches the pulse the protocol intended to
+accept. This document is deliberately conservative about what the on-chain verification actually proves.
 
 ---
 
@@ -14,26 +16,32 @@ The protocol depends on an external pulse source and an authorized signer that p
 
 | Aspect | Current MVP rule |
 |---|---|
-| **Acceptance model** | One configured oracle public key is accepted by `set_pulse_signed` |
-| **Signature scheme** | Ed25519 verification instruction must be present and must match the expected message |
-| **Authority to change oracle key** | Admin-controlled configuration path |
-| **Source referenced by deployment** | Public randomness pulse sourced from NIST Randomness Beacon Chain 2 |
-| **LFP advancement** | `syncLatestPulse(n)` advances the `latest_finalized_pulse_index` — admin-gated, monotonically increasing only |
+| **Acceptance model** | M-of-N quorum: `set_pulse_quorum` requires Ed25519 signatures from at least `OracleSet.threshold` distinct oracles in the allowlist |
+| **Signature scheme** | Ed25519, verified by Solana's native ed25519 verify program; one ed25519 instruction per signer in the same transaction |
+| **NIST chaining** | The `Config` PDA stores `last_output_value` (the NIST `outputValue` of the previously accepted pulse) and `last_precommitment_value`. Each new pulse is checked against the chain |
+| **Anchor / bootstrap** | The first pulse is accepted without chain (`has_nist_anchor = false`). Once anchored, every subsequent pulse must satisfy the chain |
+| **Authority to change oracle set** | Admin via `add_oracle`, `remove_oracle`, `set_oracle_threshold` |
+| **Single-signer fallback** | `set_pulse_signed` exists but is **disabled for betting rounds** (`LegacyModeDisabled`); kept for development paths |
+| **Source referenced by deployment** | NIST Randomness Beacon Chain 2 |
 
 ---
 
-## 2. What "ed25519 verification" proves — and what it does not
+## 2. What "ed25519 + NIST chain verification" proves — and what it does not
 
 This distinction matters for any honest security characterization of the protocol.
 
 | What it **does** prove | What it **does not** prove |
 |---|---|
-| The configured oracle public key signed these exact bytes | That those bytes are the real NIST Beacon value for the stated pulse index |
-| The signed message fields (programId, roundId, pulseIndexTarget, pulseBytes) match the expected round context | How the operator fetched the pulse or whether the oracle key is independently audited |
-| The oracle key has not been rotated without an on-chain admin transaction | Whether the oracle private key is under independent custody |
-| The pulse was applied to only one round (once-per-round enforcement) | Organizational controls around the signer |
+| At least `threshold` distinct allowlisted oracles signed the exact canonical message bytes | That the bytes are the real NIST Beacon value (no zk-attestation of NIST itself yet) |
+| The signed message fields (programId, roundId, pulseIndexTarget, pulseBytes) match round context | How each oracle fetched the pulse or whether their key custody is independently audited |
+| The new pulse's `previous_output_value` equals the previously accepted `last_output_value` | That every oracle is operationally independent — collusion within the threshold is not detectable on-chain |
+| `SHA-512(output_value)` matches the prior `last_precommitment_value` (NIST precommit chain) | The off-chain organisational separation between operators of different oracle keys |
+| The pulse was applied to only one round (one-shot per round) | |
 
-In short: **ed25519 on-chain verification proves oracle authorization, not pulse authenticity**. The chain between NIST bytes and what gets published is currently an operator trust assumption, not a cryptographic proof anchored on-chain.
+In short: **ed25519 quorum + NIST chaining proves operator authorization plus integrity of the pulse
+sequence under threshold trust assumptions, not unconditional NIST authenticity.** The chain between
+real NIST bytes and what gets published is reduced — but not eliminated — by requiring a quorum of
+independent operators.
 
 ---
 
@@ -41,11 +49,11 @@ In short: **ed25519 on-chain verification proves oracle authorization, not pulse
 
 | Assumption | Meaning |
 |---|---|
-| **Source integrity** | The operator correctly fetches NIST Beacon Chain 2 pulses without substitution |
-| **Signer custody** | The oracle private key is not compromised or used dishonestly |
-| **Availability** | The pulse is posted in time for a valid reveal window |
-| **Configuration correctness** | The stored oracle pubkey is the one the deployment intends to trust |
-| **syncLatestPulse honesty** | The `latest_finalized_pulse_index` is advanced correctly, not misused to reposition the pulse assignment window |
+| **Source integrity (collective)** | At least `threshold` of the allowlisted oracles correctly fetch NIST Beacon Chain 2 without substitution |
+| **Signer custody (per oracle)** | Each oracle private key is not compromised |
+| **Anti-collusion** | Fewer than `threshold` of the allowlisted oracles collude |
+| **Availability** | At least `threshold` oracles publish their attestations in time |
+| **Configuration correctness** | The stored `OracleSet.oracles` list and `threshold` are what the deployment intends |
 
 ---
 
@@ -53,51 +61,68 @@ In short: **ed25519 on-chain verification proves oracle authorization, not pulse
 
 | Enforced on-chain | Not enforced on-chain |
 |---|---|
-| Signature matches the configured oracle pubkey | How the off-chain operator fetched the external pulse |
-| Signed message fields match expected round context | Internal operator infrastructure topology |
-| Pulse is only set once per round | Organizational controls around the signer |
-| `syncLatestPulse` can only advance LFP, never decrease it (`SyncPulseWouldDecrease` error) | The rate or frequency of LFP advancement |
-| Pulse must be sequential: target == LFP + 1 at publication time (`NonSequentialPulse` error) | Whether skipped indices correspond to real NIST pulses |
-| Hardcaps on fee, stake, and window parameters (enforced in constants) | Admin behavior within those caps |
+| Each signature in `set_pulse_quorum` is verified by Solana's native ed25519 verify program | How any individual oracle fetched the external pulse |
+| Every signer must be a distinct member of `OracleSet` and signatures must be sorted (`InvalidQuorumSignatureOrdering`) | Internal operator infrastructure topology |
+| Pulse acceptance is one-shot per round (`PulseAlreadySet`) | Operational signing pipelines (kept private) |
+| `set_pulse_quorum` enforces `previous_output_value == config.last_output_value` once anchored (`NistChainBroken`) | Whether the source NIST values are the real beacon values (no on-chain proof of NIST itself) |
+| `SHA-512(output_value)` must match `config.last_precommitment_value` (`NistPrecommitmentBroken`) | |
+| `pulse_index_target` must equal the round's stored target (`PulseIndexMismatch`) | |
+| `latest_finalized_pulse_index` (LFP) advances monotonically; non-sequential pulses are rejected (`NonSequentialPulse`) | The rate at which the OracleSet publishes |
+| Hardcaps on stake, fee, and window parameters (constants) | Admin behavior within those caps |
 
 ---
 
-## 5. The ORACLE-GAP mechanism and its trust implications
+## 5. Recovery mode (replaces the legacy `syncLatestPulse` mechanism)
 
-The `syncLatestPulse` instruction is the primary liveness mechanism. The supervisor uses it in an "ORACLE-GAP" pattern when it detects that the on-chain LFP has fallen behind the pipeline of pending rounds.
+The old `syncLatestPulse` ORACLE-GAP mechanism has been **removed** and replaced by a proof-gated
+recovery flow that is itself permissionless and quorum-based.
 
-**What it does operationally:**
-- Advances `latest_finalized_pulse_index` to the minimum value needed to unblock the round with the lowest pending target
-- Is bounded: can only advance, never retreat
+### Entry — `enter_recovery_mode`
 
-**Why it exists:**
-- The on-chain program has no access to the NIST Beacon directly
-- The LFP must be advanced by the operator before a matching pulse can be published for any round
-- Without it, the pipeline stalls permanently if empty rounds consume pulse indices
+Recovery is only entered when **both** are true:
 
-**Trust implication:**
-- The current causal anchor (`latest_finalized_pulse_index`) is not purely derived from sequential pulse publications. It is partly derived from administrative `syncLatestPulse` calls.
-- This means the system is **trust-minimized**, not trustless. The operator controls the LFP window, which determines which rounds become eligible for pulse publication.
+1. `recovery_target > LFP + 1` (a real gap exists), and
+2. A `Round` account already exists in `Announced` state with `pulse_index_target == recovery_target`
+   (concrete proof that the gap is blocking real pending work).
 
-**What protects against abuse:**
-- `SyncPulseWouldDecrease`: the LFP cannot be walked back to reposition past targets
-- The advancement is always visible on-chain and auditable
-- The sequential constraint on `set_pulse_signed` limits manipulation of individual pulse-to-round assignment
+Either condition failing returns `RecoveryProofInvalid` or `NoSequenceGap`.
+
+### Repair — `install_nist_anchor_quorum`
+
+Inside recovery mode, the OracleSet can install a new NIST anchor by quorum:
+
+- `payload` carries `pulse_index`, `output_value`, and `precommitment_value`
+- M-of-N anchor signatures must be verified
+- Outside recovery mode, `pulse_index` must equal `LFP + 1` (`PulseIndexNotNext`); inside recovery
+  mode, multi-pulse jumps are allowed but only up to `recovery_target`
+- The anchor advances LFP and refreshes `last_output_value` / `last_precommitment_value`
+
+### Exit — `exit_recovery_mode`
+
+- Permissionless once `LFP >= recovery_target` **or** `RECOVERY_EXIT_TIMEOUT_SLOTS` have elapsed
+  since `recovery_entered_at`
+- Otherwise admin-only
+
+This design replaces the old admin-controlled `syncLatestPulse`: every recovery action is now visible
+on-chain, requires real pending work as proof, and either runs through quorum or times out.
 
 ---
 
 ## 6. Precise characterization of current trust level
 
-> **The protocol is trust-minimized, not trustless.**
+> **The protocol is trust-minimized and approaching trust-distributed.**
 
 | Property | Current state |
 |---|---|
 | On-chain settlement logic | Deterministic and rule-enforced |
 | Outcome given a pulse | Trustless — deterministic given the bytes |
-| Pulse authenticity | Trust-minimized — requires trusting the operator/oracle |
-| LFP advancement | Trust-minimized — admin-controlled but monotonically constrained |
-| Escrow safety | Strong — PDA-controlled, admin cannot extract directly |
-| Fee and parameter caps | Trustless — hardcoded maximums enforced by the program |
+| Pulse authenticity | Threshold-trusted: requires collusion of `threshold` allowlisted oracles plus a NIST chain break to corrupt |
+| Pulse sequencing | Rule-enforced: monotonic LFP, NIST chain check, one-shot per round |
+| LFP advancement | Quorum-gated within recovery; sequential under normal flow |
+| Recovery entry | Proof-gated (real pending round + real gap) |
+| Recovery exit | Permissionless after target reached or timeout |
+| Escrow safety | Strong — PDA-controlled, admin cannot extract round vault funds directly |
+| Fee and parameter caps | Trustless — hardcoded maximums in `constants.rs` |
 
 ---
 
@@ -105,8 +130,7 @@ The `syncLatestPulse` instruction is the primary liveness mechanism. The supervi
 
 | Planned area | Rationale |
 |---|---|
-| Oracle set / threshold acceptance (M-of-N) | Reduce single-signer dependency; `OracleSet` model already present in program state |
-| Better public verification tooling | Make third-party checking of oracle behaviour easier |
-| zkTLS or similar proof layer | Prove on-chain that published bytes match NIST Beacon without trusting the oracle key |
-| Stronger authority separation | Reduce key concentration for oracle and admin paths |
-| Deterministic pulse scheduling | Derive round targets algorithmically from LFP to reduce operator scheduling discretion |
+| Larger / external oracle set | More independent operators, lower collusion risk |
+| zkTLS or equivalent NIST-binding proof | Prove on-chain that published bytes match NIST Beacon directly, removing the residual operator trust |
+| Stronger authority separation | Reduce key concentration for admin / oracle / treasury / upgrade authorities |
+| DAO-governed `OracleSet` updates | Replace admin-driven add/remove with on-chain governance |

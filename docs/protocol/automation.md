@@ -3,118 +3,180 @@
 | Metadata | Specification |
 |---|---|
 | **Document ID** | TP-OPER-001 |
-| **Component** | Supervisor, Cranker & Relayer Strategy |
-| **Last updated** | March 2026 |
+| **Component** | Off-chain operator and oracle SDKs |
+| **Last updated** | April 2026 |
 
-To ensure a continuous and reliable protocol, TIMLG uses an automated round management system. The current production implementation is the `protocol-supervisor-sdk` (Node.js), which handles the full lifecycle: round creation, pulse publication, finalization, settlement, sweep, and cleanup.
-
----
-
-## RoundRegistry
-
-The `RoundRegistry` is a singleton PDA that maintains the global state of the automated pipeline.
-
-- **Purpose**: Tracks the next available numeric `round_id`.
-- **Instruction**: `initialize_round_registry(start_round_id)` (Admin-only).
-- **Invariant**: Ensures that `round_id` values are strictly sequential and never reused.
+The TIMLG protocol is automated by a set of off-chain components that **only act through public,
+permissionless or quorum-gated instructions**. None of them holds privileged consensus power.
 
 ---
 
-## Automated Creation Flow
+## 1. Components
 
-The protocol supports a specialized instruction for high-throughput operator pipelines:
+| Component | Repo path | Domain | Authority |
+|---|---|---|---|
+| **`protocol-supervisor-sdk`** | `protocol-supervisor-sdk/` | Round lifecycle | Permissionless: round creation, quorum assembly, settle, sweep, close |
+| **`oracle-node-sdk`** | `oracle-node-sdk/` | Oracle attestations | Member of `OracleSet`: signs canonical pulse / anchor messages and posts attestation PDAs |
+| **`ticket-manager-sdk`** | `ticket-manager-sdk/` | User actions | Player: commit, reveal, claim, refund, jackpot claim |
+| **TypeScript SDK** | `sdk/` | Library | Used by all of the above; `TimlgPlayer`, `TimlgSupervisor`, `TimlgAdmin` |
 
-### `create_round_auto`
-
-This instruction creates a new round without requiring the operator to provide a manual `round_id`.
-
-1. **ID Allocation**: Reads `next_round_id` from the `RoundRegistry`.
-2. **State Initialization**: Creates the `Round` PDA and its associated token vaults.
-3. **Registry Update**: Increments `RoundRegistry.next_round_id`.
-4. **Timing Configuration**: Sets the `commit_deadline_slot` and `reveal_deadline_slot` based on the targeted NIST pulse.
-
----
-
-## Permissionless Settlement & Auto-Finalization
-
-To maximize decentralization and liveness, the settlement process has been hardened:
-
-- **Permissionless**: Any user can trigger `settle_round_tokens` once the reveal window has passed.
-- **Auto-Finalization**: If the round has not been manually finalized, the settlement instruction will automatically transition the round to the `Finalized` state if the pulse has been set on-chain.
-- **Incremental Processing**: `settle_round_tokens` supports processing batches of tickets, making it gas-efficient for high-volume rounds.
+The supervisor never participates in consensus. Quorum signatures are produced by the **independent
+oracle nodes** (`oracle-node-sdk`) and persisted as on-chain `OracleAttestationRecord` /
+`OracleAnchorAttestationRecord` PDAs (the "Attestation Board"). Any actor can read those PDAs and
+assemble a valid quorum proof.
 
 ---
 
-## Protocol Supervisor SDK
+## 2. RoundRegistry and canonical-target rule
 
-The current off-chain infrastructure is implemented in `protocol-supervisor-sdk/index.mjs`. It runs as a continuous loop and manages the full round lifecycle.
+The `RoundRegistry` is a singleton PDA that maintains the global state of the round pipeline.
 
-### Architecture
+- **Purpose**: tracks `next_round_id` and `last_created_target` (the highest `pulse_index_target`
+  ever registered).
+- **Invariant**: `pulse_index_target` values are strictly monotonic and never reused — guaranteed
+  both by the registry and by the per-target dedup PDA `RoundTargetRecord`.
 
-The supervisor is organized into distinct functional modules executed each tick:
+### Canonical next target
 
-| Module | Responsibility |
-|---|---|
-| **boot** | Reads on-chain config (commit/reveal window sizes) and chain state at the start of each tick |
-| **audit** | Scans the on-chain `RoundRegistry` for all active rounds and their current states |
-| **scheduler** | Determines the next round to create based on the NIST pulse pipeline; calls `create_round_auto` |
-| **ORACLE-GAP** | Advances `latest_finalized_pulse_index` if the pipeline is blocked by empty or skipped rounds |
-| **pulses** | Fetches NIST Beacon Chain 2 and publishes `set_pulse_signed` for rounds that are ready |
-| **maintenance/finalize** | Calls `finalize_round` for rounds that have passed their reveal deadline and have a pulse |
-| **settlement** | Calls `settle_round_tokens` for finalized rounds with tickets |
-| **maintenance/sweep** | Calls `sweep_unclaimed` for rounds past the claim grace period |
-| **cleanup/close** | Calls `close_round` for swept rounds to recover rent |
-
-### Tick cycle
-
-Each tick takes approximately 10–15 seconds and covers all modules in sequence. State read at boot is shared across modules within the same tick. This means the supervisor effectively targets a ~6 rounds-per-minute throughput ceiling at peak scheduling.
-
-### Scheduler logic
-
-The scheduler picks the next `pulseIndexTarget` from the pool of unregistered pulse indices. A round will be skipped (not created) if:
-
-- The target pulse is already registered in the pipeline
-- The current NIST betting window for that pulse is below the minimum required duration
-- The target would be beyond the `MAX_FUTURE_PULSE_WINDOW` (protects against creating rounds too far ahead of the current chain state)
-
-!!! note "Round creation and slots"
-    Round commit and reveal deadlines are derived from the **current chain slot** at creation time, not from the current wall-clock time. NIST pulses arrive approximately every 60 seconds but slot timing may drift. The scheduler uses the current slot as the reference point when computing window offsets.
-
----
-
-## The ORACLE-GAP mechanism
-
-`syncLatestPulse` is an admin-gated instruction that advances the on-chain `latest_finalized_pulse_index` (LFP). The supervisor uses it when it detects the LFP has fallen behind the earliest pending round's pulse target.
-
-### When it triggers
+`create_round_permissionless(target)` enforces
 
 ```
-current LFP < (earliest active round's pulseIndexTarget - 1)
+target == max(last_created_target + 1, LFP + min_future_pulses)
 ```
 
-### What it does
+Otherwise the program returns `NonCanonicalTarget`. The supervisor computes the same value off-chain
+and submits the transaction; if two relayers race, only one succeeds (the other hits
+`TargetAlreadyCreated` against the dedup PDA).
 
-1. Reads all active rounds from the pipeline
-2. Computes the minimum LFP needed to allow the earliest blocked round to become eligible for pulse publication
-3. Calls `syncLatestPulse(target)` with that minimum value
+### Continuity fallback
 
-### Constraints
+When NIST has already published a target so a Betting round is no longer viable for that slot, but
+the pipeline would otherwise stall, anyone can call
 
-- The program enforces `SyncPulseWouldDecrease`: the LFP can only advance, never retreat
-- Each `syncLatestPulse` call is an on-chain transaction, fully auditable
-- The sequential constraint on `set_pulse_signed` (`NonSequentialPulse`) limits how many rounds a misaligned LFP can affect
+```
+create_continuity_fallback_permissionless(target)
+```
 
-### Trust implication
+which is also proof-gated: it only succeeds when `target == LFP + 1` and `target <= estimated_current_nist`.
+A Continuity round (`RoundKind::Continuity = 1`) does not accept commits or reveals — it only carries
+the pulse forward.
 
-The ORACLE-GAP mechanism is a **liveness tool with an admin trust dependency**. It resolves deadlocks that arise when empty rounds consume pulse index slots. However, because the LFP is app-level state and is advanced by the operator rather than by independent on-chain consensus, this remains a centralized operation bounded by on-chain constraints.
+---
+
+## 3. Round creation flow
+
+```mermaid
+sequenceDiagram
+  participant S as Supervisor (any)
+  participant P as Program
+  participant R as RoundRegistry
+
+  S->>P: create_round_permissionless(target)
+  P->>R: read last_created_target, LFP, min_future_pulses
+  P-->>P: enforce canonical target
+  P->>R: bump next_round_id, last_created_target
+  P-->>S: Round PDA + RoundTargetRecord PDA
+```
+
+This replaces the old `create_round_auto` flow (admin-allocated `round_id` with no target enforcement).
+
+---
+
+## 4. Pulse publication flow (quorum)
+
+```mermaid
+sequenceDiagram
+  participant N as NIST Beacon
+  participant O as OracleSet member
+  participant P as Program
+  participant R as Relayer (any)
+
+  N-->>O: outputValue + precommitmentValue
+  O->>O: sign canonical message ("timlg-protocol:pulse_v1" || ...)
+  O->>P: signal_pulse_attestation(round, payload, sig)
+  P-->>P: store OracleAttestationRecord PDA (one-shot)
+  Note over O,P: All oracles do this independently
+  R->>P: set_pulse_quorum(round, payload, [sig1..sigK])
+  P-->>P: verify K>=threshold, NIST chain, one-shot
+  P-->>R: round.pulse_set = true
+```
+
+Once `OracleAttestationRecord` PDAs reach the threshold for a given round, **any** observer can pick
+up those signatures and call `set_pulse_quorum`. The protocol does not require the relayer to be the
+supervisor.
+
+---
+
+## 5. Recovery flow
+
+When the pipeline is genuinely stuck because LFP fell behind a real pending round:
+
+| Step | Instruction | Caller | Purpose |
+|---|---|---|---|
+| 1 | `enter_recovery_mode` | Admin or proof-bearer | Set `recovery_mode_active = true`, `recovery_target_pulse = T`, `recovery_entered_at = now` (proof = pending Round at target T) |
+| 2 | `signal_anchor_attestation` | Each oracle independently | Sign and post anchor attestation for the recovery target |
+| 3 | `install_nist_anchor_quorum` | Any relayer with K signatures | Advance LFP to the recovery target, refresh `last_output_value` and `last_precommitment_value` |
+| 4 | `exit_recovery_mode` | Permissionless if `LFP >= recovery_target` or after `RECOVERY_EXIT_TIMEOUT_SLOTS`; else admin | Clear recovery state and resume normal flow |
+
+This replaces the legacy admin-only `syncLatestPulse` instruction.
 
 See [Oracle Trust Model](oracle_trust_model.md) for the full trust characterization.
 
 ---
 
-## User-driven cleanup (ticket rent)
+## 6. Permissionless settlement & auto-finalization
 
-Automation manages **round creation, pulse posting, finalize/settle, and sweeps**. Ticket rent recovery is intentionally **user-driven**:
+| Property | Behavior |
+|---|---|
+| **Permissionless** | Any user can trigger `settle_round_tokens` once the reveal window has passed |
+| **Auto-finalization** | `settle_round_tokens` will auto-transition the round to `Finalized` if the pulse is set and not yet finalized |
+| **Incremental** | The instruction processes ticket batches; idempotent thanks to `Ticket.processed` and `Round.settled_count` |
+
+The supervisor exposes settlement as part of its tick loop, but anyone running the SDK can call it
+themselves.
+
+---
+
+## 7. Supervisor tick cycle
+
+The `protocol-supervisor-sdk` runs a continuous loop. Each tick covers the modules below in order:
+
+| Module | Responsibility |
+|---|---|
+| **boot** | Read `Config`, `Tokenomics`, `RoundRegistry`, `OracleSet`, `StreakLeaderboard`, current slot |
+| **audit** | Scan all active rounds and classify their state |
+| **scheduler** | Compute the canonical next target and call `create_round_permissionless` if needed |
+| **pulses (quorum assembly)** | Read `OracleAttestationRecord` PDAs, build the signature set, call `set_pulse_quorum` |
+| **maintenance / finalize** | Call `finalize_round` for rounds past the reveal deadline with a pulse set |
+| **settlement** | Call `settle_round_tokens` for finalized rounds with tickets to process |
+| **maintenance / sweep** | Call `sweep_unclaimed` for rounds past the claim grace period |
+| **cleanup / close** | Call `close_round` for swept rounds to recover rent |
+| **recovery (only if needed)** | If a real LFP gap is detected, drive the recovery flow described in §5 |
+
+A tick takes roughly 10–15 seconds and runs concurrently safe (PDAs guarantee idempotency).
+
+---
+
+## 8. Oracle node tick cycle (`oracle-node-sdk`)
+
+Each oracle node runs an independent loop:
+
+| Step | Action |
+|---|---|
+| **Identify rounds** | Scan rounds with `pulse_set == false` whose target is `<= LFP + 1` |
+| **Fetch NIST** | Read `outputValue` and `precommitmentValue` for the target pulse |
+| **Sign** | Build the canonical message `"timlg-protocol:pulse_v1" || programId || roundId || target || pulse[64]` and sign with the oracle's Ed25519 key |
+| **Attest** | Call `signal_pulse_attestation` (or `signal_anchor_attestation` in recovery) — creates one-shot PDA with the signature |
+| **Anchor self-skip** | If a live round already exists at LFP+1 (so `set_pulse_quorum` will be used, not `install_nist_anchor_quorum`), skip the anchor attestation to save fees |
+
+The node never assembles quorum itself. Assembly is the relayer's job.
+
+---
+
+## 9. User-driven cleanup (ticket rent)
+
+Automation manages **round creation, pulse publication, finalize / settle / sweep, recovery**, and
+read-only display of jackpot state. Ticket rent recovery is intentionally **user-driven**:
 
 - `close_ticket` is signed by the ticket owner and returns the ticket PDA's lamports to the user.
 - Sweeps do **not** close user tickets.
@@ -122,17 +184,19 @@ Automation manages **round creation, pulse posting, finalize/settle, and sweeps*
 This design reduces centralized maintenance and keeps user cleanup permissioned to the owner.
 
 !!! note "Grace windows"
-    The canonical sweep eligibility is enforced by the program using `claim_grace_slots` from on-chain `Config`.
-    The supervisor may use a shorter local precheck before attempting sweeps, but early attempts will be rejected on-chain.
+    The canonical sweep eligibility is enforced by the program using `claim_grace_slots` from on-chain
+    `Config`. The supervisor may use a shorter local precheck before attempting sweeps, but early
+    attempts will be rejected on-chain.
 
 ---
 
-## Empty round handling
+## 10. Empty round handling
 
-Rounds created without any ticket commits are detected by the supervisor during the pulse module. For rounds with zero tickets:
+Rounds created without any ticket commits are detected by the supervisor:
 
-- The pulse step is skipped (no `set_pulse_signed` sent)
-- The sweep step runs immediately after the reveal deadline passes
-- The close step reclaims rent after sweep
+- The pulse step is skipped (no quorum needed).
+- Sweep runs immediately after the reveal deadline.
+- Close reclaims rent.
 
-This reduces unnecessary RPC calls and keeps the pipeline clean without modifying the on-chain program.
+This avoids unnecessary RPC calls and keeps the pipeline clean without any change in the on-chain
+program — the on-chain rules already accept zero-ticket sweeps.

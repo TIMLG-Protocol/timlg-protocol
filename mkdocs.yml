@@ -96,6 +96,7 @@ nav:
           - Metrological Finality: protocol/settlement_rules.md
           - Tokenomics & Fees: protocol/tokenomics.md
           - Treasury & BitIndex: protocol/treasury_bitindex.md
+          - Streak Jackpot: protocol/streak_jackpot.md
       - 3. Technical Topology:
           - PDA Seed Topography: protocol/pdas_and_accounts.md
           - User Statistics: protocol/user_stats.md

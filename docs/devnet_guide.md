@@ -68,23 +68,33 @@ The wallet view should be read as an aggregated summary, not as a replacement fo
 | **Total / Played** | How many tickets the wallet committed |
 | **Won / Lost** | Classified revealed outcomes |
 | **Revealed** | Tickets successfully revealed |
-| **Refunded** | Tickets that exited through the refund path |
+| **Refunded** | Tickets that exited through the refund path (does not break the streak) |
 | **Claimed** | Winning tickets already claimed |
-| **Current streak** | Current consecutive-win run |
-| **Max streak** | Best historical consecutive-win run |
+| **Current streak** | Current consecutive-win run — drives jackpot eligibility |
+| **Max streak** | Best historical consecutive-win run (personal record) |
 
 For the protocol-level reference, see [User Statistics](protocol/user_stats.md).
 
 ---
 
-## Why streaks matter
+## Streak Jackpot
 
-`current_streak` and `max_streak` are useful today for observability and wallet-level performance summaries.
-They are also the natural input surface for future leaderboard or streak-based prize campaigns.
+`current_streak` and `max_streak` are part of the wallet summary and now feed a **live on-chain
+reward**: the **Streak Jackpot**.
 
-!!! note "Not a live prize ledger"
-    In the current MVP, a high streak does **not** automatically create a separate reward.
-    Any future streak campaign should publish its own eligibility rules and claim process.
+| Concept | Meaning |
+|---|---|
+| **Pool** | The `Treasury SOL` PDA, fed by the per-ticket SOL service fee |
+| **Eligibility** | Your `current_streak` strictly greater than the global `record_streak` shown by the protocol |
+| **Claim** | A user-signed `claim_streak_jackpot` transaction transfers the pool (minus rent-exempt) to your wallet |
+| **Effect on your stats** | `current_streak` is reset to 0 after a successful claim; `max_streak` is preserved |
+
+For the full mechanic, anti-grinding properties, and audit counters, see
+[Streak Jackpot](protocol/streak_jackpot.md).
+
+!!! note "Refunds do not break the streak"
+    A refund caused by an oracle outage (round without a pulse) is treated as a legitimate hop and
+    does not reset your streak. A revealed loss does.
 
 ---
 

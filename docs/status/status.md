@@ -1,33 +1,41 @@
 # Current Status
 
-TIMLG Protocol is currently in **Public Devnet MVP**. The protocol core, operator layer, user-facing beta flow, and audit surface are all active, but the deployment should still be read as a **development network system under active hardening**, not as a final production release.
+TIMLG Protocol is currently in **Public Devnet MVP**. The on-chain program, the off-chain SDKs, the
+user-facing beta flow, and the live audit surface are all active. The deployment should still be
+read as a **development network system under active hardening**, not as a final production release.
 
 ## Deployment Summary
 
 | Area | Current State | Notes |
 |---|---|---|
-| **Network** | Public Devnet | Used as the canonical public environment for the MVP |
-| **Program** | Deployed and exercised continuously | Program ID migrated and stabilized during the January 2026 reset cycle |
-| **Oracle model** | Single authorized signer | Current operational model; multi-oracle remains future hardening |
-| **Operator / supervisor** | Active | Round creation, pulse handling, settlement, sweep, cleanup, and diagnostics are implemented |
-| **User flow** | End-to-end operational | Commit, reveal, claim, refund, sweep visibility, and rent recovery are implemented |
-| **Audit surface** | Active and traceable | Live audit, CSV export, archive sync, and transaction traceability are present |
-| **Documentation** | Technical protocol docs in place | Status, protocol, security, lifecycle, runbook, and troubleshooting are present |
+| **Network** | Public Devnet | The canonical public environment for the MVP |
+| **Program** | Deployed and exercised continuously | Verifiable build at `GeA3...PrUP` |
+| **Oracle model** | OracleSet quorum (M-of-N Ed25519) with NIST chaining | Single-signer fallback exists but is disabled for betting rounds |
+| **Operator / supervisor** | Active | `protocol-supervisor-sdk` runs the pipeline (round creation, quorum assembly, finalize, settle, sweep, close, recovery) |
+| **Oracle nodes** | Active | `oracle-node-sdk` runs as independent attestation publishers; signatures persisted in on-chain Attestation Board PDAs |
+| **User flow** | End-to-end operational | Commit, reveal, claim, refund, sweep visibility, rent recovery, jackpot claim |
+| **Streak Jackpot** | Active | `StreakLeaderboard` initialized; `claim_streak_jackpot` claimable as soon as the streak record is broken |
+| **Audit surface** | Active and traceable | Live audit, CSV export, archive sync, transaction traceability |
+| **Public source code** | Public | Smart contract, IDL, and TypeScript SDK at `github.com/richarddmm/timlg-protocol` |
+| **Documentation** | Active | Status, protocol, security, lifecycle, runbook, troubleshooting, glossary, streak jackpot |
 
 ## Protocol Scope Implemented Today
 
-| Capability | State | Evidence from repository history |
+| Capability | State | Notes |
 |---|---|---|
-| **Commit / reveal base flow** | Implemented | Completed and tested in December 2025 |
-| **Batch commit / reveal** | Implemented | Normal and signed batching added in December 2025 |
-| **Signed oracle pulse path** | Implemented | `set_pulse_signed` hardened and moved away from mock path in December 2025 |
-| **Finalize / settle / claim lifecycle** | Implemented | End-to-end lifecycle completed on Devnet in late December 2025 |
-| **Round pipelining** | Implemented | NIST-aligned pipelining and automated windows added in January 2026 |
-| **Permissionless / auto-assisted settlement paths** | Implemented | Auto-finalize and lazy / claim-driven settlement introduced in January–March 2026 |
-| **Refund path** | Implemented | Refund logic hardened across protocol and UI in January 2026 |
-| **Sweep and rent recovery** | Implemented | Sweep automation, `close_ticket`, `close_round`, reclaim scripts, and UI support added in January 2026 |
-| **User statistics** | Implemented | Robust on-chain stats and reset/session logic added in March 2026 |
-| **Audit traceability** | Implemented | Historical archive, Firebase sync, CSV export, tx capture, and proof-oriented export added in February–March 2026 |
+| **Commit / reveal base flow** | Implemented | Single-ticket and batched paths |
+| **Batch commit / reveal** | Implemented | Both `commit_batch` / `reveal_batch` and signed variants for relayed flows |
+| **Multi-oracle quorum pulse path** | Implemented | `set_pulse_quorum` with on-chain Ed25519 verification per signer |
+| **NIST chaining** | Implemented | `last_output_value` and `last_precommitment_value` enforced after first anchor |
+| **Permissionless round creation** | Implemented | `create_round_permissionless` + canonical-target rule |
+| **Continuity rounds** | Implemented | `RoundKind::Continuity` for technical sequencing without commits |
+| **Finalize / settle / claim lifecycle** | Implemented | Lazy / permissionless settlement + auto-finalize |
+| **Refund path** | Implemented | Owner and permissionless variants (`recover_funds`, `recover_funds_anyone`) |
+| **Sweep and rent recovery** | Implemented | Sweep automation, `close_ticket`, `close_round`, reclaim scripts |
+| **User statistics** | Implemented | Counters, longest streak, current streak, `refunded_in_streak_window` |
+| **Streak Jackpot** | Implemented | `StreakLeaderboard` PDA + `claim_streak_jackpot` (live) |
+| **Recovery mode** | Implemented | `enter_recovery_mode` + `install_nist_anchor_quorum` + `exit_recovery_mode` (proof-gated) |
+| **Audit traceability** | Implemented | Historical archive, CSV export, tx capture, proof-oriented export |
 
 ## Current Operational Capabilities
 
@@ -35,84 +43,83 @@ TIMLG Protocol is currently in **Public Devnet MVP**. The protocol core, operato
 
 | Surface | Status | Notes |
 |---|---|---|
-| **Round creation** | Operational | Manual and automated creation paths exist |
-| **Commit window enforcement** | Operational | Window checks and pulse-liveness checks were hardened during January 2026 |
+| **Round creation** | Operational | Permissionless via `create_round_permissionless` |
+| **Commit window enforcement** | Operational | Includes `PulseTooLate` liveness check |
 | **Reveal window enforcement** | Operational | UI and protocol both track reveal / claim timing |
-| **Pulse publication** | Operational | Signed pulse flow uses ed25519 validation and oracle key enforcement |
-| **Settlement** | Operational | Lazy settlement, auto-settle assistance, and stale-cache hardening were added progressively |
-| **Claim** | Operational | Winner claims are live on Devnet |
-| **Sweep** | Operational | Grace-gated sweep and zero-ticket round handling are implemented |
-| **Rent recovery** | Operational | Ticket closure and batch reclaim flows are present |
+| **Pulse publication** | Operational | Quorum path with Ed25519 + NIST chain verification |
+| **Settlement** | Operational | Lazy/permissionless paths and stale-cache hardening |
+| **Claim** | Operational | Winner claims live on Devnet |
+| **Sweep** | Operational | Grace-gated sweep and zero-ticket round handling |
+| **Rent recovery** | Operational | Ticket closure and batch reclaim flows |
+| **Streak Jackpot** | Operational | `claim_streak_jackpot` callable by any user whose `current_streak` exceeds the on-chain record |
+| **Recovery mode** | Operational | Proof-gated entry, quorum-installed anchor, permissionless exit on target reach or timeout |
 
-### Operator and maintenance layer
+### Off-chain operator and oracle layer
 
 | Surface | Status | Notes |
 |---|---|---|
-| **Supervisor loop** | Operational | Unified operator supervisor with integrated audit worker |
-| **RPC resilience** | Hardened | Multiple rounds of caching, throttling, 429 handling, and dual-RPC fallback |
-| **Round cleanup** | Operational | Deep sweep, reclaim, stuck-round diagnostics, skip lists, and zombie filtering exist |
-| **Legacy round compatibility** | Partial but implemented | Several fixes explicitly target legacy / migrated / purged rounds |
-| **Metrics and observability** | Operational | Recent commits add one-line RPC metrics, operational counters, and richer audit output |
+| **`protocol-supervisor-sdk`** | Operational | Permissionless tick loop; never participates in consensus |
+| **`oracle-node-sdk`** | Operational | Independent oracle nodes publish attestations to the on-chain Attestation Board |
+| **`ticket-manager-sdk`** | Operational | User-side commit / reveal / claim / refund / jackpot |
+| **TypeScript SDK** | Operational | `TimlgPlayer`, `TimlgSupervisor`, `TimlgAdmin` |
+| **RPC resilience** | Hardened | Multiple rounds of caching, throttling, 429 handling, dual-RPC fallback |
+| **Metrics and observability** | Operational | One-line RPC metrics, operational counters, richer audit output |
 
 ### User-facing surfaces
 
 | Surface | Status | Notes |
 |---|---|---|
-| **Beta app** | Operational | Public Devnet interface exists, but it is a moving MVP surface |
-| **Ticket history** | Mature for Devnet MVP | Filtering, contextual actions, export, and local resilience were added iteratively |
-| **Round timeline / modal** | Operational | Timeline, traceability, and explorer links are present |
-| **Ticket manager** | Operational | CLI utility supports activity simulation, balance reporting, and session stats |
-| **Live audit** | Operational | Audit worker, archive sync, CSV export, and tx traceability are present |
+| **Beta app** | Operational | Public Devnet interface with full lifecycle support |
+| **Ticket history** | Mature for Devnet MVP | Filtering, contextual actions, export, local resilience |
+| **Round timeline / modal** | Operational | Timeline, traceability, explorer links |
+| **Live audit** | Operational | Audit worker, archive sync, CSV export, tx traceability |
 
 ## Current Technical Characteristics
 
 | Topic | Current position |
 |---|---|
-| **Oracle trust model** | **Trust-minimized**, single-signer model with signed pulse verification and on-chain sequential constraints. Not trustless. See [Oracle Trust Model](../protocol/oracle_trust_model.md). |
-| **Settlement model** | Deflationary settlement with automated and lazy settlement paths |
-| **Audit model** | Chain-derived data plus synchronized archive / export layers for Devnet observability |
-| **Stats model** | On-chain user statistics and streak tracking are present and already used by surrounding tooling |
+| **Oracle trust model** | **Trust-minimized** with M-of-N quorum and NIST chaining. See [Oracle Trust Model](../protocol/oracle_trust_model.md) |
+| **Settlement model** | Deflationary settlement with permissionless / lazy paths |
+| **Round creation model** | Permissionless with on-chain canonical-target rule |
+| **Audit model** | Chain-derived data + synchronized archive / export layers |
+| **Stats model** | On-chain `UserStats` and `StreakLeaderboard` are first-class protocol surfaces |
 | **Environment model** | Devnet-first public MVP with frequent protocol and tooling iteration |
 
 ## What Is Stable Enough To Rely On
 
-| Safe to treat as current MVP behavior | Why |
+| Behaviour | Why |
 |---|---|
-| **Devnet is the canonical public environment** | The commit history consistently treats Devnet as the main public operating surface |
-| **Single-oracle signed pulse is the current trust model** | Repeated hardening work focuses on signed oracle operation, not production quorum |
-| **User flow is complete enough for real protocol exercise** | Commits cover the full lifecycle from commit to rent recovery |
-| **Audit and observability are first-class surfaces** | A large portion of February–March 2026 work is dedicated to audit correctness and export quality |
-| **User stats are now a real protocol surface** | March 2026 commits add robust on-chain stats, resets, streak handling, and UI consumption |
+| **Devnet is the canonical public environment** | The release pipeline targets Devnet for the public MVP |
+| **Quorum + NIST chain is the current trust model** | Single-signer is disabled for betting rounds; quorum is the default acceptance path |
+| **User flow is complete enough for real protocol exercise** | Full lifecycle from commit to rent recovery and jackpot claim |
+| **Streak Jackpot is a live on-chain surface** | The pool is funded by the SOL service fee and claimable by any record-breaking user |
+| **Audit and observability are first-class surfaces** | Continuous work on audit correctness and export quality |
+| **Public source code is now available** | Anchor program, IDL, and SDK published at `github.com/richarddmm/timlg-protocol` |
 
 ## Known Constraints
 
 | Constraint | Practical meaning |
 |---|---|
 | **Devnet-only public posture** | Reliability and economics should be read as MVP behavior, not production guarantees |
-| **Single authorized oracle — trust-minimized** | The protocol is **not trustless**: ed25519 verification proves oracle authorization, not NIST pulse authenticity. The operator must be trusted to fetch and publish real pulses. |
-| **syncLatestPulse / ORACLE-GAP dependency** | The `latest_finalized_pulse_index` is advanced by admin calls, not purely by sequential pulse publications. This is a liveness mechanism, but also a centralization vector. The program enforces monotonic advancement only. |
-| **Treasury withdrawal guard not yet active** | `TREASURY_WITHDRAW_MAX_ACTIVE_WINNERS` is defined in constants but **not wired** into `withdraw_treasury_tokens`. The admin can currently withdraw treasury tokens regardless of active winners. This flag is scheduled for a future upgrade. |
-| **SOL service fee has no cap** | `update_sol_service_fee` has no upper bound enforced on-chain. The admin can set any SOL fee per ticket. Requires operator trust. |
-| **Legacy migration burden** | Multiple commits exist solely to handle older rounds, old IDLs, and migrated account layouts |
-| **Operational complexity still lives off-chain** | The supervisor, audit worker, reclaim tools, and archive sync remain essential components |
-| **UI and audit are actively refined** | The surfaces are usable, but their presentation and edge-case handling have evolved continuously |
+| **Threshold-trusted oracle set** | Quorum reduces single-signer risk, but full collusion of `threshold` oracles is not detectable on-chain. zkTLS / NIST-binding proof remains future hardening |
+| **Treasury withdrawal guard not yet active** | `TREASURY_WITHDRAW_MAX_ACTIVE_WINNERS` is defined in constants but **not wired** into `withdraw_treasury_tokens`; scheduled for a future upgrade |
+| **SOL service fee has no on-chain cap** | `update_sol_service_fee` has no upper bound; admin discretion still applies |
+| **Operational complexity still lives off-chain** | Supervisor, oracle nodes, audit worker, and reclaim tools remain essential — though all act through public, permissionless on-chain instructions |
+| **UI and audit are actively refined** | The surfaces are usable, but their presentation and edge-case handling continue to evolve |
 
 ## Near-Term Documentation Priorities
 
-The repository history suggests these areas should remain explicit in the docs because they changed repeatedly and matter to advanced readers:
-
 | Documentation priority | Why it matters |
 |---|---|
-| **User statistics and streak semantics** | Stats are now on-chain and can later support streak-based incentives |
-| **Operator vs protocol responsibilities** | Many fixes live in the supervisor / audit layer rather than in the on-chain program |
-| **Legacy and migration behavior** | Several protocol and UI fixes target old rounds, old IDLs, and purged history |
-| **Sweep / claim / rent-recovery boundaries** | These paths are implemented, but easy to misunderstand without precise tables |
-| **Audit data sources** | The system combines chain state, synchronized archives, and export layers |
+| **Streak Jackpot semantics** | The on-chain mechanic is live; users need a clear claim flow and audit surface |
+| **Quorum + NIST chaining** | The current trust model differs from older single-signer descriptions and needs to be unambiguous |
+| **Recovery mode operator workflow** | Replaces the legacy `syncLatestPulse` mechanism; entry / exit conditions matter to operators |
+| **Public SDK guidance** | Now that the SDK is public, examples and integration patterns deserve clean documentation |
 
 ## Interpretation Guide
 
 This page is intentionally conservative.
 
 - It describes **what is operational today**, not every experimental branch or discarded idea.
-- It treats the repository history as the source of truth for current status.
+- It treats the program source code at `github.com/richarddmm/timlg-protocol` as the source of truth.
 - It avoids presenting future work as if it were already part of the canonical public deployment.
