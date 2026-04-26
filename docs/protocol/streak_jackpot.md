@@ -97,6 +97,13 @@ and the Live Audit surface can use them without scanning historical transactions
 
 ## 6. Anti-grinding properties
 
+The streak counter cannot be cheaply gamed. The diagram below illustrates the canonical attacks
+the protocol resists, and the rule that resists each one:
+
+<figure class="infographic" markdown>
+![Anti-grinding — index continuity, refund window, and signer checks](../assets/infographics/07-anti-grinding.png){ loading=lazy }
+</figure>
+
 | Attack vector | Why it fails |
 |---|---|
 | **Hide losing reveals to fake a high streak** | A WIN only extends the streak when `user_commit_index == last_revealed_winning_index + 1 + refunded_in_streak_window`. Skipping a loser breaks index continuity → the next WIN resets the streak |

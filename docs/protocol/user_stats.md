@@ -83,6 +83,11 @@ ticket.user_commit_index == last_revealed_winning_index + 1 + refunded_in_streak
 | `recover_funds` (refund) on a ticket past the last winning index | unchanged | +1 (legitimate "hop") |
 | `claim_streak_jackpot` | reset to 0 | reset to 0 |
 
+!!! tip "Visual reference"
+    See the [anti-grinding diagram in the Streak Jackpot page](streak_jackpot.md#6-anti-grinding-properties)
+    for an illustrated walkthrough of how the index continuity rule above prevents the canonical
+    attempts to fake a streak.
+
 This design has two important properties:
 
 | Property | Why it holds |

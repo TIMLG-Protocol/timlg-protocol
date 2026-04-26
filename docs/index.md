@@ -22,6 +22,88 @@ wallet-level statistics, and a documentation set designed for technical verifica
 
 ---
 
+## What TIMLG is, in one picture
+
+You commit a hidden bet. The protocol then publishes a public random pulse from NIST. You reveal
+your bet. The on-chain program decides win or lose deterministically. Tokens settle automatically.
+
+<figure class="infographic" markdown>
+![What TIMLG is — commit, pulse, reveal, settle](assets/infographics/01-what-is-timlg.png){ loading=lazy }
+</figure>
+
+[Read the full protocol overview →](protocol/overview.md)
+
+---
+
+## How a round works
+
+Every round is a slot-bounded sequence of windows. The order is fixed: commits close before the
+pulse arrives, the pulse closes before reveals expire, and settlement runs on top of the result.
+
+<figure class="infographic" markdown>
+![Round lifecycle — commit window, pulse, reveal, settlement, claim](assets/infographics/02-round-lifecycle.png){ loading=lazy }
+</figure>
+
+[Read the lifecycle in detail →](LIFECYCLE.md)
+
+---
+
+## Why nobody can cheat — the Hawking Wall
+
+Commits must be sealed **before** the pulse becomes public. There is a wall between "what you can
+know when you bet" and "what the protocol will use to settle". The wall is enforced by Solana
+slots, not by trust.
+
+<figure class="infographic" markdown>
+![The Hawking Wall — commit before the pulse, settle after the pulse](assets/infographics/03-the-hawking-wall.png){ loading=lazy }
+</figure>
+
+[Read the timing windows →](protocol/timing_windows.md)
+
+---
+
+## Where the randomness comes from
+
+A set of independent oracles each fetches the same NIST Beacon pulse and signs it. The on-chain
+program only accepts the pulse when **a threshold of those signatures agrees**, and it verifies a
+cryptographic chain back to the previous accepted pulse. No single oracle can substitute the value.
+
+<figure class="infographic" markdown>
+![Oracle quorum and NIST chain](assets/infographics/04-oracle-quorum-and-nist-chain.png){ loading=lazy }
+</figure>
+
+[Read the oracle trust model →](protocol/oracle_trust_model.md)
+
+---
+
+## What happens to your tokens
+
+Every ticket has four possible terminal states. Wins mint a reward and refund the stake. Losses and
+no-reveals burn the stake — the protocol is deflationary by design. Refunds are a safety fallback
+for oracle outages. The per-ticket SOL service fee funds a separate jackpot pool.
+
+<figure class="infographic" markdown>
+![Tokenomics — mint on win, burn on loss, refund on oracle outage, fee to streak jackpot](assets/infographics/05-tokenomics.png){ loading=lazy }
+</figure>
+
+[Read the tokenomics →](protocol/tokenomics.md)
+
+---
+
+## The Streak Jackpot
+
+Every ticket commit pays a small SOL fee that accumulates in an on-chain pool. Anyone whose
+consecutive-win streak beats the global record can claim the entire pool in one transaction — and
+becomes the new record holder.
+
+<figure class="infographic" markdown>
+![Streak Jackpot — pool funded by fees, claimed by whoever breaks the on-chain record](assets/infographics/06-streak-jackpot.png){ loading=lazy }
+</figure>
+
+[Read the Streak Jackpot mechanic →](protocol/streak_jackpot.md)
+
+---
+
 ## Protocol snapshot
 
 | Topic | Current Devnet MVP |
@@ -49,7 +131,9 @@ wallet-level statistics, and a documentation set designed for technical verifica
 
 ---
 
-## Recommended reading order
+## For technical readers
+
+If you want to go deeper than the visual tour above:
 
 <div class="grid cards" markdown>
 

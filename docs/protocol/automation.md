@@ -13,6 +13,14 @@ permissionless or quorum-gated instructions**. None of them holds privileged con
 
 ## 1. Components
 
+The off-chain layer is split into three role-specific SDKs. The diagram below summarises which
+on-chain instructions each role is allowed to invoke, and makes explicit that **no role holds
+privileged consensus power** — the on-chain program is the only authority:
+
+<figure class="infographic" markdown>
+![Roles and permissions — player, oracle node, supervisor / relayer](../assets/infographics/08-roles-and-permissions.png){ loading=lazy }
+</figure>
+
 | Component | Repo path | Domain | Authority |
 |---|---|---|---|
 | **`protocol-supervisor-sdk`** | `protocol-supervisor-sdk/` | Round lifecycle | Permissionless: round creation, quorum assembly, settle, sweep, close |
