@@ -69,22 +69,17 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/beta.css
-  - stylesheets/roadmap.css
   - stylesheets/status.css
   - stylesheets/persistent-iframe.css
 
 nav:
   - Home: index.md
-  - Status:
-      - Current Status: status/status.md
-      - Changelog: status/changelog.md
+  - Status: status/status.md
+  - Changelog: status/changelog.md
   - App:
       - App: beta.md
       - Guide: devnet_guide.md
   - Live Audit: audit.md
-  - Whitepaper:
-      - Overview: whitepaper/index.md
-      - Changelog: whitepaper/changelog.md
   - Protocol:
       - Architecture Overview: protocol/overview.md
       - Operational Lifecycle: LIFECYCLE.md
@@ -113,7 +108,6 @@ nav:
           - Error Reference: protocol/errors.md
           - Operator Runbook: runbook-devnet.md
 
-  - Roadmap: roadmap/index.md
   - Security & Control:
       - Overview: security/index.md
       - Privileged Adversary Model: security/privileged_adversary.md

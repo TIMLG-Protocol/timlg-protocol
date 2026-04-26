@@ -19,4 +19,4 @@ Administrators can initiate a migration using the `migrate_config` instruction. 
 3. Updates the `version` field in the state.
 4. Initializes any new parameters with default values.
 
-> **Important**: Migrations are irreversible and should only be performed during scheduled maintenance windows. Check the [Roadmap](../roadmap/index.md) for planned protocol upgrades.
+> **Important**: Migrations are irreversible and should only be performed during scheduled maintenance windows. Check the [Status page](../status/status.md) and the [Changelog](../status/changelog.md) for the current deployment posture and shipped protocol changes.

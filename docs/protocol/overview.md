@@ -6,6 +6,13 @@
 | **Status** | Approved (Devnet MVP) |
 | **Authority** | Richard David Martín |
 
+!!! info "Canonical specification"
+    This Protocol section is the **authoritative specification** of the TIMLG Protocol. It supersedes
+    the historical [whitepaper PDFs](../index.md#downloads-and-historical-references), which are kept
+    for external citation only. In case of any discrepancy, this section and the on-chain program at
+    [`github.com/richarddmm/timlg-protocol`](https://github.com/richarddmm/timlg-protocol) are
+    authoritative.
+
 TIMLG is a slot-bounded commit-reveal protocol tied to a publicly verifiable 512-bit randomness pulse
 (NIST Beacon Chain 2). Participants commit during the commit window, an authorized oracle set publishes
 a signed pulse after commit closes, participants reveal their guess, and the program settles outcomes

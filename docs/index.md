@@ -175,3 +175,19 @@ The site distinguishes clearly between:
 
 That distinction is deliberate. It keeps the protocol easier to review, easier to audit, and easier
 to evolve without rewriting past claims.
+
+---
+
+## Downloads and historical references
+
+The canonical specification of the protocol lives in the [Architecture Overview](protocol/overview.md)
+and the rest of the [Protocol section](protocol/overview.md). The PDF documents below are kept for
+historical and external-citation reference; in case of any discrepancy, the live protocol pages and
+the on-chain program are authoritative.
+
+- [TIMLG Whitepaper v1.2](assets/TIMLG_Whitepaper_v1.2.pdf) — *Live audit integration and protocol dynamic hardening (February 2026)*
+- [TIMLG Whitepaper v1.1](assets/whitepaper_TIMLG_v1.1.pdf) — *Pre-multi-oracle revision (February 2026)*
+- [TIMLG Whitepaper v1.0-beta](assets/whitepaper_TIMLG_v1.0-beta.pdf) — *Initial protocol-implementation alignment (January 2026)*
+- [TIMLG Whitepaper v0.1](assets/whitepaper_TIMLG_v0.1.pdf) — *Initial conceptual draft (December 2025)*
+
+Source code: [github.com/richarddmm/timlg-protocol](https://github.com/richarddmm/timlg-protocol).

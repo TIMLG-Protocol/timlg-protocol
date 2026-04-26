@@ -116,6 +116,26 @@ read as a **development network system under active hardening**, not as a final 
 | **Recovery mode operator workflow** | Replaces the legacy `syncLatestPulse` mechanism; entry / exit conditions matter to operators |
 | **Public SDK guidance** | Now that the SDK is public, examples and integration patterns deserve clean documentation |
 
+## Direction (non-binding)
+
+!!! note "Forward-looking, not committed"
+    This section describes the **direction** the protocol is moving in. It is **not a roadmap with
+    deadlines** and it is **not a commitment**. What is operational today is documented in the tables
+    above; what has actually shipped is documented in the [Changelog](changelog.md). Anything below is
+    a working hypothesis that may change without notice.
+
+| Working item | What we are exploring | Status |
+|---|---|---|
+| **Mainnet hardening** | Audits, deployment topology, governance multisig, parameter freezing | Planning |
+| **Public relayer for gasless participation** | An open relayer surface that accepts user-signed envelopes (`commit_batch_signed` and friends), submits them on-chain, and is replaceable by anyone | Research / API design |
+| **zkTLS / NIST-binding proof** | A protocol-level cryptographic proof that the pulse delivered to the program is the one published by NIST, removing residual trust on the oracle quorum | Research |
+| **Tokenomics and treasury parameter governance** | Moving SOL service fee, threshold, grace windows, and treasury withdrawal limits to a governance-controlled change path | Conceptual |
+| **Strategy / research SDK** | Higher-level tooling for participants who want to script bit-prediction experiments on top of the public SDK | Backlog |
+
+These are working notes for technical reviewers, not promises. The single source of truth for what
+the protocol does today is the [Architecture Overview](../protocol/overview.md), the on-chain program,
+and the [Changelog](changelog.md).
+
 ## Interpretation Guide
 
 This page is intentionally conservative.
